@@ -1,3 +1,9 @@
+Fri Sep 26 08:42:11 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Toolbar buttons now work correctly with contact support.
+
 Thu Sep 25 16:16:20 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

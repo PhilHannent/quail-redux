@@ -60,7 +60,13 @@ class QGaimBListWindow : public QMainWindow
 		void showAddBuddy();
 		void showAddChat();
 		void showAddGroup();
+
 		void showRemoveBuddy();
+		void showConfirmRemoveBuddy(GaimBuddy *buddy);
+		void showConfirmRemoveContact(GaimContact *contact);
+		void showConfirmRemoveChat(GaimBlistChat *chat);
+		void showConfirmRemoveGroup(GaimGroup *group);
+
 		void showOfflineBuddies(bool on);
 
 		void showAccountsWindow();
