@@ -1,3 +1,9 @@
+Fri Jul 11 01:46:30 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Removed the Help menu.
+
 Thu Jul 10 03:40:53 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* data/images/protocols/small/gadu-gadu.png:

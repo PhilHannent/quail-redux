@@ -76,7 +76,6 @@ class QGaimBListWindow : public QMainWindow
 
 		QPopupMenu *buddiesMenu;
 		QPopupMenu *toolsMenu;
-		QPopupMenu *helpMenu;
 		QPopupMenu *awayMenu;
 		QPopupMenu *pounceMenu;
 		QPopupMenu *protocolMenu;

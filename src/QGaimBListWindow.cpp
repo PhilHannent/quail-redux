@@ -423,19 +423,6 @@ QGaimBListWindow::buildMenuBar()
 	a->addTo(toolsMenu);
 
 
-	/* Help menu */
-	helpMenu = new QPopupMenu(this);
-	menubar->insertItem(tr("&Help"), helpMenu);
-
-	/* Help -> Debug Window */
-	a = new QAction(tr("&Debug Window"), QString::null, 0, this, 0);
-	a->addTo(helpMenu);
-
-	/* Help -> About */
-	a = new QAction(tr("&About"), QString::null, 0, this, 0);
-	a->addTo(helpMenu);
-
-
 	/* Now we're going to construct the toolbar on the right. */
 	menubar->insertSeparator();
 
