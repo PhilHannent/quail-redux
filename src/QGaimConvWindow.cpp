@@ -59,7 +59,7 @@
 QGaimConversation::QGaimConversation(GaimConversation *conv,
 									 QWidget *parent, const char *name,
 									 WFlags fl)
-	: QWidget(parent, name, fl), conv(conv), text(NULL)
+	: QWidget(parent, name, fl), conv(conv), text(NULL), notifying(false)
 {
 }
 
@@ -293,15 +293,6 @@ QGaimConversation::updateTabIcon()
 	}
 }
 
-void
-QGaimConversation::notifyNewMessage()
-{
-	if (!gaim_prefs_get_bool("/gaim/qpe/notify/incoming"))
-		return;
-
-	qGaimNotifyUser();
-}
-
 /**************************************************************************
  * QGaimConvChat
  **************************************************************************/
@@ -498,6 +489,14 @@ QGaimConvChat::updated(GaimConvUpdateType type)
 		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
 		{
 			color.setRgb(0xDF, 0x42, 0x1E);
+
+			if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_chat"))
+				qGaimNotifyUser();
+		}
+		else
+		{
+			if (notifying)
+				qGaimNotifyUserStop();
 		}
 
 		qwin->getTabs()->setTabColor(getTabId(), color);
@@ -558,6 +557,14 @@ QGaimConvIm::updated(GaimConvUpdateType type)
 		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
 		{
 			color.setRgb(0xDF, 0x42, 0x1E);
+
+			if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_im"))
+				qGaimNotifyUser();
+		}
+		else
+		{
+			if (notifying)
+				qGaimNotifyUserStop();
 		}
 
 		win = gaim_conversation_get_window(conv);

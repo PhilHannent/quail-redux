@@ -32,6 +32,8 @@
 
 using namespace Opie;
 
+static int notifyActiveCount = 0;
+
 /**************************************************************************
  * UI operations
  **************************************************************************/
@@ -262,11 +264,16 @@ qGaimNotifyUser(void)
 	qGaimNotifyBuzzer();
 	qGaimNotifyLedStart();
 	qGaimNotifySound();
+
+	notifyActiveCount++;
 }
 
 void
 qGaimNotifyUserStop(void)
 {
+	if (--notifyActiveCount > 0)
+		return;
+
 	qGaimNotifyLedStop();
 }
 
@@ -274,8 +281,9 @@ void
 qGaimNotifyInit(void)
 {
 	gaim_prefs_add_none("/gaim/qpe/notify");
-	gaim_prefs_add_bool("/gaim/qpe/notify/incoming",   true);
-	gaim_prefs_add_bool("/gaim/qpe/notify/use_buzzer", false);
-	gaim_prefs_add_bool("/gaim/qpe/notify/use_led",    true);
-	gaim_prefs_add_bool("/gaim/qpe/notify/use_sound",  false);
+	gaim_prefs_add_bool("/gaim/qpe/notify/incoming_im",   true);
+	gaim_prefs_add_bool("/gaim/qpe/notify/incoming_chat", false);
+	gaim_prefs_add_bool("/gaim/qpe/notify/use_buzzer",    false);
+	gaim_prefs_add_bool("/gaim/qpe/notify/use_led",       true);
+	gaim_prefs_add_bool("/gaim/qpe/notify/use_sound",     false);
 }

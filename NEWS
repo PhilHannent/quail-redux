@@ -6,6 +6,7 @@ version 0.4:
 	* Added support for showing group numbers in the buddy list.
 	* Added bigger toolbar icons for the Zaurus C7x0.
 	* Added an optional Big List view for the buddy list.
+	* Added message notification optionally using the buzzer and LED.
 	* Fixed a bug where the Join/Open Chat button did nothing if no node
 	  was selected.
 	* Closing the window on a conversation no longer closes Gaim.

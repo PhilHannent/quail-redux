@@ -65,13 +65,12 @@ class QGaimConversation : public QWidget
 
 		void updateTabIcon();
 
-		void notifyNewMessage();
-
 	protected:
 		GaimConversation *conv;
 		QTextView *text;
 		QGaimMultiLineEdit *entry;
 		int tabId;
+		bool notifying;
 };
 
 class QGaimConvChat : public QGaimConversation

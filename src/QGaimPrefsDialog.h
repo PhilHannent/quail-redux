@@ -87,6 +87,12 @@ class QGaimNotifyPrefPage : public QGaimPrefPage
 
 	protected:
 		void buildInterface();
+
+	private:
+		QCheckBox *incomingIm;
+		QCheckBox *incomingChat;
+		QCheckBox *useBuzzer;
+		QCheckBox *useLed;
 };
 
 class QGaimAwayPrefPage : public QGaimPrefPage

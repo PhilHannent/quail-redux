@@ -28,6 +28,7 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qvbox.h>
+#include <qvgroupbox.h>
 
 #include <opie/otabwidget.h>
 #include <opie/owait.h>
@@ -147,16 +148,80 @@ QGaimConvPrefPage::buildInterface()
 QGaimNotifyPrefPage::QGaimNotifyPrefPage(QWidget *parent, const char *name)
 	: QGaimPrefPage(parent, name)
 {
+	buildInterface();
 }
 
 void
 QGaimNotifyPrefPage::accept()
 {
+	if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_im") ==
+		incomingIm->isChecked() &&
+		gaim_prefs_get_bool("/gaim/qpe/notify/incoming_chat") ==
+		incomingChat->isChecked() &&
+		gaim_prefs_get_bool("/gaim/qpe/notify/use_buzzer") ==
+		useBuzzer->isChecked() &&
+		gaim_prefs_get_bool("/gaim/qpe/notify/use_led") ==
+		useLed->isChecked())
+	{
+		return;
+	}
+
+	gaim_prefs_set_bool("/gaim/qpe/notify/incoming_im",
+						incomingIm->isChecked());
+	gaim_prefs_set_bool("/gaim/qpe/notify/incoming_chat",
+						incomingChat->isChecked());
+	gaim_prefs_set_bool("/gaim/qpe/notify/use_buzzer",
+						useBuzzer->isChecked());
+	gaim_prefs_set_bool("/gaim/qpe/notify/use_led",
+						useLed->isChecked());
 }
 
 void
 QGaimNotifyPrefPage::buildInterface()
 {
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	QVGroupBox *groupBox;
+
+	layout->setAutoAdd(true);
+
+	QVBox *vbox = new QVBox(this);
+	vbox->setSpacing(6);
+	vbox->setMargin(6);
+
+	/* Notify On groupbox */
+	groupBox = new QVGroupBox(tr("Notify On"), vbox);
+	/* Incoming IMs */
+	incomingIm = new QCheckBox(tr("Incoming IMs"),
+							   groupBox, "incoming ims checkbox");
+
+	if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_im"))
+		incomingIm->setChecked(true);
+
+	/* Incoming Chats */
+	incomingChat = new QCheckBox(tr("Incoming chat messages"),
+								 groupBox, "incoming chat checkbox");
+
+	if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_chat"))
+		incomingChat->setChecked(true);
+
+	/* Notify Using groupbox */
+	groupBox = new QVGroupBox(tr("Notify Using"), vbox);
+
+	/* Buzzer */
+	useBuzzer = new QCheckBox(tr("Buzzer"), groupBox, "buzzer checkbox");
+
+	if (gaim_prefs_get_bool("/gaim/qpe/notify/use_buzzer"))
+		useBuzzer->setChecked(true);
+
+	/* LED */
+	useLed = new QCheckBox(tr("LED"), groupBox, "led checkbox");
+
+	if (gaim_prefs_get_bool("/gaim/qpe/notify/use_led"))
+		useLed->setChecked(true);
+
+	/* Spacer */
+	QLabel *spacer = new QLabel("", vbox);
+	vbox->setStretchFactor(spacer, 1);
 }
 
 
@@ -244,18 +309,18 @@ QGaimPrefsDialog::buildInterface()
 	tabs = new OTabWidget(this, "pref tabs");
 
 	blistPage    = new QGaimBlistPrefPage(this,  "blist page");
+	notifyPage   = new QGaimNotifyPrefPage(this, "notify page");
 #if 0
 	convPage     = new QGaimConvPrefPage(this,   "conv page");
-	notifyPage   = new QGaimNotifyPrefPage(this, "notify page");
 	awayIdlePage = new QGaimAwayPrefPage(this,   "awayIdle page");
 	proxyPage    = new QGaimProxyPrefPage(this,  "proxy page");
 	pluginPage   = new QGaimPluginPrefPage(this, "plugin page");
 #endif
 
 	tabs->addTab(blistPage,    "gaim/16x16/blist",         tr("Buddy List"));
+	tabs->addTab(notifyPage,   "gaim/16x16/warn",          tr("Notification"));
 #if 0
 	tabs->addTab(convPage,     "gaim/16x16/conversations", tr("Conversations"));
-	tabs->addTab(notifyPage,   "gaim/16x16/warn",          tr("Notification"));
 	tabs->addTab(awayIdlePage, "gaim/16x16/away",          tr("Away/Idle"));
 	tabs->addTab(proxyPage,    "gaim/16x16/network",       tr("Proxy"));
 	tabs->addTab(pluginPage,   "gaim/16x16/connect",       tr("Plugins"));
@@ -272,9 +337,9 @@ QGaimPrefsDialog::accept()
 	wait.show();
 
 	blistPage->accept();
+	notifyPage->accept();
 #if 0
 	convPage->accept();
-	notifyPage->accept();
 	awayIdlePage->accept();
 	proxyPage->accept();
 	pluginPage->accept();
