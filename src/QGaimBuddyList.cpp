@@ -108,7 +108,7 @@ QGaimBListItem::updateInfo()
 			{
 				time_t t;
 				int ihrs, imin;
-				char *idle;
+				QString idle;
 
 				time(&t);
 
@@ -116,18 +116,14 @@ QGaimBListItem::updateInfo()
 				imin = ((t - buddy->idle) / 60) % 60;
 
 				if (ihrs > 0)
-					idle = g_strdup_printf("(%d:%02d)", ihrs, imin);
+					idle = QString("(%1:%2)").arg(ihrs).arg(imin, 2);
 				else
-					idle = g_strdup_printf("(%d)", imin);
-
-				QString str = idle;
+					idle = QString("(%1)").arg(imin);
 
 				if (text != "")
 					text += "  ";
 
-				text += str;
-
-				g_free(idle);
+				text += idle;
 			}
 
 			setPixmap(0,
@@ -151,7 +147,7 @@ QGaimBListItem::updateInfo()
 		{
 			time_t t;
 			int ihrs, imin;
-			char *idle;
+			QString idle;
 
 			time(&t);
 
@@ -159,18 +155,14 @@ QGaimBListItem::updateInfo()
 			imin = ((t - ((GaimBuddy*)node)->idle) / 60) % 60;
 
 			if (ihrs > 0)
-				idle = g_strdup_printf("(%d:%02d)", ihrs, imin);
+				idle = QString("(%1:%2)").arg(ihrs).arg(imin, 2);
 			else
-				idle = g_strdup_printf("(%d)", imin);
-
-			QString str = idle;
+				idle = QString("(%1)").arg(imin);
 
 			if (text != "")
 				text += "  ";
 
-			text += str;
-
-			g_free(idle);
+			text += idle;
 		}
 
 		setPixmap(0, QGaimBuddyList::getBuddyStatusIcon(node, pixmapSize));
