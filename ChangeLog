@@ -1,3 +1,18 @@
+Sun Jul 13 01:20:37 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkstuff.conf:
+	  - Updated mkstuff.conf to be able to build CVS snapshots.
+
+Sun Jul 13 01:03:48 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* data/images/delete.png:
+	* data/images/new.png:
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimAccountsWindow.h:
+	* gaim.pro:
+	  - Removed the menubar in the accounts window, and added
+	    New Account and Delete Account buttons.
+
 Sun Jul 13 00:44:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:
