@@ -628,6 +628,8 @@ qGaimWindowShow(GaimWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
+	qGaimGetHandle()->setLastActiveConvWindow(win);
+
 	qwin->show();
 }
 
@@ -643,6 +645,8 @@ static void
 qGaimWindowRaise(GaimWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
+
+	qGaimGetHandle()->setLastActiveConvWindow(win);
 
 	qwin->raise();
 }

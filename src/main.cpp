@@ -127,6 +127,18 @@ QGaim::getAccountsWindow() const
 }
 
 void
+QGaim::setLastActiveConvWindow(GaimWindow *win)
+{
+	lastConvWin = win;
+}
+
+GaimWindow *
+QGaim::getLastActiveConvWindow() const
+{
+	return lastConvWin;
+}
+
+void
 QGaim::showBlistWindow()
 {
 	if (blistWin == NULL)

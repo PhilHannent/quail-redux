@@ -1,4 +1,5 @@
 #include "QGaimConvButton.h"
+#include "QGaim.h"
 #include "base.h"
 
 #include <libgaim/debug.h>
@@ -37,6 +38,9 @@ QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
 	connect(menu, SIGNAL(activated(int)),
 			this, SLOT(convActivated(int)));
 
+	connect(this, SIGNAL(clicked()),
+			this, SLOT(buttonClicked()));
+
 	gaim_signal_connect(this, event_new_conversation,
 						(void *)newConvCb, this);
 	gaim_signal_connect(this, event_del_conversation,
@@ -64,8 +68,6 @@ QGaimConvButton::generateMenu()
 	GList *l;
 	size_t size;
 	int i;
-
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvButton", "About to show\n");
 
 	menu->clear();
 
@@ -95,8 +97,6 @@ QGaimConvButton::convActivated(int id)
 	GaimConversation *conv;
 	GaimWindow *win;
 
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvButton", "convActivated\n");
-
 	conv = convs[id];
 
 	if (g_list_find(gaim_get_conversations(), conv) == NULL)
@@ -109,10 +109,17 @@ QGaimConvButton::convActivated(int id)
 
 	}
 
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvButton", "Raising window\n");
 	win = gaim_conversation_get_window(conv);
 
 	gaim_window_switch_conversation(win, gaim_conversation_get_index(conv));
 	gaim_window_raise(win);
 }
 
+void
+QGaimConvButton::buttonClicked()
+{
+	GaimWindow *lastWin = qGaimGetHandle()->getLastActiveConvWindow();
+
+	if (lastWin != NULL)
+		gaim_window_raise(lastWin);
+}

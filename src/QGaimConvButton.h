@@ -20,6 +20,7 @@ class QGaimConvButton : public QToolButton
 	protected slots:
 		void generateMenu();
 		void convActivated(int id);
+		void buttonClicked();
 
 	private:
 		QPopupMenu *menu;

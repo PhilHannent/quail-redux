@@ -1,3 +1,13 @@
+Sun Jul 27 23:14:01 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaim.h:
+	* src/QGaimConvButton.cpp:
+	* src/QGaimConvButton.h:
+	* src/QGaimConvWindow.cpp:
+	* src/main.cpp:
+	  - Clicking the conversations button (as opposed to holding it down)
+	    now raises the last active conversation window.
+
 Sun Jul 27 17:13:29 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
