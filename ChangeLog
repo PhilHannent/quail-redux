@@ -1,3 +1,8 @@
+Thu Aug 14 02:10:21 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* data/images/protocols/small/irc.png:
+	  - Updated the IRC protocol icon.
+
 Thu Aug 14 02:03:52 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:
