@@ -1,3 +1,9 @@
+Wed Oct 08 23:41:55 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - Added support for adding and removing buddies from conversations.
+
 Wed Oct 08 23:38:20 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:

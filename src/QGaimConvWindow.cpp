@@ -21,6 +21,7 @@
 #include "QGaimBuddyList.h"
 #include "QGaimConvWindow.h"
 #include "QGaimConvButton.h"
+#include "QGaimDialogs.h"
 #include "QGaimMultiLineEdit.h"
 #include "QGaimProtocolUtils.h"
 #include "QGaimTabBar.h"
@@ -38,6 +39,7 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlistview.h>
+#include <qmessagebox.h>
 #include <qpopupmenu.h>
 #include <qsplitter.h>
 #include <qtabwidget.h>
@@ -189,6 +191,14 @@ QGaimConversation::updated(GaimConvUpdateType type)
 	else if (type == GAIM_CONV_UPDATE_AWAY)
 	{
 		updateTabIcon();
+	}
+	else if (type == GAIM_CONV_UPDATE_ADD ||
+			 type == GAIM_CONV_UPDATE_REMOVE)
+	{
+		GaimConvWindow *win = gaim_conversation_get_window(conv);
+		QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
+
+		qwin->updateAddRemoveButton();
 	}
 }
 
@@ -737,6 +747,24 @@ QGaimConvWindow::getActiveIndex() const
 	return currentIndex;
 }
 
+void
+QGaimConvWindow::updateAddRemoveButton()
+{
+	GaimConversation *conv = gaim_conv_window_get_active_conversation(win);
+
+	if (gaim_find_buddy(gaim_conversation_get_account(conv),
+						gaim_conversation_get_name(conv)) == NULL)
+	{
+		addRemoveButton->setText(tr("Add"));
+		addRemoveButton->setIconSet(Resource::loadPixmap("gaim/add"));
+	}
+	else
+	{
+		addRemoveButton->setText(tr("Remove"));
+		addRemoveButton->setIconSet(Resource::loadPixmap("gaim/remove"));
+	}
+}
+
 QGaimTabWidget *
 QGaimConvWindow::getTabs() const
 {
@@ -795,6 +823,17 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 			infoButton->setEnabled(true);
 		else
 			infoButton->setEnabled(false);
+
+		if (gaim_find_buddy(account, gaim_conversation_get_name(conv)) == NULL)
+		{
+			addRemoveButton->setText(tr("Add"));
+			addRemoveButton->setIconSet(Resource::loadPixmap("gaim/add"));
+		}
+		else
+		{
+			addRemoveButton->setText(tr("Remove"));
+			addRemoveButton->setIconSet(Resource::loadPixmap("gaim/remove"));
+		}
 	}
 
 	qconv->setFocus();
@@ -823,6 +862,64 @@ void
 QGaimConvWindow::closeConv()
 {
 	gaim_conversation_destroy(gaim_conv_window_get_active_conversation(win));
+}
+
+static void
+removeBuddyCb(GaimBuddy *buddy)
+{
+	GaimGroup *group;
+	GaimConversation *conv;
+	QString name;
+
+	if (buddy == NULL)
+		return;
+
+	group = gaim_find_buddys_group(buddy);
+	name = buddy->name;
+
+	serv_remove_buddy(gaim_account_get_connection(buddy->account), name,
+					  group->name);
+	gaim_blist_remove_buddy(buddy);
+	gaim_blist_save();
+
+	conv = gaim_find_conversation(name);
+
+	if (conv != NULL)
+		gaim_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
+}
+
+void
+QGaimConvWindow::addRemoveBuddySlot()
+{
+	GaimConversation *conv = gaim_conv_window_get_active_conversation(win);
+	GaimAccount *account = gaim_conversation_get_account(conv);
+	const char *name = gaim_conversation_get_name(conv);
+	GaimBuddy *buddy;
+
+	if ((buddy = gaim_find_buddy(account, name)) == NULL)
+	{
+		QGaimAddBuddyDialog *dialog;
+
+		dialog = new QGaimAddBuddyDialog(this, "", true);
+		dialog->setScreenName(gaim_conversation_get_name(conv));
+		dialog->setAccount(gaim_conversation_get_account(conv));
+
+		dialog->showMaximized();
+	}
+	else
+	{
+		g_return_if_fail(buddy != NULL);
+
+		int result = QMessageBox::information(this,
+				tr("Remove Buddy"),
+				tr("<p>You are about to remove %1 from your buddy list.</p>\n"
+				   "<p>Do you want to continue?</p>").arg(name),
+				tr("&Remove Buddy"), tr("&Cancel"),
+				QString::null, 1, 1);
+
+		if (result == 0)
+			removeBuddyCb(buddy);
+	}
 }
 
 void
@@ -944,16 +1041,11 @@ QGaimConvWindow::setupToolbar()
 	a = new QAction(tr("Add"),
 					QIconSet(Resource::loadPixmap("gaim/add")),
 					QString::null, 0, this, 0);
-	addButton = a;
+	addRemoveButton = a;
 	a->addTo(userMenu);
-	a->setEnabled(false);
 
-	/* Remove */
-	a = new QAction(tr("Remove"),
-					QIconSet(Resource::loadPixmap("gaim/remove")),
-					QString::null, 0, this, 0);
-	removeButton = a;
-	a->setEnabled(false);
+	connect(addRemoveButton, SIGNAL(activated()),
+			this, SLOT(addRemoveBuddySlot()));
 
 	/* Info */
 	a = new QAction(tr("Get Information"),

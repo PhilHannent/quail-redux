@@ -156,6 +156,8 @@ class QGaimConvWindow : public QMainWindow
 		void moveConversation(GaimConversation *conv, unsigned int newIndex);
 		int getActiveIndex() const;
 
+		void updateAddRemoveButton();
+
 		QGaimTabWidget *getTabs() const;
 
 		void setId(int id);
@@ -171,6 +173,7 @@ class QGaimConvWindow : public QMainWindow
 
 	private slots:
 		void closeConv();
+		void addRemoveBuddySlot();
 		void userInfoSlot();
 		void send();
 		void showAccountsWindow();
@@ -194,8 +197,7 @@ class QGaimConvWindow : public QMainWindow
 		QToolButton *userMenuButton;
 		QAction *warnButton;
 		QAction *blockButton;
-		QAction *addButton;
-		QAction *removeButton;
+		QAction *addRemoveButton;
 		QAction *infoButton;
 
 		QPopupMenu *userMenu;
