@@ -41,6 +41,9 @@ class QGaimAccountBox : public QComboBox
 	protected:
 		void buildMenu(GaimAccount *account);
 
+	protected slots:
+		void resizeEvent(QResizeEvent *event);
+
 	private:
 		bool showAll;
 };

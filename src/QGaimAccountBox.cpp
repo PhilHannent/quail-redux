@@ -115,6 +115,8 @@ QGaimAccountBox::buildMenu(GaimAccount *account)
 	GList *l, *list;
 	int count;
 
+	clear();
+
 	if (showAll)
 		list = gaim_accounts_get_all();
 	else
@@ -123,6 +125,7 @@ QGaimAccountBox::buildMenu(GaimAccount *account)
 	for (l = list, count = 0; l != NULL; l = l->next, count++)
 	{
 		GaimAccount *tempAccount;
+		QPixmap pixmap;
 
 		if (showAll)
 			tempAccount = (GaimAccount *)l->data;
@@ -134,18 +137,44 @@ QGaimAccountBox::buildMenu(GaimAccount *account)
 		}
 
 		QString str;
+		QFontMetrics fm(fontMetrics());
 
 		str = gaim_account_get_username(tempAccount);
 
-		if (str.length() > 16)
+		pixmap = QGaimProtocolUtils::getProtocolIcon(tempAccount);
+
+		int pw = (pixmap.isNull() ? 10 : pixmap.width() + 10);
+		int itemWidth;
+
+		itemWidth = width() - 2 - 16;
+
+		if (fm.width(str) + pw > itemWidth)
 		{
-			str.truncate(16);
-			str += "...";
+			int i = 0;
+			QString tempText = "...";
+
+			while (fm.width(tempText + str[i]) + pw < itemWidth)
+				tempText += str[i++];
+
+			tempText.remove(0, 3);
+
+			if (tempText.isEmpty())
+				tempText = str.left(1);
+
+			str = tempText + "...";
 		}
 
-		insertItem(QGaimProtocolUtils::getProtocolIcon(tempAccount), str);
+		insertItem(pixmap, str);
 
 		if (tempAccount == account)
 			setCurrentItem(count);
 	}
+}
+
+void
+QGaimAccountBox::resizeEvent(QResizeEvent *event)
+{
+	buildMenu(getCurrentAccount());
+
+	QComboBox::resizeEvent(event);
 }
