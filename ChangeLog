@@ -1,3 +1,9 @@
+Sun Aug 03 02:32:23 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimDebugWindow.cpp:
+	* src/main.cpp:
+	  - fprintf()s have been changed to qDebug() and friends.
+
 Sun Aug 03 01:51:58 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

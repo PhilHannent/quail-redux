@@ -99,10 +99,8 @@ QGaim::init()
 	gaim_set_core_ui_ops(qGaimGetCoreUiOps());
 
 	if (!gaim_core_init("qpe-gaim")) {
-		fprintf(stderr,
-				"Initialization of the Gaim core failed.\n"
-				"Please report this!\n");
-		abort();
+		qFatal(tr("Initialization of the Gaim core failed.\n"
+				  "Please report this!\n"));
 	}
 
 #ifdef LOCAL_COMPILE

@@ -26,6 +26,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <qapplication.h>
+
 static void
 qGaimDebugPrint(GaimDebugLevel, const char *category,
 				const char *format, va_list args)
@@ -34,10 +36,13 @@ qGaimDebugPrint(GaimDebugLevel, const char *category,
 
 	arg_s = g_strdup_vprintf(format, args);
 
+	if (arg_s[strlen(arg_s) - 1] == '\n')
+		g_strchomp(arg_s);
+
 	if (category == NULL)
-		fprintf(stderr, "%s", arg_s);
+		qDebug("%s", arg_s);
 	else
-		fprintf(stderr, "%s: %s", category, arg_s);
+		qDebug("%s: %s", category, arg_s);
 
 	g_free(arg_s);
 }
