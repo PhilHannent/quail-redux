@@ -50,7 +50,6 @@ class QGaimTabBar : public QTabBar
 	protected:
 		QMap<int, QColor> colors;
 		int lastId;
-//		QList<QTab *> tabs;
 };
 
 #endif /* _QGAIM_TAB_BAR_H_ */
