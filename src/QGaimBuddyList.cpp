@@ -273,6 +273,9 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node, QGaimPixmapSize size)
 
 		if (!emblemImage.isNull())
 		{
+			if (size == QGAIM_PIXMAP_SMALL || size == QGAIM_PIXMAP_MENU)
+				emblemImage = emblemImage.smoothScale(11, 11);
+
 			QGaimImageUtils::blendOnLower(
 					statusImage.width()  - emblemImage.width(),
 					statusImage.height() - emblemImage.height(),
