@@ -9,8 +9,8 @@
 #include <qlistview.h>
 
 class QAction;
-class QMenuBar;
 class QPixmap;
+class QToolBar;
 class QToolButton;
 
 class QGaimAccountListItem : public QListViewItem
@@ -39,7 +39,6 @@ class QGaimAccountsWindow : public QMainWindow
 
 	private:
 		void buildInterface();
-		void setupMenubar();
 		void setupToolbar();
 		void loadAccounts();
 
@@ -57,7 +56,7 @@ class QGaimAccountsWindow : public QMainWindow
 		QPixmap *getProtocolIcon(GaimAccount *account);
 
 	private:
-		QMenuBar *menubar;
+		QToolBar *toolbar;
 		QPopupMenu *accountMenu;
 		QToolButton *accountsButton;
 

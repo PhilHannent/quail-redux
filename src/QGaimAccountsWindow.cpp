@@ -4,13 +4,14 @@
 
 #include <libgaim/prpl.h>
 
-#include <qpe/qpetoolbar.h>
 #include <qpe/resource.h>
 #include <qaction.h>
+#include <qlabel.h>
 #include <qlayout.h>
 #include <qlistview.h>
 #include <qmenubar.h>
 #include <qpushbutton.h>
+#include <qtoolbar.h>
 #include <qtoolbutton.h>
 
 /**************************************************************************
@@ -67,7 +68,6 @@ QGaimAccountsWindow::buildInterface()
 {
 	setCaption(tr("Gaim - Accounts"));
 
-	setupMenubar();
 	setupToolbar();
 
 	accountsView = new QListView(this, "AccountsView");
@@ -81,73 +81,34 @@ QGaimAccountsWindow::buildInterface()
 	setCentralWidget(accountsView);
 }
 
-void
-QGaimAccountsWindow::setupMenubar()
-{
-	QPixmap *pixmap;
-	QAction *a;
-	QToolButton *button;
-
-	menubar = new QMenuBar(this);
-
-	/* Build the Account menu */
-	accountMenu = new QPopupMenu(this);
-	menubar->insertItem(tr("&Account"), accountMenu);
-
-	/* Account -> Add */
-	a = new QAction(tr("&New Account..."), QString::null, 0, this, 0);
-	a->addTo(accountMenu);
-
-	accountMenu->insertSeparator();
-
-	/* Buddy List */
-	pixmap = new QPixmap(DATA_PREFIX "images/blist.png");
-	button = new QToolButton(NULL, "blist");
-	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
-	button->setOn(true);
-	menubar->insertItem(button);
-	delete pixmap;
-
-	connect(button, SIGNAL(clicked()),
-			this, SLOT(showBlist()));
-
-	/* Accounts */
-	pixmap = new QPixmap(DATA_PREFIX "images/accounts.png");
-	accountsButton = button = new QToolButton(NULL, "accounts");
-	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
-	button->setToggleButton(true);
-	button->setOn(true);
-	menubar->insertItem(button);
-	delete pixmap;
-
-	connect(button, SIGNAL(toggled(bool)),
-			this, SLOT(accountsToggled(bool)));
-
-	/* Conversations */
-	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
-	button = new QToolButton(NULL, "conversations");
-	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
-	menubar->insertItem(button);
-	delete pixmap;
-
-	connect(button, SIGNAL(clicked()),
-			this, SLOT(showConversations()));
-}
 
 void
 QGaimAccountsWindow::setupToolbar()
 {
 	QAction *a;
+	QLabel *label;
+	QPixmap *pixmap;
+	QToolButton *button;
 
 	setToolBarsMovable(FALSE);
 
-	QPEToolBar *toolbar = new QPEToolBar(this);
-	toolbar->setHorizontalStretchable(FALSE);
+	toolbar = new QToolBar(this);
+	toolbar->setHorizontalStretchable(TRUE);
 
-	addToolBar(toolbar);
+	/* New */
+	a = new QAction(tr("New Account"),
+					QIconSet(QPixmap(DATA_PREFIX "images/new.png")),
+					QString::null, 0, this, 0);
+	a->addTo(toolbar);
+
+	/* Delete */
+	a = new QAction(tr("Delete"),
+					QIconSet(QPixmap(DATA_PREFIX "images/delete.png")),
+					QString::null, 0, this, 0);
+	a->addTo(toolbar);
+
+	/* Separator */
+	toolbar->addSeparator();
 
 	/* Connect */
 	a = new QAction(tr("Connect"),
@@ -170,6 +131,49 @@ QGaimAccountsWindow::setupToolbar()
 	a->setEnabled(false);
 	connect(a, SIGNAL(activated()),
 			this, SLOT(disconnectFromAccount()));
+
+
+	/* Add some whitespace. */
+	label = new QLabel(toolbar);
+	label->setText("");
+	toolbar->setStretchableWidget(label);
+
+	/* Now we're going to construct the toolbar on the right. */
+	toolbar->addSeparator();
+
+	/* Buddy List */
+	pixmap = new QPixmap(DATA_PREFIX "images/blist.png");
+	button = new QToolButton(toolbar, "blist");
+	button->setAutoRaise(true);
+	button->setPixmap(*pixmap);
+	button->setOn(true);
+	delete pixmap;
+
+	connect(button, SIGNAL(clicked()),
+			this, SLOT(showBlist()));
+
+	/* Accounts */
+	pixmap = new QPixmap(DATA_PREFIX "images/accounts.png");
+	accountsButton = button = new QToolButton(toolbar, "accounts");
+	button->setAutoRaise(true);
+	button->setPixmap(*pixmap);
+	button->setToggleButton(true);
+	button->setOn(true);
+	delete pixmap;
+
+	connect(button, SIGNAL(toggled(bool)),
+			this, SLOT(accountsToggled(bool)));
+
+	/* Conversations */
+	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
+	button = new QToolButton(toolbar, "conversations");
+	button->setAutoRaise(true);
+	button->setPixmap(*pixmap);
+	delete pixmap;
+
+	connect(button, SIGNAL(clicked()),
+			this, SLOT(showConversations()));
+
 }
 
 void

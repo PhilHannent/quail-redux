@@ -33,9 +33,11 @@ DISTFILES = \
 	data/images/blist.png \
 	data/images/connect.png \
 	data/images/conversations.png \
+	data/images/delete.png \
 	data/images/disconnect.png \
 	data/images/edit.png \
 	data/images/info.png \
+	data/images/new.png \
 	data/images/new-group.png \
 	data/images/prefs.png \
 	data/images/remove.png \
