@@ -20,8 +20,15 @@
  */
 #include "QGaimNotify.h"
 
+#include <qdialog.h>
+#include <qlabel.h>
+#include <qlayout.h>
 #include <qmessagebox.h>
+#include <qtextview.h>
 
+/**************************************************************************
+ * UI operations
+ **************************************************************************/
 static void *qGaimNotifyEmails(size_t count, gboolean detailed,
 							   const char **subjects, const char **froms,
 							   const char **tos, const char **urls,
@@ -121,12 +128,72 @@ qGaimNotifyEmails(size_t count, gboolean, const char **subjects,
 	return NULL;
 }
 
+static void *
+qGaimNotifyFormatted(const char *title, const char *primary,
+					 const char *secondary, const char *text,
+					 GCallback, void *)
+{
+#if 0
+	QGaimNotifyFormattedDialog *dialog;
+
+	dialog = new QGaimNotifyFormattedDialog(NULL, "notify-formatted");
+
+	if (primary != NULL)
+		dialog->setPrimaryText(primary);
+#endif
+	QDialog *dialog;
+	QVBoxLayout *layout;
+	QLabel *label;
+	QTextView *textview;
+	QString message;
+	QString newTitle;
+
+	message = "";
+
+	if (primary != NULL)
+	{
+		message += "<p>";
+		message += primary;
+		message += "</p>";
+	}
+
+	if (secondary != NULL)
+	{
+		message += "<p>";
+		message += secondary;
+		message += "</p>";
+	}
+
+	if (title == NULL)
+		newTitle = QString(primary).stripWhiteSpace();
+	else
+		newTitle = title;
+
+
+	dialog = new QDialog(NULL, "notify-formatted");
+	dialog->setCaption(newTitle);
+
+	layout = new QVBoxLayout(dialog, 8);
+
+	layout->setAutoAdd(true);
+
+	label = new QLabel(dialog);
+	label->setText(message);
+
+	textview = new QTextView(dialog);
+	textview->setText(text);
+
+	dialog->showMaximized();
+
+	return NULL;
+}
+
 static GaimNotifyUiOps notifyOps =
 {
 	qGaimNotifyMessage,
 	qGaimNotifyEmail,
 	qGaimNotifyEmails,
-	NULL,
+	qGaimNotifyFormatted,
 	NULL,
 	NULL
 };
