@@ -26,6 +26,7 @@ DISTFILES = \
 	data/images/protocols/small/jabber.png \
 	data/images/protocols/small/msn.png \
 	data/images/protocols/small/trepia.png \
+	data/images/protocols/small/yahoo.png \
 	data/images/accounts.png \
 	data/images/away.png \
 	data/images/blist.png \
