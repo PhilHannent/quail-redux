@@ -55,7 +55,6 @@ QGaimConnectionMeter::QGaimConnectionMeter(GaimConnection *gc,
 {
 	QLabel *label, *icon;
 	GaimAccount *account;
-	QPixmap *pixmap;
 
 	setSpacing(2);
 	setMargin(2);
@@ -75,7 +74,7 @@ QGaimConnectionMeter::~QGaimConnectionMeter()
 }
 
 void
-QGaimConnectionMeter::update(QString str, int progress, int totalSteps)
+QGaimConnectionMeter::update(QString, int progress, int totalSteps)
 {
 	if (progress == 0)
 		progressBar->setTotalSteps(totalSteps);

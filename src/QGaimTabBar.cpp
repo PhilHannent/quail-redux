@@ -75,7 +75,6 @@ QGaimTabBar::paintLabel(QPainter *p, const QRect &rect,
 						QTab *tab, bool hasFocus) const
 {
 	QRect r = rect;
-	bool selected = (currentTab() == tab->id);
 
 	if (tab->iconSet())
 	{
@@ -91,7 +90,6 @@ QGaimTabBar::paintLabel(QPainter *p, const QRect &rect,
 		int pixh = pixmap.height();
 
 		r.setLeft(r.left() + pixw + 2);
-//		r.setRight(r.right() + 2);
 
 		p->drawPixmap(rect.left() + 2,
 					  rect.center().y() - pixh / 2,
