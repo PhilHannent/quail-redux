@@ -199,7 +199,7 @@ class QGaimConvWindow : public QMainWindow
 		QPopupMenu *userMenu;
 		QPopupMenu *formatMenu;
 
-		QToolButton *userListToggle;
+		QAction *userListToggle;
 };
 
 GaimWindowUiOps *qGaimGetConvWindowUiOps();

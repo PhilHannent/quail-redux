@@ -86,7 +86,7 @@ class QGaimBListWindow : public QMainWindow
 
 		QAction *showOfflineButton;
 
-		QToolButton *blistButton;
+		QAction *blistButton;
 
 		QPopupMenu *settingsMenu;
 		QPopupMenu *convsMenu;

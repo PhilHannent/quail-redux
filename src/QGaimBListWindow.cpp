@@ -177,21 +177,22 @@ QGaimBListWindow::buildToolBar()
 	toolbar->addSeparator();
 
 	/* Buddy List */
-	blistButton = button = new QToolButton(toolbar, "blist");
-	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/blist"));
-	button->setToggleButton(true);
-	button->setOn(true);
+	blistButton = new QAction(tr("Buddy List"),
+							  Resource::loadPixmap("gaim/blist"),
+							  QString::null, 0, this, 0, true);
+	blistButton->setOn(true);
+	blistButton->addTo(toolbar);
 
-	connect(button, SIGNAL(toggled(bool)),
+	connect(blistButton, SIGNAL(toggled(bool)),
 			this, SLOT(blistToggled(bool)));
 
 	/* Accounts */
-	button = new QToolButton(toolbar, "accounts");
-	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/accounts"));
+	a = new QAction(tr("Accounts"),
+					Resource::loadPixmap("gaim/accounts"),
+					QString::null, 0, this, 0);
+	a->addTo(toolbar);
 
-	connect(button, SIGNAL(clicked()),
+	connect(a, SIGNAL(activated()),
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */

@@ -955,12 +955,11 @@ QGaimConvWindow::setupToolbar()
 	toolbar->addSeparator();
 
 	/* User List toggle */
-	userListToggle = button = new QToolButton(toolbar, "userlist");
-	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/userlist"));
-	button->setToggleButton(true);
+	userListToggle = new QAction(tr("Show User List"),
+								 Resource::loadPixmap("gaim/userlist"),
+								 QString::null, 0, this, 0, true);
 
-	connect(button, SIGNAL(toggled(bool)),
+	connect(userListToggle, SIGNAL(toggled(bool)),
 			this, SLOT(userListToggled(bool)));
 
 	/* Add some whitespace. */
@@ -972,19 +971,21 @@ QGaimConvWindow::setupToolbar()
 	toolbar->addSeparator();
 
 	/* Buddy List */
-	button = new QToolButton(toolbar, "blist");
-	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/blist"));
+	a = new QAction(tr("Buddy List"), Resource::loadPixmap("gaim/blist"),
+					QString::null, 0, this, 0);
+	a->setOn(true);
+	a->addTo(toolbar);
 
-	connect(button, SIGNAL(clicked()),
+	connect(a, SIGNAL(activated()),
 			this, SLOT(showBlist()));
 
 	/* Accounts */
-	button = new QToolButton(toolbar, "accounts");
-	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/accounts"));
+	a = new QAction(tr("Accounts"),
+					Resource::loadPixmap("gaim/accounts"),
+					QString::null, 0, this, 0, true);
+	a->addTo(toolbar);
 
-	connect(button, SIGNAL(clicked()),
+	connect(a, SIGNAL(activated()),
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */

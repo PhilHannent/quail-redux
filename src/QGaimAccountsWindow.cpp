@@ -190,22 +190,22 @@ QGaimAccountsWindow::setupToolbar()
 	toolbar->addSeparator();
 
 	/* Buddy List */
-	button = new QToolButton(toolbar, "blist");
-	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/blist"));
-	button->setOn(true);
+	a = new QAction(tr("Buddy List"), Resource::loadPixmap("gaim/blist"),
+					QString::null, 0, this, 0);
+	a->addTo(toolbar);
 
-	connect(button, SIGNAL(clicked()),
+	connect(a, SIGNAL(activated()),
 			this, SLOT(showBlist()));
 
 	/* Accounts */
-	accountsButton = button = new QToolButton(toolbar, "accounts");
-	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/accounts"));
-	button->setToggleButton(true);
-	button->setOn(true);
+	a = new QAction(tr("Accounts"),
+					Resource::loadPixmap("gaim/accounts"),
+					QString::null, 0, this, 0, true);
+	a->setOn(true);
+	accountsButton = a;
+	a->addTo(toolbar);
 
-	connect(button, SIGNAL(toggled(bool)),
+	connect(a, SIGNAL(toggled(bool)),
 			this, SLOT(accountsToggled(bool)));
 
 	/* Conversations */

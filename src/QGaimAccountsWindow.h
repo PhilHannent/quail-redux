@@ -84,7 +84,7 @@ class QGaimAccountsWindow : public QMainWindow
 	private:
 		QToolBar *toolbar;
 		QPopupMenu *accountMenu;
-		QToolButton *accountsButton;
+		QAction *accountsButton;
 
 		QAction *editButton;
 		QAction *deleteButton;
