@@ -87,7 +87,8 @@ QGaimBListItem::updateInfo()
 		}
 		else
 		{
-			if (buddy->idle > 0)
+			if (buddy->idle > 0 &&
+				gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
 			{
 				time_t t;
 				int ihrs, imin;
@@ -120,7 +121,8 @@ QGaimBListItem::updateInfo()
 	{
 		GaimBuddy *buddy = (GaimBuddy *)node;
 
-		if (buddy->idle > 0)
+		if (buddy->idle > 0 &&
+			gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
 		{
 			time_t t;
 			int ihrs, imin;

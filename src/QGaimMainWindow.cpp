@@ -32,7 +32,6 @@
 #include <libgaim/pounce.h>
 #include <libgaim/plugin.h>
 
-#include "QGaimBListWindow.h"
 #include "QGaimConnectionMeter.h"
 #include "QGaimConvWindow.h"
 #include "QGaimDebugWindow.h"

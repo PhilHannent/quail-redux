@@ -27,9 +27,9 @@
 #include <qmainwindow.h>
 
 #include "QGaimAccountsWindow.h"
+#include "QGaimBuddyList.h"
 
 class QAction;
-class QGaimBuddyList;
 class QMenuBar;
 class QToolBar;
 class QToolButton;
@@ -51,6 +51,8 @@ class QGaimBListWindow : public QMainWindow
 		void accountSignedOff(GaimAccount *acocunt);
 
 		void updateNode(GaimBlistNode *node);
+
+		void reloadList();
 
 	protected slots:
 		void nodeChanged(QListViewItem *item);

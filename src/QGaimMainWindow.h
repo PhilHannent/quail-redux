@@ -26,8 +26,9 @@
 
 #include <libgaim/conversation.h>
 
+#include "QGaimBListWindow.h"
+
 class QGaimAccountsWindow;
-class QGaimBListWindow;
 class QGaimConnectionMeters;
 class QGaimConvWindow;
 

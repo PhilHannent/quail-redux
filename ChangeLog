@@ -1,3 +1,13 @@
+Thu Oct 23 20:47:06 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimMainWindow.cpp:
+	* src/QGaimMainWindow.h:
+	* src/QGaimPrefsDialog.cpp:
+	  - Modifying the buddy list prefs now actually updates the buddy list.
+
 Thu Oct 23 20:30:16 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

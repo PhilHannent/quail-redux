@@ -19,7 +19,6 @@
  * MA  02111-1307  USA
  */
 #include "QGaimBListWindow.h"
-#include "QGaimBuddyList.h"
 #include "QGaimConvButton.h"
 #include "QGaimConvWindow.h"
 #include "QGaimDialogs.h"
@@ -319,6 +318,12 @@ void
 QGaimBListWindow::updateNode(GaimBlistNode *node)
 {
 	buddylist->updateNode(node);
+}
+
+void
+QGaimBListWindow::reloadList()
+{
+	buddylist->reload(true);
 }
 
 /**************************************************************************

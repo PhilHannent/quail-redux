@@ -19,6 +19,7 @@
  * MA  02111-1307  USA
  */
 #include "QGaimPrefsDialog.h"
+#include "QGaimMainWindow.h"
 
 #include <libgaim/debug.h>
 #include <libgaim/prefs.h>
@@ -29,6 +30,7 @@
 #include <qvbox.h>
 
 #include <opie/otabwidget.h>
+#include <opie/owait.h>
 
 #include <qpe/resource.h>
 
@@ -44,12 +46,27 @@ QGaimBlistPrefPage::QGaimBlistPrefPage(QWidget *parent, const char *name)
 void
 QGaimBlistPrefPage::accept()
 {
+	bool dirty;
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times") !=
+		idleTimes->isChecked() ||
+		gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count") !=
+		groupCount->isChecked() ||
+		gaim_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies") !=
+		dimIdle->isChecked())
+	{
+		dirty = true;
+	}
+
 	gaim_prefs_set_bool("/gaim/qpe/blist/show_idle_times",
 						idleTimes->isChecked());
 	gaim_prefs_set_bool("/gaim/qpe/blist/show_group_count",
 						groupCount->isChecked());
 	gaim_prefs_set_bool("/gaim/qpe/blist/dim_idle_buddies",
 						dimIdle->isChecked());
+
+	if (dirty)
+		qGaimGetMainWindow()->getBlistWindow()->reloadList();
 }
 
 void
@@ -227,6 +244,10 @@ QGaimPrefsDialog::buildInterface()
 void
 QGaimPrefsDialog::accept()
 {
+	OWait wait(this);
+
+	wait.show();
+
 	blistPage->accept();
 	convPage->accept();
 	notifyPage->accept();
@@ -235,6 +256,8 @@ QGaimPrefsDialog::accept()
 	pluginPage->accept();
 
 	QDialog::accept();
+
+	wait.hide();
 }
 
 void
