@@ -133,14 +133,6 @@ qGaimNotifyFormatted(const char *title, const char *primary,
 					 const char *secondary, const char *text,
 					 GCallback, void *)
 {
-#if 0
-	QGaimNotifyFormattedDialog *dialog;
-
-	dialog = new QGaimNotifyFormattedDialog(NULL, "notify-formatted");
-
-	if (primary != NULL)
-		dialog->setPrimaryText(primary);
-#endif
 	QDialog *dialog;
 	QVBoxLayout *layout;
 	QLabel *label;
@@ -165,7 +157,12 @@ qGaimNotifyFormatted(const char *title, const char *primary,
 	}
 
 	if (title == NULL)
-		newTitle = QString(primary).stripWhiteSpace();
+	{
+		if (primary != NULL)
+			newTitle = QString(primary).stripWhiteSpace();
+		else
+			newTitle = "";
+	}
 	else
 		newTitle = title;
 

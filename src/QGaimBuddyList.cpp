@@ -18,6 +18,7 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
+#include "QGaimAction.h"
 #include "QGaimBuddyList.h"
 #include "QGaimProtocolUtils.h"
 #include "QGaimImageUtils.h"
@@ -437,7 +438,7 @@ QGaimBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 {
 	GaimPlugin *prpl = NULL;
 	GaimPluginProtocolInfo *prplInfo = NULL;
-	QAction *a;
+	QGaimAction *a;
 
 	prpl = gaim_find_prpl(gaim_account_get_protocol(buddy->account));
 
@@ -447,58 +448,90 @@ QGaimBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 	/* Get User Info */
 	if (prplInfo != NULL && prplInfo->get_info != NULL)
 	{
-		a = new QAction(tr("Get Information"),
-						QIconSet(Resource::loadPixmap("gaim/info")),
-						QString::null, 0, this, 0);
+		a = new QGaimAction(tr("Get Information"),
+							QIconSet(Resource::loadPixmap("gaim/info")),
+							QString::null, 0, this, 0, false, buddy);
 		a->addTo(menu);
 
-		connect(a, SIGNAL(activated()),
-				this, SLOT(userInfoSlot()));
+		connect(a, SIGNAL(activated(void *)),
+				this, SLOT(userInfoSlot(void *)));
 	}
 
 	/* IM */
-	a = new QAction(tr("IM"),
-					QIconSet(Resource::loadPixmap("gaim/send-im")),
-					QString::null, 0, this, 0);
+	a = new QGaimAction(tr("IM"),
+						QIconSet(Resource::loadPixmap("gaim/send-im")),
+						QString::null, 0, this, 0, false, buddy);
 	a->addTo(menu);
 
-	connect(a, SIGNAL(activated()),
-			this, SLOT(sendImSlot()));
+	connect(a, SIGNAL(activated(void *)),
+			this, SLOT(sendImSlot(void *)));
 
 	/* Separator */
 	menu->insertSeparator();
 
 	/* Alias */
-	a = new QAction(tr("Alias"),
-					QIconSet(Resource::loadPixmap("gaim/alias")),
-					QString::null, 0, this, 0);
+	a = new QGaimAction(tr("Alias"),
+						QIconSet(Resource::loadPixmap("gaim/alias")),
+						QString::null, 0, this, 0, false, buddy);
 	a->addTo(menu);
 
-	connect(a, SIGNAL(activated()),
-			this, SLOT(aliasBuddySlot()));
+	connect(a, SIGNAL(activated(void *)),
+			this, SLOT(aliasBuddySlot(void *)));
 
 	/* Remove */
-	a = new QAction(tr("Remove"),
-					QIconSet(Resource::loadPixmap("gaim/remove")),
-					QString::null, 0, this, 0);
+	a = new QGaimAction(tr("Remove"),
+						QIconSet(Resource::loadPixmap("gaim/remove")),
+						QString::null, 0, this, 0, false, buddy);
 	a->addTo(menu);
 
-	connect(a, SIGNAL(activated()),
-			this, SLOT(removeBuddySlot()));
+	connect(a, SIGNAL(activated(void *)),
+			this, SLOT(removeBuddySlot(void *)));
 
 	if (asContact)
 	{
+		GaimBlistNode *cnode = ((GaimBlistNode *)buddy)->parent;
+
 		/* Separator */
 		menu->insertSeparator();
 
 		/* Expand */
-		a = new QAction(tr("Expand"),
-						QIconSet(Resource::loadPixmap("gaim/expand")),
-						QString::null, 0, this, 0);
+		a = new QGaimAction(tr("Expand"),
+							QIconSet(Resource::loadPixmap("gaim/expand")),
+							QString::null, 0, this, 0);
 		a->addTo(menu);
 
 		connect(a, SIGNAL(activated()),
 				this, SLOT(expandContactSlot()));
+
+		if (cnode->child->next != NULL)
+		{
+			GaimBlistNode *bnode;
+			bool showOffline =
+				gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies");
+
+			/* List of other accounts */
+			for (bnode = cnode->child; bnode != NULL; bnode = bnode->next)
+			{
+				GaimBuddy *buddy2 = (GaimBuddy *)bnode;
+
+				if (buddy2 == buddy)
+					continue;
+
+				if (!gaim_account_is_connected(buddy2->account))
+					continue;
+
+				if (!showOffline && GAIM_BUDDY_IS_ONLINE(buddy2))
+				{
+					QPopupMenu *submenu = new QPopupMenu(this);
+
+					populateBuddyMenu(buddy2, submenu, false);
+
+					menu->insertItem(
+						QGaimBuddyList::getBuddyStatusIcon(bnode),
+						buddy2->name, submenu);
+				}
+			}
+		}
 	}
 }
 
@@ -868,25 +901,17 @@ QGaimBuddyList::renameGroupSlot()
 }
 
 void
-QGaimBuddyList::userInfoSlot()
+QGaimBuddyList::userInfoSlot(void *data)
 {
-	GaimBuddy *buddy;
-
-	if ((buddy = getSelectedBuddy()) == NULL)
-		return;
+	GaimBuddy *buddy = (GaimBuddy *)data;
 
 	serv_get_info(gaim_account_get_connection(buddy->account), buddy->name);
 }
 
 void
-QGaimBuddyList::sendImSlot()
+QGaimBuddyList::sendImSlot(void *data)
 {
-	GaimBuddy *buddy;
-
-	if ((buddy = getSelectedBuddy()) == NULL)
-		return;
-
-	emit openIm(buddy);
+	emit openIm((GaimBuddy *)data);
 }
 
 static void
@@ -897,12 +922,9 @@ aliasBuddyCb(GaimBuddy *buddy, const char *newAlias)
 }
 
 void
-QGaimBuddyList::aliasBuddySlot()
+QGaimBuddyList::aliasBuddySlot(void *data)
 {
-	GaimBuddy *buddy;
-
-	if ((buddy = getSelectedBuddy()) == NULL)
-		return;
+	GaimBuddy *buddy = (GaimBuddy *)data;
 
 	gaim_request_input(NULL, tr("Alias Buddy"),
 			tr("Please enter an aliased name for %1.").arg(buddy->name),
@@ -913,14 +935,9 @@ QGaimBuddyList::aliasBuddySlot()
 }
 
 void
-QGaimBuddyList::removeBuddySlot()
+QGaimBuddyList::removeBuddySlot(void *data)
 {
-	GaimBuddy *buddy;
-
-	if ((buddy = getSelectedBuddy()) == NULL)
-		return;
-
-	emit removeBuddy(buddy);
+	emit removeBuddy((GaimBuddy *)data);
 }
 
 void

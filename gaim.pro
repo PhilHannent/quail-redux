@@ -7,6 +7,7 @@ HEADERS = \
 	src/QGaimAccountBox.h \
 	src/QGaimAccountEditor.h \
 	src/QGaimAccountsWindow.h \
+	src/QGaimAction.h \
 	src/QGaimBListWindow.h \
 	src/QGaimBuddyList.h \
 	src/QGaimConnectionMeter.h \

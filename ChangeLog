@@ -1,3 +1,13 @@
+Wed Oct 08 20:44:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAction.h:
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	* gaim.pro:
+	  - Added QGaimAction, which is like QAction but can pass user data
+	    to the activated() slot.
+	  - Added a list of buddies in a contact's context-sensitive menu.
+
 Wed Oct 08 18:37:04 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:

@@ -110,10 +110,10 @@ class QGaimBuddyList : public QListView
 		void renameGroupSlot();
 
 		/* Buddy menu slots */
-		void userInfoSlot();
-		void sendImSlot();
-		void aliasBuddySlot();
-		void removeBuddySlot();
+		void userInfoSlot(void *data);
+		void sendImSlot(void *data);
+		void aliasBuddySlot(void *data);
+		void removeBuddySlot(void *data);
 
 		/* Contact menu slots */
 		void removeContactSlot();
