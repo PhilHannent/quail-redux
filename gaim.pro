@@ -14,6 +14,7 @@ HEADERS = \
 	src/QGaimConvButton.h \
 	src/QGaimConvWindow.h \
 	src/QGaimDebugWindow.h \
+	src/QGaimEventLoop.h \
 	src/QGaimDialogs.h \
 	src/QGaimImageUtils.h \
 	src/QGaimInputDialog.h \
@@ -40,6 +41,7 @@ SOURCES = \
 	src/QGaimConvWindow.cpp \
 	src/QGaimDebugWindow.cpp \
 	src/QGaimDialogs.cpp \
+	src/QGaimEventLoop.cpp \
 	src/QGaimImageUtils.cpp \
 	src/QGaimInputDialog.cpp \
 	src/QGaimMainWindow.cpp \

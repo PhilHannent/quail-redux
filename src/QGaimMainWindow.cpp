@@ -36,6 +36,7 @@
 #include "QGaimConnectionMeter.h"
 #include "QGaimConvWindow.h"
 #include "QGaimDebugWindow.h"
+#include "QGaimEventLoop.h"
 #include "QGaimNotify.h"
 #include "QGaimRequest.h"
 #include "base.h"
@@ -119,13 +120,6 @@ QGaimMainWindow::QGaimMainWindow(QWidget *parent, const char *name, WFlags fl)
 	gaim_set_blist(gaim_blist_new());
 	gaim_blist_load();
 
-	/* Setup the timer for the glib context loops */
-	QTimer *timer = new QTimer();
-	connect(timer, SIGNAL(timeout()),
-			this, SLOT(doMainLoop()));
-
-	timer->start(10, FALSE);
-
 	gaim_accounts_auto_login("qpe-gaim");
 }
 
@@ -154,6 +148,7 @@ QGaimMainWindow::initCore()
 	char *plugin_search_paths[1];
 
 	gaim_core_set_ui_ops(qGaimGetCoreUiOps());
+	gaim_eventloop_set_ui_ops(qGaimGetEventLoopUiOps());
 
 	if (!gaim_core_init("qpe-gaim")) {
 		qFatal(tr("Initialization of the Gaim core failed.\n"
@@ -295,12 +290,6 @@ QGaimMainWindow::showAccountsWindow()
 
 	setCaption(tr("Gaim - Accounts"));
 	widgetStack->raiseWidget(accountsWin);
-}
-
-void
-QGaimMainWindow::doMainLoop()
-{
-	gaim_core_mainloop_iteration();
 }
 
 QGaimMainWindow *

@@ -66,9 +66,6 @@ class QGaimMainWindow : public QMainWindow
 
 		void closeEvent(QCloseEvent *e);
 
-	private slots:
-		void doMainLoop();
-
 	private:
 		QWidgetStack *widgetStack;
 		QGaimAccountsWindow *accountsWin;

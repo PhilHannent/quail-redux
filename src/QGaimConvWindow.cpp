@@ -750,7 +750,6 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 	QGaimConversation *qconv = NULL;
 	GaimAccount *account;
 	GaimBuddy *b;
-	int id;
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QGaimConvIm(conv, tabs);
@@ -1303,14 +1302,6 @@ qGaimConvChatRemoveUsers(GaimConversation *conv, GList *users)
 }
 
 static void
-qGaimConvSetTitle(GaimConversation *conv, const char *title)
-{
-	QGaimConversation *qconv = (QGaimConversation *)conv->ui_data;
-
-	qconv->setTitle(title);
-}
-
-static void
 qGaimConvUpdated(GaimConversation *conv, GaimConvUpdateType type)
 {
 	QGaimConversation *qconv = (QGaimConversation *)conv->ui_data;
@@ -1329,7 +1320,6 @@ static GaimConversationUiOps convOps =
 	qGaimConvChatRenameUser,
 	qGaimConvChatRemoveUser,
 	qGaimConvChatRemoveUsers,
-	qGaimConvSetTitle,
 	NULL,
 	qGaimConvUpdated
 };

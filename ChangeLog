@@ -1,3 +1,14 @@
+Mon Apr 05 20:49:14 PDT 2004  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimEventLoop.cpp:
+	* src/QGaimEventLoop.h:
+	* src/QGaimMainWindow.cpp:
+	* src/QGaimMainWindow.h:
+	* gaim.pro:
+	  - Added Qt event loop bindings.
+	  - Fixed to compile with libgaim 0.76.
+
 Wed Feb 18 16:33:12 PST 2004  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
