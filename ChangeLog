@@ -1,3 +1,9 @@
+Fri Aug 08 17:23:41 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	  - Buddies with no status emblems weren't getting protocol icons
+	    either. Fixed.
+
 Fri Aug 08 17:21:21 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

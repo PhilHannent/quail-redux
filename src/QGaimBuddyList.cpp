@@ -181,12 +181,10 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
 		emblemImage = Resource::loadImage("gaim/status/small/" + QString(se));
 
 		if (!emblemImage.isNull())
-		{
 			QGaimImageUtils::blendOnLower(5, 5, emblemImage, statusImage);
-
-			statusPixmap.convertFromImage(statusImage);
-		}
 	}
+
+	statusPixmap.convertFromImage(statusImage);
 
 	return statusPixmap;
 }
