@@ -94,8 +94,8 @@ echo "CREATING ICON AND DESKTOP FILE"
 mkdir -p $DIST/opt/QtPalmtop/pics/
 cp gaim.png $DIST/opt/QtPalmtop/pics/gaim.png
 
-mkdir -p $DIST/opt/QtPalmtop/apps/Games/
-DESKTOP=$DIST/opt/QtPalmtop/apps/Games/gaim.desktop
+mkdir -p $DIST/opt/QtPalmtop/apps/Applications/
+DESKTOP=$DIST/opt/QtPalmtop/apps/Applications/gaim.desktop
 echo "[Desktop Entry]" > $DESKTOP
 echo "Comment=A multi-protocol instant messenger client." >> $DESKTOP
 echo "Exec=gaim" >> $DESKTOP

@@ -1,3 +1,8 @@
+Thu Jul 10 01:07:45 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkipk.sh:
+	  - Put the .desktop file in the right directory.
+
 Thu Jul 10 00:45:00 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* gaim.pro:
