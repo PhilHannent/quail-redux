@@ -281,6 +281,9 @@ QGaimBListWindow::buildInterface()
 	QPEApplication::setStylusOperation(buddylist->viewport(),
 									   QPEApplication::RightOnHold);
 
+	connect(buddylist, SIGNAL(currentChanged(QListViewItem *)),
+			this, SLOT(nodeChanged(QListViewItem *)));
+
 	setCentralWidget(buddylist);
 }
 
@@ -296,6 +299,7 @@ QGaimBListWindow::buildToolBar()
 
 	/* IM */
 	imButton = button = newButton(toolbar, DATA_PREFIX "images/send-im.png");
+	button->setEnabled(false);
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(sendIm()));
@@ -305,17 +309,21 @@ QGaimBListWindow::buildToolBar()
 
 	/* Get User Info */
 	button = infoButton = newButton(toolbar, DATA_PREFIX "images/info.png");
+	button->setEnabled(false);
 
 	toolbar->addSeparator();
 
 	/* Add Buddy/Group */
 	button = newButton(toolbar, DATA_PREFIX "images/add.png");
+	button->setEnabled(false);
 
 	/* New Group */
 	button = newButton(toolbar, DATA_PREFIX "images/new-group.png");
+	button->setEnabled(false);
 
 	/* Remove */
 	button = newButton(toolbar, DATA_PREFIX "images/remove.png");
+	button->setEnabled(false);
 
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);
@@ -408,7 +416,39 @@ QGaimBListWindow::blistToggled(bool)
 void
 QGaimBListWindow::sendIm()
 {
-	
+	QGaimBListItem *item;
+	struct buddy *buddy;
+
+	item = (QGaimBListItem *)buddylist->selectedItem();
+	buddy = (struct buddy *)item->getBlistNode();
+
+	gaim_conversation_new(GAIM_CONV_IM, buddy->account, buddy->name);
+}
+
+void
+QGaimBListWindow::nodeChanged(QListViewItem *_item)
+{
+	QGaimBListItem *item;
+	GaimBlistNode *node;
+
+	if (_item == NULL)
+	{
+		imButton->setEnabled(false);
+	}
+	else
+	{
+		item = (QGaimBListItem *)_item;
+		node = item->getBlistNode();
+
+		if (GAIM_BLIST_NODE_IS_BUDDY(node))
+		{
+			imButton->setEnabled(true);
+		}
+		else
+		{
+			imButton->setEnabled(false);
+		}
+	}
 }
 
 /**************************************************************************

@@ -37,7 +37,7 @@ class QGaimBListItem : public QListViewItem
 class QGaimBListWindow : public QMainWindow
 {
 	Q_OBJECT
-	
+
 	public:
 		QGaimBListWindow();
 		~QGaimBListWindow();
@@ -53,6 +53,8 @@ class QGaimBListWindow : public QMainWindow
 		void showAccountsWindow();
 		void blistToggled(bool state);
 		void sendIm();
+
+		void nodeChanged(QListViewItem *item);
 
 	private:
 		void buildInterface();
