@@ -1,3 +1,10 @@
+Mon Oct 06 16:22:28 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Added support for Get User Info. There's just no UI for displaying
+	    it, yet :)
+
 Mon Oct 06 01:48:03 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:

@@ -76,6 +76,7 @@ class QGaimBuddyList : public QListView
 		void nodeExpanded(QListViewItem *item);
 		void nodeCollapsed(QListViewItem *item);
 		void showContextMenu(QListViewItem *item, const QPoint &point, int col);
+		void getUserInfo();
 		void sendIm() {}
 		void showRemoveBuddy() {}
 		void showRemoveContact() {}

@@ -25,6 +25,7 @@
 #include <libgaim/debug.h>
 #include <libgaim/multi.h>
 #include <libgaim/prefs.h>
+#include <libgaim/server.h>
 
 #include <qpe/qpeapplication.h>
 #include <qpe/resource.h>
@@ -453,6 +454,8 @@ void
 QGaimBuddyList::showContextMenu(QListViewItem *_item,
 								const QPoint &point, int)
 {
+	GaimPlugin *prpl = NULL;
+	GaimPluginProtocolInfo *prplInfo = NULL;
 	QGaimBListItem *item = (QGaimBListItem *)_item;
 	QPopupMenu *menu = NULL;
 	QAction *a;
@@ -467,12 +470,36 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
+		prpl = gaim_find_prpl(gaim_account_get_protocol(
+				((GaimBuddy *)node)->account));
+	}
+	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+	{
+		prpl = gaim_find_prpl(gaim_account_get_protocol(
+				gaim_contact_get_priority_buddy((GaimContact *)node)->account));
+	}
+	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+	{
+		prpl = gaim_find_prpl(gaim_account_get_protocol(
+				((GaimChat *)node)->account));
+	}
+
+	if (prpl != NULL)
+		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	{
 		/* Get User Info */
-		a = new QAction(tr("Get Information"),
-						QIconSet(Resource::loadPixmap("gaim/info")),
-						QString::null, 0, this, 0);
-		a->addTo(menu);
-		a->setEnabled(false);
+		if (prplInfo != NULL && prplInfo->get_info != NULL)
+		{
+			a = new QAction(tr("Get Information"),
+							QIconSet(Resource::loadPixmap("gaim/info")),
+							QString::null, 0, this, 0);
+			a->addTo(menu);
+
+			connect(a, SIGNAL(activated()),
+					this, SLOT(getUserInfo()));
+		}
 
 		/* IM */
 		a = new QAction(tr("IM"),
@@ -519,12 +546,17 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 		}
 		else
 		{
-			/* Get User Info */
-			a = new QAction(tr("Get Information"),
-							QIconSet(Resource::loadPixmap("gaim/info")),
-							QString::null, 0, this, 0);
-			a->addTo(menu);
-			a->setEnabled(false);
+			if (prplInfo != NULL && prplInfo->get_info != NULL)
+			{
+				/* Get User Info */
+				a = new QAction(tr("Get Information"),
+								QIconSet(Resource::loadPixmap("gaim/info")),
+								QString::null, 0, this, 0);
+				a->addTo(menu);
+
+				connect(a, SIGNAL(activated()),
+						this, SLOT(getUserInfo()));
+			}
 
 			/* IM */
 			a = new QAction(tr("IM"),
@@ -568,6 +600,28 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 	}
 
 	menu->popup(point);
+}
+
+void
+QGaimBuddyList::getUserInfo()
+{
+	QGaimBListItem *item = (QGaimBListItem *)selectedItem();
+	GaimBlistNode *node;
+	GaimBuddy *buddy;
+
+	if (item == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+		buddy = (GaimBuddy *)node;
+	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+		buddy = gaim_contact_get_priority_buddy((GaimContact *)node);
+	else
+		return;
+
+	serv_get_info(gaim_account_get_connection(buddy->account), buddy->name);
 }
 
 void
