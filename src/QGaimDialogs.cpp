@@ -140,7 +140,7 @@ QGaimAddBuddyDialog::populateGroupCombo()
 		{
 			if (GAIM_BLIST_NODE_IS_GROUP(node))
 			{
-				struct group *g = (struct group *)node;
+				GaimGroup *g = (GaimGroup *)node;
 
 				groupCombo->insertItem(g->name);
 			}
@@ -156,8 +156,8 @@ QGaimAddBuddyDialog::accept()
 	QString alias = aliasEntry->text();
 	QString group = groupCombo->currentText();
 	GaimAccount *account;
-	struct buddy *b;
-	struct group *g;
+	GaimBuddy *b;
+	GaimGroup *g;
 
 	if (screenname.isEmpty())
 	{
@@ -179,8 +179,8 @@ QGaimAddBuddyDialog::accept()
 	b = gaim_buddy_new(account, screenname,
 					   (alias.isEmpty() ? NULL : (const char *)alias));
 
-	gaim_blist_add_buddy(b, g, NULL);
-	serv_add_buddy(gaim_account_get_connection(account), screenname);
+	gaim_blist_add_buddy(b, NULL, g, NULL);
+	serv_add_buddy(gaim_account_get_connection(account), screenname, g);
 
 	if (conv != NULL)
 		gaim_conversation_update(conv, GAIM_CONV_UPDATE_ADD);
@@ -291,7 +291,7 @@ QGaimAddChatDialog::populateGroupCombo()
 		{
 			if (GAIM_BLIST_NODE_IS_GROUP(node))
 			{
-				struct group *g = (struct group *)node;
+				GaimGroup *g = (GaimGroup *)node;
 
 				groupCombo->insertItem(g->name);
 			}
@@ -370,8 +370,8 @@ void
 QGaimAddChatDialog::accept()
 {
 	GaimConnection *gc;
-	struct chat *chat;
-	struct group *group;
+	GaimBlistChat *chat;
+	GaimGroup *group;
 	GList *chatInfoList, *l;
 	GHashTable *components;
 	QString alias = aliasEntry->text();
@@ -414,9 +414,9 @@ QGaimAddChatDialog::accept()
 
 	g_list_free(chatInfoList);
 
-	chat = gaim_chat_new(accountCombo->getCurrentAccount(),
-						 (alias.isEmpty() ? NULL : (const char *)alias),
-						 components);
+	chat = gaim_blist_chat_new(accountCombo->getCurrentAccount(),
+							   (alias.isEmpty() ? NULL : (const char *)alias),
+							   components);
 
 	if ((group = gaim_find_group(groupName)) == NULL)
 	{

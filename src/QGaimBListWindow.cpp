@@ -333,7 +333,7 @@ QGaimBListWindow::showAddBuddy()
 	QGaimAddBuddyDialog *dialog;
 	QGaimBListItem *item;
 	GaimBlistNode *node;
-	struct group *group = NULL;
+	GaimGroup *group = NULL;
 
 	item = (QGaimBListItem *)buddylist->selectedItem();
 
@@ -343,12 +343,12 @@ QGaimBListWindow::showAddBuddy()
 
 		if (GAIM_BLIST_NODE_IS_GROUP(node))
 		{
-			group = (struct group *)node;
+			group = (GaimGroup *)node;
 		}
 		else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
 				 GAIM_BLIST_NODE_IS_CHAT(node))
 		{
-			group = ((struct group *)node->parent);
+			group = ((GaimGroup *)node->parent);
 		}
 	}
 
@@ -366,7 +366,7 @@ QGaimBListWindow::showAddChat()
 	QGaimAddChatDialog *dialog;
 	QGaimBListItem *item;
 	GaimBlistNode *node;
-	struct group *group = NULL;
+	GaimGroup *group = NULL;
 
 	item = (QGaimBListItem *)buddylist->selectedItem();
 
@@ -376,12 +376,12 @@ QGaimBListWindow::showAddChat()
 
 		if (GAIM_BLIST_NODE_IS_GROUP(node))
 		{
-			group = (struct group *)node;
+			group = (GaimGroup *)node;
 		}
 		else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
 				 GAIM_BLIST_NODE_IS_CHAT(node))
 		{
-			group = ((struct group *)node->parent);
+			group = ((GaimGroup *)node->parent);
 		}
 	}
 
@@ -396,7 +396,7 @@ QGaimBListWindow::showAddChat()
 static void
 addGroupCb(void *, const char *groupName)
 {
-	struct group *group;
+	GaimGroup *group;
 
 	group = gaim_group_new(groupName);
 	gaim_blist_add_group(group, NULL);
@@ -415,9 +415,9 @@ QGaimBListWindow::showAddGroup()
 }
 
 static void
-removeBuddyCb(struct buddy *buddy)
+removeBuddyCb(GaimBuddy *buddy)
 {
-	struct group *group;
+	GaimGroup *group;
 	GaimConversation *conv;
 	QString name;
 
@@ -439,14 +439,14 @@ removeBuddyCb(struct buddy *buddy)
 }
 
 static void
-removeChatCb(struct chat *chat)
+removeChatCb(GaimBlistChat *chat)
 {
 	gaim_blist_remove_chat(chat);
 	gaim_blist_save();
 }
 
 static void
-removeGroupCb(struct group *group)
+removeGroupCb(GaimGroup *group)
 {
 	GaimBlistNode *node;
 	
@@ -456,7 +456,7 @@ removeGroupCb(struct group *group)
 	{
 		if (GAIM_BLIST_NODE_IS_BUDDY(node))
 		{
-			struct buddy *buddy = (struct buddy *)node;
+			GaimBuddy *buddy = (GaimBuddy *)node;
 			GaimConversation *conv = gaim_find_conversation(buddy->name);
 
 			if (gaim_account_is_connected(buddy->account))
@@ -471,7 +471,7 @@ removeGroupCb(struct group *group)
 		}
 		else if (GAIM_BLIST_NODE_IS_CHAT(node))
 		{
-			struct chat *chat = (struct chat *)node;
+			GaimBlistChat *chat = (GaimBlistChat *)node;
 
 			if (gaim_account_is_connected(chat->account))
 				gaim_blist_remove_chat(chat);
@@ -493,7 +493,7 @@ QGaimBListWindow::showRemoveBuddy()
 
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
-		struct buddy *buddy = (struct buddy *)item->getBlistNode();
+		GaimBuddy *buddy = (GaimBuddy *)item->getBlistNode();
 		QString name = buddy->name;
 
 		int result = QMessageBox::information(this,
@@ -508,8 +508,8 @@ QGaimBListWindow::showRemoveBuddy()
 	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
-		struct chat *chat;
-		QString name = gaim_chat_get_display_name(chat);
+		GaimBlistChat *chat;
+		QString name = gaim_blist_chat_get_display_name(chat);
 
 		int result = QMessageBox::information(this,
 				tr("Remove Chat"),
@@ -525,7 +525,7 @@ QGaimBListWindow::showRemoveBuddy()
 	}
 	else if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
-		struct group *group = (struct group *)item->getBlistNode();
+		GaimGroup *group = (GaimGroup *)item->getBlistNode();
 		QString name = group->name;
 
 		int result = QMessageBox::information(this,
@@ -574,7 +574,7 @@ QGaimBListWindow::sendIm()
 
 	if (node != NULL && GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
-		struct buddy *buddy = (struct buddy *)item->getBlistNode();
+		GaimBuddy *buddy = (GaimBuddy *)item->getBlistNode();
 		GaimConversation *conv;
 		GaimWindow *win;
 
@@ -608,7 +608,7 @@ QGaimBListWindow::openChat()
 
 	if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
-		struct chat *chat = (struct chat *)item->getBlistNode();
+		GaimBlistChat *chat = (GaimBlistChat *)item->getBlistNode();
 
 		serv_join_chat(gaim_account_get_connection(chat->account),
 					   chat->components);

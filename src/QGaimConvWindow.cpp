@@ -259,7 +259,7 @@ QGaimConversation::updateTabIcon()
 	QGaimConvWindow *qwin;
 	GaimWindow *win;
 	GaimAccount *account;
-	struct buddy *b;
+	GaimBuddy *b;
 
 	win = gaim_conversation_get_window(conv);
 	qwin = (QGaimConvWindow *)win->ui_data;
@@ -665,7 +665,7 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 {
 	QGaimConversation *qconv = NULL;
 	GaimAccount *account;
-	struct buddy *b;
+	GaimBuddy *b;
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QGaimIm(conv, tabs);

@@ -1,3 +1,11 @@
+Wed Sep 24 20:45:39 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimDialogs.cpp:
+	  - API sync with libgaim 0.69.
+
 Thu Sep 11 08:28:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimPrefsDialog.cpp:
