@@ -72,6 +72,8 @@ class QGaimBuddyList : public QListView
 
 		void reload(bool remove = false);
 
+		GaimBuddy *getSelectedBuddy() const;
+
 	protected slots:
 		void nodeExpanded(QListViewItem *item);
 		void nodeCollapsed(QListViewItem *item);

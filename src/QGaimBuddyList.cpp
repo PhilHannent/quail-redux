@@ -408,6 +408,27 @@ QGaimBuddyList::reload(bool remove)
 	}
 }
 
+GaimBuddy *
+QGaimBuddyList::getSelectedBuddy() const
+{
+	QGaimBListItem *item;
+	GaimBlistNode *node;
+	GaimBuddy *buddy = NULL;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return NULL;
+
+	if ((node = item->getBlistNode()) == NULL)
+		return NULL;
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+		buddy = (GaimBuddy *)node;
+	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+		buddy = gaim_contact_get_priority_buddy((GaimContact *)node);
+
+	return buddy;
+}
+
 void
 QGaimBuddyList::nodeExpanded(QListViewItem *_item)
 {
@@ -605,20 +626,9 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 void
 QGaimBuddyList::getUserInfo()
 {
-	QGaimBListItem *item = (QGaimBListItem *)selectedItem();
-	GaimBlistNode *node;
 	GaimBuddy *buddy;
 
-	if (item == NULL)
-		return;
-
-	node = item->getBlistNode();
-
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
-		buddy = (GaimBuddy *)node;
-	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
-		buddy = gaim_contact_get_priority_buddy((GaimContact *)node);
-	else
+	if ((buddy = getSelectedBuddy()) == NULL)
 		return;
 
 	serv_get_info(gaim_account_get_connection(buddy->account), buddy->name);
@@ -627,22 +637,11 @@ QGaimBuddyList::getUserInfo()
 void
 QGaimBuddyList::sendIm()
 {
-	QGaimBListItem *item = (QGaimBListItem *)selectedItem();
-	GaimBlistNode *node;
 	GaimBuddy *buddy;
 	GaimConversation *conv;
 	GaimConvWindow *win;
 
-	if (item == NULL)
-		return;
-
-	node = item->getBlistNode();
-
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
-		buddy = (GaimBuddy *)node;
-	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
-		buddy = gaim_contact_get_priority_buddy((GaimContact *)node);
-	else
+	if ((buddy = getSelectedBuddy()) == NULL)
 		return;
 
 	conv = gaim_conversation_new(GAIM_CONV_IM, buddy->account, buddy->name);
