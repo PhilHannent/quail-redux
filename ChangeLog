@@ -1,3 +1,9 @@
+Fri Aug 15 02:45:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - The text view in chats now scrolls to the bottom when toggling
+	    the Show User List button.
+
 Fri Aug 15 02:41:22 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

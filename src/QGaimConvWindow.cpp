@@ -414,6 +414,8 @@ QGaimChat::setShowUserList(bool show)
 		userList->show();
 	else
 		userList->hide();
+
+	text->verticalScrollBar()->setValue(text->verticalScrollBar()->maxValue());
 }
 
 bool
