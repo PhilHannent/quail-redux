@@ -97,6 +97,7 @@ DISTFILES = \
 	data/images/smileys.png \
 	data/images/userlist.png \
 	data/images/warn.png \
+	AUTHORS \
 	ChangeLog \
 	README \
 	gaim.png \
