@@ -356,13 +356,13 @@ QGaimAccountsWindow::loadAccounts()
 		QPixmap protocolIcon;
 		QGaimAccountListItem *item;
 		GaimAccount *account = (GaimAccount *)l->data;
-		GaimProtocol protocol = gaim_account_get_protocol(account);
+		QString protocolId = gaim_account_get_protocol_id(account);
 
 		protocolIcon = QGaimProtocolUtils::getProtocolIcon(account);
 
 		item = new QGaimAccountListItem(accountsView, index);
 		item->setText(0, gaim_account_get_username(account));
-		item->setText(1, QGaimProtocolUtils::getProtocolName(protocol));
+		item->setText(1, QGaimProtocolUtils::getProtocolName(protocolId));
 		item->setAccount(account);
 
 		if (gaim_account_is_connected(account))
@@ -455,10 +455,12 @@ QGaimAccountsWindow::accountSelected(QListViewItem *item)
 {
 	QGaimAccountListItem *accountItem = (QGaimAccountListItem *)item;
 	GaimAccount *account;
+	const char *protocolId;
 
-	account = accountItem->getAccount();
+	account    = accountItem->getAccount();
+	protocolId = gaim_account_get_protocol_id(account);
 
-	if (gaim_find_prpl(gaim_account_get_protocol(account)) == NULL)
+	if (gaim_plugins_find_with_id(protocolId) == NULL)
 	{
 		connectButton->setEnabled(false);
 		disconnectButton->setEnabled(false);

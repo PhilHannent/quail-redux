@@ -31,9 +31,9 @@ static QDict<QPixmap> smallPixmaps;
 static QDict<QPixmap> menuPixmaps;
 
 QString
-QGaimProtocolUtils::getProtocolName(GaimProtocol protocol)
+QGaimProtocolUtils::getProtocolName(QString protocolId)
 {
-	GaimPlugin *p = gaim_find_prpl(protocol);
+	GaimPlugin *p = gaim_plugins_find_with_id(protocolId);
 
 	return ((p != NULL && p->info->name != NULL)
 			? QObject::tr(p->info->name)
@@ -67,7 +67,7 @@ QGaimProtocolUtils::getProtocolIcon(GaimAccount *account,
 	if (account == NULL)
 		return NULL;
 
-	prpl = gaim_find_prpl(gaim_account_get_protocol(account));
+	prpl = gaim_plugins_find_with_id(gaim_account_get_protocol_id(account));
 
 	if (prpl == NULL)
 		return NULL;

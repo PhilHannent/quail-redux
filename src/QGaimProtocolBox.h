@@ -32,13 +32,13 @@ class QGaimProtocolBox : public QComboBox
 
 	public:
 		QGaimProtocolBox(QWidget *parent = NULL, const char *name = NULL);
-		QGaimProtocolBox(GaimProtocol protocol, QWidget *parent = NULL,
+		QGaimProtocolBox(QString protocolId, QWidget *parent = NULL,
 						 const char *name = NULL);
 
-		void setCurrentProtocol(GaimProtocol protocol);
+		void setCurrentProtocol(QString protocolId);
 
 	protected:
-		void buildMenu(GaimProtocol protocol);
+		void buildMenu(QString protocolId);
 };
 
 #endif /* _QGAIM_PROTOCOL_BOX_H_ */

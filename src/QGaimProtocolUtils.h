@@ -34,7 +34,7 @@ class QPixmap;
 class QGaimProtocolUtils
 {
 	public:
-		static QString getProtocolName(GaimProtocol protocol);
+		static QString getProtocolName(QString protocolId);
 		static QPixmap getProtocolIcon(GaimAccount *account,
 				QGaimPixmapSize size = QGAIM_PIXMAP_SMALL);
 		static QPixmap getProtocolIcon(const GaimPlugin *plugin,

@@ -82,7 +82,6 @@ class QGaimAccountEditor : public QDialog
 		QGaimAccountsWindow *accountsWin;
 
 		QString protocolId;
-		GaimProtocol protocol;
 
 		GList *userSplitEntries;
 		GList *protocolOptEntries;

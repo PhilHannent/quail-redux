@@ -28,21 +28,20 @@
 QGaimProtocolBox::QGaimProtocolBox(QWidget *parent, const char *name)
 	: QComboBox(parent, name)
 {
-	buildMenu(GAIM_PROTO_OSCAR);
+	buildMenu(NULL);
 }
 
-QGaimProtocolBox::QGaimProtocolBox(GaimProtocol protocol, QWidget *parent,
+QGaimProtocolBox::QGaimProtocolBox(QString protocolId, QWidget *parent,
 								   const char *name)
 	: QComboBox(parent, name)
 {
-	buildMenu(protocol);
+	buildMenu(protocolId);
 }
 
 void
-QGaimProtocolBox::setCurrentProtocol(GaimProtocol protocol)
+QGaimProtocolBox::setCurrentProtocol(QString protocolId)
 {
 	GaimPlugin *plugin;
-	GaimPluginProtocolInfo *prpl_info;
 	GList *p;
 	int i;
 
@@ -51,9 +50,8 @@ QGaimProtocolBox::setCurrentProtocol(GaimProtocol protocol)
 		 p = p->next, i++)
 	{
 		plugin = (GaimPlugin *)p->data;
-		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 
-		if (prpl_info->protocol == protocol)
+		if (plugin->info->id == protocolId)
 		{
 			setCurrentItem(i);
 			break;
@@ -62,7 +60,7 @@ QGaimProtocolBox::setCurrentProtocol(GaimProtocol protocol)
 }
 
 void
-QGaimProtocolBox::buildMenu(GaimProtocol protocol)
+QGaimProtocolBox::buildMenu(QString protocolId)
 {
 	GList *p;
 	int count;
@@ -72,16 +70,14 @@ QGaimProtocolBox::buildMenu(GaimProtocol protocol)
 		 p = p->next, count++)
 	{
 		GaimPlugin *plugin;
-		GaimPluginProtocolInfo *prpl_info;
 
 		plugin = (GaimPlugin *)p->data;
-		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 
 		insertItem(
 			QGaimProtocolUtils::getProtocolIcon(plugin, QGAIM_PIXMAP_MENU),
 			plugin->info->name);
 
-		if (protocol == prpl_info->protocol)
+		if (protocolId != NULL && protocolId == plugin->info->id)
 			setCurrentItem(count);
 	}
 }

@@ -276,8 +276,8 @@ QGaimBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
 				QString idleTime;
 				QString warning;
 
-				prpl = gaim_find_prpl(
-					gaim_account_get_protocol(buddy->account));
+				prpl = gaim_plugins_find_with_id(
+					gaim_account_get_protocol_id(buddy->account));
 
 				if (prpl != NULL)
 					prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
@@ -440,21 +440,20 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node, QGaimPixmapSize size)
 	const char *protoName = NULL;
 	GaimPlugin *prpl = NULL;
 	GaimPluginProtocolInfo *prplInfo = NULL;
+	GaimAccount *account;
 	char *se = NULL, *sw = NULL, *nw = NULL, *ne = NULL;
 
 	if (node == NULL)
 		return QPixmap();
 
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
-	{
-		prpl = gaim_find_prpl(gaim_account_get_protocol(
-				((GaimBuddy *)node)->account));
-	}
+		account = ((GaimBuddy *)node)->account;
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
-	{
-		prpl = gaim_find_prpl(gaim_account_get_protocol(
-				((GaimChat *)node)->account));
-	}
+		account = ((GaimChat *)node)->account;
+	else
+		return QPixmap();
+
+	prpl = gaim_plugins_find_with_id(gaim_account_get_protocol_id(account));
 
 	if (prpl == NULL)
 		return QPixmap();
@@ -464,11 +463,9 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node, QGaimPixmapSize size)
 	if (prplInfo->list_icon != NULL)
 	{
 		if (GAIM_BLIST_NODE_IS_BUDDY(node))
-			protoName = prplInfo->list_icon(((GaimBuddy *)node)->account,
-											(GaimBuddy *)node);
+			protoName = prplInfo->list_icon(account, (GaimBuddy *)node);
 		else if (GAIM_BLIST_NODE_IS_CHAT(node))
-			protoName = prplInfo->list_icon(((GaimChat *)node)->account,
-											NULL);
+			protoName = prplInfo->list_icon(account, NULL);
 	}
 
 	if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
@@ -682,7 +679,8 @@ QGaimBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 	GaimPluginProtocolInfo *prplInfo = NULL;
 	QGaimAction *a;
 
-	prpl = gaim_find_prpl(gaim_account_get_protocol(buddy->account));
+	prpl = gaim_plugins_find_with_id(
+		gaim_account_get_protocol_id(buddy->account));
 
 	if (prpl != NULL)
 		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
@@ -813,7 +811,7 @@ QGaimBuddyList::populateContactMenu(GaimContact *contact, QPopupMenu *menu)
 	GaimPluginProtocolInfo *prplInfo = NULL;
 	QAction *a;
 
-	prpl = gaim_find_prpl(gaim_account_get_protocol(
+	prpl = gaim_plugins_find_with_id(gaim_account_get_protocol_id(
 			gaim_contact_get_priority_buddy(contact)->account));
 
 	if (prpl != NULL)
@@ -848,7 +846,8 @@ QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 	const char *autojoin;
 	QAction *a;
 
-	prpl = gaim_find_prpl(gaim_account_get_protocol(chat->account));
+	prpl = gaim_plugins_find_with_id(
+		gaim_account_get_protocol_id(chat->account));
 
 	if (prpl != NULL)
 		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);

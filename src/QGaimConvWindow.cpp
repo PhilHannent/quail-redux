@@ -879,7 +879,7 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 	if (conv != NULL)
 		qGaimGetMainWindow()->setCaption(gaim_conversation_get_title(conv));
 
-	prpl = gaim_find_prpl(gaim_account_get_protocol(account));
+	prpl = gaim_plugins_find_with_id(gaim_account_get_protocol_id(account));
 
 	if (prpl != NULL)
 		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);

@@ -53,16 +53,14 @@ QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account, QWidget *parent,
 
 			prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 
-			protocol   = prplInfo->protocol;
 			protocolId = plugin->info->id;
 		}
 	}
 	else
 	{
 		protocolId = gaim_account_get_protocol_id(account);
-		protocol   = gaim_account_get_protocol(account);
 
-		if ((plugin = gaim_find_prpl(protocol)) != NULL)
+		if ((plugin = gaim_plugins_find_with_id(protocolId)) != NULL)
 			prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 	}
 
@@ -242,7 +240,7 @@ QGaimAccountEditor::buildProtocolTab()
 			{
 				case GAIM_PREF_BOOLEAN:
 					if (account == NULL ||
-						gaim_account_get_protocol(account) != protocol)
+						protocolId != gaim_account_get_protocol_id(account))
 					{
 						boolValue =
 							gaim_account_option_get_default_bool(option);
@@ -264,7 +262,7 @@ QGaimAccountEditor::buildProtocolTab()
 
 				case GAIM_PREF_INT:
 					if (account == NULL ||
-						gaim_account_get_protocol(account) != protocol)
+						protocolId != gaim_account_get_protocol_id(account))
 					{
 						intValue = gaim_account_option_get_default_int(option);
 					}
@@ -290,7 +288,7 @@ QGaimAccountEditor::buildProtocolTab()
 
 				case GAIM_PREF_STRING:
 					if (account == NULL ||
-						gaim_account_get_protocol(account) != protocol)
+						protocolId != gaim_account_get_protocol_id(account))
 					{
 						strValue =
 							gaim_account_option_get_default_string(option);
@@ -433,7 +431,7 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	/* Protocol */
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
 	protocolList = new QGaimProtocolBox(parent, "protocol combo");
-	protocolList->setCurrentProtocol(protocol);
+	protocolList->setCurrentProtocol(protocolId);
 
 	grid->addWidget(protocolList, row++, 1);
 
@@ -618,7 +616,6 @@ QGaimAccountEditor::protocolChanged(int index)
 	plugin = (GaimPlugin *)l->data;
 
 	prplInfo   = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
-	protocol   = prplInfo->protocol;
 	protocolId = plugin->info->id;
 
 	tabs->removePage(accountBox);

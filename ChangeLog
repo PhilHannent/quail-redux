@@ -1,3 +1,15 @@
+Sat Feb 07 15:43:34 PST 2004  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountEditor.h:
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimProtocolBox.cpp:
+	* src/QGaimProtocolBox.h:
+	* src/QGaimProtocolUtils.cpp:
+	* src/QGaimProtocolUtils.h:
+	  - Updated to compile against libgaim 0.75.
+
 Thu Jan 01 00:50:23 PST 2004  Christian Hammond <chipx86@gnupdate.org>
 
 	* Copyright Commit 2004.
