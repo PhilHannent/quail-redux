@@ -98,6 +98,7 @@ class QGaimConvWindow : public QMainWindow
 		virtual void closeEvent(QCloseEvent *e);
 
 	private slots:
+		void closeConv();
 		void showAccountsWindow();
 		void conversationsToggled(bool state);
 		void showBlist();

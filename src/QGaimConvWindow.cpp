@@ -285,6 +285,12 @@ QGaimConvWindow::closeEvent(QCloseEvent *e)
 }
 
 void
+QGaimConvWindow::closeConv()
+{
+	gaim_conversation_destroy(gaim_window_get_active_conversation(win));
+}
+
+void
 QGaimConvWindow::showAccountsWindow()
 {
 	qGaimGetHandle()->showAccountsWindow();
@@ -330,9 +336,18 @@ QGaimConvWindow::setupToolbar()
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
 
+	connect(a, SIGNAL(activated()),
+			this, SLOT(closeConv()));
+
 	/* Separator */
 	toolbar->addSeparator();
 
+	a = new QAction(tr("User Actions"),
+					QIconSet(QPixmap(DATA_PREFIX "images/user.png")),
+					QString::null, 0, this, 0);
+	a->addTo(toolbar);
+
+#if 0
 	/* Warn */
 	a = new QAction(tr("Warn"),
 					QIconSet(QPixmap(DATA_PREFIX "images/warn.png")),
@@ -367,8 +382,7 @@ QGaimConvWindow::setupToolbar()
 	infoButton = a;
 	a->addTo(toolbar);
 
-	/* Separator */
-	toolbar->addSeparator();
+#endif
 
 	/* Formatting */
 	a = new QAction(tr("Formatting"),
@@ -376,6 +390,14 @@ QGaimConvWindow::setupToolbar()
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
 
+	/* Separator */
+	toolbar->addSeparator();
+
+	a = new QAction(tr("Send"),
+					QIconSet(QPixmap(DATA_PREFIX "images/send-im.png")),
+					QString::null, 0, this, 0);
+	a->addTo(toolbar);
+	
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);
 	label->setText("");
