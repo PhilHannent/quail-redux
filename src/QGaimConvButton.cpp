@@ -113,8 +113,9 @@ QGaimConvButton::generateMenu()
 		conv = (GaimConversation *)l->data;
 		account = gaim_conversation_get_account(conv);
 
-		menu->insertItem(QGaimProtocolUtils::getProtocolIcon(account),
-						 gaim_conversation_get_title(conv), i);
+		menu->insertItem(
+			QGaimProtocolUtils::getProtocolIcon(account, QGAIM_PIXMAP_MENU),
+			gaim_conversation_get_title(conv), i);
 
 		convs[i] = conv;
 	}

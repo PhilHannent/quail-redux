@@ -269,8 +269,8 @@ QGaimConversation::updateTabIcon()
 	if (b == NULL)
 	{
 		qwin->getTabs()->changeTab(this,
-				QGaimProtocolUtils::getProtocolIcon(account),
-				gaim_conversation_get_title(conv));
+			QGaimProtocolUtils::getProtocolIcon(account, QGAIM_PIXMAP_MENU),
+			gaim_conversation_get_title(conv));
 	}
 	else
 	{
@@ -682,8 +682,8 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 	if (b == NULL)
 	{
 		tabs->addTab(qconv,
-					 QGaimProtocolUtils::getProtocolIcon(account),
-					 gaim_conversation_get_title(conv));
+			QGaimProtocolUtils::getProtocolIcon(account, QGAIM_PIXMAP_MENU),
+			gaim_conversation_get_title(conv));
 	}
 	else
 	{
