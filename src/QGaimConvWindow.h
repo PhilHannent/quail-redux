@@ -104,6 +104,7 @@ class QGaimConvChat : public QGaimConversation
 
 	protected slots:
 		virtual void returnPressed();
+		virtual void updateTyping();
 
 	protected:
 		GaimConvChat *chat;
@@ -157,6 +158,7 @@ class QGaimConvWindow : public QMainWindow
 		int getActiveIndex() const;
 
 		void updateAddRemoveButton();
+		void setSendEnabled(bool enabled);
 
 		QGaimTabWidget *getTabs() const;
 
@@ -199,6 +201,7 @@ class QGaimConvWindow : public QMainWindow
 		QAction *blockButton;
 		QAction *addRemoveButton;
 		QAction *infoButton;
+		QAction *sendButton;
 
 		QPopupMenu *userMenu;
 		QPopupMenu *formatMenu;

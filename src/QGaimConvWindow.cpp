@@ -404,6 +404,8 @@ QGaimConvChat::buildInterface()
 
 	connect(entry, SIGNAL(returnPressed()),
 			this, SLOT(returnPressed()));
+	connect(entry, SIGNAL(textChanged()),
+			this, SLOT(updateTyping()));
 
 	entry->setFocus();
 }
@@ -449,6 +451,15 @@ void
 QGaimConvChat::returnPressed()
 {
 	send();
+}
+
+void
+QGaimConvChat::updateTyping()
+{
+	GaimConvWindow *win = gaim_conversation_get_window(conv);
+	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
+
+	qwin->setSendEnabled(entry->text().length() > 1);
 }
 
 void
@@ -600,16 +611,21 @@ QGaimConvIm::returnPressed()
 void
 QGaimConvIm::updateTyping()
 {
+	GaimConvWindow *win = gaim_conversation_get_window(conv);
+	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
+	size_t length = entry->text().length();
+
+	qwin->setSendEnabled(length > 0);
+
 	if (!gaim_prefs_get_bool("/core/conversations/im/send_typing"))
 		return;
 
 	if (gaim_conv_im_get_type_again_timeout(im))
 		gaim_conv_im_stop_type_again_timeout(im);
 
-	if (entry->text().length() == 0)
+	if (length == 0)
 	{
 		/* We deleted all of it, so we'll keep typing off. */
-
 		serv_send_typing(gaim_conversation_get_gc(conv),
 						 gaim_conversation_get_name(conv),
 						 GAIM_NOT_TYPING);
@@ -618,7 +634,7 @@ QGaimConvIm::updateTyping()
 	{
 		gaim_conv_im_start_type_again_timeout(im);
 
-		if (entry->text().length() == 1 ||
+		if (length == 1 ||
 			 (gaim_conv_im_get_type_again(im) != 0 &&
 			  time(NULL) > gaim_conv_im_get_type_again(im)))
 		{
@@ -763,6 +779,12 @@ QGaimConvWindow::updateAddRemoveButton()
 		addRemoveButton->setText(tr("Remove"));
 		addRemoveButton->setIconSet(Resource::loadPixmap("gaim/remove"));
 	}
+}
+
+void
+QGaimConvWindow::setSendEnabled(bool enabled)
+{
+	sendButton->setEnabled(enabled);
 }
 
 QGaimTabWidget *
@@ -1072,7 +1094,9 @@ QGaimConvWindow::setupToolbar()
 	a = new QAction(tr("Send"),
 					QIconSet(Resource::loadPixmap("gaim/send-im")),
 					QString::null, 0, this, 0);
+	sendButton = a;
 	a->addTo(toolbar);
+	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(send()));
