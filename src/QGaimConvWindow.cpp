@@ -1,19 +1,21 @@
 #include "QGaimConvWindow.h"
+#include "QGaimConvButton.h"
 #include "QGaim.h"
 #include "base.h"
 
 #include <libgaim/debug.h>
 
+#include <qaction.h>
+#include <qbutton.h>
+#include <qlabel.h>
+#include <qlayout.h>
 #include <qmultilineedit.h>
 #include <qsplitter.h>
 #include <qtabwidget.h>
 #include <qtextview.h>
-#include <qvbox.h>
-#include <qlayout.h>
-#include <qbutton.h>
+#include <qtoolbar.h>
 #include <qtoolbutton.h>
-#include <qmenubar.h>
-#include <qaction.h>
+#include <qvbox.h>
 
 #include <stdio.h>
 
@@ -224,10 +226,10 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 {
 	QGaimConversation *qconv;
 
-//	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
+	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QGaimIm(conv, tabs);
-//	else if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
-//		qconv = new QGaimChat(conv);
+	else if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
+		qconv = new QGaimChat(conv);
 
 	conv->ui_data = qconv;
 
@@ -303,40 +305,38 @@ QGaimConvWindow::showBlist()
 void
 QGaimConvWindow::buildInterface()
 {
-	buildMenuBar();
+	setupToolbar();
 
 	tabs = new QTabWidget(this, "conv tabs");
 
 	setCentralWidget(tabs);
 }
 
-QMenuBar *
-QGaimConvWindow::buildMenuBar()
+void
+QGaimConvWindow::setupToolbar()
 {
 	QToolButton *button;
+	QLabel *label;
 	QPixmap *pixmap;
 	QAction *a;
 
-	menubar = new QMenuBar(this);
+	setToolBarsMovable(false);
 
-	/* Conversation menu. */
-	convMenu = new QPopupMenu(this);
-	menubar->insertItem(tr("&Conversation"), convMenu);
+	toolbar = new QToolBar(this);
 
-	/* Close */
-	a = new QAction(tr("&Close"), QString::null, 0, this, 0);
-	a->addTo(convMenu);
-
+	/* Add some whitespace. */
+	label = new QLabel(toolbar);
+	label->setText("");
+	toolbar->setStretchableWidget(label);
 
 	/* Now we're going to construct the toolbar on the right. */
-	menubar->insertSeparator();
+	toolbar->addSeparator();
 
 	/* Buddy List */
 	pixmap = new QPixmap(DATA_PREFIX "images/blist.png");
-	button = new QToolButton(NULL, "blist");
+	button = new QToolButton(toolbar, "blist");
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);
-	menubar->insertItem(button);
 	delete pixmap;
 
 	connect(button, SIGNAL(clicked()),
@@ -344,29 +344,20 @@ QGaimConvWindow::buildMenuBar()
 
 	/* Accounts */
 	pixmap = new QPixmap(DATA_PREFIX "images/accounts.png");
-	button = new QToolButton(NULL, "accounts");
+	button = new QToolButton(toolbar, "accounts");
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);
-	menubar->insertItem(button);
 	delete pixmap;
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
-	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
-	convsButton = button = new QToolButton(NULL, "conversations");
-	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
-	button->setToggleButton(true);
+	button = new QGaimConvButton(toolbar, "conversations");
 	button->setOn(true);
-	menubar->insertItem(button);
-	delete pixmap;
 
 	connect(button, SIGNAL(toggled(bool)),
 			this, SLOT(conversationsToggled(bool)));
-
-	return menubar;
 }
 
 /**************************************************************************
