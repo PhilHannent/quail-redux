@@ -1,3 +1,10 @@
+Mon Jul 28 23:58:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* data/images/protocols/small/napster.png:
+	* data/images/edit.png:
+	  - Updated the edit icon.
+	  - Added a Napster protocol icon.
+
 Mon Jul 28 16:05:48 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:
