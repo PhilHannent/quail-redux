@@ -73,6 +73,7 @@ DISTFILES = \
 	data/images/warn.png \
 	ChangeLog \
 	README \
+	gaim.png \
 	mkstuff.conf \
 	mkipk.sh \
 	mktarball.sh
