@@ -1,3 +1,8 @@
+Thu Jul 31 01:07:47 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkipk.sh:
+	  - Require libglib2.0 and libgaim.
+
 Thu Jul 31 00:57:56 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* mkstuff.conf:

@@ -75,6 +75,7 @@ echo "Version: $VER" >> $CONTROL
 echo "Section: qpe/applications" >> $CONTROL
 echo "Architecture: $ARCH" >> $CONTROL
 echo "Maintainer: Christian Hammond <chipx86@gnupdate.org>" >> $CONTROL
+echo "Depends: libglib2.0, libgaim"
 echo "Description: A multi-protocol instant messenger client, supporting AIM, ICQ, MSN, Yahoo!, Jabber, IRC, Zephyr, Gadu-Gadu, Napster, and Trepia." >> $CONTROL
 
 echo
