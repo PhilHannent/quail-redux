@@ -231,12 +231,12 @@ QGaimPrefsDialog::buildInterface()
 	proxyPage    = new QGaimProxyPrefPage(this,  "proxy page");
 	pluginPage   = new QGaimPluginPrefPage(this, "plugin page");
 
-	tabs->addTab(blistPage, "gaim/blist",        tr("Buddy List"));
-	tabs->addTab(convPage, "gaim/conversations", tr("Conversations"));
-	tabs->addTab(notifyPage, "gaim/warn", tr("Notification"));
-	tabs->addTab(awayIdlePage, "gaim/away", tr("Away/Idle"));
-	tabs->addTab(proxyPage, "gaim/network", tr("Proxy"));
-	tabs->addTab(pluginPage, "gaim/connect", tr("Plugins"));
+	tabs->addTab(blistPage,    "gaim/16x16/blist",         tr("Buddy List"));
+	tabs->addTab(convPage,     "gaim/16x16/conversations", tr("Conversations"));
+	tabs->addTab(notifyPage,   "gaim/16x16/warn",          tr("Notification"));
+	tabs->addTab(awayIdlePage, "gaim/16x16/away",          tr("Away/Idle"));
+	tabs->addTab(proxyPage,    "gaim/16x16/network",       tr("Proxy"));
+	tabs->addTab(pluginPage,   "gaim/16x16/connect",       tr("Plugins"));
 
 	tabs->setCurrentTab(blistPage);
 }
