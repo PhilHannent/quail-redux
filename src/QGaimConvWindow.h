@@ -8,8 +8,8 @@
 #include <libgaim/conversation.h>
 
 class QAction;
+class QGaimMultiLineEdit;
 class QGaimTabWidget;
-class QMultiLineEdit;
 class QPopupMenu;
 class QTabWidget;
 class QTextView;
@@ -41,7 +41,7 @@ class QGaimConversation : public QWidget
 	protected:
 		GaimConversation *conv;
 		QTextView *text;
-		QMultiLineEdit *entry;
+		QGaimMultiLineEdit *entry;
 		int tabId;
 };
 

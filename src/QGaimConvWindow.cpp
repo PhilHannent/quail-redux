@@ -1,5 +1,6 @@
 #include "QGaimConvWindow.h"
 #include "QGaimConvButton.h"
+#include "QGaimMultiLineEdit.h"
 #include "QGaimProtocolUtils.h"
 #include "QGaimTabBar.h"
 #include "QGaimTabWidget.h"
@@ -12,7 +13,6 @@
 #include <qbutton.h>
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qmultilineedit.h>
 #include <qpopupmenu.h>
 #include <qsplitter.h>
 #include <qtabwidget.h>
@@ -254,7 +254,8 @@ QGaimIm::buildInterface()
 	QString str;
 
 	text  = new QTextView(str, QString::null, this);
-	entry = new QMultiLineEdit(this);
+	entry = new QGaimMultiLineEdit(this);
+	entry->setHistoryEnabled(true);
 	entry->setFixedVisibleLines(5);
 
 	l->addWidget(text,  0, 0);
