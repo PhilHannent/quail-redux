@@ -201,6 +201,9 @@ QGaimIm::buildInterface()
 
 	l->addWidget(text,  0, 0);
 	l->addWidget(entry, 1, 0);
+
+	connect(entry, SIGNAL(returnPressed()),
+			this, SLOT(returnPressed()));
 }
 
 void
@@ -220,6 +223,11 @@ QGaimIm::send()
 	entry->setText("");
 }
 
+void
+QGaimIm::returnPressed()
+{
+	send();
+}
 
 /**************************************************************************
  * QGaimConvWindow

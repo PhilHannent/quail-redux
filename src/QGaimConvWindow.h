@@ -78,8 +78,10 @@ class QGaimIm : public QGaimConversation
 
 	protected:
 		virtual void buildInterface();
-};
 
+	protected slots:
+		virtual void returnPressed();
+};
 
 class QGaimConvWindow : public QMainWindow
 {
