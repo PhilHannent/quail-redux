@@ -216,6 +216,11 @@ QGaimBuddyList::QGaimBuddyList(QWidget *parent, const char *name)
 
 	QPEApplication::setStylusOperation(viewport(),
 									   QPEApplication::RightOnHold);
+
+	connect(this, SIGNAL(expanded(QListViewItem *)),
+			this, SLOT(groupExpanded(QListViewItem *)));
+	connect(this, SIGNAL(collapsed(QListViewItem *)),
+			this, SLOT(groupCollapsed(QListViewItem *)));
 }
 
 QGaimBuddyList::~QGaimBuddyList()
@@ -410,6 +415,33 @@ QGaimBuddyList::reload(bool remove)
 
 			updateNode(child);
 		}
+	}
+}
+
+void
+QGaimBuddyList::groupExpanded(QListViewItem *_item)
+{
+	QGaimBListItem *item = (QGaimBListItem *)_item;
+	GaimBlistNode *node;
+
+	node = item->getBlistNode();
+
+	if (GAIM_BLIST_NODE_IS_GROUP(node))
+		gaim_group_set_setting((struct group *)node, "collapsed", NULL);
+		gaim_blist_save();
+}
+
+void
+QGaimBuddyList::groupCollapsed(QListViewItem *_item)
+{
+	QGaimBListItem *item = (QGaimBListItem *)_item;
+	GaimBlistNode *node;
+
+	node = item->getBlistNode();
+
+	if (GAIM_BLIST_NODE_IS_GROUP(node)) {
+		gaim_group_set_setting((struct group *)node, "collapsed", "true");
+		gaim_blist_save();
 	}
 }
 

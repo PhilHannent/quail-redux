@@ -1,3 +1,10 @@
+Fri Aug 08 23:18:29 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Expanding or closing a group will not save the collapsed
+	    attribute.
+
 Fri Aug 08 23:09:45 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:

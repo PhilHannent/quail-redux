@@ -65,6 +65,10 @@ class QGaimBuddyList : public QListView
 
 		void reload(bool remove = false);
 
+	protected slots:
+		void groupExpanded(QListViewItem *item);
+		void groupCollapsed(QListViewItem *item);
+
 	private:
 		void addGroup(GaimBlistNode *node);
 
