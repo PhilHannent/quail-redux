@@ -1,4 +1,5 @@
 #include "QGaimAccountEditor.h"
+#include "QGaimProtocolUtils.h"
 #include "base.h"
 
 #include <libgaim/prpl.h>
@@ -53,7 +54,7 @@ QGaimAccountEditor::buildInterface()
 		plugin = (GaimPlugin *)p->data;
 		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 
-		QPixmap *pixmap = getProtocolIcon(plugin);
+		QPixmap *pixmap = QGaimProtocolUtils::getProtocolIcon(plugin);
 
 		if (pixmap == NULL)
 			protocolList->insertItem(plugin->info->name);
@@ -65,37 +66,4 @@ QGaimAccountEditor::buildInterface()
 	}
 
 	setCentralWidget(vbox);
-}
-
-QPixmap *
-QGaimAccountEditor::getProtocolIcon(GaimPlugin *prpl) const
-{
-	GaimPluginProtocolInfo *prpl_info = NULL;
-	const char *protoname = NULL;
-	QString path;
-
-	if (prpl != NULL)
-	{
-		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
-
-		if (prpl_info->list_icon != NULL)
-			protoname = prpl_info->list_icon(account, NULL);
-	}
-
-	if (protoname == NULL)
-		return NULL;
-
-	path  = DATA_PREFIX "images/protocols/small/";
-	path += protoname;
-	path += ".png";
-
-	QPixmap *pixmap = new QPixmap();
-
-	if (!pixmap->load(path))
-	{
-		delete pixmap;
-		return NULL;
-	}
-
-	return pixmap;
 }

@@ -46,8 +46,6 @@ class QGaimAccountsWindow : public QMainWindow
 		void setupToolbar();
 		void loadAccounts();
 
-		QString getProtocolName(GaimProtocol protocol);
-
 	private slots:
 		void newAccount();
 		void connectToAccount();

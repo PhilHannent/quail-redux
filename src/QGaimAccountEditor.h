@@ -21,7 +21,6 @@ class QGaimAccountEditor : public QMainWindow
 
 	protected:
 		virtual void buildInterface();
-		QPixmap *getProtocolIcon(GaimPlugin *plugin) const;
 
 	private:
 		GaimAccount *account;

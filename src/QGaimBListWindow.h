@@ -29,7 +29,6 @@ class QGaimBListItem : public QListViewItem
 
 	protected:
 		void init();
-		QPixmap *getProtocolIcon(GaimAccount *account);
 
 	private:
 		GaimBlistNode *node;

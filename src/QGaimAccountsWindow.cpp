@@ -2,6 +2,7 @@
 #include "QGaimAccountEditor.h"
 #include "QGaimConnectionMeter.h"
 #include "QGaimConvButton.h"
+#include "QGaimProtocolUtils.h"
 #include "QGaim.h"
 #include "base.h"
 
@@ -204,12 +205,13 @@ QGaimAccountsWindow::loadAccounts()
 		QPixmap *pixmap;
 		QGaimAccountListItem *item;
 		GaimAccount *account = (GaimAccount *)l->data;
+		GaimProtocol protocol = gaim_account_get_protocol(account);
 
-		pixmap = getProtocolIcon(account);
+		pixmap = QGaimProtocolUtils::getProtocolIcon(account);
 
 		item = new QGaimAccountListItem(accountsView, index);
 		item->setText(0, gaim_account_get_username(account));
-		item->setText(1, getProtocolName(gaim_account_get_protocol(account)));
+		item->setText(1, QGaimProtocolUtils::getProtocolName(protocol));
 		item->setAccount(account);
 
 		if (pixmap != NULL) {
@@ -217,16 +219,6 @@ QGaimAccountsWindow::loadAccounts()
 			delete pixmap;
 		}
 	}
-}
-
-QString
-QGaimAccountsWindow::getProtocolName(GaimProtocol protocol)
-{
-	GaimPlugin *p = gaim_find_prpl(protocol);
-
-	return ((p != NULL && p->info->name != NULL)
-			? tr(p->info->name)
-			: tr("Unknown"));
 }
 
 void
@@ -283,42 +275,6 @@ QGaimAccountsWindow::accountSelected(QListViewItem *item)
 
 	connectButton->setEnabled(!gaim_account_is_connected(account));
 	disconnectButton->setEnabled(gaim_account_is_connected(account));
-}
-
-QPixmap *
-QGaimAccountsWindow::getProtocolIcon(GaimAccount *account)
-{
-	GaimPlugin *prpl;
-	GaimPluginProtocolInfo *prpl_info = NULL;
-	const char *protoname = NULL;
-	QString path;
-
-	prpl = gaim_find_prpl(gaim_account_get_protocol(account));
-
-	if (prpl != NULL)
-	{
-		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
-
-		if (prpl_info->list_icon != NULL)
-			protoname = prpl_info->list_icon(account, NULL);
-	}
-
-	if (protoname == NULL)
-		return NULL;
-
-	path  = DATA_PREFIX "images/protocols/small/";
-	path += protoname;
-	path += ".png";
-
-	QPixmap *pixmap = new QPixmap();
-
-	if (!pixmap->load(path))
-	{
-		delete pixmap;
-		return NULL;
-	}
-
-	return pixmap;
 }
 
 static void
