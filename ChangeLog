@@ -1,3 +1,9 @@
+Sun Jul 27 03:01:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaim.h:
+	* src/main.cpp:
+	  - The gaim core is now initialized through the new gaim_core API.
+
 Sun Jul 27 02:24:45 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvButton.cpp:

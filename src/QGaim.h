@@ -25,7 +25,7 @@ class QGaim : QObject
 		void showAccountsWindow();
 
 	private slots:
-		void doGlibLoop();
+		void doMainLoop();
 
 	private:
 		QPEApplication *app;

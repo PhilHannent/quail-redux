@@ -5,12 +5,14 @@
 
 #include <libgaim/prefs.h>
 #include <libgaim/conversation.h>
+#include <libgaim/core.h>
 #include <libgaim/proxy.h>
 #include <libgaim/sound.h>
 #include <libgaim/pounce.h>
 #include <libgaim/plugin.h>
 #include <glib.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include "QGaim.h"
 #include "QGaimBListWindow.h"
@@ -18,6 +20,40 @@
 #include "QGaimDebugWindow.h"
 
 static QGaim *gaim = NULL;
+
+static void
+qGaimCoreDebugInit(void)
+{
+	gaim_set_debug_ui_ops(qGaimGetDebugUiOps());
+}
+
+static void
+qGaimCoreUiInit(void)
+{
+	gaim_set_blist_ui_ops(qGaimGetBlistUiOps());
+	gaim_set_connection_ui_ops(qGaimGetConnectionUiOps());
+	gaim_set_win_ui_ops(qGaimGetConvWindowUiOps());
+}
+
+static void
+qGaimCoreQuit(void)
+{
+	exit(0);
+}
+
+static GaimCoreUiOps coreOps =
+{
+	NULL,
+	qGaimCoreDebugInit,
+	qGaimCoreUiInit,
+	qGaimCoreQuit
+};
+
+static GaimCoreUiOps *
+qGaimGetCoreUiOps()
+{
+	return &coreOps;
+}
 
 QGaim::QGaim(int argc, char **argv)
 	: blistWin(NULL), accountsWin(NULL)
@@ -37,16 +73,14 @@ QGaim::init()
 
 	blistWin = new QGaimBListWindow();
 
-	gaim_set_debug_ui_ops(qGaimGetDebugUiOps());
-	gaim_set_blist_ui_ops(qGaimGetBlistUiOps());
-	gaim_set_win_ui_ops(qGaimGetConvWindowUiOps());
-	gaim_set_connection_ui_ops(qGaimGetConnectionUiOps());
+	gaim_set_core_ui_ops(qGaimGetCoreUiOps());
 
-	gaim_prefs_init();
-	gaim_conversation_init();
-	gaim_proxy_init();
-	gaim_sound_init();
-	gaim_pounces_init();
+	if (!gaim_core_init("qpe-gaim")) {
+		fprintf(stderr,
+				"Initialization of the Gaim core failed.\n"
+				"Please report this!\n");
+		abort();
+	}
 
 	plugin_search_paths[0] = "/opt/QtPalmtop/lib/gaim";
 
@@ -67,7 +101,7 @@ QGaim::init()
 	/* Setup the timer for the glib context loops */
 	QTimer *timer = new QTimer();
 	connect(timer, SIGNAL(timeout()),
-			this, SLOT(doGlibLoop()));
+			this, SLOT(doMainLoop()));
 
 	timer->start(10, FALSE);
 
@@ -113,10 +147,9 @@ QGaim::showAccountsWindow()
 }
 
 void
-QGaim::doGlibLoop()
+QGaim::doMainLoop()
 {
-	GMainContext *ctx = g_main_context_default();
-	g_main_context_iteration(ctx, FALSE);
+	gaim_core_mainloop_iteration();
 }
 
 QGaim *
