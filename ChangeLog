@@ -1,3 +1,12 @@
+Fri Aug 15 03:23:27 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Added a timer to save the buddy list after 2 seconds when one or
+	    more groups are expanded or collapsed. This prevents a buddy list
+	    write every time the group is expanded or collapsed, which was
+	    slow and wasteful.
+
 Fri Aug 15 03:08:17 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

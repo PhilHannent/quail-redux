@@ -68,6 +68,7 @@ class QGaimBuddyList : public QListView
 	protected slots:
 		void groupExpanded(QListViewItem *item);
 		void groupCollapsed(QListViewItem *item);
+		void saveBlist();
 
 	private:
 		void addGroup(GaimBlistNode *node);
@@ -75,6 +76,7 @@ class QGaimBuddyList : public QListView
 	private:
 		struct gaim_buddy_list *gaimBlist;
 
+		QTimer *saveTimer;
 };
 
 #endif /* _QGAIM_BUDDY_LIST_H_ */

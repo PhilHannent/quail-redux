@@ -30,6 +30,7 @@
 #include <qpe/resource.h>
 
 #include <qheader.h>
+#include <qtimer.h>
 
 
 /**************************************************************************
@@ -226,10 +227,16 @@ QGaimBuddyList::QGaimBuddyList(QWidget *parent, const char *name)
 			this, SLOT(groupExpanded(QListViewItem *)));
 	connect(this, SIGNAL(collapsed(QListViewItem *)),
 			this, SLOT(groupCollapsed(QListViewItem *)));
+
+	saveTimer = new QTimer(this);
+
+	connect(saveTimer, SIGNAL(timeout()),
+			this, SLOT(saveBlist()));
 }
 
 QGaimBuddyList::~QGaimBuddyList()
 {
+	delete saveTimer;
 }
 
 void
@@ -428,8 +435,12 @@ QGaimBuddyList::groupExpanded(QListViewItem *_item)
 	node = item->getBlistNode();
 
 	if (GAIM_BLIST_NODE_IS_GROUP(node))
+	{
 		gaim_group_set_setting((struct group *)node, "collapsed", NULL);
-		gaim_blist_save();
+
+		if (!saveTimer->isActive())
+			saveTimer->start(2000, true);
+	}
 }
 
 void
@@ -440,10 +451,19 @@ QGaimBuddyList::groupCollapsed(QListViewItem *_item)
 
 	node = item->getBlistNode();
 
-	if (GAIM_BLIST_NODE_IS_GROUP(node)) {
+	if (GAIM_BLIST_NODE_IS_GROUP(node))
+	{
 		gaim_group_set_setting((struct group *)node, "collapsed", "true");
-		gaim_blist_save();
+
+		if (!saveTimer->isActive())
+			saveTimer->start(2000, true);
 	}
+}
+
+void
+QGaimBuddyList::saveBlist()
+{
+	gaim_blist_save();
 }
 
 void
