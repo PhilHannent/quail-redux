@@ -855,12 +855,16 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 		if (gaim_find_buddy(account, gaim_conversation_get_name(conv)) == NULL)
 		{
 			addRemoveButton->setText(tr("Add"));
-			addRemoveButton->setIconSet(Resource::loadPixmap("gaim/add"));
+			addRemoveButton->setIconSet(
+				QIconSet(Resource::loadPixmap("gaim/16x16/add"),
+						 Resource::loadPixmap("gaim/32x32/add")));
 		}
 		else
 		{
 			addRemoveButton->setText(tr("Remove"));
-			addRemoveButton->setIconSet(Resource::loadPixmap("gaim/remove"));
+			addRemoveButton->setIconSet(
+				QIconSet(Resource::loadPixmap("gaim/16x16/remove"),
+						 Resource::loadPixmap("gaim/32x32/remove")));
 		}
 	}
 
