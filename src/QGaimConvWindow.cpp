@@ -18,10 +18,10 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
+#include "QGaimBuddyList.h"
 #include "QGaimConvWindow.h"
 #include "QGaimConvButton.h"
 #include "QGaimMultiLineEdit.h"
-#include "QGaimProtocolUtils.h"
 #include "QGaimTabBar.h"
 #include "QGaimTabWidget.h"
 #include "QGaim.h"
@@ -172,8 +172,26 @@ QGaimConversation::setTitle(const char *title)
 }
 
 void
-QGaimConversation::updated(GaimConvUpdateType)
+QGaimConversation::updated(GaimConvUpdateType type)
 {
+	if (type == GAIM_CONV_UPDATE_ACCOUNT)
+	{
+		gaim_conversation_autoset_title(conv);
+
+		if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
+			; /* Update buddy icon. */
+
+		updateTabIcon();
+	}
+	else if (type == GAIM_CONV_ACCOUNT_ONLINE ||
+			 type == GAIM_CONV_ACCOUNT_OFFLINE)
+	{
+		updateTabIcon();
+	}
+	else if (type == GAIM_CONV_UPDATE_AWAY)
+	{
+		updateTabIcon();
+	}
 }
 
 void
@@ -235,6 +253,25 @@ QGaimConversation::stripFontFace(const QString &str)
 
 	return newStr;
 }
+
+void
+QGaimConversation::updateTabIcon()
+{
+	QGaimConvWindow *qwin;
+	GaimWindow *win;
+	struct buddy *b;
+
+	win = gaim_conversation_get_window(conv);
+	qwin = (QGaimConvWindow *)win->ui_data;
+
+	b = gaim_find_buddy(gaim_conversation_get_account(conv),
+						gaim_conversation_get_name(conv));
+
+	qwin->getTabs()->changeTab(this,
+			QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
+			gaim_conversation_get_title(conv));
+}
+
 
 /**************************************************************************
  * QGaimChat
@@ -402,8 +439,8 @@ QGaimChat::updated(GaimConvUpdateType type)
 
 		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
-	else
-		QGaimConversation::updated(type);
+
+	QGaimConversation::updated(type);
 }
 
 /**************************************************************************
@@ -461,8 +498,8 @@ QGaimIm::updated(GaimConvUpdateType type)
 
 		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
-	else
-		QGaimConversation::updated(type);
+
+	QGaimConversation::updated(type);
 }
 
 void
@@ -587,6 +624,7 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 {
 	QGaimConversation *qconv = NULL;
 	GaimAccount *account;
+	struct buddy *b;
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QGaimIm(conv, tabs);
@@ -599,7 +637,10 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 
 	account = gaim_conversation_get_account(conv);
 
-	tabs->addTab(qconv, QGaimProtocolUtils::getProtocolIcon(account),
+	b = gaim_find_buddy(account, gaim_conversation_get_name(conv));
+
+	tabs->addTab(qconv,
+				 QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
 				 gaim_conversation_get_title(conv));
 
 	qconv->setTabId(tabs->getLastId());

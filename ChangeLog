@@ -1,3 +1,9 @@
+Fri Aug 08 17:21:21 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - The icon on the conversation tab now shows the user's status.
+
 Fri Aug 08 17:09:23 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:

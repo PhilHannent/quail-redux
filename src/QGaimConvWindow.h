@@ -63,6 +63,8 @@ class QGaimConversation : public QWidget
 		bool meify(char *message, int len);
 		QString stripFontFace(const QString &str);
 
+		void updateTabIcon();
+
 	protected:
 		GaimConversation *conv;
 		QTextView *text;
