@@ -1,3 +1,9 @@
+Wed Oct 08 21:55:07 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - The Get Information button works in IMs.
+
 Wed Oct 08 21:30:55 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAction.h:

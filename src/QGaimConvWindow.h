@@ -171,6 +171,7 @@ class QGaimConvWindow : public QMainWindow
 
 	private slots:
 		void closeConv();
+		void userInfoSlot();
 		void send();
 		void showAccountsWindow();
 		void userListToggled(bool on);
@@ -190,6 +191,7 @@ class QGaimConvWindow : public QMainWindow
 
 		QToolButton *convsButton;
 
+		QToolButton *userMenuButton;
 		QAction *warnButton;
 		QAction *blockButton;
 		QAction *addButton;

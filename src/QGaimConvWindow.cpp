@@ -760,6 +760,9 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 {
 	QGaimConversation *qconv = (QGaimConversation *)widget;
 	GaimConversation *conv = qconv->getGaimConversation();
+	GaimAccount *account = gaim_conversation_get_account(conv);
+	GaimPlugin *prpl;
+	GaimPluginProtocolInfo *prplInfo = NULL;
 
 	gaim_conversation_set_unseen(conv, GAIM_UNSEEN_NONE);
 
@@ -769,15 +772,30 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 				gaim_conversation_get_title(conv));
 	}
 
+	prpl = gaim_find_prpl(gaim_account_get_protocol(account));
+
+	if (prpl != NULL)
+		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
 	{
 		QGaimConvChat *qchat = (QGaimConvChat *)qconv;
 
+		userMenuButton->setEnabled(false);
 		userListToggle->setEnabled(true);
+		infoButton->setEnabled(false);
 		userListToggle->setOn(qchat->getShowUserList());
 	}
 	else
+	{
+		userMenuButton->setEnabled(true);
 		userListToggle->setEnabled(false);
+
+		if (prplInfo != NULL && prplInfo->get_info != NULL)
+			infoButton->setEnabled(true);
+		else
+			infoButton->setEnabled(false);
+	}
 
 	qconv->setFocus();
 }
@@ -805,6 +823,16 @@ void
 QGaimConvWindow::closeConv()
 {
 	gaim_conversation_destroy(gaim_conv_window_get_active_conversation(win));
+}
+
+void
+QGaimConvWindow::userInfoSlot()
+{
+	GaimConversation *conv = gaim_conv_window_get_active_conversation(win);
+	GaimAccount *account = gaim_conversation_get_account(conv);
+
+	serv_get_info(gaim_account_get_connection(account),
+				  gaim_conversation_get_name(conv));
 }
 
 void
@@ -887,6 +915,7 @@ QGaimConvWindow::setupToolbar()
 
 	/* Person actions */
 	button = new QToolButton(toolbar, "blist");
+	userMenuButton = button;
 	button->setAutoRaise(true);
 	button->setPixmap(Resource::loadPixmap("gaim/user"));
 	button->setEnabled(false);
@@ -934,6 +963,8 @@ QGaimConvWindow::setupToolbar()
 	a->addTo(userMenu);
 	a->setEnabled(false);
 
+	connect(infoButton, SIGNAL(activated()),
+			this, SLOT(userInfoSlot()));
 
 	/* Formatting */
 	a = new QAction(tr("Formatting"),
