@@ -59,6 +59,9 @@ class QGaimConversation : public QWidget
 		int getTabId() const;
 
 	protected:
+		bool meify(char *message, int len);
+
+	protected:
 		GaimConversation *conv;
 		QTextView *text;
 		QGaimMultiLineEdit *entry;

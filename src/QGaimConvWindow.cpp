@@ -77,6 +77,9 @@ QGaimConversation::write(const char *who, const char *message,
 	if (text == NULL)
 		return;
 
+	if (length == (size_t)-1)
+		length = strlen(message) + 1;
+
 	QString txt;
 
 	if (flags & WFLAG_SYSTEM)
@@ -88,29 +91,69 @@ QGaimConversation::write(const char *who, const char *message,
 	else
 	{
 		QString color, nick;
+		char *newMessage;
 
-		nick = who;
+		newMessage = (char *)g_memdup(message, length);
 
-		if (flags & WFLAG_AUTO)
+		if (flags & WFLAG_WHISPER)
 		{
-			nick += "&lt;AUTO-REPLY&gt; :";
+			/* If we're whispering, it's not an auto-response. */
+			if (meify(newMessage, length))
+			{
+				nick  = "***";
+				nick += who;
+				color = "#6C2585";
+			}
+			else
+			{
+				nick  = "*";
+				nick += who;
+				nick += "*:";
+				color = "#00FF00";
+			}
 		}
 		else
-			nick += ":";
+		{
+			if (meify(newMessage, length))
+			{
+				if (flags & WFLAG_AUTO)
+					nick = "&lt;AUTO-REPLY&gt; ***";
+				else
+					nick = "***";
 
-		if (flags & WFLAG_NICK)
-			color = "#AF7F00";
-		else if (flags & WFLAG_RECV)
-			color = "#A82F2F";
-		else if (flags & WFLAG_SEND)
-			color = "#16569E";
+				nick += who;
+
+				if (flags & WFLAG_NICK)
+					color = "#AF7F00";
+				else
+					color = "#062585";
+			}
+			else
+			{
+				nick = who;
+
+				if (flags & WFLAG_AUTO)
+					nick += "&lt;AUTO-REPLY&gt; :";
+				else
+					nick += ":";
+
+				if (flags & WFLAG_NICK)
+					color = "#AF7F00";
+				else if (flags & WFLAG_RECV)
+					color = "#A82F2F";
+				else if (flags & WFLAG_SEND)
+					color = "#16569E";
+			}
+		}
 
 		txt  = "<font color=\"" + color + "\"><b>";
 		txt += nick;
 		txt += "</b></font> ";
 
-		txt += message;
+		txt += newMessage;
 		txt += "<br>\n";
+
+		g_free(newMessage);
 	}
 
 	text->setText(text->text() + txt);
@@ -140,6 +183,44 @@ int
 QGaimConversation::getTabId() const
 {
 	return tabId;
+}
+
+bool
+QGaimConversation::meify(char *message, int len)
+{
+	char *c;
+	bool insideHtml = false;
+
+	if (message == NULL)
+		return false;
+
+	if (len == -1)
+		len = strlen(message);
+
+	for (c = message; *c != '\0'; c++, len--)
+	{
+		if (insideHtml)
+		{
+			if (*c == '>')
+				insideHtml = false;
+		}
+		else
+		{
+			if (*c == '<')
+				insideHtml = true;
+			else
+				break;
+		}
+	}
+
+	if (*c != '\0' && !g_ascii_strncasecmp(c, "/me ", 4))
+	{
+		memmove(c, c + 4, len - 3);
+
+		return true;
+	}
+
+	return false;
 }
 
 /**************************************************************************
