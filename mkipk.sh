@@ -1,62 +1,24 @@
 #!/bin/sh
 
-# mkipk.sh
-# generates an ipkg for qpe-gaim
+. ./mkstuff.conf
 
-# Based off the mkipk.sh by Bill Kendrick <bill@newbreedsoftware.com>
-
-# Revised by Christian Hammond <chipx86@gnupdate.org>
-
-if [ ! -e $HOME/bin/dev-arm-qpe.sh ]; then
-	echo "$HOME/bin/dev-arm-qpe.sh is not present."
-	echo "This is required for setting the ARM development environment "
-	echo "variables."
+if [ "$1" == "cross" ]; then
+	export ARCHITECTURE=arm
+	export STRIP=arm-linux-strip
+elif [ "$1" == "native" ]; then
+	export ARCHITECTURE=x86
+	export STRIP=strip
+else
+	echo "usage: $0 cross | native [no-clean]"
 	exit 1
 fi
 
-. ./mkstuff.conf
+if [ "$1" != "no-clean" ]; then
+	[ -e Makefile ] && make clean
+	rm -f Makefile
+fi
 
-DIST=$TMPDIR/BUILD/DIST
-CONTROL=$DIST/CONTROL/control
-
-echo "SETTING UP"
-mkdir -p $TMPDIR/BUILD
-mkdir -p $TMPDIR/BUILD/DIST/CONTROL
-
-echo
-echo "COPYING SOURCES INTO BUILD AREA"
-cp -av src data gaim.pro $TMPDIR/BUILD/
-
-# Modify the gaim.pro
-perl -pi -e "s/debug/release/g" $TMPDIR/BUILD/gaim.pro
-perl -pi -e "s/LOCAL_COMPILE//g" $TMPDIR/BUILD/gaim.pro
-
-# Remove the xcf files
-$RM -f $TMPDIR/BUILD/images/*.xcf
-$RM -rf $TMPDIR/BUILD/data/.cvsignore
-$RM -rf $TMPDIR/BUILD/data/CVS
-$RM -rf $TMPDIR/BUILD/data/images/.cvsignore
-$RM -rf $TMPDIR/BUILD/data/images/.xvpics
-$RM -rf $TMPDIR/BUILD/data/images/CVS
-$RM -rf $TMPDIR/BUILD/data/images/protocols/.cvsignore
-$RM -rf $TMPDIR/BUILD/data/images/protocols/.xvpics
-$RM -rf $TMPDIR/BUILD/data/images/protocols/CVS
-$RM -rf $TMPDIR/BUILD/data/images/protocols/small/.cvsignore
-$RM -rf $TMPDIR/BUILD/data/images/protocols/small/.xvpics
-$RM -rf $TMPDIR/BUILD/data/images/protocols/small/CVS
-$RM -rf $TMPDIR/BUILD/data/images/status/.cvsignore
-$RM -rf $TMPDIR/BUILD/data/images/status/.xvpics
-$RM -rf $TMPDIR/BUILD/data/images/status/CVS
-$RM -rf $TMPDIR/BUILD/src/CVS
-$RM -rf $TMPDIR/BUILD/CVS
-cd $TMPDIR/BUILD
-
-echo
-echo "MAKING SURE BINARY EXISTS"
-. $HOME/bin/dev-arm-qpe.sh
-tmake gaim.pro -o Makefile
-make clean
-make
+./make.sh $1
 
 if [ $? -ne 0 ]; then
 	echo
@@ -64,61 +26,44 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-cd ../..
+#lrelease gaim.pro
 
-echo 
-echo "CREATING CONTROL FILE"
+mkdir -p $TMPDIR/CONTROL
+mkdir -p $TMPDIR/opt/QtPalmtop/apps/Applications
+mkdir -p $TMPDIR/opt/QtPalmtop/bin
+mkdir -p $TMPDIR/opt/QtPalmtop/pics
+mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim
+mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/protocols/small
+mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/status
 
-echo "Package: $PACKAGE" > $CONTROL
-echo "Priority: optional" >> $CONTROL
-echo "Version: $VER" >> $CONTROL
-echo "Section: qpe/applications" >> $CONTROL
-echo "Architecture: $ARCH" >> $CONTROL
-echo "Maintainer: Christian Hammond <chipx86@gnupdate.org>" >> $CONTROL
-echo "Depends: libglib2.0 | libglib2.0-0 | glib-2.0, libgaim" >> $CONTROL
-echo "Description: A multi-protocol instant messenger client, supporting AIM, ICQ, MSN, Yahoo!, Jabber, IRC, Zephyr, Gadu-Gadu, Napster, and Trepia." >> $CONTROL
+$STRIP gaim
 
-echo
-echo "COPYING DATA FILES"
+cp gaim.desktop $TMPDIR/opt/QtPalmtop/apps/Applications
+cp gaim         $TMPDIR/opt/QtPalmtop/bin
+cp gaim.png     $TMPDIR/opt/QtPalmtop/pics
+cp data/images/*.png $TMPDIR/opt/QtPalmtop/pics/gaim
+cp data/images/protocols/small/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/protocols/small
 
-mkdir -p $DIST/opt/QtPalmtop/share/gaim
-cp -R $TMPDIR/BUILD/data/* $DIST/opt/QtPalmtop/share/gaim/
+for LANG in $LANGUAGES
+do
+	mkdir -p $TMPDIR/opt/QtPalmtop/i18n/${LANG}
 
-echo
-echo "CREATING BINARIES"
+	if [ "$LANG" != "en" ]; then
+		cp i18n/${LANG}/${PACKAGE}.qm $TMPDIR/opt/QtPalmtop/i18n/${LANG}
+	fi
+done
 
-mkdir -p $DIST/opt/QtPalmtop/bin/
-cp $TMPDIR/BUILD/gaim $DIST/opt/QtPalmtop/bin/
+cat > $TMPDIR/CONTROL/control <<END
+Package: ${PACKAGE}
+Version: ${VER}
+Depends: qpe-base (\$QPE_VERSION), libgaim >= 0.67cvs-20030802, libglib2.0 | libglib2.0-0 | glib-2.0
+Priority: optional
+Section: Applications
+Maintainer: Christian Hammond <chipx86@gnupdate.org>
+Architecture: ${ARCHITECTURE}
+License: GPL
+Description: A multi-protocol instant messenger client, supporting AIM, ICQ, MSN, Yahoo!, Jabber, IRC, Zephyr, Gadu-Gadu, Napster, and Trepia.
+END
 
-echo
-echo "STRIPPING THE BINARY"
-arm-linux-strip $DIST/opt/QtPalmtop/bin/gaim
-
-echo
-echo "CREATING ICON AND DESKTOP FILE"
-
-mkdir -p $DIST/opt/QtPalmtop/pics/
-cp gaim.png $DIST/opt/QtPalmtop/pics/gaim.png
-
-mkdir -p $DIST/opt/QtPalmtop/apps/Applications/
-DESKTOP=$DIST/opt/QtPalmtop/apps/Applications/gaim.desktop
-echo "[Desktop Entry]" > $DESKTOP
-echo "Comment=A multi-protocol instant messenger client." >> $DESKTOP
-echo "Exec=gaim" >> $DESKTOP
-echo "Icon=gaim" >> $DESKTOP
-echo "Type=Application" >> $DESKTOP
-echo "Name=Gaim" >> $DESKTOP
-
-
-echo
-echo "CREATING IPK..."
-
-ipkg-build $DIST
-
-echo
-echo "CLEANING UP"
-
-$RM -r $TMPDIR
-
-echo
-
+ipkg-build $TMPDIR
+rm -rf $TMPDIR
