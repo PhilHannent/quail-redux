@@ -1,3 +1,9 @@
+Sat Aug 02 02:07:50 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimNotify.cpp:
+	  - The notification UI now does its best to enforce word wrapping
+	    in the text being displayed.
+
 Sat Aug 02 01:38:37 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountBox.cpp:

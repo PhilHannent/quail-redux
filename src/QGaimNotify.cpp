@@ -39,14 +39,17 @@ qGaimNotifyMessage(GaimNotifyMsgType type, const char *title,
 
 	if (primary != NULL)
 	{
+		message += "<p>";
 		message += primary;
-
-		if (secondary != NULL)
-			message += "\n\n";
+		message += "</p>";
 	}
 
 	if (secondary != NULL)
+	{
+		message += "<p>";
 		message += secondary;
+		message += "</p>";
+	}
 
 	if (title == NULL)
 		newTitle = QString(primary).stripWhiteSpace();
@@ -95,7 +98,8 @@ qGaimNotifyEmails(size_t count, gboolean, const char **subjects,
 
 	title = QObject::tr("You have new mail!");
 
-	str  = *tos;
+	str = "<p>";
+	str += *tos;
 	str += " has ";
 	str += QString::number(count);
 
@@ -104,20 +108,22 @@ qGaimNotifyEmails(size_t count, gboolean, const char **subjects,
 	else
 		str += " new e-mails.\n\n";
 
+	str += "</p>";
+
 	if (count == 1)
 	{
 		if (froms != NULL)
 		{
-			str += "From: ";
+			str += "<p>From: ";
 			str += *froms;
-			str += "\n";
+			str += "</p>";
 		}
 		
 		if (subjects != NULL)
 		{
-			str += "Subject: ";
+			str += "<p>Subject: ";
 			str += *subjects;
-			str += "\n";
+			str += "</p>";
 		}
 	}
 
