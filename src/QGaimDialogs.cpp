@@ -22,6 +22,8 @@
 #include "QGaimAccountBox.h"
 
 #include <libgaim/blist.h>
+#include <libgaim/conversation.h>
+#include <libgaim/notify.h>
 
 #include <qcombobox.h>
 #include <qframe.h>
@@ -36,6 +38,30 @@ QGaimAddBuddyDialog::QGaimAddBuddyDialog(QWidget *parent, const char *name,
 	: QDialog(parent, name, fl)
 {
 	buildInterface();
+}
+
+void
+QGaimAddBuddyDialog::setScreenName(const QString &screenName)
+{
+	screenNameEntry->setText(screenName);
+}
+
+void
+QGaimAddBuddyDialog::setAlias(const QString &alias)
+{
+	aliasEntry->setText(alias);
+}
+
+void
+QGaimAddBuddyDialog::setGroup(const QString &group)
+{
+	groupCombo->lineEdit()->setText(group);
+}
+
+void
+QGaimAddBuddyDialog::setAccount(GaimAccount *account)
+{
+	accountCombo->setCurrentAccount(account);
 }
 
 void
@@ -114,4 +140,45 @@ QGaimAddBuddyDialog::populateGroupCombo()
 			}
 		}
 	}
+}
+
+void
+QGaimAddBuddyDialog::accept()
+{
+	GaimConversation *conv;
+	QString screenname = screenNameEntry->text();
+	QString alias = aliasEntry->text();
+	QString group = groupCombo->currentText();
+	GaimAccount *account;
+	struct buddy *b;
+	struct group *g;
+
+	if (screenname.isEmpty())
+	{
+		gaim_notify_error(this, tr("Add Buddy"),
+						  tr("You must specify a screen name to add."), NULL);
+		return;
+	}
+
+	conv = gaim_find_conversation(screenname);
+
+	if ((g = gaim_find_group(group)) == NULL)
+	{
+		g = gaim_group_new(group);
+		gaim_blist_add_group(g, NULL);
+	}
+
+	account = accountCombo->getCurrentAccount();
+
+	b = gaim_buddy_new(account, screenname, (alias.isEmpty() ? NULL : alias));
+
+	gaim_blist_add_buddy(b, g, NULL);
+	serv_add_buddy(gaim_account_get_connection(account), screenname);
+
+	if (conv != NULL)
+		gaim_conversation_update(conv, GAIM_CONV_UPDATE_ADD);
+
+	gaim_blist_save();
+
+	QDialog::accept();
 }

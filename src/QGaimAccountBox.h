@@ -36,6 +36,7 @@ class QGaimAccountBox : public QComboBox
 						QWidget *parent = NULL, const char *name = NULL);
 
 		void setCurrentAccount(GaimAccount *account);
+		GaimAccount *getCurrentAccount() const;
 
 	protected:
 		void buildMenu(GaimAccount *account);

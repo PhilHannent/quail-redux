@@ -79,6 +79,36 @@ QGaimAccountBox::setCurrentAccount(GaimAccount *account)
 	}
 }
 
+GaimAccount *
+QGaimAccountBox::getCurrentAccount() const
+{
+	int index = currentItem();
+	GList *l;
+
+	if (showAll)
+	{
+		l = g_list_nth(gaim_accounts_get_all(), index);
+
+		if (l == NULL)
+			return NULL;
+
+		return (GaimAccount *)l->data;
+	}
+	else
+	{
+		GaimConnection *gc;
+
+		l = g_list_nth(gaim_connections_get_all(), index);
+
+		if (l == NULL)
+			return NULL;
+
+		gc = (GaimConnection *)l->data;
+
+		return gaim_connection_get_account(gc);
+	}
+}
+
 void
 QGaimAccountBox::buildMenu(GaimAccount *account)
 {

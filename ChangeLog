@@ -1,3 +1,11 @@
+Sat Aug 02 02:09:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountBox.cpp:
+	* src/QGaimAccountBox.h:
+	* src/QGaimDialogs.cpp:
+	* src/QGaimDialogs.h:
+	  - Buddies can now be added to the buddy list.
+
 Sat Aug 02 02:07:50 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimNotify.cpp:

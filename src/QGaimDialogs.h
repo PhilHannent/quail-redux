@@ -21,6 +21,8 @@
 #ifndef _QGAIM_DIALOGS_H_
 #define _QGAIM_DIALOGS_H_
 
+#include <libgaim/account.h>
+
 #include <qdialog.h>
 
 class QComboBox;
@@ -35,9 +37,17 @@ class QGaimAddBuddyDialog : public QDialog
 		QGaimAddBuddyDialog(QWidget *parent = NULL, const char *name = NULL,
 							WFlags fl = 0);
 
+		void setScreenName(const QString &screenName);
+		void setAlias(const QString &alias);
+		void setGroup(const QString &group);
+		void setAccount(GaimAccount *account);
+
 	protected:
 		void buildInterface();
 		void populateGroupCombo();
+
+	protected slots:
+		void accept();
 
 	private:
 		QLineEdit *screenNameEntry;
