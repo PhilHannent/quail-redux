@@ -405,6 +405,7 @@ void
 QGaimChat::focusInEvent(QFocusEvent *)
 {
 	entry->setFocus();
+	text->verticalScrollBar()->setValue(text->verticalScrollBar()->maxValue());
 }
 
 void
@@ -565,6 +566,7 @@ void
 QGaimIm::focusInEvent(QFocusEvent *)
 {
 	entry->setFocus();
+	text->verticalScrollBar()->setValue(text->verticalScrollBar()->maxValue());
 }
 
 void
@@ -779,6 +781,8 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 	}
 	else
 		userListToggle->setEnabled(false);
+
+	qconv->setFocus();
 }
 
 void

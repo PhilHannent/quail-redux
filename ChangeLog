@@ -1,3 +1,9 @@
+Fri Aug 15 02:53:00 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - Changing the tabs now focuses the entry box 100% of the time,
+	    hopefully, and scrolls the text view to the bottom.
+
 Fri Aug 15 02:45:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
