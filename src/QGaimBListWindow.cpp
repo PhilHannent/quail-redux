@@ -148,14 +148,24 @@ QGaimBListWindow::buildToolBar()
 
 	toolbar->addSeparator();
 
-	/* Show Offline Buddies */
-	showOfflineButton = button = new QToolButton(toolbar, "show_offline");
+	/* Settings menu */
+	button = new QToolButton(toolbar, "settings");
 	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/offline_buddies"));
-	button->setToggleButton(true);
-	button->setOn(gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"));
+	button->setPixmap(Resource::loadPixmap("gaim/settings"));
 
-	connect(button, SIGNAL(toggled(bool)),
+	settingsMenu = new QPopupMenu(button);
+	button->setPopup(settingsMenu);
+	button->setPopupDelay(0);
+
+	/* Show Offline Buddies */
+	a = new QAction(tr("Show Offline Buddies"),
+					QIconSet(Resource::loadPixmap("gaim/offline_buddies")),
+					QString::null, 0, this, 0, true);
+	a->setOn(gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"));
+	showOfflineButton = a;
+	a->addTo(settingsMenu);
+
+	connect(a, SIGNAL(toggled(bool)),
 			this, SLOT(showOfflineBuddies(bool)));
 
 	/* Add some whitespace. */

@@ -95,6 +95,7 @@ DISTFILES = \
 	data/images/prefs.png \
 	data/images/remove.png \
 	data/images/send-im.png \
+	data/images/settings.png \
 	data/images/smileys.png \
 	data/images/userlist.png \
 	data/images/warn.png \

@@ -84,10 +84,11 @@ class QGaimBListWindow : public QMainWindow
 		QAction *addGroupButton;
 		QAction *removeButton;
 
-		QToolButton *showOfflineButton;
+		QAction *showOfflineButton;
 
 		QToolButton *blistButton;
 
+		QPopupMenu *settingsMenu;
 		QPopupMenu *convsMenu;
 
 		QToolBar *toolbar;
