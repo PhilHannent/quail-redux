@@ -207,6 +207,14 @@ QGaimIm::buildInterface()
 
 	connect(entry, SIGNAL(returnPressed()),
 			this, SLOT(returnPressed()));
+
+	entry->setFocus();
+}
+
+void
+QGaimIm::focusInEvent(QFocusEvent *)
+{
+	entry->setFocus();
 }
 
 void

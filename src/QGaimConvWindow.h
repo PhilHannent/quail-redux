@@ -79,6 +79,8 @@ class QGaimIm : public QGaimConversation
 	protected:
 		virtual void buildInterface();
 
+		virtual void focusInEvent(QFocusEvent *event);
+
 	protected slots:
 		virtual void returnPressed();
 };

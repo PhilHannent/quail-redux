@@ -1,3 +1,11 @@
+Thu Jul 31 16:57:07 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - The text entry field should now be auto-focused, though it
+	    appears it doesn't always auto-focus under some cases, which
+	    I have not yet narrowed down. For now, it works mostly.
+
 Thu Jul 31 16:46:58 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
