@@ -80,6 +80,13 @@ class QGaimBuddyList : public QListView
 		void removeContact(GaimContact *contact);
 		void removeGroup(GaimGroup *group);
 
+	protected:
+		void populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
+							   bool asContact);
+		void populateContactMenu(GaimContact *contact, QPopupMenu *menu);
+		void populateChatMenu(GaimChat *chat, QPopupMenu *menu);
+		void populateGroupMenu(GaimGroup *group, QPopupMenu *menu);
+
 	protected slots:
 		void nodeExpandedSlot(QListViewItem *item);
 		void nodeCollapsedSlot(QListViewItem *item);

@@ -327,7 +327,8 @@ QGaimBuddyList::QGaimBuddyList(QWidget *parent, const char *name)
 			this, SLOT(nodeCollapsedSlot(QListViewItem *)));
 	connect(this, SIGNAL(rightButtonPressed(QListViewItem *,
 											const QPoint &, int)),
-			this, SLOT(showContextMenuSlot(QListViewItem *, const QPoint &, int)));
+			this, SLOT(showContextMenuSlot(QListViewItem *,
+										   const QPoint &, int)));
 
 	saveTimer = new QTimer(this);
 
@@ -430,6 +431,120 @@ QGaimBuddyList::getSelectedBuddy() const
 }
 
 void
+QGaimBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
+								  bool asContact)
+{
+	GaimPlugin *prpl = NULL;
+	GaimPluginProtocolInfo *prplInfo = NULL;
+	QAction *a;
+
+	prpl = gaim_find_prpl(gaim_account_get_protocol(buddy->account));
+
+	if (prpl != NULL)
+		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+
+	/* Get User Info */
+	if (prplInfo != NULL && prplInfo->get_info != NULL)
+	{
+		a = new QAction(tr("Get Information"),
+						QIconSet(Resource::loadPixmap("gaim/info")),
+						QString::null, 0, this, 0);
+		a->addTo(menu);
+
+		connect(a, SIGNAL(activated()),
+				this, SLOT(getUserInfoSlot()));
+	}
+
+	/* IM */
+	a = new QAction(tr("IM"),
+					QIconSet(Resource::loadPixmap("gaim/send-im")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(sendImSlot()));
+
+	/* Separator */
+	menu->insertSeparator();
+
+	/* Remove */
+	a = new QAction(tr("Remove"),
+					QIconSet(Resource::loadPixmap("gaim/remove")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(showRemoveBuddySlot()));
+
+	if (asContact)
+	{
+		/* Separator */
+		menu->insertSeparator();
+
+		/* Expand */
+		a = new QAction(tr("Expand"),
+						QIconSet(Resource::loadPixmap("gaim/expand")),
+						QString::null, 0, this, 0);
+		a->addTo(menu);
+
+		connect(a, SIGNAL(activated()),
+				this, SLOT(expandContactSlot()));
+	}
+}
+
+void
+QGaimBuddyList::populateContactMenu(GaimContact *contact, QPopupMenu *menu)
+{
+	GaimPlugin *prpl = NULL;
+	GaimPluginProtocolInfo *prplInfo = NULL;
+	QAction *a;
+
+	prpl = gaim_find_prpl(gaim_account_get_protocol(
+			gaim_contact_get_priority_buddy(contact)->account));
+
+	if (prpl != NULL)
+		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+
+	/* Collapse */
+	a = new QAction(tr("Collapse"),
+					QIconSet(Resource::loadPixmap("gaim/collapse")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(collapseContactSlot()));
+
+	/* Remove */
+	a = new QAction(tr("Remove"),
+					QIconSet(Resource::loadPixmap("gaim/remove")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(showRemoveContactSlot()));
+}
+
+void
+QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
+{
+	GaimPlugin *prpl = NULL;
+	GaimPluginProtocolInfo *prplInfo = NULL;
+	QAction *a;
+
+	prpl = gaim_find_prpl(gaim_account_get_protocol(chat->account));
+
+	if (prpl != NULL)
+		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+
+}
+
+void
+QGaimBuddyList::populateGroupMenu(GaimGroup *group, QPopupMenu *menu)
+{
+
+}
+
+void
 QGaimBuddyList::nodeExpandedSlot(QListViewItem *_item)
 {
 	QGaimBListItem *item = (QGaimBListItem *)_item;
@@ -475,11 +590,8 @@ void
 QGaimBuddyList::showContextMenuSlot(QListViewItem *_item,
 									const QPoint &point, int)
 {
-	GaimPlugin *prpl = NULL;
-	GaimPluginProtocolInfo *prplInfo = NULL;
 	QGaimBListItem *item = (QGaimBListItem *)_item;
 	QPopupMenu *menu = NULL;
-	QAction *a;
 	GaimBlistNode *node;
 
 	if (item == NULL)
@@ -491,127 +603,29 @@ QGaimBuddyList::showContextMenuSlot(QListViewItem *_item,
 
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
-		prpl = gaim_find_prpl(gaim_account_get_protocol(
-				((GaimBuddy *)node)->account));
+		populateBuddyMenu((GaimBuddy *)node, menu, false);
 	}
 	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
-		prpl = gaim_find_prpl(gaim_account_get_protocol(
-				gaim_contact_get_priority_buddy((GaimContact *)node)->account));
-	}
-	else if (GAIM_BLIST_NODE_IS_CHAT(node))
-	{
-		prpl = gaim_find_prpl(gaim_account_get_protocol(
-				((GaimChat *)node)->account));
-	}
+		GaimContact *contact = (GaimContact *)node;
 
-	if (prpl != NULL)
-		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
-
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
-	{
-		/* Get User Info */
-		if (prplInfo != NULL && prplInfo->get_info != NULL)
-		{
-			a = new QAction(tr("Get Information"),
-							QIconSet(Resource::loadPixmap("gaim/info")),
-							QString::null, 0, this, 0);
-			a->addTo(menu);
-
-			connect(a, SIGNAL(activated()),
-					this, SLOT(getUserInfoSlot()));
-		}
-
-		/* IM */
-		a = new QAction(tr("IM"),
-						QIconSet(Resource::loadPixmap("gaim/send-im")),
-						QString::null, 0, this, 0);
-		a->addTo(menu);
-
-		connect(a, SIGNAL(activated()),
-				this, SLOT(sendImSlot()));
-
-		/* Separator */
-		menu->insertSeparator();
-
-		/* Remove */
-		a = new QAction(tr("Remove"),
-						QIconSet(Resource::loadPixmap("gaim/remove")),
-						QString::null, 0, this, 0);
-		a->addTo(menu);
-
-		connect(a, SIGNAL(activated()),
-				this, SLOT(showRemoveBuddySlot()));
-	}
-	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
-	{
 		if (item->isExpanded())
 		{
-			/* Collapse */
-			a = new QAction(tr("Collapse"),
-							QIconSet(Resource::loadPixmap("gaim/collapse")),
-							QString::null, 0, this, 0);
-			a->addTo(menu);
-
-			connect(a, SIGNAL(activated()),
-					this, SLOT(collapseContactSlot()));
-
-			/* Remove */
-			a = new QAction(tr("Remove"),
-							QIconSet(Resource::loadPixmap("gaim/remove")),
-							QString::null, 0, this, 0);
-			a->addTo(menu);
-
-			connect(a, SIGNAL(activated()),
-					this, SLOT(showRemoveContactSlot()));
+			populateContactMenu(contact, menu);
 		}
 		else
 		{
-			if (prplInfo != NULL && prplInfo->get_info != NULL)
-			{
-				/* Get User Info */
-				a = new QAction(tr("Get Information"),
-								QIconSet(Resource::loadPixmap("gaim/info")),
-								QString::null, 0, this, 0);
-				a->addTo(menu);
-
-				connect(a, SIGNAL(activated()),
-						this, SLOT(getUserInfoSlot()));
-			}
-
-			/* IM */
-			a = new QAction(tr("IM"),
-							QIconSet(Resource::loadPixmap("gaim/send-im")),
-							QString::null, 0, this, 0);
-			a->addTo(menu);
-
-			connect(a, SIGNAL(activated()),
-					this, SLOT(sendImSlot()));
-
-			/* Separator */
-			menu->insertSeparator();
-
-			/* Remove */
-			a = new QAction(tr("Remove"),
-							QIconSet(Resource::loadPixmap("gaim/remove")),
-							QString::null, 0, this, 0);
-			a->addTo(menu);
-
-			connect(a, SIGNAL(activated()),
-					this, SLOT(showRemoveBuddySlot()));
-
-			/* Separator */
-			menu->insertSeparator();
-
-			/* Expand */
-			a = new QAction(tr("Expand"),
-							QIconSet(Resource::loadPixmap("gaim/expand")),
-							QString::null, 0, this, 0);
-			a->addTo(menu);
-
-			connect(a, SIGNAL(activated()),
-					this, SLOT(expandContactSlot()));
+			populateBuddyMenu(gaim_contact_get_priority_buddy(contact), menu,
+							  true);
 		}
+	}
+	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+	{
+		populateChatMenu((GaimChat *)node, menu);
+	}
+	else if (GAIM_BLIST_NODE_IS_GROUP(node))
+	{
+		populateGroupMenu((GaimGroup *)node, menu);
 	}
 	else
 	{
