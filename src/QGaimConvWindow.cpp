@@ -491,12 +491,18 @@ QGaimConvChat::updated(GaimConvUpdateType type)
 			color.setRgb(0xDF, 0x42, 0x1E);
 
 			if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_chat"))
+			{
 				qGaimNotifyUser();
+				notifying = true;
+			}
 		}
 		else
 		{
 			if (notifying)
+			{
 				qGaimNotifyUserStop();
+				notifying = false;
+			}
 		}
 
 		qwin->getTabs()->setTabColor(getTabId(), color);
@@ -559,12 +565,18 @@ QGaimConvIm::updated(GaimConvUpdateType type)
 			color.setRgb(0xDF, 0x42, 0x1E);
 
 			if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_im"))
+			{
 				qGaimNotifyUser();
+				notifying = true;
+			}
 		}
 		else
 		{
 			if (notifying)
+			{
 				qGaimNotifyUserStop();
+				notifying = false;
+			}
 		}
 
 		win = gaim_conversation_get_window(conv);
