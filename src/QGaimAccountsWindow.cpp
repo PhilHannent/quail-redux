@@ -106,8 +106,6 @@ QGaimAccountsWindow::buildInterface()
 {
 	QVBox *vbox;
 
-	setCaption(tr("Gaim - Accounts"));
-
 	setupToolbar();
 
 	/* Create the main vbox */
@@ -258,7 +256,7 @@ QGaimAccountsWindow::newAccount()
 {
 	QGaimAccountEditor *editor;
 
-	editor = new QGaimAccountEditor(NULL, this);
+	editor = new QGaimAccountEditor(NULL, this, "", true);
 	editor->setAccountsWindow(this);
 
 	editor->showMaximized();
@@ -272,7 +270,7 @@ QGaimAccountsWindow::editAccount()
 
 	item = (QGaimAccountListItem *)accountsView->selectedItem();
 
-	editor = new QGaimAccountEditor(item->getAccount(), this);
+	editor = new QGaimAccountEditor(item->getAccount(), this, "", true);
 	editor->setAccountsWindow(this);
 
 	editor->showMaximized();

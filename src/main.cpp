@@ -81,7 +81,7 @@ qGaimGetCoreUiOps()
 }
 
 QGaim::QGaim(int argc, char **argv)
-	: blistWin(NULL), accountsWin(NULL)
+	: blistWin(NULL), accountsWin(NULL), nextConvWinId(2)
 {
 	app = new QPEApplication(argc, argv);
 }
@@ -96,7 +96,13 @@ QGaim::init()
 {
 	char *plugin_search_paths[1];
 
-	blistWin = new QGaimBListWindow();
+	mainWindow = new QMainWindow();
+	mainWindow->showMaximized();
+
+	widgetStack = new QWidgetStack(mainWindow);
+	mainWindow->setCentralWidget(widgetStack);
+
+	showBlistWindow();
 
 	gaim_set_core_ui_ops(qGaimGetCoreUiOps());
 
@@ -105,11 +111,8 @@ QGaim::init()
 				  "Please report this!\n"));
 	}
 
-#ifdef LOCAL_COMPILE
+//	plugin_search_paths[0] = "/usr/lib/gaim";
 	plugin_search_paths[0] = "/opt/Qtopia/lib/gaim";
-#else
-	plugin_search_paths[0] = "/usr/lib/gaim";
-#endif
 
 	gaim_plugins_set_search_paths(sizeof(plugin_search_paths) /
 								  sizeof(*plugin_search_paths),
@@ -134,13 +137,52 @@ QGaim::init()
 
 	gaim_accounts_auto_login("qpe-gaim");
 
-	app->showMainWidget(blistWin);
+	app->showMainWidget(mainWindow);
 }
 
 int
 QGaim::exec()
 {
 	return app->exec();
+}
+
+void
+QGaim::addConversationWindow(QGaimConvWindow *win)
+{
+	win->setId(nextConvWinId++);
+
+	getWidgetStack()->addWidget(win, win->getId());
+}
+
+void
+QGaim::removeConversationWindow(QGaimConvWindow *win)
+{
+	GList *l;
+	GaimWindow *newWin = NULL;
+
+	l = g_list_find(gaim_get_windows(), win->getGaimWindow());
+
+	getWidgetStack()->removeWidget(win);
+
+	if (l != NULL)
+	{
+		if (l->next != NULL)
+			newWin = (GaimWindow *)l->next->data;
+		else if (l->prev != NULL)
+			newWin = (GaimWindow *)l->prev->data;
+
+		if (newWin != NULL)
+		{
+			QGaimConvWindow *qwin = (QGaimConvWindow *)newWin->ui_data;
+
+			getWidgetStack()->raiseWidget(qwin);
+
+			return;
+		}
+	}
+
+	getWidgetStack()->raiseWidget(0);
+	getMainWindow()->setCaption(tr("Gaim - Buddy List"));
 }
 
 QGaimBListWindow *
@@ -167,24 +209,42 @@ QGaim::getLastActiveConvWindow() const
 	return lastConvWin;
 }
 
+QWidgetStack *
+QGaim::getWidgetStack() const
+{
+	return widgetStack;
+}
+
+QMainWindow *
+QGaim::getMainWindow() const
+{
+	return mainWindow;
+}
+
 void
 QGaim::showBlistWindow()
 {
 	if (blistWin == NULL)
+	{
 		blistWin = new QGaimBListWindow();
+		widgetStack->addWidget(blistWin, 0);
+	}
 
-	blistWin->showMaximized();
-	blistWin->raise();
+	mainWindow->setCaption(tr("Gaim - Buddy List"));
+	widgetStack->raiseWidget(0);
 }
 
 void
 QGaim::showAccountsWindow()
 {
 	if (accountsWin == NULL)
+	{
 		accountsWin = new QGaimAccountsWindow();
+		widgetStack->addWidget(accountsWin, 1);
+	}
 
-	accountsWin->showMaximized();
-	accountsWin->raise();
+	mainWindow->setCaption(tr("Gaim - Accounts"));
+	widgetStack->raiseWidget(1);
 }
 
 void

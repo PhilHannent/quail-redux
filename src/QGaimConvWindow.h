@@ -155,6 +155,9 @@ class QGaimConvWindow : public QMainWindow
 
 		QGaimTabWidget *getTabs() const;
 
+		void setId(int id);
+		int getId() const;
+
 	protected slots:
 		void tabChanged(QWidget *widget);
 
@@ -177,6 +180,8 @@ class QGaimConvWindow : public QMainWindow
 
 	private:
 		GaimWindow *win;
+
+		int convWinId;
 
 		QToolBar *toolbar;
 		QGaimTabWidget *tabs;

@@ -61,8 +61,6 @@ QGaimBListWindow::~QGaimBListWindow()
 void
 QGaimBListWindow::buildInterface()
 {
-	setCaption(tr("Gaim - Buddy List"));
-
 	setToolBarsMovable(FALSE);
 
 	/* Setup the toolbar */
@@ -104,7 +102,7 @@ QGaimBListWindow::buildToolBar()
 	/* TODO */
 
 	/* Get User Info */
-	a = new QAction(tr("Get User Information"), 
+	a = new QAction(tr("Get User Information"),
 					QIconSet(Resource::loadPixmap("gaim/info")),
 					QString::null, 0, this, 0);
 	infoButton = a;
@@ -268,7 +266,7 @@ QGaimBListWindow::showAddBuddy()
 		}
 	}
 
-	dialog = new QGaimAddBuddyDialog(this);
+	dialog = new QGaimAddBuddyDialog(this, "", true);
 
 	if (group != NULL)
 		dialog->setGroup(group->name);

@@ -21,12 +21,16 @@
 #ifndef _QGAIM_H_
 #define _QGAIM_H_
 
+#include "QGaimBListWindow.h"
+
 #include <libgaim/conversation.h>
 
 #include <qpe/qpeapplication.h>
+#include <qmainwindow.h>
 #include <qvariant.h>
+#include <qwidgetstack.h>
 
-#include "QGaimBListWindow.h"
+class QGaimConvWindow;
 
 class QGaim : QObject
 {
@@ -39,11 +43,17 @@ class QGaim : QObject
 		void init();
 		int exec();
 
+		void addConversationWindow(QGaimConvWindow *win);
+		void removeConversationWindow(QGaimConvWindow *win);
+
 		QGaimBListWindow *getBlistWindow() const;
 		QGaimAccountsWindow *getAccountsWindow() const;
 
 		void setLastActiveConvWindow(GaimWindow *win);
 		GaimWindow *getLastActiveConvWindow() const;
+
+		QWidgetStack *getWidgetStack() const;
+		QMainWindow *getMainWindow() const;
 
 	public slots:
 		void showBlistWindow();
@@ -54,9 +64,13 @@ class QGaim : QObject
 
 	private:
 		QPEApplication *app;
+		QMainWindow *mainWindow;
+		QWidgetStack *widgetStack;
 		QGaimBListWindow *blistWin;
 		QGaimAccountsWindow *accountsWin;
 		GaimWindow *lastConvWin;
+
+		int nextConvWinId;
 };
 
 QGaim *qGaimGetHandle();

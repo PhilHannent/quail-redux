@@ -339,7 +339,7 @@ QGaimChat::removeUser(const char *user)
 			delete item;
 			break;
 		}
-	}	
+	}
 }
 
 void
@@ -591,7 +591,7 @@ QGaimIm::updateTyping()
  * QGaimConvWindow
  **************************************************************************/
 QGaimConvWindow::QGaimConvWindow(GaimWindow *win)
-	: QMainWindow(), win(win)
+	: QMainWindow(), win(win), convWinId(0)
 {
 	buildInterface();
 }
@@ -647,7 +647,8 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 
 	if (gaim_window_get_conversation_count(win) == 1)
 	{
-		setCaption(gaim_conversation_get_title(conv));
+		qGaimGetHandle()->getMainWindow()->setCaption(
+				gaim_conversation_get_title(conv));
 		tabs->setCurrentPage(0);
 	}
 }
@@ -681,6 +682,18 @@ QGaimConvWindow::getTabs() const
 }
 
 void
+QGaimConvWindow::setId(int id)
+{
+	convWinId = id;
+}
+
+int
+QGaimConvWindow::getId() const
+{
+	return convWinId;
+}
+
+void
 QGaimConvWindow::tabChanged(QWidget *widget)
 {
 	QGaimConversation *qconv = (QGaimConversation *)widget;
@@ -689,7 +702,10 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 	gaim_conversation_set_unseen(conv, GAIM_UNSEEN_NONE);
 
 	if (conv != NULL)
-		setCaption(gaim_conversation_get_title(conv));
+	{
+		qGaimGetHandle()->getMainWindow()->setCaption(
+				gaim_conversation_get_title(conv));
+	}
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
 		userListToggle->setEnabled(true);
@@ -755,7 +771,7 @@ QGaimConvWindow::userListToggled(bool on)
 	QGaimChat *qchat;
 
 	conv = gaim_window_get_active_conversation(win);
-	
+
 	if (gaim_conversation_get_type(conv) != GAIM_CONV_CHAT)
 		return;
 
@@ -1031,15 +1047,21 @@ qGaimWindowNew(GaimWindow *win)
 	QGaimConvWindow *qwin;
 
 	qwin = new QGaimConvWindow(win);
-	win->ui_data = qwin;
 
-	qwin->showMaximized();
+	qGaimGetHandle()->addConversationWindow(qwin);
+
+	qGaimGetHandle()->getWidgetStack()->addWidget(qwin, qwin->getId());
+	qGaimGetHandle()->getWidgetStack()->raiseWidget(qwin->getId());
+
+	win->ui_data = qwin;
 }
 
 static void
 qGaimWindowDestroy(GaimWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
+
+	qGaimGetHandle()->removeConversationWindow(qwin);
 
 	win->ui_data = NULL;
 	delete qwin;
@@ -1070,7 +1092,9 @@ qGaimWindowRaise(GaimWindow *win)
 
 	qGaimGetHandle()->setLastActiveConvWindow(win);
 
-	qwin->raise();
+	gaim_debug(GAIM_DEBUG_MISC, "qGaimWindowRaise",
+			   "Raising window with ID %d\n", qwin->getId());
+	qGaimGetHandle()->getWidgetStack()->raiseWidget(qwin->getId());
 }
 
 static void
