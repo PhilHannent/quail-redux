@@ -1,3 +1,13 @@
+Fri Aug 01 15:50:35 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	* src/QGaimTabBar.cpp:
+	* src/QGaimTabBar.h:
+	* src/QGaimTabWidget.cpp:
+	* src/QGaimTabWidget.h:
+	  - Added typing notification (incoming only).
+
 Fri Aug 01 13:25:00 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* mkstuff.conf:

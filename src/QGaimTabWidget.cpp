@@ -24,3 +24,9 @@ QGaimTabWidget::setTabColor(int index, const QColor &color)
 {
 	((QGaimTabBar *)tabBar())->setTabColor(index, color);
 }
+
+int
+QGaimTabWidget::getLastId() const
+{
+	return ((QGaimTabBar *)tabBar())->getLastId();
+}

@@ -1,5 +1,6 @@
 #include "QGaimConvWindow.h"
 #include "QGaimConvButton.h"
+#include "QGaimTabBar.h"
 #include "QGaimTabWidget.h"
 #include "QGaim.h"
 #include "base.h"
@@ -107,6 +108,18 @@ QGaimConversation::updated(GaimConvUpdateType)
 {
 }
 
+void
+QGaimConversation::setTabId(int id)
+{
+	tabId = id;
+}
+
+int
+QGaimConversation::getTabId() const
+{
+	return tabId;
+}
+
 /**************************************************************************
  * QGaimChat
  **************************************************************************/
@@ -194,6 +207,46 @@ QGaimIm::write(const char *who, const char *message, size_t len,
 }
 
 void
+QGaimIm::updated(GaimConvUpdateType type)
+{
+	if (type == GAIM_CONV_UPDATE_TYPING ||
+		type == GAIM_CONV_UPDATE_UNSEEN)
+	{
+		QGaimConvWindow *qwin;
+		GaimWindow *win;
+		QColor color;
+
+		color = black;
+
+		if (gaim_im_get_typing_state(GAIM_IM(conv)) == GAIM_TYPING)
+		{
+			color.setRgb(0x46, 0xA0, 0x46);
+		}
+		else if (gaim_im_get_typing_state(GAIM_IM(conv)) == GAIM_TYPED)
+		{
+			color.setRgb(0xD1, 0x94, 0x0C);
+		}
+		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_NICK)
+		{
+			color.setRgb(0x31, 0x4E, 0x6C);
+		}
+		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
+		{
+			color.setRgb(0xDF, 0x42, 0x1E);
+		}
+
+		win = gaim_conversation_get_window(conv);
+		qwin = (QGaimConvWindow *)win->ui_data;
+
+		gaim_debug(GAIM_DEBUG_MISC, "QGaimConvWindow",
+				   "tab ID = %d\n", getTabId());
+		qwin->getTabs()->setTabColor(getTabId(), color);
+	}
+	else
+		QGaimConversation::updated(type);
+}
+
+void
 QGaimIm::buildInterface()
 {
 	QGridLayout *l = new QGridLayout(this, 2, 1, 5, 5);
@@ -248,7 +301,7 @@ QGaimIm::returnPressed()
  * QGaimConvWindow
  **************************************************************************/
 QGaimConvWindow::QGaimConvWindow(GaimWindow *win)
-	: QMainWindow(), win(win), pages(NULL)
+	: QMainWindow(), win(win)
 {
 	buildInterface();
 }
@@ -273,11 +326,6 @@ QGaimConvWindow::getGaimWindow() const
 void
 QGaimConvWindow::switchConversation(unsigned int index)
 {
-	GaimConversation *conv = gaim_window_get_conversation_at(win, index);
-
-	if (conv != NULL)
-		setCaption(gaim_conversation_get_title(conv));
-
 	tabs->setCurrentPage(index);
 }
 
@@ -295,9 +343,9 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 
 	conv->ui_data = qconv;
 
-	pages = g_list_append(pages, qconv);
-
 	tabs->addTab(qconv, gaim_conversation_get_title(conv));
+
+	qconv->setTabId(tabs->getLastId());
 
 	if (gaim_window_get_conversation_count(win) == 1)
 	{
@@ -310,7 +358,6 @@ void
 QGaimConvWindow::removeConversation(GaimConversation *conv)
 {
 	/* NOTE: This deletes conv->ui_data. Find out what to do here. */
-	pages = g_list_remove(pages, conv->ui_data);
 	tabs->removePage((QGaimConversation *)conv->ui_data);
 
 	conv->ui_data = NULL;
@@ -326,7 +373,25 @@ QGaimConvWindow::moveConversation(GaimConversation *conv,
 int
 QGaimConvWindow::getActiveIndex() const
 {
-	return g_list_index(pages, tabs->currentPage());
+	return tabs->getCurrentIndex();
+}
+
+QGaimTabWidget *
+QGaimConvWindow::getTabs() const
+{
+	return tabs;
+}
+
+void
+QGaimConvWindow::tabChanged(QWidget *widget)
+{
+	QGaimConversation *qconv = (QGaimConversation *)widget;
+	GaimConversation *conv = qconv->getGaimConversation();
+
+	gaim_conversation_set_unseen(conv, GAIM_UNSEEN_NONE);
+
+	if (conv != NULL)
+		setCaption(gaim_conversation_get_title(conv));
 }
 
 void
@@ -395,6 +460,9 @@ QGaimConvWindow::buildInterface()
 	setupToolbar();
 
 	tabs = new QGaimTabWidget(this, "conv tabs");
+
+	connect(tabs, SIGNAL(currentChanged(QWidget *)),
+			this, SLOT(tabChanged(QWidget *)));
 
 	setCentralWidget(tabs);
 }

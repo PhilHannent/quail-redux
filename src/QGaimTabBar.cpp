@@ -3,31 +3,10 @@
 #include <libgaim/debug.h>
 
 /**************************************************************************
- * QGaimTab
- **************************************************************************/
-/*
-QGaimTab::QGaimTab()
-{
-}
-
-void
-QGaimTab::setColor(const QColor &color)
-{
-	this->color = color;
-}
-
-QColor
-QGaimTab::getColor() const
-{
-	return color;
-}
-*/
-
-/**************************************************************************
  * QGaimTabBar
  **************************************************************************/
 QGaimTabBar::QGaimTabBar(QWidget *parent, const char *name)
-	: QTabBar(parent, name)
+	: QTabBar(parent, name), lastId(0)
 {
 }
 
@@ -65,6 +44,12 @@ QGaimTabBar::getCurrentIndex()
 	return tabList()->find(tab(currentTab()));
 }
 
+int
+QGaimTabBar::getLastId() const
+{
+	return lastId;
+}
+
 void
 QGaimTabBar::paintLabel(QPainter *p, const QRect &rect,
 						QTab *tab, bool hasFocus) const
@@ -88,20 +73,9 @@ QGaimTabBar::insertTab(QTab *tab, int index)
 	if (index == -1)
 		newIndex = tabList()->count();
 
-//	colors.insert(newIndex, black);
 	colors[newIndex] = black;
 
-//	tabs.insert(newIndex, tab);
-
-#if 0
-	newTab->color   = black;
-	newTab->label   = tab->text();
-	newTab->r       = tab->rect();
-	newTab->enabled = tab->isEnabled();
-	newTab->iconset = tab->iconSet();
-
-	delete tab;
-#endif
+	lastId = newIndex;
 
 	return QTabBar::insertTab(tab, index);
 }

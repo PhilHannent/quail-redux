@@ -6,19 +6,6 @@
 #include <qmap.h>
 #include <qtabbar.h>
 
-/*
-class QGaimTab : public QTab
-{
-	public:
-		QGaimTab();
-
-		void setColor(const QColor &color);
-		QColor getColor() const;
-
-		QColor color;
-};
-*/
-
 class QGaimTabBar : public QTabBar
 {
 	Q_OBJECT
@@ -32,6 +19,8 @@ class QGaimTabBar : public QTabBar
 		void setCurrentIndex(int index);
 		int getCurrentIndex();
 
+		int getLastId() const;
+
 		virtual int insertTab(QTab *tab, int index = -1);
 
 	protected:
@@ -40,6 +29,7 @@ class QGaimTabBar : public QTabBar
 
 	protected:
 		QMap<int, QColor> colors;
+		int lastId;
 //		QList<QTab *> tabs;
 };
 

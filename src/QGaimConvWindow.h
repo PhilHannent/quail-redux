@@ -35,10 +35,14 @@ class QGaimConversation : public QWidget
 
 		virtual void send() = 0;
 
+		void setTabId(int id);
+		int getTabId() const;
+
 	protected:
 		GaimConversation *conv;
 		QTextView *text;
 		QMultiLineEdit *entry;
+		int tabId;
 };
 
 class QGaimChat : public QGaimConversation
@@ -77,6 +81,8 @@ class QGaimIm : public QGaimConversation
 
 		void send();
 
+		virtual void updated(GaimConvUpdateType type);
+
 	protected:
 		virtual void buildInterface();
 
@@ -102,6 +108,11 @@ class QGaimConvWindow : public QMainWindow
 		void removeConversation(GaimConversation *conv);
 		void moveConversation(GaimConversation *conv, unsigned int newIndex);
 		int getActiveIndex() const;
+
+		QGaimTabWidget *getTabs() const;
+
+	protected slots:
+		void tabChanged(QWidget *widget);
 
 	protected:
 		virtual void destroy(bool destroyWindow = TRUE,
@@ -135,8 +146,6 @@ class QGaimConvWindow : public QMainWindow
 
 		QPopupMenu *userMenu;
 		QPopupMenu *formatMenu;
-
-		GList *pages;
 };
 
 GaimWindowUiOps *qGaimGetConvWindowUiOps();

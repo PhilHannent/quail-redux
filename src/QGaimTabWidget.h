@@ -14,6 +14,8 @@ class QGaimTabWidget : public QTabWidget
 		int getCurrentIndex() const;
 
 		void setTabColor(int index, const QColor &color);
+
+		int getLastId() const;
 };
 
 #endif /* _QGAIM_TAB_WIDGET_H_ */
