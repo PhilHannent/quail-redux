@@ -369,6 +369,12 @@ QGaimBListWindow::showAddBuddy(GaimGroup *group)
 }
 
 void
+QGaimBListWindow::showAddBuddy()
+{
+	showAddBuddy(NULL);
+}
+
+void
 QGaimBListWindow::showAddChat(GaimGroup *group)
 {
 	QGaimAddChatDialog *dialog;
@@ -401,6 +407,11 @@ QGaimBListWindow::showAddChat(GaimGroup *group)
 		dialog->setGroup(group->name);
 
 	dialog->showMaximized();
+}
+void
+QGaimBListWindow::showAddChat()
+{
+	showAddChat(NULL);
 }
 
 static void

@@ -283,7 +283,6 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node, QGaimPixmapSize size)
 					statusImage.width()  - emblemImage.width(),
 					statusImage.height() - emblemImage.height(),
 					emblemImage, statusImage);
-			//QGaimImageUtils::blendOnLower(5, 5, emblemImage, statusImage);
 		}
 	}
 
