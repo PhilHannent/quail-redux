@@ -20,11 +20,17 @@
  */
 #include "QGaimNotify.h"
 
+#include <libgaim/prefs.h>
+
 #include <qdialog.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qmessagebox.h>
 #include <qtextview.h>
+
+#include <opie/odevice.h>
+
+using namespace Opie;
 
 /**************************************************************************
  * UI operations
@@ -199,4 +205,77 @@ GaimNotifyUiOps *
 qGaimGetNotifyUiOps()
 {
 	return &notifyOps;
+}
+
+void
+qGaimNotifyBuzzer(void)
+{
+	if (!gaim_prefs_get_bool("/gaim/qpe/notify/use_buzzer"))
+		return;
+
+	ODevice::inst()->alarmSound();
+}
+
+void
+qGaimNotifyLedStart(void)
+{
+	if (!gaim_prefs_get_bool("/gaim/qpe/notify/use_led"))
+		return;
+
+	ODevice *device = ODevice::inst();
+
+	if (!device->ledList().isEmpty())
+	{
+		OLed led = (device->ledList().contains(Led_Mail)
+					? Led_Mail : device->ledList()[0]);
+
+		device->setLedState(led,
+							(device->ledStateList(led).contains(Led_BlinkSlow)
+							 ? Led_BlinkSlow : Led_On));
+	}
+}
+
+void
+qGaimNotifyLedStop(void)
+{
+	ODevice *device = ODevice::inst();
+
+	if (!device->ledList().isEmpty())
+	{
+		OLed led = (device->ledList().contains(Led_Mail)
+					? Led_Mail : device->ledList()[0]);
+
+		device->setLedState(led, Led_Off);
+	}
+}
+
+void
+qGaimNotifySound(void)
+{
+	if (!gaim_prefs_get_bool("/gaim/qpe/notify/use_sound"))
+		return;
+}
+
+void
+qGaimNotifyUser(void)
+{
+	qGaimNotifyBuzzer();
+	qGaimNotifyLedStart();
+	qGaimNotifySound();
+}
+
+void
+qGaimNotifyUserStop(void)
+{
+	qGaimNotifyLedStop();
+}
+
+void
+qGaimNotifyInit(void)
+{
+	gaim_prefs_add_none("/gaim/qpe/notify");
+	gaim_prefs_add_bool("/gaim/qpe/notify/incoming",   true);
+	gaim_prefs_add_bool("/gaim/qpe/notify/use_buzzer", false);
+	gaim_prefs_add_bool("/gaim/qpe/notify/use_led",    true);
+	gaim_prefs_add_bool("/gaim/qpe/notify/use_sound",  false);
 }

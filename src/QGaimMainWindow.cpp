@@ -59,6 +59,8 @@ qGaimPrefsInit(void)
 	gaim_prefs_add_bool("/gaim/qpe/blist/show_large_icons",
 						(QPEApplication::desktop()->width() >= 600));
 	gaim_prefs_add_bool("/gaim/qpe/blist/dim_idle_buddies",     true);
+
+	qGaimNotifyInit();
 }
 
 static void

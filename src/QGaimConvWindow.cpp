@@ -23,6 +23,7 @@
 #include "QGaimConvButton.h"
 #include "QGaimDialogs.h"
 #include "QGaimMultiLineEdit.h"
+#include "QGaimNotify.h"
 #include "QGaimProtocolUtils.h"
 #include "QGaimTabBar.h"
 #include "QGaimTabWidget.h"
@@ -292,6 +293,14 @@ QGaimConversation::updateTabIcon()
 	}
 }
 
+void
+QGaimConversation::notifyNewMessage()
+{
+	if (!gaim_prefs_get_bool("/gaim/qpe/notify/incoming"))
+		return;
+
+	qGaimNotifyUser();
+}
 
 /**************************************************************************
  * QGaimConvChat

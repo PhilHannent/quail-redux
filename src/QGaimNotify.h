@@ -25,4 +25,13 @@
 
 GaimNotifyUiOps *qGaimGetNotifyUiOps();
 
+void qGaimNotifyBuzzer(void);
+void qGaimNotifyLedStart(void);
+void qGaimNotifyLedStop(void);
+void qGaimNotifySound(void);
+void qGaimNotifyUser(void);
+void qGaimNotifyUserStop(void);
+
+void qGaimNotifyInit(void);
+
 #endif /* _QGAIM_NOTIFY_H_ */

@@ -65,6 +65,8 @@ class QGaimConversation : public QWidget
 
 		void updateTabIcon();
 
+		void notifyNewMessage();
+
 	protected:
 		GaimConversation *conv;
 		QTextView *text;

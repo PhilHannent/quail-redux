@@ -1,3 +1,12 @@
+Sat Nov 15 23:56:54 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	* src/QGaimMainWindow.cpp:
+	* src/QGaimNotify.cpp:
+	* src/QGaimNotify.h:
+	  - Added the base functionality for message notification.
+
 Sat Nov 15 22:16:48 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimPrefsDialog.cpp:
