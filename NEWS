@@ -4,9 +4,14 @@ Gaim for Qtopia Release Notes
 version 0.4:
 	* Added a preferences dialog.
 	* Added support for showing group numbers in the buddy list.
+	* Added bigger toolbar icons for the Zaurus C7x0.
 	* Fixed a bug where the Join/Open Chat button did nothing if no node
 	  was selected.
 	* Closing the window on a conversation no longer closes Gaim.
+	* Groups in the buddy list are now bold.
+	* Idle times are now on the far right of the buddy list.
+	* The ellipsis point in the accounts drop-down box is now
+	  dependent on the width of the box.
 
 version 0.3 (Saturday, 12-October-2003):
 	* Added contact support, where multiple buddies belonging to the
