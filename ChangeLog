@@ -1,3 +1,9 @@
+Thu Jun 26 18:13:21 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Protocol icons are now shown in the buddy list.
+
 Thu Jun 26 17:32:58 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

@@ -20,12 +20,13 @@
 QGaimBListItem::QGaimBListItem(QListView *parent, GaimBlistNode *node)
 	: QListViewItem(parent), node(node)
 {
-	
+	init();
 }
 
 QGaimBListItem::QGaimBListItem(QListViewItem *parent, GaimBlistNode *node)
 	: QListViewItem(parent), node(node)
 {
+	init();
 }
 
 QGaimBListItem::~QGaimBListItem()
@@ -45,6 +46,58 @@ QGaimBListItem::paintBranches(QPainter *p, const QColorGroup &cg,
 	p->fillRect(0, 0, width, height, QBrush(cg.base()));
 }
 
+void
+QGaimBListItem::init()
+{
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	{
+		struct buddy *buddy = (struct buddy *)node;
+
+		QPixmap *pixmap = getProtocolIcon(buddy->account);
+
+		if (pixmap != NULL)
+		{
+			setPixmap(0, *pixmap);
+			delete pixmap;
+		}
+	}
+}
+
+QPixmap *
+QGaimBListItem::getProtocolIcon(GaimAccount *account)
+{
+	GaimPlugin *prpl;
+	GaimPluginProtocolInfo *prpl_info = NULL;
+	const char *protoname = NULL;
+	QString path;
+
+	prpl = gaim_find_prpl(gaim_account_get_protocol(account));
+
+	if (prpl != NULL)
+	{
+		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+
+		if (prpl_info->list_icon != NULL)
+			protoname = prpl_info->list_icon(account, NULL);
+	}
+
+	if (protoname == NULL)
+		return NULL;
+
+	path  = DATA_PREFIX "images/protocols/small/";
+	path += protoname;
+	path += ".png";
+
+	QPixmap *pixmap = new QPixmap();
+
+	if (!pixmap->load(path))
+	{
+		delete pixmap;
+		return NULL;
+	}
+
+	return pixmap;
+}
 
 /**************************************************************************
  * QGaimBListWindow

@@ -26,6 +26,10 @@ class QGaimBListItem : public QListViewItem
 		void paintBranches(QPainter *p, const QColorGroup &cg,
 						   int width, int y, int height, GUIStyle s);
 
+	protected:
+		void init();
+		QPixmap *getProtocolIcon(GaimAccount *account);
+
 	private:
 		GaimBlistNode *node;
 };
