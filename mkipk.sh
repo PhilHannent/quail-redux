@@ -33,8 +33,8 @@ mkdir -p $TMPDIR/opt/QtPalmtop/apps/Applications
 mkdir -p $TMPDIR/opt/QtPalmtop/bin
 mkdir -p $TMPDIR/opt/QtPalmtop/pics
 mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim
-mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/protocols/small
-mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/status/small
+mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/protocols
+mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/status
 
 $STRIP gaim
 
@@ -42,8 +42,8 @@ cp gaim.desktop $TMPDIR/opt/QtPalmtop/apps/Applications
 cp gaim         $TMPDIR/opt/QtPalmtop/bin
 cp gaim.png     $TMPDIR/opt/QtPalmtop/pics
 cp data/images/*.png $TMPDIR/opt/QtPalmtop/pics/gaim
-cp data/images/protocols/small/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/protocols/small
-cp data/images/status/small/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/status/small
+cp data/images/protocols/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/protocols
+cp data/images/status/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/status
 
 for LANG in $LANGUAGES
 do
@@ -57,7 +57,7 @@ done
 cat > $TMPDIR/CONTROL/control <<END
 Package: ${PACKAGE}
 Version: ${VER}-${RELEASE}
-Depends: qpe-base (\$QPE_VERSION), libgaim >= 0.67cvs-20030802, libglib2.0 | libglib2.0-0 | glib-2.0
+Depends: qpe-base (\$QPE_VERSION), libgaim >= 0.71
 Priority: optional
 Section: Applications
 Maintainer: Christian Hammond <chipx86@gnupdate.org>
