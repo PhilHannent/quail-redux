@@ -1,3 +1,8 @@
+Sun Jul 27 02:10:54 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	  - Oh yeah, make qpe-gaim compile again.
+
 Sun Jul 27 02:10:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

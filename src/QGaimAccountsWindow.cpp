@@ -367,7 +367,6 @@ static GaimConnectionUiOps connUiOps =
 {
 	qGaimConnConnectProgress,
 	qGaimConnConnected,
-	NULL,
 	qGaimConnDisconnected,
 	qGaimConnNotice
 };
