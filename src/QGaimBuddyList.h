@@ -95,6 +95,8 @@ class QGaimBuddyList : public QListView
 		void populateGroupMenu(GaimGroup *group, QPopupMenu *menu);
 
 	protected slots:
+		void resizeEvent(QResizeEvent *event);
+
 		void nodeExpandedSlot(QListViewItem *item);
 		void nodeCollapsedSlot(QListViewItem *item);
 		void collapseContactSlot();

@@ -1,3 +1,9 @@
+Sun Nov 02 17:06:14 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	  - Idle times are now aligned on the far right of the buddy list
+	    on all resolutions.
+
 Sun Nov 02 16:53:09 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:

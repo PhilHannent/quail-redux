@@ -722,6 +722,13 @@ QGaimBuddyList::populateGroupMenu(GaimGroup *, QPopupMenu *menu)
 }
 
 void
+QGaimBuddyList::resizeEvent(QResizeEvent *)
+{
+	setColumnWidth(1, width() / 4);
+	setColumnWidth(0, width() - 20 - columnWidth(1));
+}
+
+void
 QGaimBuddyList::nodeExpandedSlot(QListViewItem *_item)
 {
 	QGaimBListItem *item = (QGaimBListItem *)_item;
