@@ -83,6 +83,7 @@ DISTFILES = \
 	data/images/away.png \
 	data/images/blist.png \
 	data/images/block.png \
+	data/images/chat.png \
 	data/images/close_conv.png \
 	data/images/connect.png \
 	data/images/conversations.png \

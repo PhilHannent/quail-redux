@@ -101,7 +101,15 @@ QGaimBListWindow::buildToolBar()
 			this, SLOT(sendIm()));
 
 	/* Chat */
-	/* TODO */
+	a = new QAction(tr("Open Chat"),
+					QIconSet(Resource::loadPixmap("gaim/chat")),
+					QString::null, 0, this, 0);
+	chatButton = a;
+	a->addTo(toolbar);
+	a->setEnabled(false);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(openChat()));
 
 	/* Get User Info */
 	a = new QAction(tr("Get User Information"),
@@ -117,6 +125,8 @@ QGaimBListWindow::buildToolBar()
 	button = new QToolButton(toolbar, "add");
 	button->setAutoRaise(true);
 	button->setPixmap(Resource::loadPixmap("gaim/add"));
+	button->setEnabled(false);
+	addButton = button;
 
 	addMenu = new QPopupMenu(button);
 	button->setPopup(addMenu);
@@ -128,10 +138,19 @@ QGaimBListWindow::buildToolBar()
 					QString::null, 0, this, 0);
 	addBuddyButton = a;
 	a->addTo(addMenu);
-	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(showAddBuddy()));
+
+	/* Add Chat */
+	a = new QAction(tr("Add Chat"),
+					QIconSet(Resource::loadPixmap("gaim/chat")),
+					QString::null, 0, this, 0);
+	addChatButton = a;
+	a->addTo(addMenu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(showAddChat()));
 
 	/* Add Group */
 	a = new QAction(tr("Add Group"),
@@ -139,7 +158,6 @@ QGaimBListWindow::buildToolBar()
 					QString::null, 0, this, 0);
 	addGroupButton = a;
 	a->addTo(addMenu);
-	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(showAddGroup()));
@@ -223,6 +241,8 @@ QGaimBListWindow::getGaimBlist() const
 void
 QGaimBListWindow::accountSignedOn(GaimAccount *)
 {
+	chatButton->setEnabled(true);
+	addButton->setEnabled(true);
 	addBuddyButton->setEnabled(true);
 	addGroupButton->setEnabled(true);
 }
@@ -232,9 +252,10 @@ QGaimBListWindow::accountSignedOff(GaimAccount *)
 {
 	if (gaim_connections_get_all() == NULL)
 	{
-		addBuddyButton->setEnabled(false);
+		imButton->setEnabled(false);
+		chatButton->setEnabled(false);
+		addButton->setEnabled(false);
 		removeButton->setEnabled(false);
-		addGroupButton->setEnabled(false);
 	}
 }
 
@@ -317,6 +338,11 @@ QGaimBListWindow::showAddBuddy()
 		dialog->setGroup(group->name);
 
 	dialog->showMaximized();
+}
+
+void
+QGaimBListWindow::showAddChat()
+{
 }
 
 static void
@@ -510,6 +536,12 @@ QGaimBListWindow::sendIm()
 
 		gaim_window_switch_conversation(win, gaim_conversation_get_index(conv));
 	}
+}
+
+void
+QGaimBListWindow::openChat()
+{
+	
 }
 
 

@@ -1,3 +1,10 @@
+Thu Aug 14 02:41:49 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Added the buttons and menu items for joining and adding chats.
+	    No implementation yet.
+
 Thu Aug 14 02:22:24 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* data/images/send-im.png:

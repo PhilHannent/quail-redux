@@ -60,6 +60,7 @@ class QGaimBListWindow : public QMainWindow
 		void chat();
 
 		void showAddBuddy();
+		void showAddChat();
 		void showAddGroup();
 		void showRemoveBuddy();
 		void showOfflineBuddies(bool on);
@@ -67,6 +68,7 @@ class QGaimBListWindow : public QMainWindow
 		void showAccountsWindow();
 		void blistToggled(bool state);
 		void sendIm();
+		void openChat();
 
 	private:
 		void buildInterface();
@@ -75,12 +77,15 @@ class QGaimBListWindow : public QMainWindow
 	private:
 		QGaimBuddyList *buddylist;
 
+		QToolButton *addButton;
+
 		QAction *imButton;
 		QAction *chatButton;
 		QAction *infoButton;
 		QAction *awayButton;
 
 		QAction *addBuddyButton;
+		QAction *addChatButton;
 		QAction *addGroupButton;
 		QAction *removeButton;
 
