@@ -35,17 +35,22 @@ DISTFILES = \
 	data/images/add.png \
 	data/images/away.png \
 	data/images/blist.png \
+	data/images/block.png \
+	data/images/close_conv.png \
 	data/images/connect.png \
 	data/images/conversations.png \
 	data/images/delete.png \
 	data/images/disconnect.png \
 	data/images/edit.png \
+	data/images/formatting.png \
 	data/images/info.png \
 	data/images/new.png \
 	data/images/new-group.png \
 	data/images/prefs.png \
 	data/images/remove.png \
 	data/images/send-im.png \
+	data/images/smileys.png \
+	data/images/warn.png \
 	ChangeLog \
 	README \
 	mkstuff.conf \

@@ -1,3 +1,14 @@
+Tue Jul 15 00:32:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* data/images/block.png:
+	* data/images/close_conv.png:
+	* data/images/formatting.png:
+	* data/images/smileys.png:
+	* data/images/warn.png:
+	* gaim.pro:
+	  - Added block, close conversation, formatting, smileys, and warn
+	    button images.
+
 Tue Jul 15 00:24:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
