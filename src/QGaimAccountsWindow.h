@@ -9,9 +9,11 @@
 #include <qlistview.h>
 
 class QAction;
+class QGaimConnectionMeters;
 class QPixmap;
 class QToolBar;
 class QToolButton;
+class QVBox;
 
 class QGaimAccountListItem : public QListViewItem
 {
@@ -36,6 +38,8 @@ class QGaimAccountsWindow : public QMainWindow
 	public:
 		QGaimAccountsWindow();
 		~QGaimAccountsWindow();
+
+		QGaimConnectionMeters *getMeters() const;
 
 	private:
 		void buildInterface();
@@ -63,6 +67,10 @@ class QGaimAccountsWindow : public QMainWindow
 		QAction *disconnectButton;
 
 		QListView *accountsView;
+
+		QGaimConnectionMeters *meters;
 };
+
+GaimConnectionUiOps *qGaimGetConnectionUiOps();
 
 #endif /* _QGAIM_ACCOUNTS_DIALOG_H_ */

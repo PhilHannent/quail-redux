@@ -1,10 +1,12 @@
 #ifndef _QGAIM_CONNECTION_METER_H_
 #define _QGAIM_CONNECTION_METER_H_
 
+#include <qhbox.h>
 #include <qlist.h>
 #include <qprogressbar.h>
-#include <qvariant.h>
 #include <qwidget.h>
+#include <qvariant.h>
+#include <qvbox.h>
 
 #include <libgaim/connection.h>
 
@@ -22,7 +24,7 @@ class QGaimConnectionProgressBar : public QProgressBar
 		bool setIndicator(QString &str, int progress, int totalSteps);
 };
 
-class QGaimConnectionMeter : public QWidget
+class QGaimConnectionMeter : public QHBox
 {
 	Q_OBJECT
 
@@ -31,21 +33,16 @@ class QGaimConnectionMeter : public QWidget
 							 const char *name = NULL, WFlags fl = 0);
 		virtual ~QGaimConnectionMeter();
 
-		void setText(QString &str);
-		void setTotalSteps(int totalSteps);
-		void setProgress(int progress);
+		void update(QString str, int totalSteps, int progress);
 
 		GaimConnection *getConnection() const;
 
 	private:
 		QGaimConnectionProgressBar *progressBar;
 		GaimConnection *gc;
-		QString str;
-		int currentProgress;
-		int totalSteps;
 };
 
-class QGaimConnectionMeters : public QWidget
+class QGaimConnectionMeters : public QVBox
 {
 	Q_OBJECT
 
@@ -55,11 +52,13 @@ class QGaimConnectionMeters : public QWidget
 		virtual ~QGaimConnectionMeters();
 
 		void addMeter(QGaimConnectionMeter *meter);
-		void addConnection(GaimConnection *gc);
+		void removeMeter(QGaimConnectionMeter *meter);
+
+		QGaimConnectionMeter *addConnection(GaimConnection *gc);
+
 		QGaimConnectionMeter *findMeter(GaimConnection *gc);
 
 	public:
-		QVBox *vbox;
 		QList<QGaimConnectionMeter> meters;
 };
 

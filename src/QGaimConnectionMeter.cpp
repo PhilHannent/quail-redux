@@ -1,9 +1,13 @@
 #include "QGaimConnectionMeter.h"
 
-#include <qlabel.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <libgaim/debug.h>
 
+#include <qpushbutton.h>
+#include <qlabel.h>
+
+/**************************************************************************
+ * QGaimConnectionProgressBar
+ **************************************************************************/
 QGaimConnectionProgressBar::QGaimConnectionProgressBar(QWidget *parent,
 													   const char *name,
 													   WFlags fl)
@@ -20,21 +24,21 @@ QGaimConnectionProgressBar::setIndicator(QString &str, int progress,
 }
 
 
+/**************************************************************************
+ * QGaimConnectionMeter
+ **************************************************************************/
 QGaimConnectionMeter::QGaimConnectionMeter(GaimConnection *gc,
 										   QWidget *parent,
 										   const char *name, WFlags fl)
-	: QWidget(parent, name, fl), gc(gc), currentProgress(0), totalSteps(0)
+	: QHBox(parent, name, fl), gc(gc)
 {
-	QHBox *box;
 	QLabel *label;
 	GaimAccount *account;
 
 	account = gaim_connection_get_account(gc);
 
-	box = new QHBox(this);
-
-	label = new QLabel(gaim_account_get_username(account), box);
-	progressBar = new QGaimConnectionProgressBar(box);
+	label = new QLabel(gaim_account_get_username(account), this);
+	progressBar = new QGaimConnectionProgressBar(this);
 }
 
 QGaimConnectionMeter::~QGaimConnectionMeter()
@@ -42,27 +46,14 @@ QGaimConnectionMeter::~QGaimConnectionMeter()
 }
 
 void
-QGaimConnectionMeter::setText(QString &str)
+QGaimConnectionMeter::update(QString str, int progress, int totalSteps)
 {
-	this->str = str;
+	if (progress == 0)
+		progressBar->setTotalSteps(totalSteps);
 
-	progressBar->setIndicator(str, currentProgress, totalSteps);
-}
+	progressBar->setProgress(progress);
 
-void
-QGaimConnectionMeter::setTotalSteps(int totalSteps)
-{
-	this->totalSteps = totalSteps;
-
-	progressBar->setIndicator(str, currentProgress, totalSteps);
-}
-
-void
-QGaimConnectionMeter::setProgress(int progress)
-{
-	this->currentProgress = progress;
-
-	progressBar->setIndicator(str, progress, totalSteps);
+//	progressBar->setIndicator(str, progress, totalSteps);
 }
 
 GaimConnection *
@@ -72,10 +63,14 @@ QGaimConnectionMeter::getConnection() const
 }
 
 
+/**************************************************************************
+ * QGaimConnectionMeters
+ **************************************************************************/
 QGaimConnectionMeters::QGaimConnectionMeters(QWidget *parent,
 											 const char *name, WFlags fl)
-	: QWidget(parent, name, fl)
+	: QVBox(parent, name, fl)
 {
+	meters.setAutoDelete(true);
 }
 
 QGaimConnectionMeters::~QGaimConnectionMeters()
@@ -85,13 +80,31 @@ QGaimConnectionMeters::~QGaimConnectionMeters()
 void
 QGaimConnectionMeters::addMeter(QGaimConnectionMeter *meter)
 {
+	gaim_debug(GAIM_DEBUG_INFO, "QGaimConnectionMeters",
+			   "Adding a meter\n");
 	meters.append(meter);
+
+	meter->show();
 }
 
 void
+QGaimConnectionMeters::removeMeter(QGaimConnectionMeter *meter)
+{
+	gaim_debug(GAIM_DEBUG_INFO, "QGaimConnectionMeters",
+			   "Removing a meter\n");
+	meters.remove(meter);
+}
+
+QGaimConnectionMeter *
 QGaimConnectionMeters::addConnection(GaimConnection *gc)
 {
-	addMeter(new QGaimConnectionMeter(gc, this));
+	QGaimConnectionMeter *meter;
+
+	meter = new QGaimConnectionMeter(gc, this);
+
+	addMeter(meter);
+
+	return meter;
 }
 
 QGaimConnectionMeter *

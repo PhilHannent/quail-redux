@@ -40,6 +40,7 @@ QGaim::init()
 	gaim_set_debug_ui_ops(qGaimGetDebugUiOps());
 	gaim_set_blist_ui_ops(qGaimGetBlistUiOps());
 	gaim_set_win_ui_ops(qGaimGetConvWindowUiOps());
+	gaim_set_connection_ui_ops(qGaimGetConnectionUiOps());
 
 	gaim_prefs_init();
 	gaim_conversation_init();

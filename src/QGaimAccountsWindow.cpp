@@ -1,4 +1,5 @@
 #include "QGaimAccountsWindow.h"
+#include "QGaimConnectionMeter.h"
 #include "QGaimConvButton.h"
 #include "QGaim.h"
 #include "base.h"
@@ -7,6 +8,7 @@
 
 #include <qpe/resource.h>
 #include <qaction.h>
+#include <qvbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlistview.h>
@@ -56,6 +58,7 @@ QGaimAccountsWindow::QGaimAccountsWindow()
 	: QMainWindow()
 {
 	buildInterface();
+
 	loadAccounts();
 }
 
@@ -64,14 +67,26 @@ QGaimAccountsWindow::~QGaimAccountsWindow()
 	delete accountsView;
 }
 
+QGaimConnectionMeters *
+QGaimAccountsWindow::getMeters() const
+{
+	return meters;
+}
+
 void
 QGaimAccountsWindow::buildInterface()
 {
+	QVBox *vbox;
+
 	setCaption(tr("Gaim - Accounts"));
 
 	setupToolbar();
 
-	accountsView = new QListView(this, "AccountsView");
+	/* Create the main vbox */
+	vbox = new QVBox(this);
+
+	/* Create the accounts view */
+	accountsView = new QListView(vbox, "AccountsView");
 	accountsView->addColumn(tr("Screenname"), 160);
 	accountsView->addColumn(tr("Protocol"), -1);
 	accountsView->setAllColumnsShowFocus(true);
@@ -79,7 +94,10 @@ QGaimAccountsWindow::buildInterface()
 	connect(accountsView, SIGNAL(selectionChanged(QListViewItem *)),
 			this, SLOT(accountSelected(QListViewItem *)));
 
-	setCentralWidget(accountsView);
+	/* Create the connection meters box. */
+	meters = new QGaimConnectionMeters(vbox);
+
+	setCentralWidget(vbox);
 }
 
 
@@ -91,10 +109,10 @@ QGaimAccountsWindow::setupToolbar()
 	QPixmap *pixmap;
 	QToolButton *button;
 
-	setToolBarsMovable(FALSE);
+	setToolBarsMovable(false);
 
 	toolbar = new QToolBar(this);
-	toolbar->setHorizontalStretchable(TRUE);
+	toolbar->setHorizontalStretchable(true);
 
 	/* New */
 	a = new QAction(tr("New Account"),
@@ -287,4 +305,75 @@ QGaimAccountsWindow::getProtocolIcon(GaimAccount *account)
 	}
 
 	return pixmap;
+}
+
+static void
+qGaimConnConnectProgress(GaimConnection *gc, const char *text,
+						 size_t step, size_t step_count)
+{
+	QGaim *gaim = qGaimGetHandle();
+	QGaimAccountsWindow *accountsWin = gaim->getAccountsWindow();
+	QGaimConnectionMeters *meters = accountsWin->getMeters();
+	QGaimConnectionMeter *meter;
+
+	meter = meters->findMeter(gc);
+
+	if (meter == NULL)
+		meter = meters->addConnection(gc);
+
+	meter->update(QString(text), step, step_count);
+}
+
+static void
+qGaimConnConnected(GaimConnection *gc)
+{
+	QGaim *gaim = qGaimGetHandle();
+	QGaimAccountsWindow *accountsWin = gaim->getAccountsWindow();
+	QGaimConnectionMeters *meters = accountsWin->getMeters();
+	QGaimConnectionMeter *meter;
+
+	meter = meters->findMeter(gc);
+
+	if (meter != NULL)
+		meters->removeMeter(meter);
+}
+
+static void
+qGaimConnDisconnected(GaimConnection *gc, const char *reason)
+{
+	QGaim *gaim = qGaimGetHandle();
+	QGaimAccountsWindow *accountsWin = gaim->getAccountsWindow();
+	QGaimConnectionMeters *meters = accountsWin->getMeters();
+	QGaimConnectionMeter *meter;
+
+	meter = meters->findMeter(gc);
+
+	if (meter != NULL)
+		meters->removeMeter(meter);
+
+	/* XXX */
+	reason = NULL;
+}
+
+static void
+qGaimConnNotice(GaimConnection *gc, const char *text)
+{
+	/* XXX */
+	gc = NULL;
+	text = NULL;
+}
+
+static GaimConnectionUiOps connUiOps =
+{
+	qGaimConnConnectProgress,
+	qGaimConnConnected,
+	NULL,
+	qGaimConnDisconnected,
+	qGaimConnNotice
+};
+
+GaimConnectionUiOps *
+qGaimGetConnectionUiOps()
+{
+	return &connUiOps;
 }
