@@ -211,7 +211,9 @@ void
 QGaimAccountsWindow::connectToAccount()
 {
 	QGaimAccountListItem *item;
-	
+
+	connectButton->setEnabled(false);
+
 	item = (QGaimAccountListItem *)accountsView->selectedItem();
 
 	gaim_account_connect(item->getAccount());
@@ -221,7 +223,7 @@ void
 QGaimAccountsWindow::disconnectFromAccount()
 {
 	QGaimAccountListItem *item;
-	
+
 	item = (QGaimAccountListItem *)accountsView->selectedItem();
 
 	gaim_account_disconnect(item->getAccount());
