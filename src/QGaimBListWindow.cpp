@@ -21,6 +21,7 @@
 #include "QGaimBListWindow.h"
 #include "QGaimConvButton.h"
 #include "QGaimConvWindow.h"
+#include "QGaimDialogs.h"
 #include "QGaimProtocolUtils.h"
 #include "QGaim.h"
 #include "base.h"
@@ -335,9 +336,11 @@ QGaimBListWindow::buildToolBar()
 
 	toolbar->addSeparator();
 
-	/* Add Buddy/Group */
+	/* Add Buddy */
 	button = newButton(toolbar, DATA_PREFIX "images/add.png");
-	button->setEnabled(false);
+
+	connect(button, SIGNAL(clicked()),
+			this, SLOT(showAddBuddy()));
 
 	/* New Group */
 	button = newButton(toolbar, DATA_PREFIX "images/new-group.png");
@@ -421,6 +424,15 @@ QGaimBListWindow::im()
 void
 QGaimBListWindow::chat()
 {
+}
+
+void
+QGaimBListWindow::showAddBuddy()
+{
+	QGaimAddBuddyDialog *dialog;
+
+	dialog = new QGaimAddBuddyDialog(this);
+	dialog->showMaximized();
 }
 
 void

@@ -1,3 +1,15 @@
+Sat Aug 02 00:59:17 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountBox.cpp:
+	* src/QGaimAccountBox.h:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	* src/QGaimDialogs.cpp:
+	* src/QGaimDialogs.h:
+	* gaim.pro:
+	  - Added an account combobox, and the initial UI of the Add Buddy
+	    dialog.
+
 Fri Aug 01 22:22:09 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimNotify.cpp:

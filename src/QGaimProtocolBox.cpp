@@ -53,9 +53,6 @@ QGaimProtocolBox::setCurrentProtocol(GaimProtocol protocol)
 		plugin = (GaimPlugin *)p->data;
 		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 
-		gaim_debug(GAIM_DEBUG_MISC, "QGaimProtocolBox",
-				   "%d, %d\n", prpl_info->protocol, protocol);
-
 		if (prpl_info->protocol == protocol)
 		{
 			setCurrentItem(i);

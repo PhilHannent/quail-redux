@@ -4,6 +4,7 @@ VERSION  = 0.1
 CONFIG   = qt warn_on debug
 
 HEADERS = \
+	src/QGaimAccountBox.h \
 	src/QGaimAccountEditor.h \
 	src/QGaimAccountsWindow.h \
 	src/QGaimBListWindow.h \
@@ -11,6 +12,7 @@ HEADERS = \
 	src/QGaimConvButton.h \
 	src/QGaimConvWindow.h \
 	src/QGaimDebugWindow.h \
+	src/QGaimDialogs.h \
 	src/QGaimMultiLineEdit.h \
 	src/QGaimNotify.h \
 	src/QGaimProtocolBox.h \
@@ -22,6 +24,7 @@ HEADERS = \
 
 
 SOURCES = \
+	src/QGaimAccountBox.cpp \
 	src/QGaimAccountEditor.cpp \
 	src/QGaimAccountsWindow.cpp \
 	src/QGaimBListWindow.cpp \
@@ -29,6 +32,7 @@ SOURCES = \
 	src/QGaimConvButton.cpp \
 	src/QGaimConvWindow.cpp \
 	src/QGaimDebugWindow.cpp \
+	src/QGaimDialogs.cpp \
 	src/QGaimMultiLineEdit.cpp \
 	src/QGaimNotify.cpp \
 	src/QGaimProtocolBox.cpp \
