@@ -116,8 +116,9 @@ QGaimAccountEditor::buildTabs()
 	{
 		widget = buildProtocolTab();
 
-		tabs->addTab(widget, QGaimProtocolUtils::getProtocolIcon(plugin),
-					 plugin->info->name);
+		tabs->addTab(widget,
+			QGaimProtocolUtils::getProtocolIcon(plugin, QGAIM_PIXMAP_MENU),
+			plugin->info->name);
 
 		tabList.append(widget);
 	}

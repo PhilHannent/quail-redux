@@ -244,28 +244,36 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
 	if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
 		((GaimBuddy *)node)->present == GAIM_BUDDY_SIGNING_ON)
 	{
-		statusImage = Resource::loadImage("gaim/status/small/login");
+		statusImage = Resource::loadImage("gaim/status/login");
 	}
 	else if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
 			 ((GaimBuddy *)node)->present == GAIM_BUDDY_SIGNING_OFF)
 	{
-		statusImage = Resource::loadImage("gaim/status/small/logout");
+		statusImage = Resource::loadImage("gaim/status/logout");
 	}
 	else
 	{
-		statusImage = Resource::loadImage("gaim/protocols/small/" +
+		statusImage = Resource::loadImage("gaim/protocols/" +
 										  QString(protoName));
 	}
+
+	statusImage = statusImage.smoothScale(16, 16);
 
 	if (statusImage.isNull())
 		return QPixmap();
 
 	if (se != NULL)
 	{
-		emblemImage = Resource::loadImage("gaim/status/small/" + QString(se));
+		emblemImage = Resource::loadImage("gaim/status/" + QString(se));
 
 		if (!emblemImage.isNull())
-			QGaimImageUtils::blendOnLower(5, 5, emblemImage, statusImage);
+		{
+			QGaimImageUtils::blendOnLower(
+					statusImage.width()  - emblemImage.width(),
+					statusImage.height() - emblemImage.height(),
+					emblemImage, statusImage);
+			//QGaimImageUtils::blendOnLower(5, 5, emblemImage, statusImage);
+		}
 	}
 
 	/* Grey idle buddies. */

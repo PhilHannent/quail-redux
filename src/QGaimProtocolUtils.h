@@ -27,17 +27,22 @@
 #include <libgaim/plugin.h>
 #include <libgaim/prpl.h>
 
+#include "QGaimImageUtils.h"
+
 class QPixmap;
 
 class QGaimProtocolUtils
 {
 	public:
 		static QString getProtocolName(GaimProtocol protocol);
-		static QPixmap getProtocolIcon(GaimAccount *account);
-		static QPixmap getProtocolIcon(const GaimPlugin *plugin);
+		static QPixmap getProtocolIcon(GaimAccount *account,
+				QGaimPixmapSize size = QGAIM_PIXMAP_SMALL);
+		static QPixmap getProtocolIcon(const GaimPlugin *plugin,
+				QGaimPixmapSize size = QGAIM_PIXMAP_SMALL);
 
 	protected:
-		static QPixmap getProtocolIcon(const QString &protoName);
+		static QPixmap getProtocolIcon(const QString &protoName,
+				QGaimPixmapSize size = QGAIM_PIXMAP_SMALL);
 };
 
 #endif /* _QGAIM_PROTOCOL_UTILS_H_ */

@@ -51,33 +51,33 @@ SOURCES = \
 
 
 DISTFILES = \
-	data/images/protocols/small/aim.png \
-	data/images/protocols/small/gadu-gadu.png \
-	data/images/protocols/small/icq.png \
-	data/images/protocols/small/irc.png \
-	data/images/protocols/small/jabber.png \
-	data/images/protocols/small/msn.png \
-	data/images/protocols/small/trepia.png \
-	data/images/protocols/small/yahoo.png \
-	data/images/status/small/activebuddy.png \
-	data/images/status/small/admin.png \
-	data/images/status/small/aol.png \
-	data/images/status/small/away.png \
-	data/images/status/small/dnd.png \
-	data/images/status/small/extendedaway.png \
-	data/images/status/small/female.png \
-	data/images/status/small/freeforchat.png \
-	data/images/status/small/game.png \
-	data/images/status/small/hiptop.png \
-	data/images/status/small/invisible.png \
-	data/images/status/small/login.png \
-	data/images/status/small/logout.png \
-	data/images/status/small/male.png \
-	data/images/status/small/na.png \
-	data/images/status/small/notauthorized.png \
-	data/images/status/small/occupied.png \
-	data/images/status/small/offline.png \
-	data/images/status/small/wireless.png \
+	data/images/protocols/aim.png \
+	data/images/protocols/gadu-gadu.png \
+	data/images/protocols/icq.png \
+	data/images/protocols/irc.png \
+	data/images/protocols/jabber.png \
+	data/images/protocols/msn.png \
+	data/images/protocols/trepia.png \
+	data/images/protocols/yahoo.png \
+	data/images/status/activebuddy.png \
+	data/images/status/admin.png \
+	data/images/status/aol.png \
+	data/images/status/away.png \
+	data/images/status/dnd.png \
+	data/images/status/extendedaway.png \
+	data/images/status/female.png \
+	data/images/status/freeforchat.png \
+	data/images/status/game.png \
+	data/images/status/hiptop.png \
+	data/images/status/invisible.png \
+	data/images/status/login.png \
+	data/images/status/logout.png \
+	data/images/status/male.png \
+	data/images/status/na.png \
+	data/images/status/notauthorized.png \
+	data/images/status/occupied.png \
+	data/images/status/offline.png \
+	data/images/status/wireless.png \
 	data/images/accounts.png \
 	data/images/add.png \
 	data/images/away.png \

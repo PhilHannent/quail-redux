@@ -1,3 +1,19 @@
+Mon Oct 06 00:04:34 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountsWidnow.cpp:
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimImageUtils.h:
+	* src/QGaimProtocolBox.cpp:
+	* src/QGaimProtocolUtils.cpp:
+	* src/QGaimProtocolUtils.h:
+	* gaim.pro:
+	  - The protocol icons and status icons are now their normal,
+	    larger versions, and are scaled down to the appropriate sizes
+	    in the buddy list, menus, drop-down boxes, tabs, and account
+	    editor. In time, we'll be able to have a Big List for
+	    users of larger resolution screens.
+
 Sun Oct 05 20:05:48 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaim.h:

@@ -26,6 +26,14 @@
 #include <qpixmap.h>
 #include <qimage.h>
 
+typedef enum
+{
+	QGAIM_PIXMAP_LARGE = 0,
+	QGAIM_PIXMAP_SMALL,
+	QGAIM_PIXMAP_MENU
+
+} QGaimPixmapSize;
+
 class QGaimImageUtils
 {
 	public:

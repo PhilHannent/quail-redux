@@ -26,7 +26,9 @@
 #include <qobject.h>
 #include <qpixmap.h>
 
-static QDict<QPixmap> pixmaps;
+static QDict<QPixmap> largePixmaps;
+static QDict<QPixmap> smallPixmaps;
+static QDict<QPixmap> menuPixmaps;
 
 QString
 QGaimProtocolUtils::getProtocolName(GaimProtocol protocol)
@@ -39,7 +41,8 @@ QGaimProtocolUtils::getProtocolName(GaimProtocol protocol)
 }
 
 QPixmap
-QGaimProtocolUtils::getProtocolIcon(const GaimPlugin *prpl)
+QGaimProtocolUtils::getProtocolIcon(const GaimPlugin *prpl,
+									QGaimPixmapSize size)
 {
 	GaimPluginProtocolInfo *prplInfo = NULL;
 
@@ -51,11 +54,12 @@ QGaimProtocolUtils::getProtocolIcon(const GaimPlugin *prpl)
 	if (prplInfo->list_icon == NULL)
 		return NULL;
 
-	return getProtocolIcon(prplInfo->list_icon(NULL, NULL));
+	return getProtocolIcon(prplInfo->list_icon(NULL, NULL), size);
 }
 
 QPixmap
-QGaimProtocolUtils::getProtocolIcon(GaimAccount *account)
+QGaimProtocolUtils::getProtocolIcon(GaimAccount *account,
+									QGaimPixmapSize size)
 {
 	GaimPluginProtocolInfo *prplInfo = NULL;
 	GaimPlugin *prpl;
@@ -73,25 +77,48 @@ QGaimProtocolUtils::getProtocolIcon(GaimAccount *account)
 	if (prplInfo->list_icon == NULL)
 		return NULL;
 
-	return getProtocolIcon(prplInfo->list_icon(account, NULL));
+	return getProtocolIcon(prplInfo->list_icon(account, NULL), size);
 }
 
 QPixmap
-QGaimProtocolUtils::getProtocolIcon(const QString &protoName)
+QGaimProtocolUtils::getProtocolIcon(const QString &protoName,
+									QGaimPixmapSize size)
 {
 	QPixmap *pixmap;
+	QDict<QPixmap> *pixmaps;
 
 	if (protoName.isEmpty())
 		return NULL;
 
-	pixmap = pixmaps.find(protoName);
+	if (size == QGAIM_PIXMAP_LARGE)
+		pixmaps = &largePixmaps;
+	else if (size == QGAIM_PIXMAP_SMALL)
+		pixmaps = &smallPixmaps;
+	else if (size == QGAIM_PIXMAP_MENU)
+		pixmaps = &menuPixmaps;
+
+	pixmap = pixmaps->find(protoName);
 
 	if (pixmap == NULL)
 	{
-		pixmap = new QPixmap(Resource::loadPixmap("gaim/protocols/small/" +
-												  protoName));
+		if (size == QGAIM_PIXMAP_LARGE)
+		{
+			pixmap = new QPixmap(Resource::loadPixmap("gaim/protocols/" +
+													  protoName));
+		}
+		else
+		{
+			QImage image = Resource::loadImage("gaim/protocols/" + protoName);
 
-		pixmaps.insert(protoName, pixmap);
+			pixmap = new QPixmap();
+
+			if (size == QGAIM_PIXMAP_SMALL)
+				pixmap->convertFromImage(image.smoothScale(16, 16));
+			else if (size == QGAIM_PIXMAP_MENU)
+				pixmap->convertFromImage(image.smoothScale(14, 14));
+		}
+
+		pixmaps->insert(protoName, pixmap);
 	}
 
 	return *pixmap;
