@@ -3,6 +3,7 @@
 *.ipk
 *.gz
 .*.swp
+.todo.*
 Makefile
 gaim
 temp*
