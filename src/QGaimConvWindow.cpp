@@ -570,41 +570,47 @@ QGaimConvIm::updated(GaimConvUpdateType type)
 		QGaimConvWindow *qwin;
 		GaimConvWindow *win;
 		QColor color;
+		/* XXX GaimTypingState typingState; */
+		int typingState;
+		GaimUnseenState unseenState;
 
 		color = black;
+		typingState = gaim_conv_im_get_typing_state(GAIM_CONV_IM(conv));
+		unseenState = gaim_conversation_get_unseen(conv);
 
-		if (gaim_conv_im_get_typing_state(GAIM_CONV_IM(conv)) == GAIM_TYPING)
+		if (typingState == GAIM_TYPING)
 		{
 			color.setRgb(0x46, 0xA0, 0x46);
 		}
-		else if (gaim_conv_im_get_typing_state(GAIM_CONV_IM(conv)) == GAIM_TYPED)
+		else if (typingState == GAIM_TYPED)
 		{
 			color.setRgb(0xD1, 0x94, 0x0C);
 		}
-		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_NICK)
+		else if (unseenState == GAIM_UNSEEN_NICK)
 		{
 			color.setRgb(0x31, 0x4E, 0x6C);
 		}
-		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_EVENT)
+		else if (unseenState == GAIM_UNSEEN_EVENT)
 		{
 			color.setRgb(0x86, 0x82, 0x72);
 		}
-		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
+		else if (unseenState == GAIM_UNSEEN_TEXT)
 		{
 			color.setRgb(0xDF, 0x42, 0x1E);
 		}
-		else
+		else if (notifying)
 		{
-			if (notifying)
-			{
-				qGaimNotifyUserStop();
-				notifying = false;
-			}
+			qGaimNotifyUserStop();
+			notifying = false;
 		}
 
 		win = gaim_conversation_get_window(conv);
 		qwin = (QGaimConvWindow *)win->ui_data;
 
+		gaim_debug_info("QGaimConvWindow",
+						"Setting tab color on tab ID %d (%s)\n",
+						getTabId(),
+						gaim_conversation_get_name(conv));
 		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
 
@@ -774,6 +780,11 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 					 QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
 					 gaim_conversation_get_title(conv));
 	}
+
+	gaim_debug_info("QGaimConvWindow",
+					"Assigning tab ID %d to %s\n",
+					tabs->getLastId(),
+					gaim_conversation_get_name(conv));
 
 	qconv->setTabId(tabs->getLastId());
 

@@ -1,3 +1,8 @@
+Wed Feb 18 16:09:45 PST 2004  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - Cleaned up some conditionals.
+
 Sat Feb 07 16:24:50 PST 2004  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:
