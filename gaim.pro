@@ -165,6 +165,8 @@ DEPENDPATH  += $(QPEDIR)/include
 LIBS        += \
 	-lqpe \
 	-lopie \
+	-ljpeg \
+	-lpng12 \
 	-lgaim \
 	-lglib-2.0 \
 	-lgmodule-2.0

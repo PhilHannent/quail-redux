@@ -1,3 +1,8 @@
+Tue Nov 11 23:32:48 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkipk.sh:
+	  - Updated to work with the new directory structure in data/images.
+
 Tue Nov 11 23:32:05 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:

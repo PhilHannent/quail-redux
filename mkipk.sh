@@ -33,6 +33,8 @@ mkdir -p $TMPDIR/opt/QtPalmtop/apps/Applications
 mkdir -p $TMPDIR/opt/QtPalmtop/bin
 mkdir -p $TMPDIR/opt/QtPalmtop/pics
 mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim
+mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/16x16
+mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/32x32
 mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/protocols
 mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/status
 
@@ -42,7 +44,8 @@ cp gaim.desktop $TMPDIR/opt/QtPalmtop/apps/Applications
 cp gaim         $TMPDIR/opt/QtPalmtop/bin
 cp gaim.png     $TMPDIR/opt/QtPalmtop/pics
 cp gaim.png     $TMPDIR/opt/QtPalmtop/pics/gaim
-cp data/images/*.png $TMPDIR/opt/QtPalmtop/pics/gaim
+cp data/images/16x16/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/16x16
+cp data/images/32x32/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/32x32
 cp data/images/protocols/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/protocols
 cp data/images/status/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/status
 
