@@ -272,11 +272,13 @@ QGaimPrefsDialog::accept()
 	wait.show();
 
 	blistPage->accept();
+#if 0
 	convPage->accept();
 	notifyPage->accept();
 	awayIdlePage->accept();
 	proxyPage->accept();
 	pluginPage->accept();
+#endif
 
 	QDialog::accept();
 

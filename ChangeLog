@@ -1,3 +1,8 @@
+Sat Nov 15 22:16:48 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimPrefsDialog.cpp:
+	  - Fixed a crash when closing the preferences dialog.
+
 Sat Nov 15 22:11:27 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimPrefsDialog.cpp:
