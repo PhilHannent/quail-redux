@@ -4,7 +4,19 @@ Gaim for Qtopia Release Notes
 version 0.5:
 	* Improved Jabber support (chats, SASL PLAIN).
 	* Fixed an MSN login bug.
+	* Fixed tab-related bugs where some tabs wouldn't close and were
+	  receiving the wrong event notifications.
 	* Yahoo chat should work for some people now, but it is still buggy.
+
+	Christian: This is a small bug fix release, but it should fix a couple
+		of annoying bugs people have run into. For those who have had
+		libpng issues, where buttons weren't being displayed, please
+		read the FAQ. This is now covered in it.
+
+		The next release will likely be the first big release in awhile.
+		I've been working on a status rewrite for Gaim, which will
+		naturally filter down into Gaim for Qtopia. You'll finally be
+		able to set Away and such.
 
 version 0.4 (Saturday, 22-November-2003):
 	* Added a preferences dialog.
