@@ -80,15 +80,8 @@ QGaimBListItem::init()
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
 		struct buddy *buddy = (struct buddy *)node;
-		QPixmap *pixmap;
 
-		pixmap = QGaimProtocolUtils::getProtocolIcon(buddy->account);
-
-		if (pixmap != NULL)
-		{
-			setPixmap(0, *pixmap);
-			delete pixmap;
-		}
+		setPixmap(0, QGaimProtocolUtils::getProtocolIcon(buddy->account));
 	}
 }
 

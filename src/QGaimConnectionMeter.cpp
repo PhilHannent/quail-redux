@@ -63,14 +63,7 @@ QGaimConnectionMeter::QGaimConnectionMeter(GaimConnection *gc,
 	account = gaim_connection_get_account(gc);
 
 	icon = new QLabel(this);
-
-	pixmap = QGaimProtocolUtils::getProtocolIcon(account);
-
-	if (pixmap != NULL)
-	{
-		icon->setPixmap(*pixmap);
-		delete pixmap;
-	}
+	icon->setPixmap(QGaimProtocolUtils::getProtocolIcon(account));
 
 	label = new QLabel(gaim_account_get_username(account), this);
 

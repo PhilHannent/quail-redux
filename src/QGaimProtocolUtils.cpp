@@ -35,7 +35,7 @@ QGaimProtocolUtils::getProtocolName(GaimProtocol protocol)
 			: QObject::tr("Unknown"));
 }
 
-QPixmap *
+QPixmap
 QGaimProtocolUtils::getProtocolIcon(const GaimPlugin *prpl)
 {
 	GaimPluginProtocolInfo *prplInfo = NULL;
@@ -51,7 +51,7 @@ QGaimProtocolUtils::getProtocolIcon(const GaimPlugin *prpl)
 	return getProtocolIcon(prplInfo->list_icon(NULL, NULL));
 }
 
-QPixmap *
+QPixmap
 QGaimProtocolUtils::getProtocolIcon(GaimAccount *account)
 {
 	GaimPluginProtocolInfo *prplInfo = NULL;
@@ -73,16 +73,11 @@ QGaimProtocolUtils::getProtocolIcon(GaimAccount *account)
 	return getProtocolIcon(prplInfo->list_icon(account, NULL));
 }
 
-QPixmap *
+QPixmap
 QGaimProtocolUtils::getProtocolIcon(const QString &protoName)
 {
-	QPixmap *pixmap;
-
 	if (protoName.isEmpty())
 		return NULL;
 
-	pixmap = new QPixmap(Resource::loadPixmap("gaim/protocols/small/" +
-											  protoName));
-
-	return pixmap;
+	return Resource::loadPixmap("gaim/protocols/small/" + protoName);
 }

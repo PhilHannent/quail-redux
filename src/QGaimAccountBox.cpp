@@ -133,7 +133,6 @@ QGaimAccountBox::buildMenu(GaimAccount *account)
 			tempAccount = gaim_connection_get_account(gc);
 		}
 
-		QPixmap *pixmap = QGaimProtocolUtils::getProtocolIcon(tempAccount);
 		QString str;
 
 		str = gaim_account_get_username(tempAccount);
@@ -144,13 +143,7 @@ QGaimAccountBox::buildMenu(GaimAccount *account)
 			str += "...";
 		}
 
-		if (pixmap == NULL)
-			insertItem(str);
-		else
-		{
-			insertItem(*pixmap, str);
-			delete pixmap;
-		}
+		insertItem(QGaimProtocolUtils::getProtocolIcon(tempAccount), str);
 
 		if (tempAccount == account)
 			setCurrentItem(count);

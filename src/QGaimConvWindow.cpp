@@ -476,7 +476,7 @@ void
 QGaimConvWindow::addConversation(GaimConversation *conv)
 {
 	QGaimConversation *qconv = NULL;
-	QPixmap *pixmap;
+	GaimAccount *account;
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QGaimIm(conv, tabs);
@@ -487,20 +487,10 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 
 	conv->ui_data = qconv;
 
-	pixmap = QGaimProtocolUtils::getProtocolIcon(
-			gaim_conversation_get_account(conv));
+	account = gaim_conversation_get_account(conv);
 
-	if (pixmap != NULL)
-	{
-		tabs->addTab(qconv, QIconSet(*pixmap),
-					 gaim_conversation_get_title(conv));
-
-		delete pixmap;
-	}
-	else
-	{
-		tabs->addTab(qconv, gaim_conversation_get_title(conv));
-	}
+	tabs->addTab(qconv, QGaimProtocolUtils::getProtocolIcon(account),
+				 gaim_conversation_get_title(conv));
 
 	qconv->setTabId(tabs->getLastId());
 

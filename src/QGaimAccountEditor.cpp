@@ -106,18 +106,10 @@ QGaimAccountEditor::buildTabs()
 
 	if (plugin != NULL)
 	{
-		QPixmap *pixmap = QGaimProtocolUtils::getProtocolIcon(plugin);
-
 		widget = buildProtocolTab();
 
-		if (pixmap == NULL)
-			tabs->addTab(widget, plugin->info->name);
-		else
-		{
-			tabs->addTab(widget, QIconSet(*pixmap), plugin->info->name);
-
-			delete pixmap;
-		}
+		tabs->addTab(widget, QGaimProtocolUtils::getProtocolIcon(plugin),
+					 plugin->info->name);
 
 		tabList.append(widget);
 	}

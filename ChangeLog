@@ -1,3 +1,18 @@
+Sun Aug 03 23:11:41 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountBox.cpp:
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimConnectionMeter.cpp:
+	* src/QGaimConvButton.cpp:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimProtocolBox.cpp:
+	* src/QGaimProtocolUtils.cpp:
+	* src/QGaimProtocolUtils.h:
+	  - The protocol icon loading functions now return a QPixmap instead
+	    of a pointer to a QPixmap.
+
 Sun Aug 03 23:04:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConnectionMeter.cpp:

@@ -33,11 +33,11 @@ class QGaimProtocolUtils
 {
 	public:
 		static QString getProtocolName(GaimProtocol protocol);
-		static QPixmap *getProtocolIcon(GaimAccount *account);
-		static QPixmap *getProtocolIcon(const GaimPlugin *plugin);
+		static QPixmap getProtocolIcon(GaimAccount *account);
+		static QPixmap getProtocolIcon(const GaimPlugin *plugin);
 
 	protected:
-		static QPixmap *getProtocolIcon(const QString &protoName);
+		static QPixmap getProtocolIcon(const QString &protoName);
 };
 
 #endif /* _QGAIM_PROTOCOL_UTILS_H_ */

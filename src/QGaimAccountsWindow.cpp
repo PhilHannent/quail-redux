@@ -241,22 +241,15 @@ QGaimAccountsWindow::loadAccounts()
 		 l != NULL;
 		 l = l->next, index++)
 	{
-		QPixmap *pixmap;
 		QGaimAccountListItem *item;
 		GaimAccount *account = (GaimAccount *)l->data;
 		GaimProtocol protocol = gaim_account_get_protocol(account);
 
-		pixmap = QGaimProtocolUtils::getProtocolIcon(account);
-
 		item = new QGaimAccountListItem(accountsView, index);
 		item->setText(0, gaim_account_get_username(account));
 		item->setText(1, QGaimProtocolUtils::getProtocolName(protocol));
+		item->setPixmap(0, QGaimProtocolUtils::getProtocolIcon(account));
 		item->setAccount(account);
-
-		if (pixmap != NULL) {
-			item->setPixmap(0, *pixmap);
-			delete pixmap;
-		}
 	}
 }
 

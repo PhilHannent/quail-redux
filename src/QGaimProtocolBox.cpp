@@ -77,15 +77,8 @@ QGaimProtocolBox::buildMenu(GaimProtocol protocol)
 		plugin = (GaimPlugin *)p->data;
 		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 
-		QPixmap *pixmap = QGaimProtocolUtils::getProtocolIcon(plugin);
-
-		if (pixmap == NULL)
-			insertItem(plugin->info->name);
-		else
-		{
-			insertItem(*pixmap, plugin->info->name);
-			delete pixmap;
-		}
+		insertItem(QGaimProtocolUtils::getProtocolIcon(plugin),
+				   plugin->info->name);
 
 		if (protocol == prpl_info->protocol)
 			setCurrentItem(count);
