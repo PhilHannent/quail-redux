@@ -18,6 +18,7 @@
 #include "QGaimBListWindow.h"
 #include "QGaimConvWindow.h"
 #include "QGaimDebugWindow.h"
+#include "base.h"
 
 static QGaim *gaim = NULL;
 
