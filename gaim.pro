@@ -100,6 +100,7 @@ DISTFILES = \
 	data/images/warn.png \
 	AUTHORS \
 	ChangeLog \
+	NEWS \
 	README \
 	gaim.png \
 	make.sh \

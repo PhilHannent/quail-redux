@@ -1,0 +1,18 @@
+Gaim for Qtopia Release Notes
+-----------------------------
+
+version 0.1 (Saturday, 9-August-2003):
+	* Initial release.
+
+	Christian: Wow, finally an actual release of Gaim for Qtopia! The
+		Gaim developers have spent the past 10 months or so working on
+		our core/UI split so things like this would be possible, and
+		here's the first result. Yes, this is a native port of Gaim to
+		the Qtopia Embedded environment for Linux-based PDAs. It's
+		pretty good for a 0.1 release, but many things won't be there,
+		such as blocking users, adding chats to your buddy list, and a
+		tray icon. I'll get to those in time. For now, enjoy, and if
+		there are any bugs (I'm sure there will be ;), please click
+		the Bug Reports link on our site at
+		http://qpe-gaim.sourceforge.net/.
+
