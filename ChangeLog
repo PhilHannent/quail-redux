@@ -1,3 +1,9 @@
+Sat Nov 22 00:59:44 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* NEWS:
+	* mkstuff.conf:
+	  - Release 0.4.
+
 Fri Nov 21 23:30:52 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* mkipk.sh:
