@@ -70,6 +70,7 @@ class QGaimBListWindow : public QMainWindow
 		void showConfirmRemoveGroup(GaimGroup *group);
 
 		void showOfflineBuddies(bool on);
+		void showPreferencesSlot();
 
 		void showAccountsWindow();
 		void blistToggled(bool state);

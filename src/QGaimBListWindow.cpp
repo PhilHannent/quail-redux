@@ -23,6 +23,7 @@
 #include "QGaimConvButton.h"
 #include "QGaimConvWindow.h"
 #include "QGaimDialogs.h"
+#include "QGaimPrefsDialog.h"
 #include "QGaim.h"
 #include "base.h"
 
@@ -50,7 +51,7 @@
  * QGaimBListWindow
  **************************************************************************/
 QGaimBListWindow::QGaimBListWindow()
-	: QMainWindow(), convsMenu(NULL)
+	: QMainWindow(), convsMenu(NULL), prefsDialog(NULL)
 {
 	buildInterface();
 }
@@ -209,6 +210,16 @@ QGaimBListWindow::buildToolBar()
 
 	connect(a, SIGNAL(toggled(bool)),
 			this, SLOT(showOfflineBuddies(bool)));
+
+	/* Separator */
+	settingsMenu->insertSeparator();
+
+	/* Preferences */
+	a = new QAction(tr("Preferences"), QString::null, 0, this, 0);
+	a->addTo(settingsMenu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(showPreferencesSlot()));
 
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);
@@ -687,6 +698,14 @@ QGaimBListWindow::showOfflineBuddies(bool on)
 	gaim_prefs_set_bool("/gaim/qpe/blist/show_offline_buddies", on);
 
 	buddylist->reload(true);
+}
+
+void
+QGaimBListWindow::showPreferencesSlot()
+{
+	QGaimPrefsDialog *prefsDialog = new QGaimPrefsDialog();
+
+	prefsDialog->show();
 }
 
 void
