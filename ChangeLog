@@ -1,3 +1,8 @@
+Thu Oct 23 20:30:16 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - Shorten the number of visible lines in the text entry to 3.
+
 Thu Oct 23 19:33:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

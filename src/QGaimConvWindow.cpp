@@ -386,7 +386,7 @@ QGaimConvChat::buildInterface()
 	entry = new QGaimMultiLineEdit(this);
 	entry->setWordWrap(QMultiLineEdit::WidgetWidth);
 	entry->setHistoryEnabled(true);
-	entry->setFixedVisibleLines(5);
+	entry->setFixedVisibleLines(3);
 
 	userList = new QListView(this);
 	userList->addColumn(tr("Ignored"), 5);
@@ -569,7 +569,7 @@ QGaimConvIm::buildInterface()
 	entry = new QGaimMultiLineEdit(this);
 	entry->setWordWrap(QMultiLineEdit::WidgetWidth);
 	entry->setHistoryEnabled(true);
-	entry->setFixedVisibleLines(5);
+	entry->setFixedVisibleLines(3);
 
 	l->addWidget(text,  0, 0);
 	l->addWidget(entry, 1, 0);
