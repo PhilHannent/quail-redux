@@ -1,3 +1,11 @@
+Sun Jul 27 03:32:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - QTabWidget's currentPageIndex() doesn't actually return the
+	    index as the name suggests. It returns a unique ID. Worked
+	    around this to return the page's actual current index.
+
 Sun Jul 27 03:01:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaim.h:

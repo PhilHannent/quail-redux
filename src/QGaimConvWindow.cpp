@@ -188,7 +188,7 @@ QGaimIm::buildInterface()
  * QGaimConvWindow
  **************************************************************************/
 QGaimConvWindow::QGaimConvWindow(GaimWindow *win)
-	: QMainWindow(), win(win)
+	: QMainWindow(), win(win), pages(NULL)
 {
 	buildInterface();
 }
@@ -233,6 +233,8 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 
 	conv->ui_data = qconv;
 
+	pages = g_list_append(pages, qconv);
+
 	tabs->addTab(qconv, gaim_conversation_get_title(conv));
 
 	if (gaim_window_get_conversation_count(win) == 1)
@@ -246,7 +248,8 @@ void
 QGaimConvWindow::removeConversation(GaimConversation *conv)
 {
 	/* NOTE: This deletes conv->ui_data. Find out what to do here. */
-	tabs->removePage((QGaimConvWindow *)conv->ui_data);
+	pages = g_list_remove(pages, conv->ui_data);
+	tabs->removePage((QGaimConversation *)conv->ui_data);
 
 	conv->ui_data = NULL;
 }
@@ -261,7 +264,7 @@ QGaimConvWindow::moveConversation(GaimConversation *conv,
 int
 QGaimConvWindow::getActiveIndex() const
 {
-	return tabs->currentPageIndex();
+	return g_list_index(pages, tabs->currentPage());
 }
 
 void
@@ -547,6 +550,8 @@ qGaimWindowNew(GaimWindow *win)
 {
 	QGaimConvWindow *qwin;
 
+	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "qGaimWindowNew\n");
+
 	qwin = new QGaimConvWindow(win);
 	win->ui_data = qwin;
 
@@ -598,6 +603,8 @@ static void
 qGaimWindowAddConv(GaimWindow *win, GaimConversation *conv)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
+
+	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "add conversation\n");
 
 	qwin->addConversation(conv);
 }

@@ -120,6 +120,8 @@ class QGaimConvWindow : public QMainWindow
 		QAction *addButton;
 		QAction *removeButton;
 		QAction *infoButton;
+
+		GList *pages;
 };
 
 GaimWindowUiOps *qGaimGetConvWindowUiOps();
