@@ -23,8 +23,7 @@
 
 #include <libgaim/blist.h>
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <qiconset.h>
 #include <qmainwindow.h>
 
 #include "QGaimAccountsWindow.h"
@@ -77,6 +76,11 @@ class QGaimBListWindow : public QMainWindow
 		QGaimBuddyList *buddylist;
 
 		QToolButton *addButton;
+
+		QIconSet openChatIconSet;
+		QIconSet newChatIconSet;
+		QIconSet sendImIconSet;
+		QIconSet newImIconSet;
 
 		QAction *imButton;
 		QAction *chatButton;

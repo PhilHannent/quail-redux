@@ -65,6 +65,11 @@ QGaimBListWindow::buildInterface()
 {
 	setToolBarsMovable(FALSE);
 
+	newChatIconSet  = Resource::loadPixmap("gaim/new-chat");
+	openChatIconSet = Resource::loadPixmap("gaim/chat");
+	newImIconSet    = Resource::loadPixmap("gaim/new-im");
+	sendImIconSet   = Resource::loadPixmap("gaim/send-im");
+
 	/* Setup the toolbar */
 	buildToolBar();
 
@@ -101,8 +106,7 @@ QGaimBListWindow::buildToolBar()
 			this, SLOT(sendIm()));
 
 	/* Chat */
-	a = new QAction(tr("Open Chat"),
-					QIconSet(Resource::loadPixmap("gaim/chat")),
+	a = new QAction(tr("Open Chat"), openChatIconSet,
 					QString::null, 0, this, 0);
 	chatButton = a;
 	a->addTo(toolbar);
@@ -143,8 +147,7 @@ QGaimBListWindow::buildToolBar()
 			this, SLOT(showAddBuddy()));
 
 	/* Add Chat */
-	a = new QAction(tr("Add Chat"),
-					QIconSet(Resource::loadPixmap("gaim/chat")),
+	a = new QAction(tr("Add Chat"), newChatIconSet,
 					QString::null, 0, this, 0);
 	addChatButton = a;
 	a->addTo(addMenu);
@@ -276,7 +279,8 @@ QGaimBListWindow::nodeChanged(QListViewItem *_item)
 
 	if (_item == NULL)
 	{
-		imButton->setEnabled(false);
+		imButton->setIconSet(newImIconSet);
+		chatButton->setIconSet(newChatIconSet);
 		removeButton->setEnabled(false);
 	}
 	else
@@ -284,13 +288,23 @@ QGaimBListWindow::nodeChanged(QListViewItem *_item)
 		item = (QGaimBListItem *)_item;
 		node = item->getBlistNode();
 
+		imButton->setEnabled(true);
+		chatButton->setEnabled(true);
+
 		if (GAIM_BLIST_NODE_IS_BUDDY(node))
 		{
-			imButton->setEnabled(true);
+			imButton->setIconSet(sendImIconSet);
+			chatButton->setIconSet(newChatIconSet);
+		}
+		else if (GAIM_BLIST_NODE_IS_CHAT(node))
+		{
+			imButton->setIconSet(newImIconSet);
+			chatButton->setIconSet(openChatIconSet);
 		}
 		else
 		{
-			imButton->setEnabled(false);
+			imButton->setIconSet(newImIconSet);
+			chatButton->setIconSet(newChatIconSet);
 		}
 
 		removeButton->setEnabled(true);

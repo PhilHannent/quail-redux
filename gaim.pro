@@ -93,6 +93,8 @@ DISTFILES = \
 	data/images/formatting.png \
 	data/images/info.png \
 	data/images/new.png \
+	data/images/new-chat.png \
+	data/images/new-im.png \
 	data/images/new-group.png \
 	data/images/offline_buddies.png \
 	data/images/prefs.png \
