@@ -192,6 +192,249 @@ QGaimAddBuddyDialog::accept()
 
 
 /**************************************************************************
+ * QGaimAddChatDialog
+ **************************************************************************/
+QGaimAddChatDialog::QGaimAddChatDialog(QWidget *parent, const char *name,
+									   WFlags fl)
+	: QDialog(parent, name, fl)
+{
+	buildInterface();
+}
+
+void
+QGaimAddChatDialog::setAlias(const QString &alias)
+{
+	aliasEntry->setText(alias);
+}
+
+void
+QGaimAddChatDialog::setGroup(const QString &group)
+{
+	groupCombo->lineEdit()->setText(group);
+}
+
+void
+QGaimAddChatDialog::setAccount(GaimAccount *account)
+{
+	accountCombo->setCurrentAccount(account);
+}
+
+void
+QGaimAddChatDialog::buildInterface()
+{
+	QLabel *label;
+	QLabel *spacer;
+	QVBox *vbox;
+	QVBoxLayout *layout;
+
+	setCaption(tr("Add Chat"));
+
+	layout = new QVBoxLayout(this);
+	layout->setAutoAdd(true);
+
+	vbox = new QVBox(this);
+	vbox->setSpacing(5);
+	vbox->setMargin(6);
+
+	label = new QLabel(tr("<p>Please enter an alias and the appropriate "
+						  "information about the chat you would like to add "
+						  "to your buddy list.</p>"),
+					   vbox);
+
+	labels.setAutoDelete(true);
+	widgets.setAutoDelete(true);
+
+	widgetsFrame = new QFrame(vbox);
+	grid = new QGridLayout(widgetsFrame, 1, 1);
+	grid->setSpacing(5);
+
+	/* Account */
+	grid->addWidget(new QLabel(tr("Account:"), widgetsFrame), 0, 0);
+	accountCombo = new QGaimAccountBox(false, widgetsFrame, "account");
+	grid->addWidget(accountCombo, 0, 1);
+
+	/* Connect the signal */
+	connect(accountCombo, SIGNAL(activated(int)),
+			this, SLOT(accountChanged(int)));
+
+	/* Alias */
+	aliasLabel = new QLabel(tr("Alias:"), widgetsFrame);
+	grid->addWidget(aliasLabel, 1, 0);
+	aliasEntry = new QLineEdit(widgetsFrame);
+	grid->addWidget(aliasEntry, 1, 1);
+
+	/* Group */
+	groupLabel = new QLabel(tr("Group:"), widgetsFrame);
+	grid->addWidget(groupLabel, 2, 0);
+	groupCombo = new QComboBox(true, widgetsFrame, "group");
+	grid->addWidget(groupCombo, 2, 1);
+
+	populateGroupCombo();
+
+	/* Add a spacer. */
+	spacer = new QLabel("", vbox);
+	vbox->setStretchFactor(spacer, 1);
+
+	rebuildWidgetsFrame();
+}
+
+void
+QGaimAddChatDialog::populateGroupCombo()
+{
+	GaimBlistNode *node = gaim_get_blist()->root;
+
+	if (node == NULL)
+		groupCombo->insertItem(tr("Buddies"));
+	else
+	{
+		for (; node != NULL; node = node->next)
+		{
+			if (GAIM_BLIST_NODE_IS_GROUP(node))
+			{
+				struct group *g = (struct group *)node;
+
+				groupCombo->insertItem(g->name);
+			}
+		}
+	}
+}
+
+void
+QGaimAddChatDialog::rebuildWidgetsFrame()
+{
+	GList *chatInfoList, *l;
+	QLabel *label;
+	GaimConnection *gc;
+	struct proto_chat_entry *pce;
+	int row;
+
+	gc = gaim_account_get_connection(accountCombo->getCurrentAccount());
+
+	labels.clear();
+	widgets.clear();
+
+	chatInfoList = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
+
+	for (l = chatInfoList, row = 1; l != NULL; l = l->next, row++)
+	{
+		pce = (struct proto_chat_entry *)l->data;
+
+		label = new QLabel(tr(pce->label), widgetsFrame);
+		grid->addWidget(label, row, 0);
+		labels.append(label);
+		label->show();
+
+		if (pce->is_int)
+		{
+			QSpinBox *spinbox = new QSpinBox(pce->min, pce->max, 1,
+											 widgetsFrame);
+			spinbox->setValue(pce->min);
+
+			grid->addWidget(spinbox, row, 1);
+
+			widgets.append(spinbox);
+
+			spinbox->show();
+		}
+		else
+		{
+			QLineEdit *edit = new QLineEdit(pce->def, widgetsFrame);
+
+			grid->addWidget(edit, row, 1);
+
+			widgets.append(edit);
+
+			edit->show();
+		}
+
+		g_free(pce);
+	}
+
+	g_list_free(chatInfoList);
+
+	grid->addWidget(aliasLabel, row, 0);
+	grid->addWidget(aliasEntry, row, 1);
+	row++;
+
+	grid->addWidget(groupLabel, row, 0);
+	grid->addWidget(groupCombo, row, 1);
+}
+
+void
+QGaimAddChatDialog::accountChanged(int)
+{
+	rebuildWidgetsFrame();
+}
+
+void
+QGaimAddChatDialog::accept()
+{
+	GaimConnection *gc;
+	struct chat *chat;
+	struct group *group;
+	GList *chatInfoList, *l;
+	GHashTable *components;
+	QString alias = aliasEntry->text();
+	QString groupName = groupCombo->currentText();
+	QWidget *widget;
+	struct proto_chat_entry *pce;
+
+	gc = gaim_account_get_connection(accountCombo->getCurrentAccount());
+
+	components = g_hash_table_new_full(g_str_hash, g_str_equal,
+									   g_free, g_free);
+
+	chatInfoList = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
+
+	for (widget = widgets.first(), l = chatInfoList;
+		 widget != NULL && l != NULL;
+		 widget = widgets.next(), l = l->next)
+	{
+		pce = (struct proto_chat_entry *)l->data;
+
+		if (pce->is_int)
+		{
+			QSpinBox *spinbox = (QSpinBox *)widget;
+
+			g_hash_table_replace(components,
+								 g_strdup(pce->identifier),
+								 g_strdup(spinbox->cleanText()));
+		}
+		else
+		{
+			QLineEdit *edit = (QLineEdit *)widget;
+
+			g_hash_table_replace(components,
+								 g_strdup(pce->identifier),
+								 g_strdup(edit->text()));
+		}
+
+		g_free(pce);
+	}
+
+	g_list_free(chatInfoList);
+
+	chat = gaim_chat_new(accountCombo->getCurrentAccount(),
+						 (alias.isEmpty() ? NULL : (const char *)alias),
+						 components);
+
+	if ((group = gaim_find_group(groupName)) == NULL)
+	{
+		group = gaim_group_new(groupName);
+		gaim_blist_add_group(group, NULL);
+	}
+
+	if (chat != NULL)
+	{
+		gaim_blist_add_chat(chat, group, NULL);
+		gaim_blist_save();
+	}
+
+	QDialog::accept();
+}
+
+
+/**************************************************************************
  * QGaimJoinChatDialog
  **************************************************************************/
 QGaimJoinChatDialog::QGaimJoinChatDialog(QWidget *parent, const char *name,

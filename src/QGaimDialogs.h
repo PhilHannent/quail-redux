@@ -30,6 +30,7 @@ class QComboBox;
 class QFrame;
 class QGaimAccountBox;
 class QGridLayout;
+class QLabel;
 class QLineEdit;
 
 class QGaimAddBuddyDialog : public QDialog
@@ -57,6 +58,39 @@ class QGaimAddBuddyDialog : public QDialog
 		QLineEdit *aliasEntry;
 		QComboBox *groupCombo;
 		QGaimAccountBox *accountCombo;
+};
+
+class QGaimAddChatDialog : public QDialog
+{
+	Q_OBJECT
+
+	public:
+		QGaimAddChatDialog(QWidget *parent = NULL, const char *name = NULL,
+						   WFlags fl = 0);
+
+		void setAlias(const QString &alias);
+		void setGroup(const QString &group);
+		void setAccount(GaimAccount *account);
+
+	protected:
+		void buildInterface();
+		void populateGroupCombo();
+		void rebuildWidgetsFrame();
+
+	protected slots:
+		void accountChanged(int index);
+		void accept();
+
+	private:
+		QLabel *aliasLabel;
+		QLabel *groupLabel;
+		QLineEdit *aliasEntry;
+		QComboBox *groupCombo;
+		QGaimAccountBox *accountCombo;
+		QGridLayout *grid;
+		QFrame *widgetsFrame;
+		QList<QWidget> labels;
+		QList<QWidget> widgets;
 };
 
 class QGaimJoinChatDialog : public QDialog

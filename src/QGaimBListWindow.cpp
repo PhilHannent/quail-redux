@@ -343,6 +343,34 @@ QGaimBListWindow::showAddBuddy()
 void
 QGaimBListWindow::showAddChat()
 {
+	QGaimAddChatDialog *dialog;
+	QGaimBListItem *item;
+	GaimBlistNode *node;
+	struct group *group = NULL;
+
+	item = (QGaimBListItem *)buddylist->selectedItem();
+
+	if (item != NULL)
+	{
+		node = item->getBlistNode();
+
+		if (GAIM_BLIST_NODE_IS_GROUP(node))
+		{
+			group = (struct group *)node;
+		}
+		else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
+				 GAIM_BLIST_NODE_IS_CHAT(node))
+		{
+			group = ((struct group *)node->parent);
+		}
+	}
+
+	dialog = new QGaimAddChatDialog(this, "", true);
+
+	if (group != NULL)
+		dialog->setGroup(group->name);
+
+	dialog->showMaximized();
 }
 
 static void

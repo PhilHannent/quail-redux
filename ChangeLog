@@ -1,3 +1,10 @@
+Fri Aug 15 13:19:15 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimDialogs.cpp:
+	* src/QGaimDialogs.h:
+	  - Added the Add Chat dialog.
+
 Fri Aug 15 03:23:27 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:
