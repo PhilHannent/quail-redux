@@ -6,6 +6,7 @@ CONFIG   = qt warn_on debug
 HEADERS = \
 	src/QGaimAccountsWindow.h \
 	src/QGaimBListWindow.h \
+	src/QGaimConvButton.h \
 	src/QGaimConvWindow.h \
 	src/QGaimDebugWindow.h \
 	src/QGaim.h \
@@ -14,6 +15,7 @@ HEADERS = \
 SOURCES = \
 	src/QGaimAccountsWindow.cpp \
 	src/QGaimBListWindow.cpp \
+	src/QGaimConvButton.cpp \
 	src/QGaimConvWindow.cpp \
 	src/QGaimDebugWindow.cpp \
 	src/main.cpp

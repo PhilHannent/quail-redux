@@ -1,3 +1,12 @@
+Mon Jul 14 04:25:41 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimConvButton.cpp:
+	* src/QGaimConvButton.h:
+	* gaim.pro:
+	  - Added a QGaimConvButton class, which handles all the conversation
+	    button and menu mess.
+
 Mon Jul 14 04:24:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

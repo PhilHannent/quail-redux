@@ -1,4 +1,5 @@
 #include "QGaimBListWindow.h"
+#include "QGaimConvButton.h"
 #include "QGaimConvWindow.h"
 #include "QGaim.h"
 #include "base.h"
@@ -381,15 +382,7 @@ QGaimBListWindow::buildToolBar()
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
-	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
-	button = new QToolButton(toolbar, "conversations");
-	convsButton = button;
-	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
-	delete pixmap;
-
-	connect(button, SIGNAL(clicked()),
-			this, SLOT(showConversations()));
+	convsButton = new QGaimConvButton(toolbar, "conversations");
 }
 
 void
@@ -443,20 +436,6 @@ QGaimBListWindow::showAccountsWindow()
 void
 QGaimBListWindow::showConversations()
 {
-	gaim_debug(GAIM_DEBUG_INFO, "qblist", "showConversations\n");
-
-	if (convsMenu != NULL)
-		delete convsMenu;
-
-	convsMenu = qGaimBuildConvMenu();
-
-	convsMenu->popup(
-		mapToGlobal(QPoint(convsButton->x(),
-						   convsButton->y() + convsButton->height())));
-
-	gaim_debug(GAIM_DEBUG_INFO, "qblist",
-			   "Displaying at %d, %d\n",
-			   convsButton->x(), convsButton->y() + convsButton->height());
 }
 
 void
