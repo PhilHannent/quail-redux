@@ -25,7 +25,8 @@
 
 #include <libgaim/debug.h>
 
-#include "qpopupmenu.h"
+#include <qpe/resource.h>
+#include <qpopupmenu.h>
 
 static void
 newConvCb(char *, QGaimConvButton *button)
@@ -43,12 +44,8 @@ delConvCb(char *, QGaimConvButton *button)
 QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
 	: QToolButton(parent, name), convs(NULL)
 {
-	QPixmap *pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
-
 	setAutoRaise(true);
-	setPixmap(*pixmap);
-
-	delete pixmap;
+	setPixmap(Resource::loadPixmap("gaim/conversations.png"));
 
 	menu = new QPopupMenu();
 

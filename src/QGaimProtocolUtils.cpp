@@ -21,6 +21,7 @@
 #include "QGaimProtocolUtils.h"
 #include "base.h"
 
+#include <qpe/resource.h>
 #include <qobject.h>
 #include <qpixmap.h>
 
@@ -75,23 +76,13 @@ QGaimProtocolUtils::getProtocolIcon(GaimAccount *account)
 QPixmap *
 QGaimProtocolUtils::getProtocolIcon(const QString &protoName)
 {
-	QString path;
 	QPixmap *pixmap;
 
 	if (protoName.isEmpty())
 		return NULL;
 
-	path  = DATA_PREFIX "images/protocols/small/";
-	path += protoName;
-	path += ".png";
-
-	pixmap = new QPixmap();
-
-	if (!pixmap->load(path))
-	{
-		delete pixmap;
-		return NULL;
-	}
+	pixmap = new QPixmap(Resource::loadPixmap("gaim/protocols/small/" +
+											  protoName));
 
 	return pixmap;
 }

@@ -30,6 +30,7 @@
 
 #include "QGaimAccountsWindow.h"
 
+class QAction;
 class QMenuBar;
 class QToolBar;
 class QToolButton;
@@ -87,21 +88,19 @@ class QGaimBListWindow : public QMainWindow
 		void buildInterface();
 		void buildToolBar();
 
-		void add_group(GaimBlistNode *node);
-		QToolButton *newButton(QToolBar *toolbar, const QString image,
-							   bool toggle = false, bool on = false);
+		void addGroup(GaimBlistNode *node);
 
 	private:
 		struct gaim_buddy_list *gaimBlist;
 
-		QToolButton *imButton;
-		QToolButton *chatButton;
-		QToolButton *infoButton;
-		QToolButton *awayButton;
+		QAction *imButton;
+		QAction *chatButton;
+		QAction *infoButton;
+		QAction *awayButton;
 
-		QToolButton *addBuddyButton;
-		QToolButton *addGroupButton;
-		QToolButton *removeButton;
+		QAction *addBuddyButton;
+		QAction *addGroupButton;
+		QAction *removeButton;
 
 		QToolButton *blistButton;
 

@@ -30,7 +30,8 @@
 #include <libgaim/multi.h>
 #include <libgaim/request.h>
 
-#include <qpe/qpeapplication.h>
+#include <qpe/resource.h>
+
 #include <qaction.h>
 #include <qheader.h>
 #include <qlabel.h>
@@ -143,7 +144,7 @@ QGaimBListWindow::update(GaimBlistNode *node)
 				if (node->parent != NULL && node->parent->ui_data == NULL)
 				{
 					/* Add the buddy's group. */
-					add_group(node->parent);
+					addGroup(node->parent);
 				}
 
 				expand = !collapsed;
@@ -165,7 +166,7 @@ QGaimBListWindow::update(GaimBlistNode *node)
 			if (node->parent != NULL && node->parent->ui_data == NULL)
 			{
 				/* Add the chat's group. */
-				add_group(node->parent);
+				addGroup(node->parent);
 			}
 
 			expand = !collapsed;
@@ -178,7 +179,7 @@ QGaimBListWindow::update(GaimBlistNode *node)
 		}
 		else if (GAIM_BLIST_NODE_IS_GROUP(node) && 0) /* TODO */
 		{
-			add_group(node);
+			addGroup(node);
 			expand = true;
 		}
 	}
@@ -193,7 +194,7 @@ QGaimBListWindow::update(GaimBlistNode *node)
 		}
 		else
 		{
-			add_group(node);
+			addGroup(node);
 		}
 	}
 
@@ -327,48 +328,60 @@ QGaimBListWindow::buildInterface()
 void
 QGaimBListWindow::buildToolBar()
 {
-	QPixmap *pixmap;
-	QToolButton *button;
+	QAction *a;
 	QLabel *label;
+	QToolButton *button;
 
 	toolbar = new QToolBar(this);
 	toolbar->setHorizontalStretchable(TRUE);
 
 	/* IM */
-	imButton = button = newButton(toolbar, DATA_PREFIX "images/send-im.png");
-	button->setEnabled(false);
+	a = new QAction(tr("Send IM"),
+						 QIconSet(Resource::loadPixmap("gaim/send-im.png")),
+						 QString::null, 0, this, 0);
+	imButton = a;
+	a->setEnabled(false);
 
-	connect(button, SIGNAL(clicked()),
+	connect(a, SIGNAL(activated()),
 			this, SLOT(sendIm()));
 
 	/* Chat */
 	/* TODO */
 
 	/* Get User Info */
-	button = infoButton = newButton(toolbar, DATA_PREFIX "images/info.png");
-	button->setEnabled(false);
+	a = new QAction(tr("Get User Information"),
+						 QIconSet(Resource::loadPixmap("gaim/info.png")),
+						 QString::null, 0, this, 0);
+	infoButton = a;
+	a->setEnabled(false);
 
 	toolbar->addSeparator();
 
 	/* Add Buddy */
-	button = newButton(toolbar, DATA_PREFIX "images/add.png");
-	addBuddyButton = button;
-	button->setEnabled(false);
+	a = new QAction(tr("Add User"),
+						 QIconSet(Resource::loadPixmap("gaim/add.png")),
+						 QString::null, 0, this, 0);
+	addBuddyButton = a;
+	a->setEnabled(false);
 
-	connect(button, SIGNAL(clicked()),
+	connect(a, SIGNAL(activated()),
 			this, SLOT(showAddBuddy()));
 
 	/* New Group */
-	button = newButton(toolbar, DATA_PREFIX "images/new-group.png");
-	addGroupButton = button;
-	button->setEnabled(false);
+	a = new QAction(tr("New Group"),
+						 QIconSet(Resource::loadPixmap("gaim/new-group.png")),
+						 QString::null, 0, this, 0);
+	addGroupButton = a;
+	a->setEnabled(false);
 
 	/* Remove */
-	button = newButton(toolbar, DATA_PREFIX "images/remove.png");
-	removeButton = button;
-	button->setEnabled(false);
+	a = new QAction(tr("Remove"),
+						 QIconSet(Resource::loadPixmap("gaim/remove.png")),
+						 QString::null, 0, this, 0);
+	removeButton = a;
+	a->setEnabled(false);
 
-	connect(button, SIGNAL(clicked()),
+	connect(a, SIGNAL(activated()),
 			this, SLOT(showRemoveBuddy()));
 
 	/* Add some whitespace. */
@@ -380,23 +393,19 @@ QGaimBListWindow::buildToolBar()
 	toolbar->addSeparator();
 
 	/* Buddy List */
-	pixmap = new QPixmap(DATA_PREFIX "images/blist.png");
 	blistButton = button = new QToolButton(toolbar, "blist");
 	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
+	button->setPixmap(Resource::loadPixmap("gaim/blist.png"));
 	button->setToggleButton(true);
 	button->setOn(true);
-	delete pixmap;
 
 	connect(button, SIGNAL(toggled(bool)),
 			this, SLOT(blistToggled(bool)));
 
 	/* Accounts */
-	pixmap = new QPixmap(DATA_PREFIX "images/accounts.png");
 	button = new QToolButton(toolbar, "accounts");
 	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
-	delete pixmap;
+	button->setPixmap(Resource::loadPixmap("gaim/accounts.png"));
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(showAccountsWindow()));
@@ -406,7 +415,7 @@ QGaimBListWindow::buildToolBar()
 }
 
 void
-QGaimBListWindow::add_group(GaimBlistNode *node)
+QGaimBListWindow::addGroup(GaimBlistNode *node)
 {
 	QGaimBListItem *item = new QGaimBListItem(buddylist, node);
 	node->ui_data = item;
@@ -414,24 +423,6 @@ QGaimBListWindow::add_group(GaimBlistNode *node)
 	item->setText(0, ((struct group *)node)->name);
 
 	item->setExpandable(true);
-}
-
-QToolButton *
-QGaimBListWindow::newButton(QToolBar *toolbar, const QString image,
-							bool toggle, bool on)
-{
-	QPixmap *pixmap;
-	QToolButton *button;
-
-	pixmap = new QPixmap(image);
-	button = new QToolButton(toolbar);
-	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
-	button->setToggleButton(toggle);
-	button->setOn(on);
-	delete pixmap;
-
-	return button;
 }
 
 /**************************************************************************

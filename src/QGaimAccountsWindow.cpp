@@ -134,7 +134,6 @@ QGaimAccountsWindow::setupToolbar()
 {
 	QAction *a;
 	QLabel *label;
-	QPixmap *pixmap;
 	QToolButton *button;
 
 	setToolBarsMovable(false);
@@ -144,7 +143,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* New */
 	a = new QAction(tr("New Account"),
-					QIconSet(QPixmap(DATA_PREFIX "images/new.png")),
+					QIconSet(Resource::loadPixmap("gaim/new.png")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
 
@@ -153,7 +152,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* Edit */
 	a = new QAction(tr("Edit Account"),
-					QIconSet(QPixmap(DATA_PREFIX "images/edit.png")),
+					QIconSet(Resource::loadPixmap("gaim/edit.png")),
 					QString::null, 0, this, 0);
 	editButton = a;
 	a->addTo(toolbar);
@@ -164,7 +163,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* Delete */
 	a = new QAction(tr("Delete"),
-					QIconSet(QPixmap(DATA_PREFIX "images/delete.png")),
+					QIconSet(Resource::loadPixmap("gaim/delete.png")),
 					QString::null, 0, this, 0);
 	deleteButton = a;
 	a->addTo(toolbar);
@@ -178,7 +177,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* Connect */
 	a = new QAction(tr("Connect"),
-					QIconSet(QPixmap(DATA_PREFIX "images/connect.png")),
+					QIconSet(Resource::loadPixmap("gaim/connect.png")),
 					QString::null, 0, this, 0);
 	connectButton = a;
 	a->addTo(toolbar);
@@ -189,7 +188,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* Disconnect */
 	a = new QAction(tr("Connect"),
-					QIconSet(QPixmap(DATA_PREFIX "images/disconnect.png")),
+					QIconSet(Resource::loadPixmap("gaim/disconnect.png")),
 					QString::null, 0, this, 0);
 	disconnectButton = a;
 	a->addTo(toolbar);
@@ -208,24 +207,20 @@ QGaimAccountsWindow::setupToolbar()
 	toolbar->addSeparator();
 
 	/* Buddy List */
-	pixmap = new QPixmap(DATA_PREFIX "images/blist.png");
 	button = new QToolButton(toolbar, "blist");
 	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
+	button->setPixmap(Resource::loadPixmap("gaim/blist.png"));
 	button->setOn(true);
-	delete pixmap;
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(showBlist()));
 
 	/* Accounts */
-	pixmap = new QPixmap(DATA_PREFIX "images/accounts.png");
 	accountsButton = button = new QToolButton(toolbar, "accounts");
 	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
+	button->setPixmap(Resource::loadPixmap("gaim/accounts.png"));
 	button->setToggleButton(true);
 	button->setOn(true);
-	delete pixmap;
 
 	connect(button, SIGNAL(toggled(bool)),
 			this, SLOT(accountsToggled(bool)));

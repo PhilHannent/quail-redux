@@ -1,3 +1,14 @@
+Sun Aug 03 22:43:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	* src/QGaimConvButton.cpp:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimProtocolUtils.cpp:
+	* src/main.cpp:
+	  - We now use Resource::loadPixmap() to get our images.
+
 Sun Aug 03 22:40:59 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* mkipk.sh:
