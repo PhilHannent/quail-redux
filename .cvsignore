@@ -1,6 +1,8 @@
 .xvpics
 *.bak
+*.ipk
 *.gz
 .*.swp
 Makefile
 gaim
+temp*
