@@ -1,3 +1,9 @@
+Sat Sep 27 00:23:52 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvButton.cpp:
+	  - We were connecting signals in the QGaimConvButton destructor.
+	    Bad! Those should be disconnected.
+
 Fri Sep 26 23:33:30 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

@@ -78,12 +78,12 @@ QGaimConvButton::~QGaimConvButton()
 	if (convs != NULL)
 		delete convs;
 
-	gaim_signal_connect(gaim_conversations_get_handle(),
-						"conversation-created",
-						this, GAIM_CALLBACK(newConvCb), this);
-	gaim_signal_connect(gaim_conversations_get_handle(),
-						"deleting-conversation",
-						this, GAIM_CALLBACK(delConvCb), this);
+	gaim_signal_disconnect(gaim_conversations_get_handle(),
+						   "conversation-created",
+						   this, GAIM_CALLBACK(newConvCb));
+	gaim_signal_disconnect(gaim_conversations_get_handle(),
+						   "deleting-conversation",
+						   this, GAIM_CALLBACK(delConvCb));
 }
 
 void
