@@ -1,7 +1,7 @@
 Gaim for Qtopia Release Notes
 -----------------------------
 
-version 0.3 (Saturday, 11-October-2003):
+version 0.3 (Saturday, 12-October-2003):
 	* Added contact support, where multiple buddies belonging to the
 	  same person can be grouped under that person's name.
 	* Added Yahoo color support.
@@ -24,6 +24,18 @@ version 0.3 (Saturday, 11-October-2003):
 	  or chats are selected in the buddy list.
 	* The send button is now only clickable if text is entered in the
 	  text box in conversations.
+
+	Christian: It's been awhile between releases, but this one should be
+		a good one. I've been spending a lot of time on Gaim to core/UI
+		split what I could, and that gave us some niceties for qpe-gaim.
+		For example, you can now retrieve a user's profile information.
+		Several bugs have been fixed, and some new features, like a new
+		Jabber protocol, Contact support, and new Yahoo features, made it
+		into Gaim/libgaim. There are likely going to be some bugs in
+		this release, but I wanted to get something out that was improved
+		over 0.2. Future versions are going to be really nice, and feature
+		such things as buddy list reorganizing, message notification, and
+		customizable preferences.
 
 version 0.2 (Friday, 15-August-2003):
 	* Fixed a bug where Gaim would crash if libgaim-plugins-oscar
