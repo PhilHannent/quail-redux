@@ -187,6 +187,9 @@ QGaimConversation::write(const char *who, const char *message,
 
 			if (gaim_prefs_get_bool(prefName))
 			{
+				if (notifying)
+					qGaimNotifyUserStop();
+
 				qGaimNotifyUser();
 				notifying = true;
 			}
