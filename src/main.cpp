@@ -106,14 +106,6 @@ QGaim::init()
 {
 	char *plugin_search_paths[1];
 
-	mainWindow = new QMainWindow();
-	mainWindow->showMaximized();
-
-	widgetStack = new QWidgetStack(mainWindow);
-	mainWindow->setCentralWidget(widgetStack);
-
-	showBlistWindow();
-
 	gaim_set_core_ui_ops(qGaimGetCoreUiOps());
 
 	if (!gaim_core_init("qpe-gaim")) {
@@ -134,6 +126,14 @@ QGaim::init()
 
 	gaim_accounts_load();
 	gaim_pounces_load();
+
+	mainWindow = new QMainWindow();
+	mainWindow->showMaximized();
+
+	widgetStack = new QWidgetStack(mainWindow);
+	mainWindow->setCentralWidget(widgetStack);
+
+	showBlistWindow();
 
 	gaim_set_blist(gaim_blist_new());
 	gaim_blist_load();

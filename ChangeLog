@@ -1,3 +1,17 @@
+Fri Aug 08 23:01:01 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/main.cpp:
+	  - The buddy list window is now displayed after all prefs and other
+	    core thingies are loaded.
+
+Fri Aug 08 22:12:58 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimImageUtils.cpp:
+	* src/QGaimImageUtils.h:
+	  - Adding saturation to the icon next to each idle user in the
+	    buddy list, and greyed out any offline users.
+
 Fri Aug 08 22:00:59 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:
