@@ -1,3 +1,11 @@
+Sat Aug 02 01:38:37 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountBox.cpp:
+	  - The account drop-down box now truncates an account name if it's
+	    longer than 18 characters. I hate hard-coding this, but Qt is
+	    just too messy to make me want to figure out another method that
+	    works (not that I haven't tried). Suggestions are welcome.
+
 Sat Aug 02 00:59:17 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountBox.cpp:

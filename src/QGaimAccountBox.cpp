@@ -21,6 +21,8 @@
 #include "QGaimAccountBox.h"
 #include "QGaimProtocolUtils.h"
 
+#include <libgaim/debug.h>
+
 #include <qpixmap.h>
 
 QGaimAccountBox::QGaimAccountBox(bool showAll, QWidget *parent,
@@ -102,12 +104,21 @@ QGaimAccountBox::buildMenu(GaimAccount *account)
 		}
 
 		QPixmap *pixmap = QGaimProtocolUtils::getProtocolIcon(tempAccount);
+		QString str;
+
+		str = gaim_account_get_username(tempAccount);
+
+		if (str.length() > 18)
+		{
+			str.truncate(18);
+			str += "...";
+		}
 
 		if (pixmap == NULL)
-			insertItem(gaim_account_get_username(tempAccount));
+			insertItem(str);
 		else
 		{
-			insertItem(*pixmap, gaim_account_get_username(tempAccount));
+			insertItem(*pixmap, str);
 			delete pixmap;
 		}
 
