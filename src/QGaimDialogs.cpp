@@ -370,7 +370,7 @@ void
 QGaimAddChatDialog::accept()
 {
 	GaimConnection *gc;
-	GaimBlistChat *chat;
+	GaimChat *chat;
 	GaimGroup *group;
 	GList *chatInfoList, *l;
 	GHashTable *components;
@@ -414,7 +414,7 @@ QGaimAddChatDialog::accept()
 
 	g_list_free(chatInfoList);
 
-	chat = gaim_blist_chat_new(accountCombo->getCurrentAccount(),
+	chat = gaim_chat_new(accountCombo->getCurrentAccount(),
 							   (alias.isEmpty() ? NULL : (const char *)alias),
 							   components);
 
@@ -516,7 +516,7 @@ QGaimNewImDialog::accept()
 		conv = gaim_conversation_new(GAIM_CONV_IM, account, screenname);
 	else
 	{
-		gaim_window_raise(gaim_conversation_get_window(conv));
+		gaim_conv_window_raise(gaim_conversation_get_window(conv));
 
 		if (account)
 			gaim_conversation_set_account(conv, account);

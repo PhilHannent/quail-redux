@@ -62,8 +62,8 @@ class QGaimBuddyList : public QListView
 		QGaimBuddyList(QWidget *parent = NULL, const char *name = NULL);
 		virtual ~QGaimBuddyList();
 
-		void setGaimBlist(struct gaim_buddy_list *list);
-		struct gaim_buddy_list *getGaimBlist() const;
+		void setGaimBlist(GaimBuddyList *list);
+		GaimBuddyList *getGaimBlist() const;
 
 		void updateNode(GaimBlistNode *node);
 
@@ -91,7 +91,7 @@ class QGaimBuddyList : public QListView
 		void updateChat(GaimBlistNode *node);
 
 	private:
-		struct gaim_buddy_list *gaimBlist;
+		GaimBuddyList *gaimBlist;
 
 		QTimer *saveTimer;
 };

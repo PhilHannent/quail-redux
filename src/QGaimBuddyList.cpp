@@ -145,7 +145,7 @@ QGaimBListItem::updateInfo()
 	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
-		GaimBlistChat *chat = (GaimBlistChat *)node;
+		GaimChat *chat = (GaimChat *)node;
 
 		setPixmap(0, QGaimProtocolUtils::getProtocolIcon(chat->account));
 	}
@@ -207,7 +207,7 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
 		prpl = gaim_find_prpl(gaim_account_get_protocol(
-				((GaimBlistChat *)node)->account));
+				((GaimChat *)node)->account));
 	}
 
 	if (prpl == NULL)
@@ -221,7 +221,7 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
 			protoName = prplInfo->list_icon(((GaimBuddy *)node)->account,
 											(GaimBuddy *)node);
 		else if (GAIM_BLIST_NODE_IS_CHAT(node))
-			protoName = prplInfo->list_icon(((GaimBlistChat *)node)->account,
+			protoName = prplInfo->list_icon(((GaimChat *)node)->account,
 											NULL);
 	}
 
@@ -324,12 +324,12 @@ QGaimBuddyList::~QGaimBuddyList()
 }
 
 void
-QGaimBuddyList::setGaimBlist(struct gaim_buddy_list *list)
+QGaimBuddyList::setGaimBlist(GaimBuddyList *list)
 {
 	gaimBlist = list;
 }
 
-struct gaim_buddy_list *
+GaimBuddyList *
 QGaimBuddyList::getGaimBlist() const
 {
 	return gaimBlist;
@@ -643,20 +643,14 @@ QGaimBuddyList::updateGroup(GaimBlistNode *node)
 		gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies") ||
 		gaim_blist_get_group_online_count(group) > 0)
 	{
-		char *collapsed;
-
 		if (item == NULL)
 		{
 			addGroup(node);
 			item = (QGaimBListItem *)node->ui_data;
 		}
 
-		collapsed = gaim_group_get_setting(group, "collapsed");
-
-		if (!collapsed)
+		if (!gaim_group_get_setting(group, "collapsed"))
 			item->setOpen(true);
-
-		g_free(collapsed);
 	}
 	else
 	{
@@ -737,12 +731,12 @@ QGaimBuddyList::updateBuddy(GaimBlistNode *node)
 void
 QGaimBuddyList::updateChat(GaimBlistNode *node)
 {
-	GaimBlistChat *chat;
+	GaimChat *chat;
 	QGaimBListItem *item;
 
 	g_return_if_fail(GAIM_BLIST_NODE_IS_CHAT(node));
 
-	chat = (GaimBlistChat *)node;
+	chat = (GaimChat *)node;
 	item = (QGaimBListItem *)node->ui_data;
 
 	if (gaim_account_is_connected(chat->account))

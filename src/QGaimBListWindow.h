@@ -44,8 +44,8 @@ class QGaimBListWindow : public QMainWindow
 		~QGaimBListWindow();
 
 		/* Functions our blist UI must access. */
-		void setGaimBlist(struct gaim_buddy_list *list);
-		struct gaim_buddy_list *getGaimBlist() const;
+		void setGaimBlist(GaimBuddyList *list);
+		GaimBuddyList *getGaimBlist() const;
 
 		void accountSignedOn(GaimAccount *acocunt);
 		void accountSignedOff(GaimAccount *acocunt);
@@ -64,7 +64,7 @@ class QGaimBListWindow : public QMainWindow
 		void showRemoveBuddy();
 		void showConfirmRemoveBuddy(GaimBuddy *buddy);
 		void showConfirmRemoveContact(GaimContact *contact);
-		void showConfirmRemoveChat(GaimBlistChat *chat);
+		void showConfirmRemoveChat(GaimChat *chat);
 		void showConfirmRemoveGroup(GaimGroup *group);
 
 		void showOfflineBuddies(bool on);
@@ -109,6 +109,6 @@ class QGaimBListWindow : public QMainWindow
 		QToolBar *toolbar;
 };
 
-struct gaim_blist_ui_ops *qGaimGetBlistUiOps();
+GaimBlistUiOps *qGaimGetBlistUiOps();
 
 #endif /* _QGAIM_BLIST_WIN_H_ */

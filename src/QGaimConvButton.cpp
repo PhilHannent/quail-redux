@@ -124,7 +124,7 @@ void
 QGaimConvButton::convActivated(int id)
 {
 	GaimConversation *conv;
-	GaimWindow *win;
+	GaimConvWindow *win;
 
 	conv = convs[id];
 
@@ -140,15 +140,15 @@ QGaimConvButton::convActivated(int id)
 
 	win = gaim_conversation_get_window(conv);
 
-	gaim_window_switch_conversation(win, gaim_conversation_get_index(conv));
-	gaim_window_raise(win);
+	gaim_conv_window_switch_conversation(win, gaim_conversation_get_index(conv));
+	gaim_conv_window_raise(win);
 }
 
 void
 QGaimConvButton::buttonClicked()
 {
-	GaimWindow *lastWin = qGaimGetHandle()->getLastActiveConvWindow();
+	GaimConvWindow *lastWin = qGaimGetHandle()->getLastActiveConvWindow();
 
 	if (lastWin != NULL)
-		gaim_window_raise(lastWin);
+		gaim_conv_window_raise(lastWin);
 }

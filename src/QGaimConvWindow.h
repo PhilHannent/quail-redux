@@ -47,7 +47,7 @@ class QGaimConversation : public QWidget
 		void setGaimConversation(GaimConversation *conv);
 		GaimConversation *getGaimConversation() const;
 
-		void write(const char *who, const char *message, size_t length,
+		void write(const char *who, const char *message,
 				   GaimMessageFlags flags, time_t mtime);
 
 		void setTitle(const char *title);
@@ -72,14 +72,14 @@ class QGaimConversation : public QWidget
 		int tabId;
 };
 
-class QGaimChat : public QGaimConversation
+class QGaimConvChat : public QGaimConversation
 {
 	Q_OBJECT
 
 	public:
-		QGaimChat(GaimConversation *conv, QWidget *parent = NULL,
+		QGaimConvChat(GaimConversation *conv, QWidget *parent = NULL,
 				  const char *name = NULL, WFlags fl = 0);
-		virtual ~QGaimChat();
+		virtual ~QGaimConvChat();
 
 		void write(const char *who, const char *message,
 				   GaimMessageFlags flags, time_t mtime);
@@ -106,21 +106,21 @@ class QGaimChat : public QGaimConversation
 		virtual void returnPressed();
 
 	protected:
-		GaimChat *chat;
+		GaimConvChat *chat;
 		QListView *userList;
 };
 
-class QGaimIm : public QGaimConversation
+class QGaimConvIm : public QGaimConversation
 {
 	Q_OBJECT
 
 	public:
-		QGaimIm(GaimConversation *conv, QWidget *parent = NULL,
+		QGaimConvIm(GaimConversation *conv, QWidget *parent = NULL,
 				const char *name = NULL, WFlags fl = 0);
-		virtual ~QGaimIm();
+		virtual ~QGaimConvIm();
 
 		void write(const char *who, const char *message,
-				   size_t len, GaimMessageFlags flags, time_t mtime);
+				   GaimMessageFlags flags, time_t mtime);
 
 		void send();
 
@@ -136,19 +136,19 @@ class QGaimIm : public QGaimConversation
 		virtual void updateTyping();
 
 	protected:
-		GaimIm *im;
+		GaimConvIm *im;
 };
 
 class QGaimConvWindow : public QMainWindow
 {
 	Q_OBJECT
-	
+
 	public:
-		QGaimConvWindow(GaimWindow *win);
+		QGaimConvWindow(GaimConvWindow *win);
 		~QGaimConvWindow();
 
-		void setGaimWindow(GaimWindow *win);
-		GaimWindow *getGaimWindow() const;
+		void setGaimConvWindow(GaimConvWindow *win);
+		GaimConvWindow *getGaimConvWindow() const;
 
 		void switchConversation(unsigned int index);
 		void addConversation(GaimConversation *conv);
@@ -181,7 +181,7 @@ class QGaimConvWindow : public QMainWindow
 		void setupToolbar();
 
 	private:
-		GaimWindow *win;
+		GaimConvWindow *win;
 
 		int convWinId;
 
@@ -202,6 +202,6 @@ class QGaimConvWindow : public QMainWindow
 		QAction *userListToggle;
 };
 
-GaimWindowUiOps *qGaimGetConvWindowUiOps();
+GaimConvWindowUiOps *qGaimGetConvWindowUiOps();
 
 #endif /* _QGAIM_CONV_WIN_H_ */

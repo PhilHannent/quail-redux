@@ -223,12 +223,12 @@ QGaimBListWindow::buildToolBar()
 }
 
 void
-QGaimBListWindow::setGaimBlist(struct gaim_buddy_list *list)
+QGaimBListWindow::setGaimBlist(GaimBuddyList *list)
 {
 	buddylist->setGaimBlist(list);
 }
 
-struct gaim_buddy_list *
+GaimBuddyList *
 QGaimBListWindow::getGaimBlist() const
 {
 	return buddylist->getGaimBlist();
@@ -457,7 +457,7 @@ removeContactCb(GaimContact *contact)
 }
 
 static void
-removeChatCb(GaimBlistChat *chat)
+removeChatCb(GaimChat *chat)
 {
 	gaim_blist_remove_chat(chat);
 	gaim_blist_save();
@@ -500,7 +500,7 @@ removeGroupCb(GaimGroup *group)
 		}
 		else if (GAIM_BLIST_NODE_IS_CHAT(node))
 		{
-			GaimBlistChat *chat = (GaimBlistChat *)node;
+			GaimChat *chat = (GaimChat *)node;
 
 			if (gaim_account_is_connected(chat->account))
 				gaim_blist_remove_chat(chat);
@@ -530,7 +530,7 @@ QGaimBListWindow::showRemoveBuddy()
 	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
-		showConfirmRemoveChat((GaimBlistChat *)node);
+		showConfirmRemoveChat((GaimChat *)node);
 	}
 	else if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
@@ -584,9 +584,9 @@ QGaimBListWindow::showConfirmRemoveContact(GaimContact *contact)
 }
 
 void
-QGaimBListWindow::showConfirmRemoveChat(GaimBlistChat *chat)
+QGaimBListWindow::showConfirmRemoveChat(GaimChat *chat)
 {
-	QString name = gaim_blist_chat_get_display_name(chat);
+	QString name = gaim_chat_get_display_name(chat);
 
 	int result = QMessageBox::information(this,
 			tr("Remove Chat"),
@@ -660,15 +660,15 @@ QGaimBListWindow::sendIm()
 	{
 		GaimBuddy *buddy = (GaimBuddy *)node;
 		GaimConversation *conv;
-		GaimWindow *win;
+		GaimConvWindow *win;
 
 		conv = gaim_conversation_new(GAIM_CONV_IM, buddy->account,
 									 buddy->name);
 
 		win = gaim_conversation_get_window(conv);
-		gaim_window_raise(win);
+		gaim_conv_window_raise(win);
 
-		gaim_window_switch_conversation(win,
+		gaim_conv_window_switch_conversation(win,
 				gaim_conversation_get_index(conv));
 	}
 	else
@@ -696,7 +696,7 @@ QGaimBListWindow::openChat()
 
 	if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
-		GaimBlistChat *chat = (GaimBlistChat *)item->getBlistNode();
+		GaimChat *chat = (GaimChat *)item->getBlistNode();
 
 		serv_join_chat(gaim_account_get_connection(chat->account),
 					   chat->components);
@@ -716,7 +716,7 @@ QGaimBListWindow::openChat()
  * Gaim callbacks
  **************************************************************************/
 static void
-signedOnCb(GaimConnection *gc, struct gaim_buddy_list *blist)
+signedOnCb(GaimConnection *gc, GaimBuddyList *blist)
 {
 	QGaimBListWindow *qblist = (QGaimBListWindow *)blist->ui_data;
 
@@ -724,7 +724,7 @@ signedOnCb(GaimConnection *gc, struct gaim_buddy_list *blist)
 }
 
 static void
-signedOffCb(GaimConnection *gc, struct gaim_buddy_list *blist)
+signedOffCb(GaimConnection *gc, GaimBuddyList *blist)
 {
 	QGaimBListWindow *qblist = (QGaimBListWindow *)blist->ui_data;
 
@@ -735,7 +735,7 @@ signedOffCb(GaimConnection *gc, struct gaim_buddy_list *blist)
  * blist UI
  **************************************************************************/
 static void
-qGaimBlistNewList(struct gaim_buddy_list *blist)
+qGaimBlistNewList(GaimBuddyList *blist)
 {
 	QGaimBListWindow *win = qGaimGetHandle()->getBlistWindow();
 	blist->ui_data = win;
@@ -754,7 +754,7 @@ qGaimBlistNewNode(GaimBlistNode *)
 }
 
 static void
-qGaimBlistShow(struct gaim_buddy_list *blist)
+qGaimBlistShow(GaimBuddyList *blist)
 {
 	QGaimBListWindow *blist_win = (QGaimBListWindow *)blist->ui_data;
 
@@ -762,14 +762,14 @@ qGaimBlistShow(struct gaim_buddy_list *blist)
 }
 
 static void
-qGaimBlistUpdate(struct gaim_buddy_list *blist, GaimBlistNode *node)
+qGaimBlistUpdate(GaimBuddyList *blist, GaimBlistNode *node)
 {
 	QGaimBListWindow *blist_win = (QGaimBListWindow *)blist->ui_data;
 	blist_win->updateNode(node);
 }
 
 static void
-qGaimBlistRemove(struct gaim_buddy_list *, GaimBlistNode *node)
+qGaimBlistRemove(GaimBuddyList *, GaimBlistNode *node)
 {
 	QListViewItem *parent;
 	QGaimBListItem *item = (QGaimBListItem *)node->ui_data;
@@ -788,7 +788,7 @@ qGaimBlistRemove(struct gaim_buddy_list *, GaimBlistNode *node)
 }
 
 static void
-qGaimBlistDestroy(struct gaim_buddy_list *blist)
+qGaimBlistDestroy(GaimBuddyList *blist)
 {
 	QGaimBListWindow *qblist = (QGaimBListWindow *)blist->ui_data;
 
@@ -798,7 +798,7 @@ qGaimBlistDestroy(struct gaim_buddy_list *blist)
 }
 
 static void
-qGaimBlistSetVisible(struct gaim_buddy_list *blist, gboolean show)
+qGaimBlistSetVisible(GaimBuddyList *blist, gboolean show)
 {
 	QGaimBListWindow *qblist = (QGaimBListWindow *)blist->ui_data;
 
@@ -808,7 +808,7 @@ qGaimBlistSetVisible(struct gaim_buddy_list *blist, gboolean show)
 		qblist->hide();
 }
 
-static struct gaim_blist_ui_ops blistUiOps =
+static GaimBlistUiOps blistUiOps =
 {
 	qGaimBlistNewList,
 	qGaimBlistNewNode,
@@ -816,10 +816,13 @@ static struct gaim_blist_ui_ops blistUiOps =
 	qGaimBlistUpdate,
 	qGaimBlistRemove,
 	qGaimBlistDestroy,
-	qGaimBlistSetVisible
+	qGaimBlistSetVisible,
+	NULL,
+	NULL,
+	NULL
 };
 
-struct gaim_blist_ui_ops *
+GaimBlistUiOps *
 qGaimGetBlistUiOps()
 {
 	return &blistUiOps;

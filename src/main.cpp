@@ -59,17 +59,17 @@ qGaimPrefsInit(void)
 static void
 qGaimCoreDebugInit(void)
 {
-	gaim_set_debug_ui_ops(qGaimGetDebugUiOps());
+	gaim_debug_set_ui_ops(qGaimGetDebugUiOps());
 }
 
 static void
 qGaimCoreUiInit(void)
 {
-	gaim_set_blist_ui_ops(qGaimGetBlistUiOps());
-	gaim_set_connection_ui_ops(qGaimGetConnectionUiOps());
-	gaim_set_win_ui_ops(qGaimGetConvWindowUiOps());
-	gaim_set_notify_ui_ops(qGaimGetNotifyUiOps());
-	gaim_set_request_ui_ops(qGaimGetRequestUiOps());
+	gaim_blist_set_ui_ops(qGaimGetBlistUiOps());
+	gaim_connections_set_ui_ops(qGaimGetConnectionUiOps());
+	gaim_conversations_set_win_ui_ops(qGaimGetConvWindowUiOps());
+	gaim_notify_set_ui_ops(qGaimGetNotifyUiOps());
+	gaim_request_set_ui_ops(qGaimGetRequestUiOps());
 }
 
 static void
@@ -110,7 +110,7 @@ QGaim::init()
 
 	mainWindow = new QMainWindow();
 
-	gaim_set_core_ui_ops(qGaimGetCoreUiOps());
+	gaim_core_set_ui_ops(qGaimGetCoreUiOps());
 
 	if (!gaim_core_init("qpe-gaim")) {
 		qFatal(tr("Initialization of the Gaim core failed.\n"
@@ -180,18 +180,18 @@ void
 QGaim::removeConversationWindow(QGaimConvWindow *win)
 {
 	GList *l;
-	GaimWindow *newWin = NULL;
+	GaimConvWindow *newWin = NULL;
 
-	l = g_list_find(gaim_get_windows(), win->getGaimWindow());
+	l = g_list_find(gaim_get_windows(), win->getGaimConvWindow());
 
 	getWidgetStack()->removeWidget(win);
 
 	if (l != NULL)
 	{
 		if (l->next != NULL)
-			newWin = (GaimWindow *)l->next->data;
+			newWin = (GaimConvWindow *)l->next->data;
 		else if (l->prev != NULL)
-			newWin = (GaimWindow *)l->prev->data;
+			newWin = (GaimConvWindow *)l->prev->data;
 
 		if (newWin != NULL)
 		{
@@ -220,12 +220,12 @@ QGaim::getAccountsWindow() const
 }
 
 void
-QGaim::setLastActiveConvWindow(GaimWindow *win)
+QGaim::setLastActiveConvWindow(GaimConvWindow *win)
 {
 	lastConvWin = win;
 }
 
-GaimWindow *
+GaimConvWindow *
 QGaim::getLastActiveConvWindow() const
 {
 	return lastConvWin;

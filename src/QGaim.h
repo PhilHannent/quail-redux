@@ -50,8 +50,8 @@ class QGaim : QObject
 		QGaimBListWindow *getBlistWindow() const;
 		QGaimAccountsWindow *getAccountsWindow() const;
 
-		void setLastActiveConvWindow(GaimWindow *win);
-		GaimWindow *getLastActiveConvWindow() const;
+		void setLastActiveConvWindow(GaimConvWindow *win);
+		GaimConvWindow *getLastActiveConvWindow() const;
 
 		QWidgetStack *getWidgetStack() const;
 		QMainWindow *getMainWindow() const;
@@ -71,7 +71,7 @@ class QGaim : QObject
 		QWidgetStack *widgetStack;
 		QGaimBListWindow *blistWin;
 		QGaimAccountsWindow *accountsWin;
-		GaimWindow *lastConvWin;
+		GaimConvWindow *lastConvWin;
 
 		QGaimConnectionMeters *meters;
 
