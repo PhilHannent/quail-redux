@@ -1,3 +1,10 @@
+Thu Oct 23 19:30:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimMainWindow.cpp:
+	* src/QGaimPrefsDialog.cpp:
+	* src/QGaimPrefsDialog.h:
+	  - Added buddy list prefs. Not all work yet.
+
 Wed Oct 22 23:34:24 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:

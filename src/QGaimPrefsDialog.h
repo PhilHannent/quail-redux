@@ -24,6 +24,7 @@
 #include <qdialog.h>
 
 class OTabWidget;
+class QCheckBox;
 
 class QGaimPrefPage : public QWidget
 {
@@ -31,15 +32,12 @@ class QGaimPrefPage : public QWidget
 
 	public:
 		QGaimPrefPage(QWidget *parent = 0, const char *name = 0)
-			: QWidget(parent, name), dirty(false) { buildInterface(); }
+			: QWidget(parent, name), dirty(false) { }
 
 		void setDirty(bool dirty) { this->dirty = dirty; }
 		bool isDirty() const { return dirty; }
 
 		virtual void accept() = 0;
-
-	protected:
-		virtual void buildInterface() {}
 
 	private:
 		bool dirty;
@@ -56,6 +54,11 @@ class QGaimBlistPrefPage : public QGaimPrefPage
 
 	protected:
 		void buildInterface();
+
+	private:
+		QCheckBox *idleTimes;
+		QCheckBox *groupCount;
+		QCheckBox *dimIdle;
 };
 
 class QGaimConvPrefPage : public QGaimPrefPage

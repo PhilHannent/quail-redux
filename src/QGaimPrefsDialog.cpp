@@ -19,10 +19,14 @@
  * MA  02111-1307  USA
  */
 #include "QGaimPrefsDialog.h"
-//#include "QGaimTabWidget.h"
 
+#include <libgaim/debug.h>
+#include <libgaim/prefs.h>
+
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
+#include <qvbox.h>
 
 #include <opie/otabwidget.h>
 
@@ -34,16 +38,52 @@
 QGaimBlistPrefPage::QGaimBlistPrefPage(QWidget *parent, const char *name)
 	: QGaimPrefPage(parent, name)
 {
+	buildInterface();
 }
 
 void
 QGaimBlistPrefPage::accept()
 {
+	gaim_prefs_set_bool("/gaim/qpe/blist/show_idle_time",
+						idleTimes->isChecked());
+	gaim_prefs_set_bool("/gaim/qpe/blist/show_group_count",
+						groupCount->isChecked());
+	gaim_prefs_set_bool("/gaim/qpe/blist/dim_idle_buddies",
+						dimIdle->isChecked());
 }
 
 void
 QGaimBlistPrefPage::buildInterface()
 {
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setAutoAdd(true);
+	layout->setSpacing(6);
+	layout->setMargin(6);
+
+	/* Show idle times */
+	idleTimes = new QCheckBox(tr("Show idle times"),
+							  this, "idle times checkbox");
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_time"))
+		idleTimes->setChecked(true);
+
+	/* Show numbers in groups */
+	groupCount = new QCheckBox(tr("Show numbers in groups"),
+							   this, "group count checkbox");
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count"))
+		groupCount->setChecked(true);
+
+	/* Dim idle buddies */
+	dimIdle = new QCheckBox(tr("Dim idle buddies"),
+							this, "dim idle checkbox");
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
+		dimIdle->setChecked(true);
+
+	/* Spacer */
+	QLabel *spacer = new QLabel("", this);
+	layout->setStretchFactor(spacer, 1);
 }
 
 /**************************************************************************
