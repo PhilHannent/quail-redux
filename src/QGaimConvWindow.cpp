@@ -168,19 +168,11 @@ QGaimChat::buildInterface()
 void
 QGaimChat::send()
 {
-	char *buffer;
-	size_t len = entry->text().length();
+	QString text = entry->text();
 
-	if (len == 0)
-		return;
+	text.remove(text.length() - 1, 1);
 
-	buffer = new char[len + 1];
-	strncpy(buffer, entry->text().latin1(), len);
-	buffer[len] = '\0';
-
-	gaim_chat_send(GAIM_CHAT(conv), buffer);
-
-	delete buffer;
+	gaim_chat_send(GAIM_CHAT(conv), text);
 
 	entry->setText("");
 }
@@ -276,19 +268,11 @@ QGaimIm::focusInEvent(QFocusEvent *)
 void
 QGaimIm::send()
 {
-	char *buffer;
-	size_t len = entry->text().length();
+	QString text = entry->text();
 
-	if (len == 0)
-		return;
+	text.remove(text.length() - 1, 1);
 
-	buffer = new char[len + 1];
-	strncpy(buffer, entry->text().latin1(), len);
-	buffer[len] = '\0';
-
-	gaim_im_send(GAIM_IM(conv), buffer);
-
-	delete buffer;
+	gaim_im_send(GAIM_IM(conv), text);
 
 	entry->setText("");
 }

@@ -1,3 +1,9 @@
+Fri Aug 01 20:07:30 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - The unwanted newline after every line entered in an IM or chat
+	    is now stripped.
+
 Fri Aug 01 20:01:16 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:
