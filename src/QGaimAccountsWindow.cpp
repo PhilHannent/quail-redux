@@ -220,10 +220,6 @@ QGaimAccountsWindow::buildInterface()
 
 	/* Create the accounts view */
 	accountsView = new QListView(this, "AccountsView");
-#if 0
-	accountsView->addColumn(tr("Screenname"), 160);
-	accountsView->addColumn(tr("Protocol"), -1);
-#endif
 	accountsView->addColumn(tr("Screenname"));
 	accountsView->addColumn(tr("Protocol"));
 	accountsView->setAllColumnsShowFocus(true);
