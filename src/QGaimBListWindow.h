@@ -56,8 +56,7 @@ class QGaimBListWindow : public QMainWindow
 	protected slots:
 		void nodeChanged(QListViewItem *item);
 
-		void im();
-		void chat();
+		void doubleClickList(QListViewItem *item);
 
 		void showAddBuddy();
 		void showAddChat();

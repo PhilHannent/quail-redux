@@ -1,3 +1,9 @@
+Fri Aug 15 13:26:52 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Double-clicking a chat in the buddy list now joins the chat.
+
 Fri Aug 15 13:21:39 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:

@@ -74,7 +74,7 @@ QGaimBListWindow::buildInterface()
 	connect(buddylist, SIGNAL(currentChanged(QListViewItem *)),
 			this, SLOT(nodeChanged(QListViewItem *)));
 	connect(buddylist, SIGNAL(doubleClicked(QListViewItem *)),
-			this, SLOT(sendIm()));
+			this, SLOT(doubleClickList(QListViewItem *)));
 
 	setCentralWidget(buddylist);
 }
@@ -298,13 +298,18 @@ QGaimBListWindow::nodeChanged(QListViewItem *_item)
 }
 
 void
-QGaimBListWindow::im()
+QGaimBListWindow::doubleClickList(QListViewItem *_item)
 {
-}
+	QGaimBListItem *item;
+	GaimBlistNode *node;
 
-void
-QGaimBListWindow::chat()
-{
+	item = (QGaimBListItem *)_item;
+	node = item->getBlistNode();
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+		sendIm();
+	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+		openChat();
 }
 
 void
@@ -569,11 +574,27 @@ QGaimBListWindow::sendIm()
 void
 QGaimBListWindow::openChat()
 {
-	QGaimJoinChatDialog *dialog;
+	QGaimBListItem *item;
+	GaimBlistNode *node;
 
-	dialog = new QGaimJoinChatDialog(this, "", true);
+	item = (QGaimBListItem *)buddylist->selectedItem();
+	node = item->getBlistNode();
 
-	dialog->showMaximized();
+	if (GAIM_BLIST_NODE_IS_CHAT(node))
+	{
+		struct chat *chat = (struct chat *)item->getBlistNode();
+
+		serv_join_chat(gaim_account_get_connection(chat->account),
+					   chat->components);
+	}
+	else
+	{
+		QGaimJoinChatDialog *dialog;
+
+		dialog = new QGaimJoinChatDialog(this, "", true);
+
+		dialog->showMaximized();
+	}
 }
 
 
