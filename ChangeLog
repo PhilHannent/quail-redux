@@ -1,3 +1,9 @@
+Thu Jul 31 16:46:58 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - Clicking the Conversations button should no longer be able to
+	    segfault.
+
 Thu Jul 31 13:30:26 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* mkipk.sh:

@@ -328,6 +328,9 @@ QGaimConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 	gaim_window_destroy(win);
 
 	QMainWindow::destroy(destroyWindow, destroySubWindows);
+
+	if (qGaimGetHandle()->getLastActiveConvWindow() == getGaimWindow())
+		qGaimGetHandle()->setLastActiveConvWindow(NULL);
 }
 
 void
