@@ -90,6 +90,10 @@ class QGaimIm : public QGaimConversation
 
 	protected slots:
 		virtual void returnPressed();
+		virtual void updateTyping();
+
+	protected:
+		GaimIm *im;
 };
 
 class QGaimConvWindow : public QMainWindow

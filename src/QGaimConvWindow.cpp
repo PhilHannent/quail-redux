@@ -8,6 +8,7 @@
 #include "base.h"
 
 #include <libgaim/debug.h>
+#include <libgaim/prefs.h>
 
 #include <qaction.h>
 #include <qbutton.h>
@@ -183,7 +184,7 @@ QGaimChat::send()
  **************************************************************************/
 QGaimIm::QGaimIm(GaimConversation *conv, QWidget *parent,
 				 const char *name, WFlags fl)
-	: QGaimConversation(conv, parent, name, fl)
+	: QGaimConversation(conv, parent, name, fl), im(GAIM_IM(conv))
 {
 	buildInterface();
 }
@@ -255,6 +256,8 @@ QGaimIm::buildInterface()
 
 	connect(entry, SIGNAL(returnPressed()),
 			this, SLOT(returnPressed()));
+	connect(entry, SIGNAL(textChanged()),
+			this, SLOT(updateTyping()));
 
 	entry->setFocus();
 }
@@ -281,6 +284,40 @@ void
 QGaimIm::returnPressed()
 {
 	send();
+}
+
+void
+QGaimIm::updateTyping()
+{
+	if (!gaim_prefs_get_bool("/core/conversations/im/send_typing"))
+		return;
+
+	if (gaim_im_get_type_again_timeout(im))
+		gaim_im_stop_type_again_timeout(im);
+
+	gaim_im_start_type_again_timeout(im);
+
+	if (entry->text().length() == 0)
+	{
+		/* We deleted all of it, so we'll keep typing off. */
+
+		serv_send_typing(gaim_conversation_get_gc(conv),
+						 gaim_conversation_get_name(conv),
+						 GAIM_NOT_TYPING);
+	}
+	else if (entry->text().length() == 1 ||
+			 (gaim_im_get_type_again(im) != 0 &&
+			  time(NULL) > gaim_im_get_type_again(im)))
+	{
+		int timeout = serv_send_typing(gaim_conversation_get_gc(conv),
+									   gaim_conversation_get_name(conv),
+									   GAIM_TYPING);
+
+		if (timeout)
+			gaim_im_set_type_again(im, time(NULL) + timeout);
+		else
+			gaim_im_set_type_again(im, 0);
+	}
 }
 
 /**************************************************************************
