@@ -1,3 +1,12 @@
+Mon Aug 04 00:47:12 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimRequest.cpp:
+	* src/QGaimRequest.h:
+	* src/main.cpp:
+	* gaim.pro:
+	  - Added a basic request UI. Unfortunately, many things have
+	    issues in it. Hopefully it won't cause too much trouble.
+
 Sun Aug 03 23:48:26 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

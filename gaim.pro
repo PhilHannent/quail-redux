@@ -17,6 +17,7 @@ HEADERS = \
 	src/QGaimNotify.h \
 	src/QGaimProtocolBox.h \
 	src/QGaimProtocolUtils.h \
+	src/QGaimRequest.h \
 	src/QGaimTabBar.h \
 	src/QGaimTabWidget.h \
 	src/QGaim.h \
@@ -37,6 +38,7 @@ SOURCES = \
 	src/QGaimNotify.cpp \
 	src/QGaimProtocolBox.cpp \
 	src/QGaimProtocolUtils.cpp \
+	src/QGaimRequest.cpp \
 	src/QGaimTabBar.cpp \
 	src/QGaimTabWidget.cpp \
 	src/main.cpp
@@ -74,6 +76,7 @@ DISTFILES = \
 	ChangeLog \
 	README \
 	gaim.png \
+	make.sh \
 	mkstuff.conf \
 	mkipk.sh \
 	mktarball.sh
