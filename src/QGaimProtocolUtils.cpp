@@ -22,8 +22,11 @@
 #include "base.h"
 
 #include <qpe/resource.h>
+#include <qdict.h>
 #include <qobject.h>
 #include <qpixmap.h>
+
+static QDict<QPixmap> pixmaps;
 
 QString
 QGaimProtocolUtils::getProtocolName(GaimProtocol protocol)
@@ -76,8 +79,20 @@ QGaimProtocolUtils::getProtocolIcon(GaimAccount *account)
 QPixmap
 QGaimProtocolUtils::getProtocolIcon(const QString &protoName)
 {
+	QPixmap *pixmap;
+
 	if (protoName.isEmpty())
 		return NULL;
 
-	return Resource::loadPixmap("gaim/protocols/small/" + protoName);
+	pixmap = pixmaps.find(protoName);
+
+	if (pixmap == NULL)
+	{
+		pixmap = new QPixmap(Resource::loadPixmap("gaim/protocols/small/" +
+												  protoName));
+
+		pixmaps.insert(protoName, pixmap);
+	}
+
+	return *pixmap;
 }

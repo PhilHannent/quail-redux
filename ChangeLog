@@ -1,3 +1,9 @@
+Fri Aug 15 15:03:47 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimProtocolUtils.cpp:
+	* src/QGaimProtocolUtils.h:
+	  - Added protocol icon caching.
+
 Fri Aug 15 14:20:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:
