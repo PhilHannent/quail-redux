@@ -34,7 +34,7 @@ mkdir -p $TMPDIR/opt/QtPalmtop/bin
 mkdir -p $TMPDIR/opt/QtPalmtop/pics
 mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim
 mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/protocols/small
-mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/status
+mkdir -p $TMPDIR/opt/QtPalmtop/pics/gaim/status/small
 
 $STRIP gaim
 
@@ -43,6 +43,7 @@ cp gaim         $TMPDIR/opt/QtPalmtop/bin
 cp gaim.png     $TMPDIR/opt/QtPalmtop/pics
 cp data/images/*.png $TMPDIR/opt/QtPalmtop/pics/gaim
 cp data/images/protocols/small/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/protocols/small
+cp data/images/status/small/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/status/small
 
 for LANG in $LANGUAGES
 do
