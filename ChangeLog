@@ -1,3 +1,9 @@
+Thu Sep 11 08:28:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimPrefsDialog.cpp:
+	* src/QGaimPrefsDialog.h:
+	  - Adding the initial framework for the preferencs dialog.
+
 Thu Aug 28 23:28:34 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:
