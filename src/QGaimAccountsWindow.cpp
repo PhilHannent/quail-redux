@@ -1,4 +1,5 @@
 #include "QGaimAccountsWindow.h"
+#include "QGaimConvButton.h"
 #include "QGaim.h"
 #include "base.h"
 
@@ -165,15 +166,7 @@ QGaimAccountsWindow::setupToolbar()
 			this, SLOT(accountsToggled(bool)));
 
 	/* Conversations */
-	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
-	button = new QToolButton(toolbar, "conversations");
-	button->setAutoRaise(true);
-	button->setPixmap(*pixmap);
-	delete pixmap;
-
-	connect(button, SIGNAL(clicked()),
-			this, SLOT(showConversations()));
-
+	button = new QGaimConvButton(toolbar, "conversations");
 }
 
 void
@@ -244,11 +237,6 @@ void
 QGaimAccountsWindow::accountsToggled(bool)
 {
 	accountsButton->setOn(true);
-}
-
-void
-QGaimAccountsWindow::showConversations()
-{
 }
 
 void

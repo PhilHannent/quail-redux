@@ -382,7 +382,7 @@ QGaimBListWindow::buildToolBar()
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
-	convsButton = new QGaimConvButton(toolbar, "conversations");
+	button = new QGaimConvButton(toolbar, "conversations");
 }
 
 void
@@ -431,11 +431,6 @@ void
 QGaimBListWindow::showAccountsWindow()
 {
 	qGaimGetHandle()->showAccountsWindow();
-}
-
-void
-QGaimBListWindow::showConversations()
-{
 }
 
 void

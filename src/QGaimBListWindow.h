@@ -52,7 +52,6 @@ class QGaimBListWindow : public QMainWindow
 		void im();
 		void chat();
 		void showAccountsWindow();
-		void showConversations();
 		void blistToggled(bool state);
 		void sendIm();
 
@@ -73,7 +72,6 @@ class QGaimBListWindow : public QMainWindow
 		QToolButton *awayButton;
 
 		QToolButton *blistButton;
-		QToolButton *convsButton;
 
 		QPopupMenu *convsMenu;
 

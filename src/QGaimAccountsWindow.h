@@ -49,7 +49,6 @@ class QGaimAccountsWindow : public QMainWindow
 		void disconnectFromAccount();
 		void showBlist();
 		void accountsToggled(bool state);
-		void showConversations();
 		void accountSelected(QListViewItem *item);
 
 	private:
