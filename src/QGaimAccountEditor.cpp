@@ -78,21 +78,32 @@ QGaimAccountEditor::buildInterface()
 QWidget *
 QGaimAccountEditor::buildAccountTab()
 {
-	QFrame *sep;
+	/* QFrame *sep; */
 	QVBox *vbox;
 	QWidget *spacer;
+	QGridLayout *grid;
+	QWidget *widget;
+	int row = 0;
 
 	/* Create the main vbox. */
 	vbox = new QVBox(this);
 	vbox->setSpacing(5);
 
-	buildLoginOpts(vbox);
+	widget = new QFrame(vbox);
+	grid = new QGridLayout(widget, 1, 1);
+	grid->setSpacing(5);
 
+	buildLoginOpts(grid, widget, row);
+
+#if 0
 	/* Separator */
-	sep = new QFrame(vbox);
+	sep = new QFrame(widget);
 	sep->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+	grid->addMultiCellWidget(sep, row, row, 0, 2);
+	row++;
+#endif
 
-	buildUserOpts(vbox);
+	buildUserOpts(grid, widget, row);
 
 	/* Add a spacer. */
 	spacer = new QLabel("", vbox);
@@ -110,15 +121,125 @@ QGaimAccountEditor::buildAccountTab()
 		rememberPassCheck->hide();
 	}
 
-	
-
 	return vbox;
 }
 
 QWidget *
 QGaimAccountEditor::buildProtocolTab()
 {
-	return new QLabel("Protocol", this);
+	QVBox *vbox;
+	QFrame *frame;
+	QWidget *spacer;
+	QGridLayout *grid;
+	QCheckBox *check;
+	QLineEdit *entry;
+	GList *l;
+	QString buf;
+	int row = 0;
+
+	/* Create the main vbox */
+	vbox = new QVBox(this);
+	vbox->setSpacing(5);
+
+	frame = new QFrame(vbox);
+	grid = new QGridLayout(frame, 1, 1);
+	grid->setSpacing(5);
+
+	if (protocolOptEntries != NULL)
+	{
+		g_list_free(protocolOptEntries);
+		protocolOptEntries = NULL;
+	}
+
+	for (l = prplInfo->protocol_options; l != NULL; l = l->next)
+	{
+		GaimAccountOption *option = (GaimAccountOption *)l->data;
+
+		switch (gaim_account_option_get_type(option))
+		{
+			case GAIM_PREF_BOOLEAN:
+				bool boolValue;
+
+				if (account == NULL ||
+					gaim_account_get_protocol(account) != protocol)
+				{
+					boolValue = gaim_account_option_get_default_bool(option);
+				}
+				else
+					boolValue = gaim_account_get_bool(account,
+							gaim_account_option_get_setting(option),
+							gaim_account_option_get_default_bool(option));
+
+				check = new QCheckBox(gaim_account_option_get_text(option),
+									  vbox);
+				grid->addMultiCellWidget(check, row, row, 1, 2);
+				row++;
+
+				protocolOptEntries = g_list_append(protocolOptEntries, check);
+
+				break;
+
+			case GAIM_PREF_INT:
+				int intValue;
+
+				if (account == NULL ||
+					gaim_account_get_protocol(account) != protocol)
+				{
+					intValue = gaim_account_option_get_default_int(option);
+				}
+				else
+				{
+					intValue = gaim_account_get_int(account,
+							gaim_account_option_get_setting(option),
+							gaim_account_option_get_default_int(option));
+				}
+
+				buf  = gaim_account_option_get_text(option);
+				buf += ":";
+
+				grid->addWidget(new QLabel(buf, frame), row, 0);
+
+				entry = new QLineEdit(QString::number(intValue), frame);
+				grid->addWidget(entry, row++, 1);
+
+				protocolOptEntries = g_list_append(protocolOptEntries, entry);
+
+				break;
+
+			case GAIM_PREF_STRING:
+				QString strValue;
+
+				if (account == NULL ||
+					gaim_account_get_protocol(account) != protocol)
+				{
+					strValue = gaim_account_option_get_default_string(option);
+				}
+				else
+				{
+					strValue = gaim_account_get_string(account,
+							gaim_account_option_get_setting(option),
+							gaim_account_option_get_default_string(option));
+				}
+
+				buf  = gaim_account_option_get_text(option);
+				buf += ":";
+
+				grid->addWidget(new QLabel(buf, frame), row, 0);
+
+				entry = new QLineEdit(strValue, frame);
+				grid->addWidget(entry, row++, 1);
+
+				protocolOptEntries = g_list_append(protocolOptEntries, entry);
+
+				break;
+		}
+	}
+
+	/* Add a spacer. */
+	spacer = new QLabel("", vbox);
+	vbox->setStretchFactor(spacer, 1);
+
+	return vbox;
 }
 
 QWidget *
@@ -127,29 +248,22 @@ QGaimAccountEditor::buildProxyTab()
 	return new QLabel("Proxy", this);
 }
 
-QWidget *
-QGaimAccountEditor::buildLoginOpts(QWidget *parent)
+void
+QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
+								   int &row)
 {
-	QFrame *frame;
-	QGridLayout *grid;
 	QLineEdit *entry;
 	QString username;
 	GList *userSplits, *l, *l2;
-	int row = 0;
-
-	/* Create the Login Options group box. */
-	frame = new QFrame(parent);
-	grid = new QGridLayout(frame, 1, 1);
-	grid->setSpacing(4);
 
 	/* Protocol */
-	grid->addWidget(new QLabel(tr("Protocol:"), frame), row, 0);
-	protocolList = new QGaimProtocolBox(frame, "protocol combo");
+	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
+	protocolList = new QGaimProtocolBox(parent, "protocol combo");
 	grid->addWidget(protocolList, row++, 1);
 
 	/* Screen Name */
-	grid->addWidget(new QLabel(tr("Screenname:"), frame), row, 0);
-	screenNameEntry = new QLineEdit(frame);
+	grid->addWidget(new QLabel(tr("Screenname:"), parent), row, 0);
+	screenNameEntry = new QLineEdit(parent);
 	grid->addWidget(screenNameEntry, row++, 1);
 
 	/* User split stuff. */
@@ -172,8 +286,8 @@ QGaimAccountEditor::buildLoginOpts(QWidget *parent)
 		buf  = gaim_account_user_split_get_text(split);
 		buf += ":";
 
-		grid->addWidget(new QLabel(buf, frame), row, 0);
-		entry = new QLineEdit(frame);
+		grid->addWidget(new QLabel(buf, parent), row, 0);
+		entry = new QLineEdit(parent);
 		grid->addWidget(entry, row++, 1);
 
 		userSplitEntries = g_list_append(userSplitEntries, entry);
@@ -212,9 +326,9 @@ QGaimAccountEditor::buildLoginOpts(QWidget *parent)
 
 
 	/* Password */
-	passwordLabel = new QLabel(tr("Password:"), frame);
+	passwordLabel = new QLabel(tr("Password:"), parent);
 	grid->addWidget(passwordLabel, row, 0);
-	passwordEntry = new QLineEdit(frame);
+	passwordEntry = new QLineEdit(parent);
 	passwordEntry->setReadOnly(true);
 	grid->addWidget(passwordEntry, row++, 1);
 
@@ -222,15 +336,15 @@ QGaimAccountEditor::buildLoginOpts(QWidget *parent)
 		passwordEntry->setText(gaim_account_get_password(account));
 
 	/* Alias */
-	grid->addWidget(new QLabel(tr("Alias:"), frame), row, 0);
-	aliasEntry = new QLineEdit(frame);
+	grid->addWidget(new QLabel(tr("Alias:"), parent), row, 0);
+	aliasEntry = new QLineEdit(parent);
 	grid->addWidget(aliasEntry, row++, 1);
 
 	if (account != NULL)
 		aliasEntry->setText(gaim_account_get_alias(account));
 
 	/* Remember Password */
-	rememberPassCheck = new QCheckBox(tr("Remember Password"), frame);
+	rememberPassCheck = new QCheckBox(tr("Remember Password"), parent);
 	grid->addMultiCellWidget(rememberPassCheck, row, row, 1, 2);
 	row++;
 
@@ -241,7 +355,7 @@ QGaimAccountEditor::buildLoginOpts(QWidget *parent)
 		rememberPassCheck->setChecked(true);
 
 	/* Auto-Login */
-	autoLoginCheck = new QCheckBox(tr("Auto-Login"), frame);
+	autoLoginCheck = new QCheckBox(tr("Auto-Login"), parent);
 	grid->addMultiCellWidget(autoLoginCheck, row, row, 1, 2);
 	row++;
 
@@ -260,12 +374,23 @@ QGaimAccountEditor::buildLoginOpts(QWidget *parent)
 		passwordEntry->hide();
 		rememberPassCheck->hide();
 	}
-
-	return frame;
 }
 
-QWidget *
-QGaimAccountEditor::buildUserOpts(QWidget *parent)
+void
+QGaimAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
+								  int &row)
 {
-	return new QLabel("", parent);
+	/* New mail notifications */
+	mailNotificationCheck = new QCheckBox(tr("New Mail Notifications"), parent);
+	grid->addMultiCellWidget(mailNotificationCheck, row, row, 1, 2);
+	row++;
+
+	/* TODO: Buddy Icon support */
+
+	if (account != NULL)
+		mailNotificationCheck->setChecked(
+				gaim_account_get_check_mail(account));
+
+	if (!(prplInfo->options & OPT_PROTO_MAIL_CHECK))
+		mailNotificationCheck->hide();
 }

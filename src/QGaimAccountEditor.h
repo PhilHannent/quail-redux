@@ -11,6 +11,7 @@
 
 class QCheckBox;
 class QComboBox;
+class QGridLayout;
 class QLabel;
 class QLineEdit;
 class QPixmap;
@@ -30,8 +31,8 @@ class QGaimAccountEditor : public QMainWindow
 		QWidget *buildProtocolTab();
 		QWidget *buildProxyTab();
 
-		QWidget *buildLoginOpts(QWidget *parent);
-		QWidget *buildUserOpts(QWidget *parent);
+		void buildLoginOpts(QGridLayout *grid, QWidget *parent, int &row);
+		void buildUserOpts(QGridLayout *grid, QWidget *parent, int &row);
 
 	private:
 		GaimAccount *account;
@@ -56,6 +57,8 @@ class QGaimAccountEditor : public QMainWindow
 		QLineEdit *aliasEntry;
 		QCheckBox *rememberPassCheck;
 		QCheckBox *autoLoginCheck;
+
+		QCheckBox *mailNotificationCheck;
 };
 
 #endif /* _QGAIM_ACCOUNT_EDITOR_H_ */

@@ -1,3 +1,9 @@
+Mon Jul 28 15:38:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountEditor.h:
+	  - Added the code for the Protocol Options tab.
+
 Mon Jul 28 11:46:19 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:
