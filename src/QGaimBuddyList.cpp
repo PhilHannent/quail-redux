@@ -951,7 +951,11 @@ QGaimBuddyList::populateGroupMenu(GaimGroup *, QPopupMenu *menu)
 void
 QGaimBuddyList::resizeEvent(QResizeEvent *)
 {
-	setColumnWidth(1, width() / 4);
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_large_icons"))
+		setColumnWidth(1, 0);
+	else
+		setColumnWidth(1, width() / 4);
+
 	setColumnWidth(0, width() - 20 - columnWidth(1) - columnWidth(2));
 }
 

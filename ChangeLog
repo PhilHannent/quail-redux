@@ -1,3 +1,9 @@
+Fri Nov 14 10:54:01 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	  - Shrink the second column when we're in the big list, since we
+	    won't be using it.
+
 Fri Nov 14 10:53:27 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimPrefsDialog.cpp:
