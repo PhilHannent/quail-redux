@@ -1,7 +1,7 @@
 /**
  * @file QGaimDialogs.h Small dialogs that don't belong in their own files
  *
- * @Copyright (C) 2003 Christian Hammond.
+ * @Copyright (C) 2003-2004 Christian Hammond.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

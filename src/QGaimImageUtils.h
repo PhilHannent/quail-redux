@@ -1,9 +1,9 @@
 /**
  * @file QGaimImageUtils.h Image utility functions
  *
- * @Copyright (C) 2003 Christian Hammond.
+ * @Copyright (C) 2003-2004 Christian Hammond.
  *
- * Parts of this code Copyright (C) 2003 The KDE project.
+ * Parts of this code Copyright (C) 2003-2004 The KDE project.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
