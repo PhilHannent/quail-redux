@@ -625,6 +625,46 @@ QGaimBuddyList::getUserInfo()
 }
 
 void
+QGaimBuddyList::sendIm()
+{
+	QGaimBListItem *item = (QGaimBListItem *)selectedItem();
+	GaimBlistNode *node;
+	GaimBuddy *buddy;
+	GaimConversation *conv;
+	GaimConvWindow *win;
+
+	if (item == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+		buddy = (GaimBuddy *)node;
+	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+		buddy = gaim_contact_get_priority_buddy((GaimContact *)node);
+	else
+		return;
+
+	conv = gaim_conversation_new(GAIM_CONV_IM, buddy->account, buddy->name);
+
+	win = gaim_conversation_get_window(conv);
+	gaim_conv_window_raise(win);
+
+	gaim_conv_window_switch_conversation(win,
+			gaim_conversation_get_index(conv));
+}
+
+void
+QGaimBuddyList::showRemoveBuddy()
+{
+}
+
+void
+QGaimBuddyList::showRemoveContact()
+{
+}
+
+void
 QGaimBuddyList::collapseContact()
 {
 	collapseContact((QGaimBListItem *)selectedItem());

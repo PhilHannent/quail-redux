@@ -1,3 +1,10 @@
+Mon Oct 06 20:33:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - The IM item in the context-sensitive menu for buddies and contacts
+	    now works.
+
 Mon Oct 06 19:09:23 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimNotify.cpp:
