@@ -5,7 +5,14 @@ version 0.3:
 	* Added support for registering accounts on protocol plugins that
 	  support it (such as Jabber).
 	* Added Yahoo color support.
+	* Added contact support, where multiple buddies belonging to the
+	  same person can be grouped under that person's name.
+	* Added support for getting a user's profile.
 	* Fixed some proxy preference bugs.
+	* Fixed a crash when hold-and-tapping or right-clicking on parts of
+	  the buddy list.
+	* Fixed a crash when pressing the chat button when no buddies, groups,
+	  or chats are selected in the buddy list.
 
 version 0.2 (Friday, 15-August-2003):
 	* Fixed a bug where Gaim would crash if libgaim-plugins-oscar
