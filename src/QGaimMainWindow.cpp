@@ -23,6 +23,7 @@
 #include <qtimer.h>
 #include <qvariant.h>
 #include <qvbox.h>
+#include <qpe/qpeapplication.h>
 
 #include <libgaim/prefs.h>
 #include <libgaim/conversation.h>
@@ -54,6 +55,8 @@ qGaimPrefsInit(void)
 	gaim_prefs_add_bool("/gaim/qpe/blist/show_empty_groups",    false);
 	gaim_prefs_add_bool("/gaim/qpe/blist/show_idle_times",      true);
 	gaim_prefs_add_bool("/gaim/qpe/blist/show_group_count",     true);
+	gaim_prefs_add_bool("/gaim/qpe/blist/show_large_icons",
+						(QPEApplication::desktop()->width() >= 600));
 	gaim_prefs_add_bool("/gaim/qpe/blist/dim_idle_buddies",     true);
 }
 

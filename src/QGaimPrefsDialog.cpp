@@ -46,27 +46,28 @@ QGaimBlistPrefPage::QGaimBlistPrefPage(QWidget *parent, const char *name)
 void
 QGaimBlistPrefPage::accept()
 {
-	bool dirty;
-
-	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times") !=
-		idleTimes->isChecked() ||
-		gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count") !=
-		groupCount->isChecked() ||
-		gaim_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies") !=
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times") ==
+		idleTimes->isChecked() &&
+		gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count") ==
+		groupCount->isChecked() &&
+		gaim_prefs_get_bool("/gaim/qpe/blist/show_large_icons") ==
+		largeIcons->isChecked() &&
+		gaim_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies") ==
 		dimIdle->isChecked())
 	{
-		dirty = true;
+		return;
 	}
 
 	gaim_prefs_set_bool("/gaim/qpe/blist/show_idle_times",
 						idleTimes->isChecked());
 	gaim_prefs_set_bool("/gaim/qpe/blist/show_group_count",
 						groupCount->isChecked());
+	gaim_prefs_set_bool("/gaim/qpe/blist/show_large_icons",
+						largeIcons->isChecked());
 	gaim_prefs_set_bool("/gaim/qpe/blist/dim_idle_buddies",
 						dimIdle->isChecked());
 
-	if (dirty)
-		qGaimGetMainWindow()->getBlistWindow()->reloadList();
+	qGaimGetMainWindow()->getBlistWindow()->reloadList();
 }
 
 void
@@ -76,6 +77,13 @@ QGaimBlistPrefPage::buildInterface()
 	layout->setAutoAdd(true);
 	layout->setSpacing(6);
 	layout->setMargin(6);
+
+	/* Show large icons */
+	largeIcons = new QCheckBox(tr("Show large icons"),
+							   this, "large icons checkbox");
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_large_icons"))
+		largeIcons->setChecked(true);
 
 	/* Show idle times */
 	idleTimes = new QCheckBox(tr("Show idle times"),

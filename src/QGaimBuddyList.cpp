@@ -68,6 +68,13 @@ QGaimBListItem::getBlistNode() const
 void
 QGaimBListItem::updateInfo()
 {
+	QGaimPixmapSize pixmapSize;
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_large_icons"))
+		pixmapSize = QGAIM_PIXMAP_LARGE;
+	else
+		pixmapSize = QGAIM_PIXMAP_SMALL;
+
 	if (GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
 		GaimContact *contact = (GaimContact *)node;
@@ -81,7 +88,9 @@ QGaimBListItem::updateInfo()
 			QImage image = Resource::loadPixmap("gaim").convertToImage();
 			QPixmap pixmap;
 
-			pixmap.convertFromImage(image.smoothScale(16, 16));
+			pixmap.convertFromImage(pixmapSize == QGAIM_PIXMAP_SMALL
+									? image.smoothScale(16, 16)
+									: image.smoothScale(32, 32));
 
 			setPixmap(0, pixmap);
 		}
@@ -112,7 +121,8 @@ QGaimBListItem::updateInfo()
 			}
 
 			setPixmap(0,
-				QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy));
+				QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy,
+												   pixmapSize));
 		}
 
 		setText(0, gaim_get_buddy_alias(buddy));
@@ -145,14 +155,15 @@ QGaimBListItem::updateInfo()
 			g_free(idle);
 		}
 
-		setPixmap(0, QGaimBuddyList::getBuddyStatusIcon(node));
+		setPixmap(0, QGaimBuddyList::getBuddyStatusIcon(node, pixmapSize));
 		setText(0, gaim_get_buddy_alias(buddy));
 	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
 		GaimChat *chat = (GaimChat *)node;
 
-		setPixmap(0, QGaimProtocolUtils::getProtocolIcon(chat->account));
+		setPixmap(0, QGaimProtocolUtils::getProtocolIcon(chat->account,
+														 pixmapSize));
 		setText(0, gaim_chat_get_display_name(chat));
 	}
 	else if (GAIM_BLIST_NODE_IS_GROUP(node))
@@ -181,14 +192,21 @@ void
 QGaimBListItem::paintCell(QPainter *p, const QColorGroup &cg, int column,
 						  int width, int align)
 {
-	if (GAIM_BLIST_NODE_IS_GROUP(node))
+	if (0)
 	{
-		QFont f = p->font();
-		f.setBold(true);
-		p->setFont(f);
+		;
 	}
+	else
+	{
+		if (GAIM_BLIST_NODE_IS_GROUP(node))
+		{
+			QFont f = p->font();
+			f.setBold(true);
+			p->setFont(f);
+		}
 
-	QListViewItem::paintCell(p, cg, column, width, align);
+		QListViewItem::paintCell(p, cg, column, width, align);
+	}
 }
 
 void

@@ -59,6 +59,7 @@ class QGaimBlistPrefPage : public QGaimPrefPage
 		QCheckBox *idleTimes;
 		QCheckBox *groupCount;
 		QCheckBox *dimIdle;
+		QCheckBox *largeIcons;
 };
 
 class QGaimConvPrefPage : public QGaimPrefPage

@@ -1,3 +1,11 @@
+Mon Nov 03 21:49:36 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimMainWindow.cpp:
+	* src/QGaimPrefsDialog.cpp:
+	* src/QGaimPrefsDialog.h:
+	  - Added an optional Big List, which is default for larger resolutions.
+
 Mon Nov 03 15:40:36 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
