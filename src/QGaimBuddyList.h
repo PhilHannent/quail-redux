@@ -51,9 +51,17 @@ class QGaimBListItem : public QListViewItem
 	protected:
 		void init();
 
+		void paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
+							int width, int align, int lmarg, int itMarg);
+		void paintGroupInfo(QPainter *p, const QColorGroup &cg, int column,
+							int width, int align, int lmarg, int itMarg);
+
 	private:
 		GaimBlistNode *node;
 		bool expanded;
+		bool dirty;
+		QString topText, bottomText;
+		int textY1, textY2;
 };
 
 class QGaimBuddyList : public QListView

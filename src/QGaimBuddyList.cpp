@@ -42,13 +42,13 @@
  * QGaimBListItem
  **************************************************************************/
 QGaimBListItem::QGaimBListItem(QListView *parent, GaimBlistNode *node)
-	: QListViewItem(parent), node(node), expanded(false)
+	: QListViewItem(parent), node(node), expanded(false), dirty(true)
 {
 	init();
 }
 
 QGaimBListItem::QGaimBListItem(QListViewItem *parent, GaimBlistNode *node)
-	: QListViewItem(parent), node(node), expanded(false)
+	: QListViewItem(parent), node(node), expanded(false), dirty(true)
 {
 	init();
 }
@@ -75,6 +75,8 @@ QGaimBListItem::updateInfo()
 	else
 		pixmapSize = QGAIM_PIXMAP_SMALL;
 
+	dirty = true;
+
 	if (GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
 		GaimContact *contact = (GaimContact *)node;
@@ -96,6 +98,11 @@ QGaimBListItem::updateInfo()
 		}
 		else
 		{
+			QString text = "";
+
+			if (buddy->evil > 0)
+				text += QString("%1%").arg(buddy->evil);
+
 			if (buddy->idle > 0 &&
 				gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
 			{
@@ -115,7 +122,10 @@ QGaimBListItem::updateInfo()
 
 				QString str = idle;
 
-				setText(1, str);
+				if (text != "")
+					text += "  ";
+
+				text += str;
 
 				g_free(idle);
 			}
@@ -123,6 +133,7 @@ QGaimBListItem::updateInfo()
 			setPixmap(0,
 				QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy,
 												   pixmapSize));
+			setText(1, text);
 		}
 
 		setText(0, gaim_get_buddy_alias(buddy));
@@ -130,6 +141,10 @@ QGaimBListItem::updateInfo()
 	else if (GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
 		GaimBuddy *buddy = (GaimBuddy *)node;
+		QString text = "";
+
+		if (buddy->evil > 0)
+			text += QString("%1%").arg(buddy->evil);
 
 		if (buddy->idle > 0 &&
 			gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
@@ -150,13 +165,17 @@ QGaimBListItem::updateInfo()
 
 			QString str = idle;
 
-			setText(1, str);
+			if (text != "")
+				text += "  ";
+
+			text += str;
 
 			g_free(idle);
 		}
 
 		setPixmap(0, QGaimBuddyList::getBuddyStatusIcon(node, pixmapSize));
 		setText(0, gaim_get_buddy_alias(buddy));
+		setText(1, text);
 	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
@@ -166,28 +185,6 @@ QGaimBListItem::updateInfo()
 														 pixmapSize));
 		setText(0, gaim_chat_get_display_name(chat));
 	}
-#if 0
-	else if (GAIM_BLIST_NODE_IS_GROUP(node))
-	{
-		GaimGroup *group = (GaimGroup *)node;
-
-		if (gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count"))
-		{
-			char *size;
-
-			size = g_strdup_printf("%s (%d/%d)",
-								   group->name,
-								   gaim_blist_get_group_online_count(group),
-								   gaim_blist_get_group_size(group, FALSE));
-
-			setText(0, size);
-
-			g_free(size);
-		}
-		else
-			setText(0, group->name);
-	}
-#endif
 }
 
 void
@@ -216,41 +213,14 @@ QGaimBListItem::paintCell(QPainter *p, const QColorGroup &cg, int column,
 		lmarg += icon->width() + itMarg;
 	}
 
-	if (0)
-	{
-		;
-	}
-	else if (column == 0 && GAIM_BLIST_NODE_IS_GROUP(node))
-	{
-		GaimGroup *group = (GaimGroup *)getBlistNode();
-		QString groupName, detail;
-		QFont f = p->font();
-
-		groupName = group->name;
-
-		if (gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count"))
-		{
-			groupName += " ";
-			detail = QString("(%1/%2)").arg(
-				gaim_blist_get_group_online_count(group)).arg(
-				gaim_blist_get_group_size(group, FALSE));
-		}
-
-		f.setBold(true);
-		p->setFont(f);
-		p->drawText(lmarg, 0, width - lmarg - itMarg, height(),
-					align | AlignVCenter, groupName);
-
-		QRect r = p->boundingRect(lmarg, 0, width - lmarg - itMarg, height(),
-								  align | AlignVCenter, groupName);
-
-		f.setBold(false);
-		p->setFont(f);
-		p->drawText(lmarg + r.right(), 0, width - lmarg - itMarg, height(),
-					align | AlignVCenter, detail);
-	}
+	if (GAIM_BLIST_NODE_IS_BUDDY(node) || GAIM_BLIST_NODE_IS_CONTACT(node))
+		paintBuddyInfo(p, cg, column, width, align, lmarg, itMarg);
+	else if (GAIM_BLIST_NODE_IS_GROUP(node))
+		paintGroupInfo(p, cg, column, width, align, lmarg, itMarg);
 	else
 		QListViewItem::paintCell(p, cg, column, width, align);
+
+	dirty = false;
 }
 
 void
@@ -281,6 +251,188 @@ void
 QGaimBListItem::init()
 {
 	updateInfo();
+}
+
+void
+QGaimBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
+							   int width, int align, int lmarg, int itMarg)
+{
+	GaimBuddy *buddy;
+	GaimContact *contact = NULL;
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+		buddy = (GaimBuddy *)node;
+	else
+	{
+		contact = (GaimContact *)node;
+		buddy = gaim_contact_get_priority_buddy(contact);
+	}
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_large_icons"))
+	{
+		if (column > 0)
+			return;
+
+		if (!isExpanded())
+		{
+			if (dirty)
+			{
+				GaimPlugin *prpl = NULL;
+				GaimPluginProtocolInfo *prplInfo = NULL;
+				QRect topRect, bottomRect;
+				QString statusText;
+				QString idleTime;
+				QString warning;
+
+				prpl = gaim_find_prpl(
+					gaim_account_get_protocol(buddy->account));
+
+				if (prpl != NULL)
+					prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+
+				if (prpl != NULL && prplInfo->status_text != NULL &&
+					gaim_account_get_connection(buddy->account) != NULL)
+				{
+					char *tmp = prplInfo->status_text(buddy);
+
+					if (tmp != NULL)
+					{
+						g_strdelimit(tmp, "\n", ' ');
+
+						statusText = QString(tmp) + " ";
+
+						g_free(tmp);
+					}
+				}
+
+				if (!isExpanded() && buddy->idle > 0 &&
+					gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
+				{
+					time_t t;
+					int ihrs, imin;
+
+					time(&t);
+					ihrs = (t - buddy->idle) / 3600;
+					imin = ((t - buddy->idle) / 60) % 60;
+
+					if (ihrs)
+					{
+						idleTime = QString().sprintf(
+							QObject::tr("Idle (%dh%02dm) "), ihrs, imin);
+					}
+					else
+						idleTime = QObject::tr("Idle (%1m) ").arg(imin);
+				}
+
+				if (!isExpanded() && buddy->evil > 0 &&
+					gaim_prefs_get_bool("/gaim/qpe/blist/show_warning_levels"))
+				{
+					warning = QObject::tr("Warned (%1%) ").arg(buddy->evil);
+				}
+
+				if (!GAIM_BUDDY_IS_ONLINE(buddy) && statusText.isEmpty())
+					statusText = QObject::tr("Offline ");
+
+				if (contact != NULL && !isExpanded() && contact->alias != NULL)
+					topText = contact->alias;
+				else
+					topText = gaim_get_buddy_alias(buddy);
+
+				bottomText = statusText + idleTime + warning;
+
+				/* Get the top rect info. */
+				topRect = p->boundingRect(lmarg, 0, width - lmarg - itMarg,
+										  height(), align | AlignVCenter,
+										  topText);
+
+				if (!bottomText.isEmpty())
+				{
+					bottomRect = p->boundingRect(lmarg, 0,
+												 width - lmarg - itMarg,
+												 height(),
+												 align | AlignVCenter,
+												 bottomText);
+				}
+
+				textY1 = (height() - topRect.height() -
+						  bottomRect.height() - 2) / 2;
+				textY2 = textY1 + topRect.height() + 2;
+			}
+
+			if (buddy->idle > 0 &&
+				gaim_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
+			{
+				p->setPen(cg.dark());
+			}
+
+			p->drawText(lmarg, textY1, width - lmarg - itMarg, height(),
+						align, topText);
+
+			p->setPen(cg.dark());
+			p->drawText(lmarg, textY2, width - lmarg - itMarg, height(),
+						align, bottomText);
+		}
+		else
+		{
+			QColorGroup _cg(cg);
+
+			if (buddy->idle > 0 &&
+				gaim_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
+			{
+				_cg.setColor(QColorGroup::Text, cg.dark());
+			}
+
+			QListViewItem::paintCell(p, _cg, column, width, align);
+		}
+	}
+	else
+	{
+		QColorGroup _cg(cg);
+
+		if (buddy->idle > 0 &&
+			gaim_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
+		{
+			_cg.setColor(QColorGroup::Text, cg.dark());
+		}
+
+		QListViewItem::paintCell(p, _cg, column, width, align);
+	}
+}
+
+void
+QGaimBListItem::paintGroupInfo(QPainter *p, const QColorGroup &, int column,
+							   int width, int align, int lmarg, int itMarg)
+{
+	if (column > 0)
+		return;
+
+	GaimGroup *group = (GaimGroup *)getBlistNode();
+	QString groupName, detail;
+	QFont f = p->font();
+
+	groupName = group->name;
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count"))
+	{
+		groupName += " ";
+		detail = QString("(%1/%2)").arg(
+			gaim_blist_get_group_online_count(group)).arg(
+			gaim_blist_get_group_size(group, FALSE));
+	}
+
+	f.setBold(true);
+	p->setFont(f);
+	p->drawText(lmarg, 0, width - lmarg - itMarg, height(),
+				align | AlignVCenter, groupName);
+
+	QRect r = p->boundingRect(lmarg, 0, width - lmarg - itMarg,
+							  height(),
+							  align | AlignVCenter, groupName);
+
+	f.setBold(false);
+	p->setFont(f);
+	p->drawText(lmarg + r.right(), 0, width - lmarg - itMarg, height(),
+				align | AlignVCenter, detail);
 }
 
 
@@ -800,7 +952,7 @@ void
 QGaimBuddyList::resizeEvent(QResizeEvent *)
 {
 	setColumnWidth(1, width() / 4);
-	setColumnWidth(0, width() - 20 - columnWidth(1));
+	setColumnWidth(0, width() - 20 - columnWidth(1) - columnWidth(2));
 }
 
 void
