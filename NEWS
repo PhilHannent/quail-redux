@@ -1,7 +1,7 @@
 Gaim for Qtopia Release Notes
 -----------------------------
 
-version 0.2:
+version 0.2 (Friday, 15-August-2003):
 	* Fixed a bug where Gaim would crash if libgaim-plugins-oscar
 	  wasn't installed.
 	* Fixed the buttons on the input dialog a bit.
@@ -18,9 +18,20 @@ version 0.2:
 	* Moved the Add Buddy and Add Group buttons into a drop-down
 	  Add menu.
 	* Messages can now be sent to users not on the buddy list.
+	* Events in a conversation or chat, such as a user joining or a
+	  buddy signing off, now greys the text on the tab.
 	* Double-clicking chats in the buddy list now joins the chat.
 	* The protocol icons for offline accounts in the accounts window
 	  are now dimmed.
+
+	Christian: It's not too long after the previous release, but there
+		have been many bug fixes and feature enhancements. The UI has
+		also been cleaned up a bit. For example, it should be easier
+		to tell which accounts are signed on and which aren't. It's a
+		pretty good 0.2 release.  0.3 is going to have new goodies,
+		such as new message notification and preferences. As always,
+		if you have questions, please check the FAQ.  Bug reports go
+		to the trackers.
 
 version 0.1 (Sunday, 10-August-2003):
 	* Initial release.
