@@ -1,3 +1,9 @@
+Thu Oct 09 00:00:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	  - Fixed a problem when removing buddies. They didn't always
+	    leave the list.
+
 Wed Oct 08 23:41:55 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

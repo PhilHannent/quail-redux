@@ -834,19 +834,20 @@ qGaimBlistUpdate(GaimBuddyList *blist, GaimBlistNode *node)
 }
 
 static void
-qGaimBlistRemove(GaimBuddyList *, GaimBlistNode *node)
+qGaimBlistRemove(GaimBuddyList *blist, GaimBlistNode *node)
 {
-	QListViewItem *parent;
+	QGaimBListWindow *blist_win = (QGaimBListWindow *)blist->ui_data;
 	QGaimBListItem *item = (QGaimBListItem *)node->ui_data;
+	QGaimBListItem *parent;
 
 	if (item != NULL)
 	{
-		parent = item->parent();
+		parent = (QGaimBListItem *)item->parent();
 
 		delete item;
 
-		if (parent != NULL && parent->childCount() == 0)
-			delete parent;
+		if (parent != NULL)
+			blist_win->updateNode(parent->getBlistNode());
 	}
 
 	node->ui_data = NULL;
