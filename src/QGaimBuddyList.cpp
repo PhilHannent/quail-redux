@@ -155,6 +155,26 @@ QGaimBListItem::updateInfo()
 		setPixmap(0, QGaimProtocolUtils::getProtocolIcon(chat->account));
 		setText(0, gaim_chat_get_display_name(chat));
 	}
+	else if (GAIM_BLIST_NODE_IS_GROUP(node))
+	{
+		GaimGroup *group = (GaimGroup *)node;
+
+		if (gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count"))
+		{
+			char *size;
+
+			size = g_strdup_printf("%s (%d/%d)",
+								   group->name,
+								   gaim_blist_get_group_online_count(group),
+								   gaim_blist_get_group_size(group, FALSE));
+
+			setText(0, size);
+
+			g_free(size);
+		}
+		else
+			setText(0, group->name);
+	}
 }
 
 void
@@ -1085,8 +1105,6 @@ QGaimBuddyList::addGroup(GaimBlistNode *node)
 {
 	QGaimBListItem *item = new QGaimBListItem(this, node);
 	node->ui_data = item;
-
-	item->setText(0, ((GaimGroup *)node)->name);
 
 	item->setExpandable(true);
 }

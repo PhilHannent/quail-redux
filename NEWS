@@ -2,7 +2,8 @@ Gaim for Qtopia Release Notes
 -----------------------------
 
 version 0.4:
-	* Added preferences.
+	* Added a preferences dialog.
+	* Added support for showing group numbers in the buddy list.
 	* Fixed a bug where the Join/Open Chat button did nothing if no node
 	  was selected.
 	* Closing the window on a conversation no longer closes Gaim.
