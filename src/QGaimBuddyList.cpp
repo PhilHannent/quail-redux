@@ -537,8 +537,27 @@ QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 	if (prpl != NULL)
 		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
 
-	menu = NULL;
-	a = NULL;
+	/* Join Chat */
+	a = new QAction(tr("Join Chat"),
+					QIconSet(Resource::loadPixmap("gaim/join_chat")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	/* Auto-Join */
+	a = new QAction(tr("Auto-Join"), QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	/* Alias */
+	a = new QAction(tr("Alias"),
+					QIconSet(Resource::loadPixmap("gaim/alias")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	/* Remove */
+	a = new QAction(tr("Remove Chat"),
+					QIconSet(Resource::loadPixmap("gaim/remove")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
 }
 
 void
@@ -1005,6 +1024,8 @@ QGaimBuddyList::updateChat(GaimBlistNode *node)
 	QGaimBListItem *item;
 
 	g_return_if_fail(GAIM_BLIST_NODE_IS_CHAT(node));
+
+	updateGroup(node->parent);
 
 	chat = (GaimChat *)node;
 	item = (QGaimBListItem *)node->ui_data;

@@ -80,6 +80,7 @@ DISTFILES = \
 	data/images/status/wireless.png \
 	data/images/accounts.png \
 	data/images/add.png \
+	data/images/alias.png \
 	data/images/away.png \
 	data/images/blist.png \
 	data/images/block.png \
@@ -94,6 +95,7 @@ DISTFILES = \
 	data/images/expand.png \
 	data/images/formatting.png \
 	data/images/info.png \
+	data/images/join_chat.png \
 	data/images/new.png \
 	data/images/new-chat.png \
 	data/images/new-im.png \
