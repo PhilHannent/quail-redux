@@ -172,6 +172,9 @@ QGaimAccountEditor::buildProtocolTab()
 	GList *l;
 	QString buf;
 	int row = 0;
+	QString strValue;
+	int intValue;
+	bool boolValue;
 
 	/* Create the main vbox */
 	protocolBox = vbox = new QVBox(this);
@@ -196,8 +199,6 @@ QGaimAccountEditor::buildProtocolTab()
 			switch (gaim_account_option_get_type(option))
 			{
 				case GAIM_PREF_BOOLEAN:
-					bool boolValue;
-
 					if (account == NULL ||
 						gaim_account_get_protocol(account) != protocol)
 					{
@@ -220,8 +221,6 @@ QGaimAccountEditor::buildProtocolTab()
 					break;
 
 				case GAIM_PREF_INT:
-					int intValue;
-
 					if (account == NULL ||
 						gaim_account_get_protocol(account) != protocol)
 					{
@@ -248,8 +247,6 @@ QGaimAccountEditor::buildProtocolTab()
 					break;
 
 				case GAIM_PREF_STRING:
-					QString strValue;
-
 					if (account == NULL ||
 						gaim_account_get_protocol(account) != protocol)
 					{
@@ -274,6 +271,9 @@ QGaimAccountEditor::buildProtocolTab()
 					protocolOptEntries =
 						g_list_append(protocolOptEntries, entry);
 
+					break;
+
+				default:
 					break;
 			}
 		}
