@@ -268,6 +268,7 @@ QGaimIm::buildInterface()
 
 	text  = new QTextView(str, QString::null, this);
 	entry = new QGaimMultiLineEdit(this);
+	entry->setWordWrap(QMultiLineEdit::WidgetWidth);
 	entry->setHistoryEnabled(true);
 	entry->setFixedVisibleLines(5);
 
