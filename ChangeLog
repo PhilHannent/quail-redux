@@ -1,3 +1,8 @@
+Sun Jul 27 17:13:29 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - Removed the delay on the pop-up menu.
+
 Sun Jul 27 17:09:38 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

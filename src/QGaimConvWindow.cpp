@@ -403,6 +403,7 @@ QGaimConvWindow::setupToolbar()
 
 	userMenu = new QPopupMenu(button);
 	button->setPopup(userMenu);
+	button->setPopupDelay(0);
 
 	/* Warn */
 	a = new QAction(tr("Warn"),
