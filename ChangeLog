@@ -1,3 +1,8 @@
+Fri Aug 15 13:42:09 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	  - Added idle times to the buddy list.
+
 Fri Aug 15 13:26:52 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

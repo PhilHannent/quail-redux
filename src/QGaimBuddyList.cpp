@@ -221,6 +221,10 @@ QGaimBuddyList::QGaimBuddyList(QWidget *parent, const char *name)
 	: QListView(parent, name)
 {
 	addColumn(tr("Buddy"), -1);
+	addColumn(tr("Idle"), 50);
+
+	setColumnAlignment(1, AlignRight);
+
 	setAllColumnsShowFocus(TRUE);
 	setRootIsDecorated(true);
 
