@@ -1,3 +1,10 @@
+Mon Jul 14 19:17:53 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConnectionMeter.cpp:
+	* src/QGaimConnectionMeter.h:
+	* gaim.pro:
+	  - Added the base of what will be the sign-on connection meters.
+
 Mon Jul 14 16:18:18 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:
