@@ -423,7 +423,8 @@ QGaimChat::send()
 {
 	QString text = entry->text();
 
-	text.remove(text.length() - 1, 1);
+	if (text[text.length() - 1] == '\n')
+		text.remove(text.length() - 1, 1);
 
 	gaim_chat_send(GAIM_CHAT(conv), text);
 
@@ -568,7 +569,8 @@ QGaimIm::send()
 {
 	QString text = entry->text();
 
-	text.remove(text.length() - 1, 1);
+	if (text[text.length() - 1] == '\n')
+		text.remove(text.length() - 1, 1);
 
 	gaim_im_send(GAIM_IM(conv), text);
 

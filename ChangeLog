@@ -1,3 +1,9 @@
+Sun Aug 10 01:33:11 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - The last character in the text sent is no longer stripped when
+	    pressing the Send button instead of pressing Enter.
+
 Sun Aug 10 01:25:28 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
