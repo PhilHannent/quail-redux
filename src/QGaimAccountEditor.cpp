@@ -35,6 +35,7 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpixmap.h>
+#include <qpushbutton.h>
 #include <qtabwidget.h>
 #include <qvbox.h>
 
@@ -136,6 +137,7 @@ QGaimAccountEditor::buildAccountTab()
 {
 	/* QFrame *sep; */
 	QVBox *vbox;
+	QHBox *hbox;
 	QWidget *spacer;
 	QGridLayout *grid;
 	QWidget *frame;
@@ -165,16 +167,35 @@ QGaimAccountEditor::buildAccountTab()
 	spacer = new QLabel("", vbox);
 	vbox->setStretchFactor(spacer, 1);
 
+	/* Add the hbox */
+	hbox = new QHBox(vbox);
+	hbox->setSpacing(5);
+
+	/* Add a spacer to the hbox. */
+	spacer = new QLabel("", hbox);
+	hbox->setStretchFactor(spacer, 1);
+
+	/* Add the register button. */
+	registerButton = new QPushButton(tr("Register Account"), hbox);
+
+	connect(registerButton, SIGNAL(clicked()),
+			this, SLOT(registerClicked()));
+
 	/*
 	 * We want to hide a couple of things if the protocol doesn't want
 	 * a password.
 	 */
-	if (prplInfo != NULL &&
-		(prplInfo->options & OPT_PROTO_NO_PASSWORD))
+	if (prplInfo != NULL)
 	{
-		passwordLabel->hide();
-		passwordEntry->hide();
-		rememberPassCheck->hide();
+		if (prplInfo->options & OPT_PROTO_NO_PASSWORD)
+		{
+			passwordLabel->hide();
+			passwordEntry->hide();
+			rememberPassCheck->hide();
+		}
+
+		if (prplInfo->register_user == NULL)
+			registerButton->hide();
 	}
 
 	return vbox;
@@ -610,6 +631,14 @@ QGaimAccountEditor::protocolChanged(int index)
 #endif
 
 	buildTabs();
+}
+
+void
+QGaimAccountEditor::registerClicked()
+{
+	gaim_account_register(account);
+
+	registerButton->setEnabled(false);
 }
 
 void

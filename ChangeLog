@@ -1,3 +1,10 @@
+Thu Aug 28 23:28:34 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountEditor.h:
+	  - Added support for registering accounts on protocol plugins that
+	    support it (such as Jabber).
+
 Thu Aug 28 22:39:54 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* NEWS:

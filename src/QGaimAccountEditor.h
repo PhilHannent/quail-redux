@@ -39,6 +39,7 @@ class QGridLayout;
 class QLabel;
 class QLineEdit;
 class QPixmap;
+class QPushButton;
 class QTabWidget;
 class QVBox;
 
@@ -68,6 +69,8 @@ class QGaimAccountEditor : public QDialog
 	protected slots:
 		void proxyTypeChanged(int index);
 		void protocolChanged(int index);
+
+		void registerClicked();
 
 		void accept();
 
@@ -99,8 +102,8 @@ class QGaimAccountEditor : public QDialog
 		QLineEdit *aliasEntry;
 		QCheckBox *rememberPassCheck;
 		QCheckBox *autoLoginCheck;
-
 		QCheckBox *mailNotificationCheck;
+		QPushButton *registerButton;
 
 		/* Protocol tab */
 		QVBox *protocolBox;
