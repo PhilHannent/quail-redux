@@ -260,17 +260,27 @@ QGaimConversation::updateTabIcon()
 {
 	QGaimConvWindow *qwin;
 	GaimWindow *win;
+	GaimAccount *account;
 	struct buddy *b;
 
 	win = gaim_conversation_get_window(conv);
 	qwin = (QGaimConvWindow *)win->ui_data;
+	account = gaim_conversation_get_account(conv);
 
-	b = gaim_find_buddy(gaim_conversation_get_account(conv),
-						gaim_conversation_get_name(conv));
+	b = gaim_find_buddy(account, gaim_conversation_get_name(conv));
 
-	qwin->getTabs()->changeTab(this,
-			QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
-			gaim_conversation_get_title(conv));
+	if (b == NULL)
+	{
+		qwin->getTabs()->changeTab(this,
+				QGaimProtocolUtils::getProtocolIcon(account),
+				gaim_conversation_get_title(conv));
+	}
+	else
+	{
+		qwin->getTabs()->changeTab(this,
+				QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
+				gaim_conversation_get_title(conv));
+	}
 }
 
 
