@@ -4,6 +4,7 @@
 #include "base.h"
 
 #include <libgaim/accountopt.h>
+#include <libgaim/debug.h>
 
 #include <qcheckbox.h>
 #include <qcombobox.h>
@@ -353,6 +354,10 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	grid->addWidget(protocolList, row++, 1);
 
+	/* Connect the signal */
+	connect(protocolList, SIGNAL(activated(int)),
+			this, SLOT(protocolChanged(int)));
+
 	/* Screen Name */
 	grid->addWidget(new QLabel(tr("Screenname:"), parent), row, 0);
 	screenNameEntry = new QLineEdit(parent);
@@ -488,6 +493,33 @@ QGaimAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 }
 
 void
+QGaimAccountEditor::updateAccountTab()
+{
+	if (prplInfo->options & OPT_PROTO_NO_PASSWORD)
+	{
+		passwordLabel->hide();
+		passwordEntry->hide();
+		rememberPassCheck->hide();
+	}
+	else
+	{
+		passwordLabel->show();
+		passwordEntry->show();
+		rememberPassCheck->show();
+	}
+
+	if (prplInfo->options & OPT_PROTO_MAIL_CHECK)
+		mailNotificationCheck->show();
+	else
+		mailNotificationCheck->hide();
+}
+
+void
+QGaimAccountEditor::updateProtocolTab()
+{
+}
+
+void
 QGaimAccountEditor::proxyTypeChanged(int index)
 {
 	newProxyType = (GaimProxyType)(index - 1);
@@ -507,4 +539,29 @@ QGaimAccountEditor::proxyTypeChanged(int index)
 		proxyUsername->setReadOnly(false);
 		proxyPassword->setReadOnly(false);
 	}
+}
+
+void
+QGaimAccountEditor::protocolChanged(int index)
+{
+	GaimPlugin *plugin;
+	GList *l;
+
+	l = g_list_nth(gaim_plugins_get_protocols(), index);
+
+	if (l == NULL)
+	{
+		gaim_debug(GAIM_DEBUG_FATAL, "QGaimAccountEditor",
+				   "Protocol switched to is not in list!\n");
+		abort();
+	}
+
+	plugin = (GaimPlugin *)l->data;
+
+	prplInfo   = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
+	protocol   = prplInfo->protocol;
+	protocolId = plugin->info->id;
+
+	updateAccountTab();
+	updateProtocolTab();
 }

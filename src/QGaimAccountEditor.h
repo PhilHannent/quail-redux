@@ -37,8 +37,12 @@ class QGaimAccountEditor : public QDialog
 		void buildLoginOpts(QGridLayout *grid, QWidget *parent, int &row);
 		void buildUserOpts(QGridLayout *grid, QWidget *parent, int &row);
 
+		void updateAccountTab();
+		void updateProtocolTab();
+
 	protected slots:
 		void proxyTypeChanged(int index);
+		void protocolChanged(int index);
 
 	private:
 		GaimAccount *account;
