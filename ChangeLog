@@ -1,3 +1,10 @@
+Wed Jul 09 16:34:33 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkipk.shh:
+	* mkstuff.conf:
+	* mktarball.sh:
+	  - Added utility scripts to produce an ipkg and tarball.
+
 Wed Jul 02 12:14:50 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

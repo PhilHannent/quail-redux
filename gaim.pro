@@ -18,6 +18,25 @@ SOURCES = \
 	src/QGaimDebugWindow.cpp \
 	src/main.cpp
 
+DISTFILES = \
+	data/images/protocols/small/aim.png \
+	data/images/protocols/small/icq.png \
+	data/images/protocols/small/irc.png \
+	data/images/protocols/small/msn.png \
+	data/images/accounts.png \
+	data/images/away.png \
+	data/images/blist.png \
+	data/images/connect.png \
+	data/images/conversations.png \
+	data/images/disconnect.png \
+	data/images/edit.png \
+	data/images/send-im.png \
+	ChangeLog \
+	README \
+	mkstuff.conf \
+	mkipk.sh \
+	mktarball.sh
+
 DEFINES += LOCAL_COMPILE
 
 INCLUDEPATH += \
