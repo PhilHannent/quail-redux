@@ -23,6 +23,9 @@ class QGaimBListItem : public QListViewItem
 
 		GaimBlistNode *getBlistNode() const;
 
+		void paintBranches(QPainter *p, const QColorGroup &cg,
+						   int width, int y, int height, GUIStyle s);
+
 	private:
 		GaimBlistNode *node;
 };

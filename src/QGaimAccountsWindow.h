@@ -47,17 +47,22 @@ class QGaimAccountsWindow : public QMainWindow
 
 	private slots:
 		void connectToAccount();
+		void disconnectFromAccount();
 		void showBlist();
 		void accountsToggled(bool state);
 		void showConversations();
+		void accountSelected(QListViewItem *item);
 
 	private:
 		QPixmap *getProtocolIcon(GaimAccount *account);
 
 	private:
 		QMenuBar *menubar;
-		QToolButton *accountsButton;
 		QPopupMenu *accountMenu;
+		QToolButton *accountsButton;
+
+		QAction *connectButton;
+		QAction *disconnectButton;
 
 		QListView *accountsView;
 };

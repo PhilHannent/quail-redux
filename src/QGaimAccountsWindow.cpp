@@ -75,6 +75,9 @@ QGaimAccountsWindow::buildInterface()
 	accountsView->addColumn(tr("Protocol"), -1);
 	accountsView->setAllColumnsShowFocus(true);
 
+	connect(accountsView, SIGNAL(selectionChanged(QListViewItem *)),
+			this, SLOT(accountSelected(QListViewItem *)));
+
 	setCentralWidget(accountsView);
 }
 
@@ -147,12 +150,26 @@ QGaimAccountsWindow::setupToolbar()
 	addToolBar(toolbar);
 
 	/* Connect */
-	a = new QAction(tr("Connect"), Resource::loadPixmap("enter"),
+	a = new QAction(tr("Connect"),
+					QIconSet(QPixmap(DATA_PREFIX "images/connect.png")),
 					QString::null, 0, this, 0);
+	connectButton = a;
 	a->addTo(toolbar);
 
+	a->setEnabled(false);
 	connect(a, SIGNAL(activated()),
 			this, SLOT(connectToAccount()));
+
+	/* Disconnect */
+	a = new QAction(tr("Connect"),
+					QIconSet(QPixmap(DATA_PREFIX "images/disconnect.png")),
+					QString::null, 0, this, 0);
+	disconnectButton = a;
+	a->addTo(toolbar);
+
+	a->setEnabled(false);
+	connect(a, SIGNAL(activated()),
+			this, SLOT(disconnectFromAccount()));
 }
 
 void
@@ -204,6 +221,16 @@ QGaimAccountsWindow::connectToAccount()
 }
 
 void
+QGaimAccountsWindow::disconnectFromAccount()
+{
+	QGaimAccountListItem *item;
+	
+	item = (QGaimAccountListItem *)accountsView->selectedItem();
+
+	gaim_account_disconnect(item->getAccount());
+}
+
+void
 QGaimAccountsWindow::showBlist()
 {
 	qGaimGetHandle()->showBlistWindow();
@@ -218,6 +245,18 @@ QGaimAccountsWindow::accountsToggled(bool)
 void
 QGaimAccountsWindow::showConversations()
 {
+}
+
+void
+QGaimAccountsWindow::accountSelected(QListViewItem *item)
+{
+	QGaimAccountListItem *accountItem = (QGaimAccountListItem *)item;
+	GaimAccount *account;
+
+	account = accountItem->getAccount();
+
+	connectButton->setEnabled(!gaim_account_is_connected(account));
+	disconnectButton->setEnabled(gaim_account_is_connected(account));
 }
 
 QPixmap *

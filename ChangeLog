@@ -1,3 +1,16 @@
+Thu Jun 26 17:32:58 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - We no longer show the branches in buddy groups. Unfortunately, the
+	    top level still shows them. Not sure what to do there.
+
+Thu Jun 26 17:14:27 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimAccountsWindow.h:
+	  - Changed the connect button and added a disconnect button.
+
 Thu Jun 26 16:51:14 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:

@@ -38,6 +38,14 @@ QGaimBListItem::getBlistNode() const
 	return node;
 }
 
+void
+QGaimBListItem::paintBranches(QPainter *p, const QColorGroup &cg,
+							  int width, int, int height, GUIStyle)
+{
+	p->fillRect(0, 0, width, height, QBrush(cg.base()));
+}
+
+
 /**************************************************************************
  * QGaimBListWindow
  **************************************************************************/
