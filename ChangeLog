@@ -1,0 +1,7 @@
+Thu Jun 26 16:51:14 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimAccountsWindow.h:
+	  - Accounts are now sorted as they would be in the config file. That
+	    is, unless you have a 7 digit number of accounts, in which case
+	    any past account #999999 would be out of order.

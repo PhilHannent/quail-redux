@@ -16,8 +16,8 @@
 /**************************************************************************
  * QGaimAccountListItem
  **************************************************************************/
-QGaimAccountListItem::QGaimAccountListItem(QListView *parent)
-	: QListViewItem(parent), account(NULL)
+QGaimAccountListItem::QGaimAccountListItem(QListView *parent, int index)
+	: QListViewItem(parent), account(NULL), index(index)
 {
 }
 
@@ -35,6 +35,16 @@ GaimAccount *
 QGaimAccountListItem::getAccount() const
 {
 	return account;
+}
+
+QString
+QGaimAccountListItem::key(int, bool) const
+{
+	QString str;
+
+	str.sprintf("%6d", index);
+
+	return str;
 }
 
 /**************************************************************************
@@ -148,7 +158,12 @@ QGaimAccountsWindow::setupToolbar()
 void
 QGaimAccountsWindow::loadAccounts()
 {
-	for (GList *l = gaim_accounts_get_all(); l != NULL; l = l->next)
+	GList *l;
+	int index;
+
+	for (l = gaim_accounts_get_all(), index = 0;
+		 l != NULL;
+		 l = l->next, index++)
 	{
 		QPixmap *pixmap;
 		QGaimAccountListItem *item;
@@ -156,7 +171,7 @@ QGaimAccountsWindow::loadAccounts()
 
 		pixmap = getProtocolIcon(account);
 
-		item = new QGaimAccountListItem(accountsView);
+		item = new QGaimAccountListItem(accountsView, index);
 		item->setText(0, gaim_account_get_username(account));
 		item->setText(1, getProtocolName(gaim_account_get_protocol(account)));
 		item->setAccount(account);

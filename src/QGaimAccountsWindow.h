@@ -16,14 +16,17 @@ class QToolButton;
 class QGaimAccountListItem : public QListViewItem
 {
 	public:
-		QGaimAccountListItem(QListView *parent);
+		QGaimAccountListItem(QListView *parent, int index);
 		~QGaimAccountListItem();
 
 		void setAccount(GaimAccount *account);
 		GaimAccount *getAccount() const;
 
+		virtual QString key(int column, bool ascending) const;
+
 	private:
 		GaimAccount *account;
+		int index;
 };
 
 class QGaimAccountsWindow : public QMainWindow
