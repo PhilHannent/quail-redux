@@ -97,8 +97,8 @@ QGaimBlistPrefPage::buildInterface()
 		idleTimes->setChecked(true);
 
 	/* Show warning levels */
-	idleTimes = new QCheckBox(tr("Show warning levels"),
-							  this, "warning levels checkbox");
+	showWarnings = new QCheckBox(tr("Show warning levels"),
+								 this, "warning levels checkbox");
 
 	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_warning_levels"))
 		showWarnings->setChecked(true);
