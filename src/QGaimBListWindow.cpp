@@ -37,6 +37,7 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlistview.h>
+#include <qmessagebox.h>
 #include <qpopupmenu.h>
 #include <qpushbutton.h>
 #include <qtoolbar.h>
@@ -214,6 +215,7 @@ QGaimBListWindow::nodeChanged(QListViewItem *_item)
 	if (_item == NULL)
 	{
 		imButton->setEnabled(false);
+		removeButton->setEnabled(false);
 	}
 	else
 	{
@@ -228,6 +230,8 @@ QGaimBListWindow::nodeChanged(QListViewItem *_item)
 		{
 			imButton->setEnabled(false);
 		}
+
+		removeButton->setEnabled(true);
 	}
 }
 
@@ -298,6 +302,50 @@ removeBuddyCb(struct buddy *buddy)
 		gaim_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
 }
 
+static void
+removeChatCb(struct chat *chat)
+{
+	gaim_blist_remove_chat(chat);
+	gaim_blist_save();
+}
+
+static void
+removeGroupCb(struct group *group)
+{
+	GaimBlistNode *node;
+	
+	for (node = ((GaimBlistNode *)group)->child;
+		 node != NULL;
+		 node = node->next)
+	{
+		if (GAIM_BLIST_NODE_IS_BUDDY(node))
+		{
+			struct buddy *buddy = (struct buddy *)node;
+			GaimConversation *conv = gaim_find_conversation(buddy->name);
+
+			if (gaim_account_is_connected(buddy->account))
+			{
+				serv_remove_buddy(gaim_account_get_connection(buddy->account),
+								  buddy->name, group->name);
+				gaim_blist_remove_buddy(buddy);
+
+				if (conv != NULL)
+					gaim_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
+			}
+		}
+		else if (GAIM_BLIST_NODE_IS_CHAT(node))
+		{
+			struct chat *chat = (struct chat *)node;
+
+			if (gaim_account_is_connected(chat->account))
+				gaim_blist_remove_chat(chat);
+		}
+	}
+
+	gaim_blist_remove_group(group);
+	gaim_blist_save();
+}
+
 void
 QGaimBListWindow::showRemoveBuddy()
 {
@@ -310,17 +358,50 @@ QGaimBListWindow::showRemoveBuddy()
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
 		struct buddy *buddy = (struct buddy *)item->getBlistNode();
-		QString text;
 		QString name = buddy->name;
 
-		text = tr("You are about to remove " + name + "from your buddy list.\n"
-				  "Do you want to continue?");
+		int result = QMessageBox::information(this,
+				tr("Remove Buddy"),
+				tr("<p>You are about to remove %1 from your buddy list.</p>\n"
+				   "<p>Do you want to continue?</p>").arg(name),
+				tr("&Remove Buddy"), tr("&Cancel"),
+				QString::null, 1, 1);
 
-		gaim_request_action(this, tr("Remove Buddy"), text, NULL,
-							(size_t)-1, buddy, 2,
-							(const char *)tr("Yes"),
-							G_CALLBACK(removeBuddyCb),
-							(const char *)tr("No"), NULL);
+		if (result == 0)
+			removeBuddyCb(buddy);
+	}
+	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+	{
+		struct chat *chat;
+		QString name = gaim_chat_get_display_name(chat);
+
+		int result = QMessageBox::information(this,
+				tr("Remove Chat"),
+				tr("<p>You are about to remove the chat %1 from "
+				   "your buddy list.</p>\n"
+				   "<p>Do you want to continue?</p>").arg(name),
+				tr("&Remove Chat"), tr("&Cancel"),
+				QString::null, 1, 1);
+
+		if (result == 0)
+			removeChatCb(chat);
+
+	}
+	else if (GAIM_BLIST_NODE_IS_GROUP(node))
+	{
+		struct group *group = (struct group *)item->getBlistNode();
+		QString name = group->name;
+
+		int result = QMessageBox::information(this,
+				tr("Remove Group"),
+				tr("<p>You are about to remove %1 and all its members from "
+				   "your buddy list.</p>\n"
+				   "<p>Do you want to continue?</p>").arg(name),
+				tr("&Remove Group"), tr("&Cancel"),
+				QString::null, 1, 1);
+
+		if (result == 0)
+			removeGroupCb(group);
 	}
 }
 

@@ -157,6 +157,7 @@ qGaimRequestAction(const char *title, const char *primary,
 
 	cbs = new GCallback[actionCount];
 
+#if 0
 	if (actionCount > 2)
 	{
 		for (size_t i = 0; i < 2; i++)
@@ -183,6 +184,16 @@ qGaimRequestAction(const char *title, const char *primary,
 
 			cbs[i] = va_arg(actions, GCallback);
 		}
+	}
+#endif
+
+	for (size_t i = 0; i < actionCount; i++)
+	{
+		const char *text = va_arg(actions, char *);
+		GCallback cb     = va_arg(actions, GCallback);
+
+		msgbox->setButtonText(10 + i, text);
+		cbs[i] = cb;
 	}
 
 	int result = msgbox->exec();
