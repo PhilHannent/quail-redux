@@ -110,6 +110,20 @@ QGaimImageUtils::saturate(QImage &image, float value)
 }
 
 QPixmap &
+QGaimImageUtils::greyPixmap(QPixmap &pixmap)
+{
+	QImage image;
+
+	image = pixmap.convertToImage();
+
+	greyImage(image);
+
+	pixmap.convertFromImage(image);
+
+	return pixmap;
+}
+
+QPixmap &
 QGaimImageUtils::saturate(QPixmap &pixmap, float value)
 {
 	QImage image;

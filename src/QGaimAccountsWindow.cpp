@@ -153,7 +153,7 @@ QGaimAccountsWindow::accountSignedOff(GaimAccount *account)
 	{
 		QPixmap protocolIcon = QGaimProtocolUtils::getProtocolIcon(account);
 
-		item->setPixmap(0, QGaimImageUtils::saturate(protocolIcon, 0.25));
+		item->setPixmap(0, QGaimImageUtils::greyPixmap(protocolIcon));
 	}
 }
 
@@ -301,7 +301,7 @@ QGaimAccountsWindow::loadAccounts()
 		if (gaim_account_is_connected(account))
 			item->setPixmap(0, protocolIcon);
 		else
-			item->setPixmap(0, QGaimImageUtils::saturate(protocolIcon, 0.25));
+			item->setPixmap(0, QGaimImageUtils::greyPixmap(protocolIcon));
 	}
 }
 

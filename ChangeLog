@@ -1,3 +1,11 @@
+Fri Aug 15 16:26:07 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimImageUtils.cpp:
+	* src/QGaimImageUtils.h:
+	  - Offline accounts in the accounts window are now greyed instead
+	    of dimmed.
+
 Fri Aug 15 15:03:47 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimProtocolUtils.cpp:
