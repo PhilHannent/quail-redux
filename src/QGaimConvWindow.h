@@ -128,6 +128,9 @@ class QGaimConvWindow : public QMainWindow
 		QAction *removeButton;
 		QAction *infoButton;
 
+		QPopupMenu *userMenu;
+		QPopupMenu *formatMenu;
+
 		GList *pages;
 };
 

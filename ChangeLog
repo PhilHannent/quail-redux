@@ -1,3 +1,10 @@
+Sun Jul 27 17:09:38 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - Moved the warn, block, add/remove, and get info buttons into
+	    the User menu.
+
 Sun Jul 27 16:41:28 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

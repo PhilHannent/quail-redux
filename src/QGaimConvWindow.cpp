@@ -10,6 +10,7 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qmultilineedit.h>
+#include <qpopupmenu.h>
 #include <qsplitter.h>
 #include <qtabwidget.h>
 #include <qtextview.h>
@@ -231,7 +232,7 @@ QGaimConvWindow::QGaimConvWindow(GaimWindow *win)
 
 QGaimConvWindow::~QGaimConvWindow()
 {
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "destructor\n");
+	delete userMenu;
 }
 
 void
@@ -394,32 +395,35 @@ QGaimConvWindow::setupToolbar()
 	/* Separator */
 	toolbar->addSeparator();
 
-	a = new QAction(tr("User Actions"),
-					QIconSet(QPixmap(DATA_PREFIX "images/user.png")),
-					QString::null, 0, this, 0);
-	a->addTo(toolbar);
+	pixmap = new QPixmap(DATA_PREFIX "images/user.png");
+	button = new QToolButton(toolbar, "blist");
+	button->setAutoRaise(true);
+	button->setPixmap(*pixmap);
+	delete pixmap;
 
-#if 0
+	userMenu = new QPopupMenu(button);
+	button->setPopup(userMenu);
+
 	/* Warn */
 	a = new QAction(tr("Warn"),
 					QIconSet(QPixmap(DATA_PREFIX "images/warn.png")),
 					QString::null, 0, this, 0);
 	warnButton = a;
-	a->addTo(toolbar);
+	a->addTo(userMenu);
 
 	/* Block */
 	a = new QAction(tr("Block"),
 					QIconSet(QPixmap(DATA_PREFIX "images/block.png")),
 					QString::null, 0, this, 0);
 	blockButton = a;
-	a->addTo(toolbar);
+	a->addTo(userMenu);
 
 	/* Add */
 	a = new QAction(tr("Add"),
 					QIconSet(QPixmap(DATA_PREFIX "images/add.png")),
 					QString::null, 0, this, 0);
 	addButton = a;
-	a->addTo(toolbar);
+	a->addTo(userMenu);
 
 	/* Remove */
 	a = new QAction(tr("Remove"),
@@ -432,9 +436,8 @@ QGaimConvWindow::setupToolbar()
 					QIconSet(QPixmap(DATA_PREFIX "images/info.png")),
 					QString::null, 0, this, 0);
 	infoButton = a;
-	a->addTo(toolbar);
+	a->addTo(userMenu);
 
-#endif
 
 	/* Formatting */
 	a = new QAction(tr("Formatting"),
