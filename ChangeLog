@@ -1,3 +1,12 @@
+Mon Nov 03 10:40:15 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimConvButton.cpp:
+	* src/QGaimConvWindow.cpp:
+	* gaim.pro:
+	  - Added 32x32 images for larger resolutions.
+
 Mon Nov 03 08:30:17 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:
