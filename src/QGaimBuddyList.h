@@ -26,6 +26,8 @@
 
 #include <qlistview.h>
 
+#include "QGaimImageUtils.h"
+
 class QGaimBListItem : public QListViewItem
 {
 	public:
@@ -56,7 +58,8 @@ class QGaimBuddyList : public QListView
 	Q_OBJECT
 
 	public:
-		static QPixmap getBuddyStatusIcon(GaimBlistNode *node);
+		static QPixmap getBuddyStatusIcon(GaimBlistNode *node,
+			QGaimPixmapSize size = QGAIM_PIXMAP_SMALL);
 
 	public:
 		QGaimBuddyList(QWidget *parent = NULL, const char *name = NULL);

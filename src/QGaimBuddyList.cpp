@@ -186,7 +186,7 @@ QGaimBListItem::init()
  * QGaimBuddyList static utility functions
  **************************************************************************/
 QPixmap
-QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
+QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node, QGaimPixmapSize size)
 {
 	QImage statusImage;
 	QImage emblemImage;
@@ -257,7 +257,12 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
 										  QString(protoName));
 	}
 
-	statusImage = statusImage.smoothScale(16, 16);
+	if (size == QGAIM_PIXMAP_LARGE)
+		statusImage = statusImage.smoothScale(32, 32);
+	else if (size == QGAIM_PIXMAP_SMALL)
+		statusImage = statusImage.smoothScale(16, 16);
+	else if (size == QGAIM_PIXMAP_MENU)
+		statusImage = statusImage.smoothScale(14, 14);
 
 	if (statusImage.isNull())
 		return QPixmap();

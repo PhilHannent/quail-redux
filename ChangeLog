@@ -1,6 +1,11 @@
+Mon Oct 06 00:18:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Fixed the scaling on conversation tabs.
+
 Mon Oct 06 00:12:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
-	* src/QGaimAccountsWindow.cpp:
 	* src/QGaimConvButton.cpp:
 	* src/QGaimConvWindow.cpp:
 	  - Fixed the scaling on the conversations button and the tabs.
