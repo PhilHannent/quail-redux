@@ -1,3 +1,9 @@
+Fri Sep 26 23:33:30 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	  - Clicking the IM button on a contact now opens an IM window
+	    with the person.
+
 Fri Sep 26 08:42:11 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

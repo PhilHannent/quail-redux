@@ -648,15 +648,15 @@ QGaimBListWindow::sendIm()
 	if (item != NULL)
 		node = item->getBlistNode();
 
-	if (node != NULL && GAIM_BLIST_NODE_IS_CONTACT(node) &&
-		!item->isExpanded())
+	if (node != NULL && GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
 		node = (GaimBlistNode *)
 			gaim_contact_get_priority_buddy((GaimContact *)node);
 		item = (QGaimBListItem *)node->ui_data;
 	}
 
-	if (node != NULL && GAIM_BLIST_NODE_IS_BUDDY(node))
+	if (node != NULL &&
+		(GAIM_BLIST_NODE_IS_BUDDY(node) || GAIM_BLIST_NODE_IS_CONTACT(node)))
 	{
 		GaimBuddy *buddy = (GaimBuddy *)node;
 		GaimConversation *conv;
