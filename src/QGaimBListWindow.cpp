@@ -427,8 +427,14 @@ QGaimBListWindow::sendIm()
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
 		struct buddy *buddy = (struct buddy *)item->getBlistNode();
+		GaimConversation *conv;
+		GaimWindow *win;
 
-		gaim_conversation_new(GAIM_CONV_IM, buddy->account, buddy->name);
+		conv = gaim_conversation_new(GAIM_CONV_IM, buddy->account,
+									 buddy->name);
+
+		win = gaim_conversation_get_window(conv);
+		gaim_window_raise(win);
 	}
 }
 

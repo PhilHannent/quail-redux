@@ -1,3 +1,13 @@
+Thu Jul 31 08:07:19 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	  - Raise the conversation window when starting a new conversation
+	    with a user from your buddy list.
+
+	* src/QGaimConvWindow.cpp:
+	  - Probably fixed some issues that might arise with sending to
+	    chats.
+
 Thu Jul 31 01:07:47 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* mkipk.sh:

@@ -156,9 +156,9 @@ QGaimChat::send()
 	char *buffer;
 	size_t len = entry->text().length();
 
-	buffer = new char[len + 1];
-	strncpy(buffer, entry->text().data(), len);
-	buffer[len] = '\0';
+	buffer = new char[len];
+	strncpy(buffer, entry->text().latin1(), len - 1);
+	buffer[len - 1] = '\0';
 
 	gaim_chat_send(GAIM_CHAT(conv), buffer);
 
