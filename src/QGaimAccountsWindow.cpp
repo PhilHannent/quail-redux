@@ -299,10 +299,19 @@ QGaimAccountsWindow::accountSelected(QListViewItem *item)
 
 	account = accountItem->getAccount();
 
+	if (gaim_find_prpl(gaim_account_get_protocol(account)) == NULL)
+	{
+		connectButton->setEnabled(false);
+		disconnectButton->setEnabled(false);
+	}
+	else
+	{
+		connectButton->setEnabled(!gaim_account_is_connected(account));
+		disconnectButton->setEnabled(gaim_account_is_connected(account));
+	}
+
 	editButton->setEnabled(true);
 	deleteButton->setEnabled(true);
-	connectButton->setEnabled(!gaim_account_is_connected(account));
-	disconnectButton->setEnabled(gaim_account_is_connected(account));
 }
 
 static void

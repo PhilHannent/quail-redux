@@ -1,3 +1,9 @@
+Tue Jul 29 01:35:52 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	  - Accounts without a protocol can no longer be connected to
+	    or disconnected from.
+
 Tue Jul 29 01:31:25 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:
