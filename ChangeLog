@@ -1,3 +1,9 @@
+Sun Jul 27 16:24:35 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - Sending messages over IMs and chats now actually works.
+
 Sun Jul 27 03:32:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

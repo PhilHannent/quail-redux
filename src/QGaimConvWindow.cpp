@@ -19,7 +19,6 @@
 
 #include <stdio.h>
 
-
 /**************************************************************************
  * QGaimConversation
  **************************************************************************/
@@ -149,6 +148,22 @@ QGaimChat::buildInterface()
 {
 }
 
+void
+QGaimChat::send()
+{
+	char *buffer;
+	size_t len = entry->text().length();
+
+	buffer = new char[len + 1];
+	strncpy(buffer, entry->text().data(), len);
+	buffer[len] = '\0';
+
+	gaim_chat_send(GAIM_IM(conv), buffer);
+
+	delete buffer;
+}
+
+
 /**************************************************************************
  * QGaimIm
  **************************************************************************/
@@ -180,9 +195,25 @@ QGaimIm::buildInterface()
 	entry = new QMultiLineEdit(this);
 	entry->setFixedVisibleLines(5);
 
-	l->addWidget(text, 0, 0);
+	l->addWidget(text,  0, 0);
 	l->addWidget(entry, 1, 0);
 }
+
+void
+QGaimIm::send()
+{
+	char *buffer;
+	size_t len = entry->text().length();
+
+	buffer = new char[len + 1];
+	strncpy(buffer, entry->text().data(), len);
+	buffer[len] = '\0';
+
+	gaim_im_send(GAIM_IM(conv), buffer);
+
+	delete buffer;
+}
+
 
 /**************************************************************************
  * QGaimConvWindow
@@ -294,6 +325,19 @@ QGaimConvWindow::closeConv()
 }
 
 void
+QGaimConvWindow::send()
+{
+	GaimConversation *conv;
+	QGaimConversation *qconv;
+
+	conv = gaim_window_get_active_conversation(win);
+
+	qconv = (QGaimConversation *)conv->ui_data;
+
+	qconv->send();
+}
+
+void
 QGaimConvWindow::showAccountsWindow()
 {
 	qGaimGetHandle()->showAccountsWindow();
@@ -400,7 +444,10 @@ QGaimConvWindow::setupToolbar()
 					QIconSet(QPixmap(DATA_PREFIX "images/send-im.png")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
-	
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(send()));
+
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);
 	label->setText("");

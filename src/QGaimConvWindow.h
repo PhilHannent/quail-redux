@@ -32,6 +32,8 @@ class QGaimConversation : public QWidget
 
 		virtual void updated(GaimConvUpdateType type);
 
+		virtual void send() = 0;
+
 	protected:
 		GaimConversation *conv;
 		QTextView *text;
@@ -54,6 +56,8 @@ class QGaimChat : public QGaimConversation
 		void renameUser(const char *oldName, const char *newName);
 		void removeUser(const char *user);
 
+		void send();
+
 	protected:
 		virtual void buildInterface();
 };
@@ -69,6 +73,8 @@ class QGaimIm : public QGaimConversation
 
 		void write(const char *who, const char *message,
 				   size_t len, int flags, time_t mtime);
+
+		void send();
 
 	protected:
 		virtual void buildInterface();
@@ -99,6 +105,7 @@ class QGaimConvWindow : public QMainWindow
 
 	private slots:
 		void closeConv();
+		void send();
 		void showAccountsWindow();
 		void conversationsToggled(bool state);
 		void showBlist();
