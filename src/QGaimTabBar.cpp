@@ -103,14 +103,9 @@ QGaimTabBar::paintLabel(QPainter *p, const QRect &rect,
 int
 QGaimTabBar::insertTab(QTab *tab, int index)
 {
-	int newIndex = index;
+	int id = QTabBar::insertTab(tab, index);
 
-	if (index == -1)
-		newIndex = tabList()->count();
+	lastId = id;
 
-	colors[newIndex] = black;
-
-	lastId = newIndex;
-
-	return QTabBar::insertTab(tab, index);
+	return id;
 }

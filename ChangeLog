@@ -1,3 +1,10 @@
+Wed Feb 18 16:33:12 PST 2004  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimTabBar.cpp:
+	  - Status changes no longer applies to the wrong tabs, and issues
+	    closing some tabs are fixed. This fixes bug #831222.
+
 Wed Feb 18 16:09:45 PST 2004  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

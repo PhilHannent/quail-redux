@@ -607,10 +607,6 @@ QGaimConvIm::updated(GaimConvUpdateType type)
 		win = gaim_conversation_get_window(conv);
 		qwin = (QGaimConvWindow *)win->ui_data;
 
-		gaim_debug_info("QGaimConvWindow",
-						"Setting tab color on tab ID %d (%s)\n",
-						getTabId(),
-						gaim_conversation_get_name(conv));
 		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
 
@@ -754,6 +750,7 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 	QGaimConversation *qconv = NULL;
 	GaimAccount *account;
 	GaimBuddy *b;
+	int id;
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QGaimConvIm(conv, tabs);
@@ -777,14 +774,9 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 	else
 	{
 		tabs->addTab(qconv,
-					 QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
-					 gaim_conversation_get_title(conv));
+			QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
+			gaim_conversation_get_title(conv));
 	}
-
-	gaim_debug_info("QGaimConvWindow",
-					"Assigning tab ID %d to %s\n",
-					tabs->getLastId(),
-					gaim_conversation_get_name(conv));
 
 	qconv->setTabId(tabs->getLastId());
 
