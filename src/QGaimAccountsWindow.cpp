@@ -364,7 +364,7 @@ qGaimConnConnected(GaimConnection *gc)
 }
 
 static void
-qGaimConnDisconnected(GaimConnection *gc, const char *reason)
+qGaimConnDisconnected(GaimConnection *gc)
 {
 	QGaimConnectionMeters *meters = qGaimGetHandle()->getMeters();
 	QGaimConnectionMeter *meter;
@@ -373,9 +373,6 @@ qGaimConnDisconnected(GaimConnection *gc, const char *reason)
 
 	if (meter != NULL)
 		meters->removeMeter(meter);
-
-	/* XXX */
-	reason = NULL;
 }
 
 static void
@@ -391,7 +388,8 @@ static GaimConnectionUiOps connUiOps =
 	qGaimConnConnectProgress,
 	qGaimConnConnected,
 	qGaimConnDisconnected,
-	qGaimConnNotice
+	qGaimConnNotice,
+	NULL
 };
 
 GaimConnectionUiOps *

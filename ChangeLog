@@ -1,3 +1,9 @@
+Thu Aug 14 01:38:45 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimNotify.cpp:
+	  - Synced with the latest 0.67cvs API changes.
+
 Wed Aug 13 09:39:09 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:

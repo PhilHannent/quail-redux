@@ -111,7 +111,7 @@ qGaimNotifyEmails(size_t count, gboolean, const char **subjects,
 	{
 		if (froms != NULL)
 			str += QObject::tr("<p>From: %1</p>").arg(*froms);
-		
+
 		if (subjects != NULL)
 			str += QObject::tr("<p>Subject: %1</p>").arg(*subjects);
 	}
@@ -126,6 +126,7 @@ static GaimNotifyUiOps notifyOps =
 	qGaimNotifyMessage,
 	qGaimNotifyEmail,
 	qGaimNotifyEmails,
+	NULL,
 	NULL,
 	NULL
 };
