@@ -1,3 +1,9 @@
+Fri Aug 01 21:25:22 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvButton.cpp:
+	  - The protocol icon is now shown next to the username in the
+	    active conversations drop-down menu.
+
 Fri Aug 01 21:12:26 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

@@ -481,13 +481,13 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 	{
 		tabs->addTab(qconv, QIconSet(*pixmap),
 					 gaim_conversation_get_title(conv));
+
+		delete pixmap;
 	}
 	else
 	{
 		tabs->addTab(qconv, gaim_conversation_get_title(conv));
 	}
-
-	delete pixmap;
 
 	qconv->setTabId(tabs->getLastId());
 

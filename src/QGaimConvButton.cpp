@@ -19,6 +19,7 @@
  * MA  02111-1307  USA
  */
 #include "QGaimConvButton.h"
+#include "QGaimProtocolUtils.h"
 #include "QGaim.h"
 #include "base.h"
 
@@ -103,9 +104,24 @@ QGaimConvButton::generateMenu()
 
 	for (l = gaim_get_conversations(), i = 0; l != NULL; l = l->next, i++)
 	{
+		QPixmap *pixmap;
+
 		conv = (GaimConversation *)l->data;
 
-		menu->insertItem(gaim_conversation_get_title(conv), i);
+		pixmap = QGaimProtocolUtils::getProtocolIcon(
+				gaim_conversation_get_account(conv));
+
+		if (pixmap != NULL)
+		{
+			menu->insertItem(QIconSet(*pixmap),
+							 gaim_conversation_get_title(conv), i);
+
+			delete pixmap;
+		}
+		else
+		{
+			menu->insertItem(gaim_conversation_get_title(conv), i);
+		}
 
 		convs[i] = conv;
 	}
