@@ -468,6 +468,15 @@ QGaimBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 	/* Separator */
 	menu->insertSeparator();
 
+	/* Alias */
+	a = new QAction(tr("Alias"),
+					QIconSet(Resource::loadPixmap("gaim/alias")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(aliasBuddySlot()));
+
 	/* Remove */
 	a = new QAction(tr("Remove"),
 					QIconSet(Resource::loadPixmap("gaim/remove")),
@@ -878,6 +887,29 @@ QGaimBuddyList::sendImSlot()
 		return;
 
 	emit openIm(buddy);
+}
+
+static void
+aliasBuddyCb(GaimBuddy *buddy, const char *newAlias)
+{
+	gaim_blist_alias_buddy(buddy, newAlias);
+	gaim_blist_save();
+}
+
+void
+QGaimBuddyList::aliasBuddySlot()
+{
+	GaimBuddy *buddy;
+
+	if ((buddy = getSelectedBuddy()) == NULL)
+		return;
+
+	gaim_request_input(NULL, tr("Alias Buddy"),
+			tr("Please enter an aliased name for %1.").arg(buddy->name),
+			NULL,
+			buddy->alias, false, false,
+			tr("Alias"), G_CALLBACK(aliasBuddyCb),
+			tr("Cancel"), NULL, buddy);
 }
 
 void
