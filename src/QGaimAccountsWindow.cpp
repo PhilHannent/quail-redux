@@ -143,7 +143,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* New */
 	a = new QAction(tr("New Account"),
-					QIconSet(Resource::loadPixmap("gaim/new.png")),
+					QIconSet(Resource::loadPixmap("gaim/new")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
 
@@ -152,7 +152,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* Edit */
 	a = new QAction(tr("Edit Account"),
-					QIconSet(Resource::loadPixmap("gaim/edit.png")),
+					QIconSet(Resource::loadPixmap("gaim/edit")),
 					QString::null, 0, this, 0);
 	editButton = a;
 	a->addTo(toolbar);
@@ -163,7 +163,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* Delete */
 	a = new QAction(tr("Delete"),
-					QIconSet(Resource::loadPixmap("gaim/delete.png")),
+					QIconSet(Resource::loadPixmap("gaim/delete")),
 					QString::null, 0, this, 0);
 	deleteButton = a;
 	a->addTo(toolbar);
@@ -177,7 +177,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* Connect */
 	a = new QAction(tr("Connect"),
-					QIconSet(Resource::loadPixmap("gaim/connect.png")),
+					QIconSet(Resource::loadPixmap("gaim/connect")),
 					QString::null, 0, this, 0);
 	connectButton = a;
 	a->addTo(toolbar);
@@ -188,7 +188,7 @@ QGaimAccountsWindow::setupToolbar()
 
 	/* Disconnect */
 	a = new QAction(tr("Connect"),
-					QIconSet(Resource::loadPixmap("gaim/disconnect.png")),
+					QIconSet(Resource::loadPixmap("gaim/disconnect")),
 					QString::null, 0, this, 0);
 	disconnectButton = a;
 	a->addTo(toolbar);
@@ -209,7 +209,7 @@ QGaimAccountsWindow::setupToolbar()
 	/* Buddy List */
 	button = new QToolButton(toolbar, "blist");
 	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/blist.png"));
+	button->setPixmap(Resource::loadPixmap("gaim/blist"));
 	button->setOn(true);
 
 	connect(button, SIGNAL(clicked()),
@@ -218,7 +218,7 @@ QGaimAccountsWindow::setupToolbar()
 	/* Accounts */
 	accountsButton = button = new QToolButton(toolbar, "accounts");
 	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/accounts.png"));
+	button->setPixmap(Resource::loadPixmap("gaim/accounts"));
 	button->setToggleButton(true);
 	button->setOn(true);
 

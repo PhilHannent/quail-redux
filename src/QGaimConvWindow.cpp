@@ -637,7 +637,7 @@ QGaimConvWindow::setupToolbar()
 
 	/* Close Conversation */
 	a = new QAction(tr("Close"),
-					QIconSet(Resource::loadPixmap("gaim/close_conv.png")),
+					QIconSet(Resource::loadPixmap("gaim/close_conv")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
 
@@ -649,7 +649,7 @@ QGaimConvWindow::setupToolbar()
 
 	button = new QToolButton(toolbar, "blist");
 	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/user.png"));
+	button->setPixmap(Resource::loadPixmap("gaim/user"));
 
 	userMenu = new QPopupMenu(button);
 	button->setPopup(userMenu);
@@ -657,7 +657,7 @@ QGaimConvWindow::setupToolbar()
 
 	/* Warn */
 	a = new QAction(tr("Warn"),
-					QIconSet(Resource::loadPixmap("gaim/warn.png")),
+					QIconSet(Resource::loadPixmap("gaim/warn")),
 					QString::null, 0, this, 0);
 	warnButton = a;
 	a->addTo(userMenu);
@@ -665,7 +665,7 @@ QGaimConvWindow::setupToolbar()
 
 	/* Block */
 	a = new QAction(tr("Block"),
-					QIconSet(Resource::loadPixmap("gaim/block.png")),
+					QIconSet(Resource::loadPixmap("gaim/block")),
 					QString::null, 0, this, 0);
 	blockButton = a;
 	a->addTo(userMenu);
@@ -673,7 +673,7 @@ QGaimConvWindow::setupToolbar()
 
 	/* Add */
 	a = new QAction(tr("Add"),
-					QIconSet(Resource::loadPixmap("gaim/add.png")),
+					QIconSet(Resource::loadPixmap("gaim/add")),
 					QString::null, 0, this, 0);
 	addButton = a;
 	a->addTo(userMenu);
@@ -681,14 +681,14 @@ QGaimConvWindow::setupToolbar()
 
 	/* Remove */
 	a = new QAction(tr("Remove"),
-					QIconSet(Resource::loadPixmap("gaim/remove.png")),
+					QIconSet(Resource::loadPixmap("gaim/remove")),
 					QString::null, 0, this, 0);
 	removeButton = a;
 	a->setEnabled(false);
 
 	/* Info */
 	a = new QAction(tr("Get Information"),
-					QIconSet(Resource::loadPixmap("gaim/info.png")),
+					QIconSet(Resource::loadPixmap("gaim/info")),
 					QString::null, 0, this, 0);
 	infoButton = a;
 	a->addTo(userMenu);
@@ -697,7 +697,7 @@ QGaimConvWindow::setupToolbar()
 
 	/* Formatting */
 	a = new QAction(tr("Formatting"),
-					QIconSet(Resource::loadPixmap("gaim/formatting.png")),
+					QIconSet(Resource::loadPixmap("gaim/formatting")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
 	a->setEnabled(false);
@@ -707,7 +707,7 @@ QGaimConvWindow::setupToolbar()
 
 	/* Send */
 	a = new QAction(tr("Send"),
-					QIconSet(Resource::loadPixmap("gaim/send-im.png")),
+					QIconSet(Resource::loadPixmap("gaim/send-im")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
 
@@ -725,7 +725,7 @@ QGaimConvWindow::setupToolbar()
 	/* Buddy List */
 	button = new QToolButton(toolbar, "blist");
 	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/blist.png"));
+	button->setPixmap(Resource::loadPixmap("gaim/blist"));
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(showBlist()));
@@ -733,7 +733,7 @@ QGaimConvWindow::setupToolbar()
 	/* Accounts */
 	button = new QToolButton(toolbar, "accounts");
 	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/accounts.png"));
+	button->setPixmap(Resource::loadPixmap("gaim/accounts"));
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(showAccountsWindow()));

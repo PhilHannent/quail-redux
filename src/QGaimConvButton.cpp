@@ -45,7 +45,7 @@ QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
 	: QToolButton(parent, name), convs(NULL)
 {
 	setAutoRaise(true);
-	setPixmap(Resource::loadPixmap("gaim/conversations.png"));
+	setPixmap(Resource::loadPixmap("gaim/conversations"));
 
 	menu = new QPopupMenu();
 

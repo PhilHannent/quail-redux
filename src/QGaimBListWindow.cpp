@@ -337,8 +337,8 @@ QGaimBListWindow::buildToolBar()
 
 	/* IM */
 	a = new QAction(tr("Send IM"),
-						 QIconSet(Resource::loadPixmap("gaim/send-im.png")),
-						 QString::null, 0, this, 0);
+					QIconSet(Resource::loadPixmap("gaim/send-im")),
+					QString::null, 0, this, 0);
 	imButton = a;
 	a->setEnabled(false);
 
@@ -349,9 +349,9 @@ QGaimBListWindow::buildToolBar()
 	/* TODO */
 
 	/* Get User Info */
-	a = new QAction(tr("Get User Information"),
-						 QIconSet(Resource::loadPixmap("gaim/info.png")),
-						 QString::null, 0, this, 0);
+	a = new QAction(tr("Get User Information"), 
+					QIconSet(Resource::loadPixmap("gaim/info")),
+					QString::null, 0, this, 0);
 	infoButton = a;
 	a->setEnabled(false);
 
@@ -359,8 +359,8 @@ QGaimBListWindow::buildToolBar()
 
 	/* Add Buddy */
 	a = new QAction(tr("Add User"),
-						 QIconSet(Resource::loadPixmap("gaim/add.png")),
-						 QString::null, 0, this, 0);
+					QIconSet(Resource::loadPixmap("gaim/add")),
+					QString::null, 0, this, 0);
 	addBuddyButton = a;
 	a->setEnabled(false);
 
@@ -369,15 +369,15 @@ QGaimBListWindow::buildToolBar()
 
 	/* New Group */
 	a = new QAction(tr("New Group"),
-						 QIconSet(Resource::loadPixmap("gaim/new-group.png")),
-						 QString::null, 0, this, 0);
+					QIconSet(Resource::loadPixmap("gaim/new-group")),
+					QString::null, 0, this, 0);
 	addGroupButton = a;
 	a->setEnabled(false);
 
 	/* Remove */
 	a = new QAction(tr("Remove"),
-						 QIconSet(Resource::loadPixmap("gaim/remove.png")),
-						 QString::null, 0, this, 0);
+					QIconSet(Resource::loadPixmap("gaim/remove")),
+					QString::null, 0, this, 0);
 	removeButton = a;
 	a->setEnabled(false);
 
@@ -395,7 +395,7 @@ QGaimBListWindow::buildToolBar()
 	/* Buddy List */
 	blistButton = button = new QToolButton(toolbar, "blist");
 	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/blist.png"));
+	button->setPixmap(Resource::loadPixmap("gaim/blist"));
 	button->setToggleButton(true);
 	button->setOn(true);
 
@@ -405,7 +405,7 @@ QGaimBListWindow::buildToolBar()
 	/* Accounts */
 	button = new QToolButton(toolbar, "accounts");
 	button->setAutoRaise(true);
-	button->setPixmap(Resource::loadPixmap("gaim/accounts.png"));
+	button->setPixmap(Resource::loadPixmap("gaim/accounts"));
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(showAccountsWindow()));
