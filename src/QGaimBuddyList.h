@@ -35,6 +35,8 @@ class QGaimBListItem : public QListViewItem
 
 		GaimBlistNode *getBlistNode() const;
 
+		void updateInfo();
+
 		void paintBranches(QPainter *p, const QColorGroup &cg,
 						   int width, int y, int height, GUIStyle s);
 
@@ -48,6 +50,9 @@ class QGaimBListItem : public QListViewItem
 class QGaimBuddyList : public QListView
 {
 	Q_OBJECT
+
+	public:
+		static QPixmap getBuddyStatusIcon(GaimBlistNode *node);
 
 	public:
 		QGaimBuddyList(QWidget *parent = NULL, const char *name = NULL);

@@ -1,3 +1,13 @@
+Fri Aug 08 16:43:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	* src/QGaimImageUtils.cpp:
+	* src/QGaimImageUtils.h:
+	* gaim.pro:
+	  - Added QGaimImageUtils, put status icons in the buddy list, and
+	    added login/logout door icons.
+
 Fri Aug 08 03:59:04 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* mktarball.sh:

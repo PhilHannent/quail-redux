@@ -20,6 +20,7 @@
  */
 #include "QGaimBuddyList.h"
 #include "QGaimProtocolUtils.h"
+#include "QGaimImageUtils.h"
 
 #include <libgaim/debug.h>
 #include <libgaim/multi.h>
@@ -56,6 +57,41 @@ QGaimBListItem::getBlistNode() const
 }
 
 void
+QGaimBListItem::updateInfo()
+{
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	{
+		struct buddy *buddy = (struct buddy *)node;
+
+		if (buddy->idle > 0)
+		{
+			time_t t;
+			int ihrs, imin;
+			char *idle;
+
+			time(&t);
+
+			ihrs = (t - ((struct buddy *)node)->idle) / 3600;
+			imin = ((t - ((struct buddy*)node)->idle) / 60) % 60;
+
+			if (ihrs > 0)
+				idle = g_strdup_printf("(%d:%02d)", ihrs, imin);
+			else
+				idle = g_strdup_printf("(%d)", imin);
+
+			QString str = idle;
+
+			setText(1, str);
+
+			g_free(idle);
+		}
+
+		setPixmap(0, QGaimBuddyList::getBuddyStatusIcon(node));
+		setText(0, gaim_get_buddy_alias(buddy));
+	}
+}
+
+void
 QGaimBListItem::paintBranches(QPainter *p, const QColorGroup &cg,
 							  int width, int, int height, GUIStyle)
 {
@@ -65,14 +101,95 @@ QGaimBListItem::paintBranches(QPainter *p, const QColorGroup &cg,
 void
 QGaimBListItem::init()
 {
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
-	{
-		struct buddy *buddy = (struct buddy *)node;
-
-		setPixmap(0, QGaimProtocolUtils::getProtocolIcon(buddy->account));
-	}
+	updateInfo();
 }
 
+
+/**************************************************************************
+ * QGaimBuddyList static utility functions
+ **************************************************************************/
+QPixmap
+QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
+{
+	QImage statusImage;
+	QImage emblemImage;
+	QPixmap statusPixmap;
+	const char *protoName = NULL;
+	GaimPlugin *prpl = NULL;
+	GaimPluginProtocolInfo *prplInfo = NULL;
+	char *se = NULL, *sw = NULL, *nw = NULL, *ne = NULL;
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+		prpl = gaim_find_prpl(gaim_account_get_protocol(
+				((struct buddy *)node)->account));
+	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+		prpl = gaim_find_prpl(gaim_account_get_protocol(
+				((struct chat *)node)->account));
+
+	if (prpl == NULL)
+		return QPixmap();
+
+	prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+
+	if (prplInfo->list_icon != NULL)
+	{
+		if (GAIM_BLIST_NODE_IS_BUDDY(node))
+			protoName = prplInfo->list_icon(((struct buddy *)node)->account,
+											(struct buddy *)node);
+		else if (GAIM_BLIST_NODE_IS_CHAT(node))
+			protoName = prplInfo->list_icon(((struct chat *)node)->account,
+											NULL);
+	}
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+		((struct buddy *)node)->present != GAIM_BUDDY_SIGNING_OFF &&
+		prplInfo->list_emblems != NULL)
+	{
+		prplInfo->list_emblems((struct buddy *)node, &se, &sw, &nw, &ne);
+	}
+
+	if (se == NULL)
+	{
+		if      (sw != NULL) se = sw;
+		else if (ne != NULL) se = ne;
+		else if (nw != NULL) se = nw;
+	}
+
+	sw = nw = ne = NULL; /* So that only the se icon will composite. */
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+		((struct buddy *)node)->present == GAIM_BUDDY_SIGNING_ON)
+	{
+		statusImage = Resource::loadImage("gaim/status/small/login");
+	}
+	else if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+			 ((struct buddy *)node)->present == GAIM_BUDDY_SIGNING_OFF)
+	{
+		statusImage = Resource::loadImage("gaim/status/small/logout");
+	}
+	else
+	{
+		statusImage = Resource::loadImage("gaim/protocols/small/" +
+										  QString(protoName));
+	}
+
+	if (statusImage.isNull())
+		return QPixmap();
+
+	if (se != NULL)
+	{
+		emblemImage = Resource::loadImage("gaim/status/small/" + QString(se));
+
+		if (!emblemImage.isNull())
+		{
+			QGaimImageUtils::blendOnLower(0, 0, emblemImage, statusImage);
+
+			statusPixmap.convertFromImage(statusImage);
+		}
+	}
+
+	return statusPixmap;
+}
 
 /**************************************************************************
  * QGaimBuddyList
@@ -112,6 +229,8 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 	QGaimBListItem *item = (QGaimBListItem *)node->ui_data;
 	bool expand = false;
 	bool new_entry = true;
+
+	gaim_debug(GAIM_DEBUG_INFO, "QGaimBuddyList", "updateNode\n");
 
 	if (item == NULL)
 	{
@@ -230,30 +349,7 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 		if (buddy->present != GAIM_BUDDY_OFFLINE ||
 			(gaim_account_is_connected(buddy->account) && 0)) // XXX
 		{
-			if (buddy->idle > 0)
-			{
-				time_t t;
-				int ihrs, imin;
-				char *idle;
-
-				time(&t);
-
-				ihrs = (t - ((struct buddy *)node)->idle) / 3600;
-				imin = ((t - ((struct buddy*)node)->idle) / 60) % 60;
-
-				if (ihrs > 0)
-					idle = g_strdup_printf("(%d:%02d)", ihrs, imin);
-				else
-					idle = g_strdup_printf("(%d)", imin);
-
-				QString str = idle;
-
-				item->setText(1, str);
-
-				g_free(idle);
-			}
-
-			item->setText(0, gaim_get_buddy_alias(buddy));
+			item->updateInfo();
 		}
 		else
 		{
