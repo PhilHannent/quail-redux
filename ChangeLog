@@ -1,3 +1,9 @@
+Sat Aug 02 02:13:16 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	  - Clicking Add Buddy when a group or a buddy is selected will now
+	    default the new buddy to that group.
+
 Sat Aug 02 02:09:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountBox.cpp:
