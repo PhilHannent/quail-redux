@@ -82,28 +82,28 @@ QGaimAccountEditor::buildAccountTab()
 	QVBox *vbox;
 	QWidget *spacer;
 	QGridLayout *grid;
-	QWidget *widget;
+	QWidget *frame;
 	int row = 0;
 
 	/* Create the main vbox. */
 	vbox = new QVBox(this);
 	vbox->setSpacing(5);
 
-	widget = new QFrame(vbox);
-	grid = new QGridLayout(widget, 1, 1);
+	frame = new QFrame(vbox);
+	grid = new QGridLayout(frame, 1, 1);
 	grid->setSpacing(5);
 
-	buildLoginOpts(grid, widget, row);
+	buildLoginOpts(grid, frame, row);
 
 #if 0
 	/* Separator */
-	sep = new QFrame(widget);
+	sep = new QFrame(frame);
 	sep->setFrameStyle(QFrame::HLine | QFrame::Sunken);
 	grid->addMultiCellWidget(sep, row, row, 0, 2);
 	row++;
 #endif
 
-	buildUserOpts(grid, widget, row);
+	buildUserOpts(grid, frame, row);
 
 	/* Add a spacer. */
 	spacer = new QLabel("", vbox);
@@ -245,7 +245,95 @@ QGaimAccountEditor::buildProtocolTab()
 QWidget *
 QGaimAccountEditor::buildProxyTab()
 {
-	return new QLabel("Proxy", this);
+	QVBox *vbox;
+	QWidget *spacer;
+	QGridLayout *grid;
+	QWidget *frame;
+	GaimProxyInfo *proxyInfo;
+	int row = 0;
+
+	/* Create the main vbox */
+	vbox = new QVBox(this);
+	vbox->setSpacing(5);
+
+	frame = new QFrame(vbox);
+	grid = new QGridLayout(frame, 1, 1);
+	grid->setSpacing(5);
+
+	/* Proxy Type */
+	grid->addWidget(new QLabel(tr("Proxy Type:"), frame), row, 0);
+	proxyDropDown = new QComboBox(frame);
+	grid->addWidget(proxyDropDown, row++, 1);
+	row++;
+
+	/* Connect the signal */
+	connect(proxyDropDown, SIGNAL(activated(int)),
+			this, SLOT(proxyTypeChanged(int)));
+
+	/* Fill it. */
+	proxyDropDown->insertItem(tr("Use Global Proxy Settings"));
+	proxyDropDown->insertItem(tr("No Proxy"));
+	proxyDropDown->insertItem(tr("HTTP"));
+	proxyDropDown->insertItem(tr("SOCKS 4"));
+	proxyDropDown->insertItem(tr("SOCKS 5"));
+
+	/* Host */
+	grid->addWidget(new QLabel(tr("Host:"), frame), row, 0);
+	proxyHost = new QLineEdit(frame);
+	grid->addWidget(proxyHost, row++, 1);
+
+	/* Port */
+	grid->addWidget(new QLabel(tr("Port:"), frame), row, 0);
+	proxyPort = new QLineEdit(frame);
+	grid->addWidget(proxyPort, row++, 1);
+
+	/* Username */
+	grid->addWidget(new QLabel(tr("Username:"), frame), row, 0);
+	proxyUsername = new QLineEdit(frame);
+	grid->addWidget(proxyUsername, row++, 1);
+
+	/* Password */
+	grid->addWidget(new QLabel(tr("Password:"), frame), row, 0);
+	proxyPassword = new QLineEdit(frame);
+	grid->addWidget(proxyPassword, row++, 1);
+
+	/* Add a spacer. */
+	spacer = new QLabel("", vbox);
+	vbox->setStretchFactor(spacer, 1);
+
+	/* Set the values for everything. */
+	if (account != NULL &&
+		(proxyInfo = gaim_account_get_proxy_info(account)) != NULL)
+	{
+		GaimProxyType type = gaim_proxy_info_get_type(proxyInfo);
+
+		proxyDropDown->setCurrentItem((int)type + 1);
+
+		if (type == GAIM_PROXY_NONE || type == GAIM_PROXY_USE_GLOBAL)
+		{
+			proxyHost->setReadOnly(true);
+			proxyPort->setReadOnly(true);
+			proxyUsername->setReadOnly(true);
+			proxyPassword->setReadOnly(true);
+		}
+		else
+		{
+			proxyHost->setText(gaim_proxy_info_get_host(proxyInfo));
+			proxyPort->setText(
+				QString::number(gaim_proxy_info_get_port(proxyInfo)));
+			proxyUsername->setText(gaim_proxy_info_get_username(proxyInfo));
+			proxyPassword->setText(gaim_proxy_info_get_password(proxyInfo));
+		}
+	}
+	else
+	{
+		proxyHost->setReadOnly(true);
+		proxyPort->setReadOnly(true);
+		proxyUsername->setReadOnly(true);
+		proxyPassword->setReadOnly(true);
+	}
+
+	return vbox;
 }
 
 void
@@ -329,7 +417,7 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	passwordLabel = new QLabel(tr("Password:"), parent);
 	grid->addWidget(passwordLabel, row, 0);
 	passwordEntry = new QLineEdit(parent);
-	passwordEntry->setReadOnly(true);
+	passwordEntry->setEchoMode(QLineEdit::Password);
 	grid->addWidget(passwordEntry, row++, 1);
 
 	if (account != NULL)
@@ -393,4 +481,26 @@ QGaimAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 
 	if (!(prplInfo->options & OPT_PROTO_MAIL_CHECK))
 		mailNotificationCheck->hide();
+}
+
+void
+QGaimAccountEditor::proxyTypeChanged(int index)
+{
+	newProxyType = (GaimProxyType)(index - 1);
+
+	if (newProxyType == GAIM_PROXY_USE_GLOBAL ||
+		newProxyType == GAIM_PROXY_NONE)
+	{
+		proxyHost->setReadOnly(true);
+		proxyPort->setReadOnly(true);
+		proxyUsername->setReadOnly(true);
+		proxyPassword->setReadOnly(true);
+	}
+	else
+	{
+		proxyHost->setReadOnly(false);
+		proxyPort->setReadOnly(false);
+		proxyUsername->setReadOnly(false);
+		proxyPassword->setReadOnly(false);
+	}
 }

@@ -34,6 +34,9 @@ class QGaimAccountEditor : public QMainWindow
 		void buildLoginOpts(QGridLayout *grid, QWidget *parent, int &row);
 		void buildUserOpts(QGridLayout *grid, QWidget *parent, int &row);
 
+	protected slots:
+		void proxyTypeChanged(int index);
+
 	private:
 		GaimAccount *account;
 		GaimPlugin *plugin;
@@ -59,6 +62,13 @@ class QGaimAccountEditor : public QMainWindow
 		QCheckBox *autoLoginCheck;
 
 		QCheckBox *mailNotificationCheck;
+
+		/* Proxy tab */
+		QComboBox *proxyDropDown;
+		QLineEdit *proxyHost;
+		QLineEdit *proxyPort;
+		QLineEdit *proxyUsername;
+		QLineEdit *proxyPassword;
 };
 
 #endif /* _QGAIM_ACCOUNT_EDITOR_H_ */
