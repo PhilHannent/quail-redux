@@ -16,11 +16,11 @@ elif [ "$1" = "native" ]; then
 	export TMAKEPATH=/opt/Qtopia/tmake/lib/qws/linux-x86-g++/
 	export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
 	export ARCHITECTURE=x86
-	export EXTRA_FLAGS='"DEFINES += LOCAL_COMPILE"'
+	export EXTRA_FLAGS="DEFINES+=LOCAL_COMPILE"
 else
 	echo "usage: $0 cross | native"
 	exit 1
 fi
 
-[ ! -e Makefile ] && tmake -o $EXTRA_FLAGS Makefile gaim.pro
+[ ! -e Makefile ] && tmake $EXTRA_FLAGS -o Makefile gaim.pro
 make
