@@ -93,6 +93,12 @@ QGaimBListItem::updateInfo()
 		setPixmap(0, QGaimBuddyList::getBuddyStatusIcon(node));
 		setText(0, gaim_get_buddy_alias(buddy));
 	}
+	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+	{
+		struct chat *chat = (struct chat *)node;
+
+		setPixmap(0, QGaimProtocolUtils::getProtocolIcon(chat->account));
+	}
 }
 
 void
