@@ -638,29 +638,56 @@ void
 QGaimBuddyList::sendImSlot()
 {
 	GaimBuddy *buddy;
-	GaimConversation *conv;
-	GaimConvWindow *win;
 
 	if ((buddy = getSelectedBuddy()) == NULL)
 		return;
 
-	conv = gaim_conversation_new(GAIM_CONV_IM, buddy->account, buddy->name);
-
-	win = gaim_conversation_get_window(conv);
-	gaim_conv_window_raise(win);
-
-	gaim_conv_window_switch_conversation(win,
-			gaim_conversation_get_index(conv));
+	emit openIm(buddy);
 }
 
 void
 QGaimBuddyList::showRemoveBuddySlot()
 {
+	GaimBuddy *buddy;
+
+	if ((buddy = getSelectedBuddy()) == NULL)
+		return;
+
+	emit removeBuddy(buddy);
 }
 
 void
 QGaimBuddyList::showRemoveContactSlot()
 {
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_CONTACT(node))
+		return;
+
+	emit removeContact((GaimContact *)node);
+}
+
+void
+QGaimBuddyList::showRemoveGroupSlot()
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_GROUP(node))
+		return;
+
+	emit removeGroup((GaimGroup *)node);
 }
 
 void

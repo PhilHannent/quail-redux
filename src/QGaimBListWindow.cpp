@@ -81,6 +81,8 @@ QGaimBListWindow::buildInterface()
 			this, SLOT(nodeChanged(QListViewItem *)));
 	connect(buddylist, SIGNAL(doubleClicked(QListViewItem *)),
 			this, SLOT(doubleClickList(QListViewItem *)));
+	connect(buddylist, SIGNAL(openIm(GaimBuddy *)),
+			this, SLOT(openImSlot(GaimBuddy *)));
 
 	setCentralWidget(buddylist);
 }
@@ -104,7 +106,7 @@ QGaimBListWindow::buildToolBar()
 	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
-			this, SLOT(sendIm()));
+			this, SLOT(openImSlot()));
 
 	/* Chat */
 	a = new QAction(tr("Open Chat"), newChatIconSet,
@@ -314,7 +316,7 @@ QGaimBListWindow::doubleClickList(QListViewItem *_item)
 	node = item->getBlistNode();
 
 	if (GAIM_BLIST_NODE_IS_BUDDY(node) || GAIM_BLIST_NODE_IS_CONTACT(node))
-		sendIm();
+		openImSlot();
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 		openChat();
 }
@@ -638,27 +640,13 @@ QGaimBListWindow::blistToggled(bool)
 }
 
 void
-QGaimBListWindow::sendIm()
+QGaimBListWindow::openImSlot(GaimBuddy *buddy)
 {
-	QGaimBListItem *item;
-	GaimBlistNode *node;
+	if (buddy == NULL)
+		buddy = buddylist->getSelectedBuddy();
 
-	item = (QGaimBListItem *)buddylist->selectedItem();
-
-	if (item != NULL)
-		node = item->getBlistNode();
-
-	if (node != NULL && GAIM_BLIST_NODE_IS_CONTACT(node))
+	if (buddy != NULL)
 	{
-		node = (GaimBlistNode *)
-			gaim_contact_get_priority_buddy((GaimContact *)node);
-		item = (QGaimBListItem *)node->ui_data;
-	}
-
-	if (node != NULL &&
-		(GAIM_BLIST_NODE_IS_BUDDY(node) || GAIM_BLIST_NODE_IS_CONTACT(node)))
-	{
-		GaimBuddy *buddy = (GaimBuddy *)node;
 		GaimConversation *conv;
 		GaimConvWindow *win;
 
@@ -679,6 +667,12 @@ QGaimBListWindow::sendIm()
 
 		dialog->showMaximized();
 	}
+}
+
+void
+QGaimBListWindow::openImSlot()
+{
+	openImSlot(NULL);
 }
 
 void
