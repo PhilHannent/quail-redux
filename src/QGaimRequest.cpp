@@ -19,29 +19,27 @@
  * MA  02111-1307  USA
  */
 #include "QGaimRequest.h"
+#include "QGaimInputDialog.h"
+#include "QGaim.h"
 
 #include <libgaim/debug.h>
 
-#include <qinputdialog.h>
-#include <qlabel.h>
-#include <qlayout.h>
 #include <qmessagebox.h>
-#include <qmultilineedit.h>
-#include <qvbox.h>
 
+/**************************************************************************
+ * UI operations
+ **************************************************************************/
 static void *
 qGaimRequestInput(const char *title, const char *primary,
 				  const char *secondary, const char *defaultValue,
 				  gboolean multiline, gboolean masked,
-				  const char *, GCallback okCb,
-				  const char *, GCallback cancelCb,
+				  const char *okText, GCallback okCb,
+				  const char *cancelText, GCallback cancelCb,
 				  void *userData)
 {
-	QString result;
 	QString message;
 	QString newTitle;
-	QDialog *dialog;
-	QWidget *entry;
+	QGaimInputDialog *dialog;
 
 	message = "";
 
@@ -64,58 +62,36 @@ qGaimRequestInput(const char *title, const char *primary,
 	else
 		newTitle = title;
 
-	dialog = new QDialog();
+	dialog = new QGaimInputDialog(multiline,
+								  qGaimGetHandle()->getMainWindow(),
+								  "input request", true);
 	dialog->setCaption(newTitle);
+	dialog->setInfoText(message);
 
-	QVBoxLayout *layout = new QVBoxLayout(dialog);
-	layout->setAutoAdd(true);
-	layout->setSpacing(5);
+	if (defaultValue != NULL)
+		dialog->setDefaultValue(defaultValue);
 
-	new QLabel(message, dialog);
+	if (masked)
+		dialog->setMasked();
 
-	if (multiline)
-	{
-		QMultiLineEdit *mlEntry = new QMultiLineEdit(dialog);
-		mlEntry->setFixedVisibleLines(3);
-		mlEntry->setWordWrap(QMultiLineEdit::WidgetWidth);
+	dialog->addButtons(cancelText, okText);
 
-		if (defaultValue != NULL)
-			mlEntry->setText(defaultValue);
+	/* Execute the dialog. */
+	int result = dialog->exec();
 
-		if (masked)
-			mlEntry->setEchoMode(QMultiLineEdit::Password);
+	gaim_debug(GAIM_DEBUG_MISC, "requestInput",
+			   "result = %d, '%s'\n", result,
+			   (const char *)dialog->getText());
 
-		entry = mlEntry;
-	}
-	else
-	{
-		QLineEdit *slEntry = new QLineEdit(dialog);
-
-		if (defaultValue != NULL)
-			slEntry->setText(defaultValue);
-
-		if (masked)
-			slEntry->setEchoMode(QLineEdit::Password);
-
-		entry = slEntry;
-	}
-
-	result = dialog->exec();
-
-	if (result == 0)
+	if (result == 1)
 	{
 		if (okCb != NULL)
-		{
-			if (multiline)
-				result = ((QMultiLineEdit *)entry)->text();
-			else
-				result = ((QLineEdit *)entry)->text();
-
-			((GaimRequestInputCb)okCb)(userData, result);
-		}
+			((GaimRequestInputCb)okCb)(userData, dialog->getText());
 	}
 	else if (cancelCb != NULL)
 		((GaimRequestInputCb)cancelCb)(userData, NULL);
+
+	delete dialog;
 
 	return NULL;
 }
