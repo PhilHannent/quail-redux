@@ -48,7 +48,7 @@ class QGaimConversation : public QWidget
 		GaimConversation *getGaimConversation() const;
 
 		void write(const char *who, const char *message, size_t length,
-				   int flags, time_t mtime);
+				   GaimMessageFlags flags, time_t mtime);
 
 		void setTitle(const char *title);
 
@@ -81,8 +81,8 @@ class QGaimChat : public QGaimConversation
 				  const char *name = NULL, WFlags fl = 0);
 		virtual ~QGaimChat();
 
-		void write(const char *who, const char *message, int flags,
-				   time_t mtime);
+		void write(const char *who, const char *message,
+				   GaimMessageFlags flags, time_t mtime);
 
 		void addUser(const char *user);
 		void addUsers(GList *users);
@@ -120,7 +120,7 @@ class QGaimIm : public QGaimConversation
 		virtual ~QGaimIm();
 
 		void write(const char *who, const char *message,
-				   size_t len, int flags, time_t mtime);
+				   size_t len, GaimMessageFlags flags, time_t mtime);
 
 		void send();
 

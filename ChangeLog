@@ -1,3 +1,12 @@
+Thu Aug 28 22:27:53 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimConvButton.cpp:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - Synced with libgaim 0.68cvs.
+
 Fri Aug 15 16:43:57 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* NEWS:

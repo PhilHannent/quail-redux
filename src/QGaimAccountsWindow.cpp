@@ -28,6 +28,7 @@
 #include "base.h"
 
 #include <libgaim/prpl.h>
+#include <libgaim/signals.h>
 
 #include <qpe/resource.h>
 #include <qaction.h>
@@ -96,8 +97,10 @@ QGaimAccountsWindow::QGaimAccountsWindow()
 {
 	buildInterface();
 
-	gaim_signal_connect(this, event_signon,  (void *)signedOnCb,  this);
-	gaim_signal_connect(this, event_signoff, (void *)signedOffCb, this);
+	gaim_signal_connect(gaim_connections_get_handle(), "signed-on",
+						this, GAIM_CALLBACK(signedOnCb), this);
+	gaim_signal_connect(gaim_connections_get_handle(), "signed-off",
+						this, GAIM_CALLBACK(signedOffCb), this);
 
 	loadAccounts();
 }

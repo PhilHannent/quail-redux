@@ -30,6 +30,7 @@
 #include <libgaim/multi.h>
 #include <libgaim/prefs.h>
 #include <libgaim/request.h>
+#include <libgaim/signals.h>
 
 #include <qpe/resource.h>
 
@@ -653,10 +654,10 @@ qGaimBlistNewList(struct gaim_buddy_list *blist)
 	win->setGaimBlist(blist);
 
 	/* Setup some signal handlers */
-	gaim_signal_connect(blist->ui_data, event_signon,
-						(void *)signedOnCb, blist);
-	gaim_signal_connect(blist->ui_data, event_signoff,
-						(void *)signedOffCb, blist);
+	gaim_signal_connect(gaim_connections_get_handle(), "signed-on",
+						blist->ui_data, GAIM_CALLBACK(signedOnCb), blist);
+	gaim_signal_connect(gaim_connections_get_handle(), "signed-off",
+						blist->ui_data, GAIM_CALLBACK(signedOffCb), blist);
 }
 
 static void

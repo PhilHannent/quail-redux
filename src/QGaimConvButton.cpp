@@ -24,6 +24,7 @@
 #include "base.h"
 
 #include <libgaim/debug.h>
+#include <libgaim/signals.h>
 
 #include <qpe/resource.h>
 #include <qpopupmenu.h>
@@ -59,10 +60,12 @@ QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
 	connect(this, SIGNAL(clicked()),
 			this, SLOT(buttonClicked()));
 
-	gaim_signal_connect(this, event_new_conversation,
-						(void *)newConvCb, this);
-	gaim_signal_connect(this, event_del_conversation,
-						(void *)delConvCb, this);
+	gaim_signal_connect(gaim_conversations_get_handle(),
+						"conversation-created",
+						this, GAIM_CALLBACK(newConvCb), this);
+	gaim_signal_connect(gaim_conversations_get_handle(),
+						"deleting-conversation",
+						this, GAIM_CALLBACK(delConvCb), this);
 
 	if (gaim_get_conversations() == NULL)
 		setEnabled(false);
@@ -75,8 +78,12 @@ QGaimConvButton::~QGaimConvButton()
 	if (convs != NULL)
 		delete convs;
 
-	gaim_signal_disconnect(this, event_new_conversation, (void *)newConvCb);
-	gaim_signal_disconnect(this, event_del_conversation, (void *)delConvCb);
+	gaim_signal_connect(gaim_conversations_get_handle(),
+						"conversation-created",
+						this, GAIM_CALLBACK(newConvCb), this);
+	gaim_signal_connect(gaim_conversations_get_handle(),
+						"deleting-conversation",
+						this, GAIM_CALLBACK(delConvCb), this);
 }
 
 void

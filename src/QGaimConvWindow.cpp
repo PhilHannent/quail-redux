@@ -76,7 +76,7 @@ QGaimConversation::getGaimConversation() const
 
 void
 QGaimConversation::write(const char *who, const char *message,
-						 size_t length, int flags, time_t mtime)
+						 size_t length, GaimMessageFlags flags, time_t)
 {
 	if (text == NULL)
 		return;
@@ -86,7 +86,7 @@ QGaimConversation::write(const char *who, const char *message,
 
 	QString txt;
 
-	if (flags & WFLAG_SYSTEM)
+	if (flags & GAIM_MESSAGE_SYSTEM)
 	{
 		txt  = "<b>";
 		txt += message;
@@ -99,7 +99,7 @@ QGaimConversation::write(const char *who, const char *message,
 
 		newMessage = (char *)g_memdup(message, length + 1);
 
-		if (flags & WFLAG_WHISPER)
+		if (flags & GAIM_MESSAGE_WHISPER)
 		{
 			/* If we're whispering, it's not an auto-response. */
 			if (meify(newMessage, length))
@@ -120,14 +120,14 @@ QGaimConversation::write(const char *who, const char *message,
 		{
 			if (meify(newMessage, length))
 			{
-				if (flags & WFLAG_AUTO)
+				if (flags & GAIM_MESSAGE_AUTO_RESP)
 					nick = "&lt;AUTO-REPLY&gt; ***";
 				else
 					nick = "***";
 
 				nick += who;
 
-				if (flags & WFLAG_NICK)
+				if (flags & GAIM_MESSAGE_NICK)
 					color = "#AF7F00";
 				else
 					color = "#062585";
@@ -136,16 +136,16 @@ QGaimConversation::write(const char *who, const char *message,
 			{
 				nick = who;
 
-				if (flags & WFLAG_AUTO)
+				if (flags & GAIM_MESSAGE_AUTO_RESP)
 					nick += "&lt;AUTO-REPLY&gt; :";
 				else
 					nick += ":";
 
-				if (flags & WFLAG_NICK)
+				if (flags & GAIM_MESSAGE_NICK)
 					color = "#AF7F00";
-				else if (flags & WFLAG_RECV)
+				else if (flags & GAIM_MESSAGE_RECV)
 					color = "#A82F2F";
-				else if (flags & WFLAG_SEND)
+				else if (flags & GAIM_MESSAGE_SEND)
 					color = "#16569E";
 			}
 		}
@@ -162,8 +162,6 @@ QGaimConversation::write(const char *who, const char *message,
 
 	text->setText(text->text() + txt);
 	text->verticalScrollBar()->setValue(text->verticalScrollBar()->maxValue());
-
-	length = 0; flags = 0; mtime = 0;
 }
 
 void
@@ -299,7 +297,7 @@ QGaimChat::~QGaimChat()
 }
 
 void
-QGaimChat::write(const char *who, const char *message, int flags,
+QGaimChat::write(const char *who, const char *message, GaimMessageFlags flags,
 				 time_t mtime)
 {
 	gaim_conversation_write(conv, who, message, (size_t)-1, flags, mtime);
@@ -493,7 +491,7 @@ QGaimIm::~QGaimIm()
 
 void
 QGaimIm::write(const char *who, const char *message, size_t len,
-			   int flags, time_t mtime)
+			   GaimMessageFlags flags, time_t mtime)
 {
 	gaim_conversation_write(conv, who, message, len, flags, mtime);
 }
@@ -1018,7 +1016,7 @@ qGaimConvDestroy(GaimConversation *conv)
 
 static void
 qGaimConvWriteChat(GaimConversation *conv, const char *who,
-				   const char *message, int flags, time_t mtime)
+				   const char *message, GaimMessageFlags flags, time_t mtime)
 {
 	QGaimChat *qchat = (QGaimChat *)conv->ui_data;
 
@@ -1027,7 +1025,8 @@ qGaimConvWriteChat(GaimConversation *conv, const char *who,
 
 static void
 qGaimConvWriteIm(GaimConversation *conv, const char *who,
-				 const char *message, size_t len, int flags, time_t mtime)
+				 const char *message, size_t len, GaimMessageFlags flags,
+				 time_t mtime)
 {
 	QGaimIm *qim = (QGaimIm *)conv->ui_data;
 
@@ -1036,7 +1035,7 @@ qGaimConvWriteIm(GaimConversation *conv, const char *who,
 
 static void
 qGaimConvWriteConv(GaimConversation *conv, const char *who,
-				   const char *message, size_t length, int flags,
+				   const char *message, size_t length, GaimMessageFlags flags,
 				   time_t mtime)
 {
 	QGaimConversation *qconv = (QGaimConversation *)conv->ui_data;
