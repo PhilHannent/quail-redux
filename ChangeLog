@@ -1,3 +1,9 @@
+Thu Oct 23 21:09:11 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Made the groups in the buddy list bold.
+
 Thu Oct 23 20:54:33 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:

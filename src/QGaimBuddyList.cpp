@@ -178,6 +178,20 @@ QGaimBListItem::updateInfo()
 }
 
 void
+QGaimBListItem::paintCell(QPainter *p, const QColorGroup &cg, int column,
+						  int width, int align)
+{
+	if (GAIM_BLIST_NODE_IS_GROUP(node))
+	{
+		QFont f = p->font();
+		f.setBold(true);
+		p->setFont(f);
+	}
+
+	QListViewItem::paintCell(p, cg, column, width, align);
+}
+
+void
 QGaimBListItem::paintBranches(QPainter *p, const QColorGroup &cg,
 							  int width, int x, int height, GUIStyle style)
 {

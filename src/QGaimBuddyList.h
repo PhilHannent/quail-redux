@@ -39,6 +39,9 @@ class QGaimBListItem : public QListViewItem
 
 		void updateInfo();
 
+		void paintCell(QPainter *p, const QColorGroup &cg, int column,
+					   int width, int align);
+
 		void paintBranches(QPainter *p, const QColorGroup &cg,
 						   int width, int y, int height, GUIStyle s);
 
