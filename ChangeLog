@@ -1,3 +1,9 @@
+Sun Jul 27 16:26:41 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - The text entry field clears after sending an IM now. Or at
+	    least it should. I didn't test it, but hey, I'm perfect, right?
+
 Sun Jul 27 16:24:35 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

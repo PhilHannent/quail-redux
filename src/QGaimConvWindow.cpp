@@ -158,9 +158,11 @@ QGaimChat::send()
 	strncpy(buffer, entry->text().data(), len);
 	buffer[len] = '\0';
 
-	gaim_chat_send(GAIM_IM(conv), buffer);
+	gaim_chat_send(GAIM_CHAT(conv), buffer);
 
 	delete buffer;
+
+	entry->setText("");
 }
 
 
@@ -212,6 +214,8 @@ QGaimIm::send()
 	gaim_im_send(GAIM_IM(conv), buffer);
 
 	delete buffer;
+
+	entry->setText("");
 }
 
 
