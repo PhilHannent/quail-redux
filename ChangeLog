@@ -1,3 +1,10 @@
+Fri Aug 15 02:41:22 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - The user list button wasn't being updated to the state of the
+	    current tab. Fixed.
+
 Fri Aug 15 02:32:17 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

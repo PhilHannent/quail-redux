@@ -416,6 +416,12 @@ QGaimChat::setShowUserList(bool show)
 		userList->hide();
 }
 
+bool
+QGaimChat::getShowUserList() const
+{
+	return userList->isVisible();
+}
+
 void
 QGaimChat::send()
 {
@@ -763,7 +769,12 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 	}
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
+	{
+		QGaimChat *qchat = (QGaimChat *)qconv;
+
 		userListToggle->setEnabled(true);
+		userListToggle->setOn(qchat->getShowUserList());
+	}
 	else
 		userListToggle->setEnabled(false);
 }

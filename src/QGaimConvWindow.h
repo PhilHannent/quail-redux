@@ -91,6 +91,7 @@ class QGaimChat : public QGaimConversation
 		void removeUsers(GList *users);
 
 		void setShowUserList(bool show);
+		bool getShowUserList() const;
 
 		void send();
 
