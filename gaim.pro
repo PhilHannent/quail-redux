@@ -28,12 +28,17 @@ DISTFILES = \
 	data/images/protocols/small/trepia.png \
 	data/images/protocols/small/yahoo.png \
 	data/images/accounts.png \
+	data/images/add.png \
 	data/images/away.png \
 	data/images/blist.png \
 	data/images/connect.png \
 	data/images/conversations.png \
 	data/images/disconnect.png \
 	data/images/edit.png \
+	data/images/info.png \
+	data/images/new-group.png \
+	data/images/prefs.png \
+	data/images/remove.png \
 	data/images/send-im.png \
 	ChangeLog \
 	README \
