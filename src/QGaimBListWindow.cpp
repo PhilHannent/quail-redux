@@ -51,7 +51,7 @@
  * QGaimBListWindow
  **************************************************************************/
 QGaimBListWindow::QGaimBListWindow()
-	: QMainWindow(), convsMenu(NULL), prefsDialog(NULL)
+	: QMainWindow(), convsMenu(NULL)
 {
 	buildInterface();
 }
