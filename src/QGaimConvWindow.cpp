@@ -874,8 +874,6 @@ void
 QGaimConvWindow::closeEvent(QCloseEvent *e)
 {
 	gaim_conv_window_destroy(win);
-
-	QMainWindow::closeEvent(e);
 }
 
 void
@@ -1318,8 +1316,6 @@ qGaimConvWindowRaise(GaimConvWindow *win)
 
 	qGaimGetMainWindow()->setLastActiveConvWindow(win);
 
-	gaim_debug(GAIM_DEBUG_MISC, "qGaimConvWindowRaise",
-			   "Raising window with ID %d\n", qwin->getId());
 	qGaimGetMainWindow()->getWidgetStack()->raiseWidget(qwin->getId());
 }
 

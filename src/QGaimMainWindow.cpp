@@ -177,7 +177,15 @@ QGaimMainWindow::closeEvent(QCloseEvent *event)
 	if (visibleWidget == accountsWin || visibleWidget == blistWin)
 		event->accept();
 	else
+	{
+		/* This had better be a conversation window... */
+
+		QGaimConvWindow *qwin = (QGaimConvWindow *)visibleWidget;
+
+		gaim_conv_window_destroy(qwin->getGaimConvWindow());
+
 		event->ignore();
+	}
 }
 
 void
@@ -215,8 +223,7 @@ QGaimMainWindow::removeConversationWindow(QGaimConvWindow *win)
 		}
 	}
 
-	getWidgetStack()->raiseWidget(0);
-	setCaption(tr("Gaim - Buddy List"));
+	showBlistWindow();
 }
 
 QGaimBListWindow *
@@ -265,7 +272,7 @@ QGaimMainWindow::showBlistWindow()
 	}
 
 	setCaption(tr("Gaim - Buddy List"));
-	widgetStack->raiseWidget(0);
+	widgetStack->raiseWidget(blistWin);
 }
 
 void
@@ -278,7 +285,7 @@ QGaimMainWindow::showAccountsWindow()
 	}
 
 	setCaption(tr("Gaim - Accounts"));
-	widgetStack->raiseWidget(1);
+	widgetStack->raiseWidget(accountsWin);
 }
 
 void

@@ -2,6 +2,7 @@ Gaim for Qtopia Release Notes
 -----------------------------
 
 version 0.4:
+	* Closing the window on a conversation no longer closes Gaim.
 
 version 0.3 (Saturday, 12-October-2003):
 	* Added contact support, where multiple buddies belonging to the
