@@ -1,3 +1,9 @@
+Fri Aug 08 03:59:04 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mktarball.sh:
+	  - The generated tarball directory name and filename now include
+	    the release number.
+
 Thu Aug 07 02:00:59 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

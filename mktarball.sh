@@ -2,8 +2,8 @@
 
 . ./mkstuff.conf
 
-TARDIR=$PACKAGE-$VER
-TARFILE=$PACKAGE-$VER.tar.gz
+TARDIR=$PACKAGE-$VER-$RELEASE
+TARFILE=$PACKAGE-$VER-$RELEASE.tar.gz
 
 make dist
 mkdir $TARDIR
