@@ -1,3 +1,9 @@
+Fri Aug 01 20:01:16 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountEditor.h:
+	  - Use our QGaimTabWidget for the account editor.
+
 Fri Aug 01 20:00:20 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

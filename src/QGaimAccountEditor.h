@@ -14,6 +14,7 @@ class QCheckBox;
 class QComboBox;
 class QGaimAccountsWindow;
 class QGaimProtocolBox;
+class QGaimTabWidget;
 class QGridLayout;
 class QLabel;
 class QLineEdit;
@@ -65,7 +66,7 @@ class QGaimAccountEditor : public QDialog
 
 		GaimProxyType newProxyType;
 
-		QTabWidget *tabs;
+		QGaimTabWidget *tabs;
 
 		QList<QWidget> tabList;
 

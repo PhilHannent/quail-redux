@@ -2,6 +2,7 @@
 #include "QGaimAccountsWindow.h"
 #include "QGaimProtocolBox.h"
 #include "QGaimProtocolUtils.h"
+#include "QGaimTabWidget.h"
 #include "base.h"
 
 #include <libgaim/accountopt.h>
@@ -66,7 +67,7 @@ QGaimAccountEditor::buildInterface()
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);
 
-	tabs = new QTabWidget(this);
+	tabs = new QGaimTabWidget(this);
 	tabs->setMargin(6);
 
 	buildTabs();
