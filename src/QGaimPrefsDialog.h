@@ -57,6 +57,7 @@ class QGaimBlistPrefPage : public QGaimPrefPage
 
 	private:
 		QCheckBox *idleTimes;
+		QCheckBox *showWarnings;
 		QCheckBox *groupCount;
 		QCheckBox *dimIdle;
 		QCheckBox *largeIcons;

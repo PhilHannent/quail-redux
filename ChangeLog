@@ -1,3 +1,9 @@
+Fri Nov 14 10:53:27 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimPrefsDialog.cpp:
+	* src/QGaimPrefsDialog.h:
+	  - Added a "Show warnings" preference to the buddy list.
+
 Fri Nov 14 10:52:30 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimPrefsDialog.cpp:
