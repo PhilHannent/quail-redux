@@ -87,8 +87,18 @@ class QGaimChat : public QGaimConversation
 
 		void send();
 
+		virtual void updated(GaimConvUpdateType type);
+
 	protected:
 		virtual void buildInterface();
+
+		virtual void focusInEvent(QFocusEvent *event);
+
+	protected slots:
+		virtual void returnPressed();
+
+	protected:
+		GaimChat *chat;
 };
 
 class QGaimIm : public QGaimConversation

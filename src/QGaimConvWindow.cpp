@@ -151,8 +151,6 @@ QGaimConversation::write(const char *who, const char *message,
 		txt += nick;
 		txt += "</b></font> ";
 
-		gaim_debug(GAIM_DEBUG_MISC, "QGaimConvWindow",
-				   "newMessage = '%s'\n", newMessage);
 		txt += stripFontFace(newMessage);
 		txt += "<br>\n";
 
@@ -241,7 +239,7 @@ QGaimConversation::stripFontFace(const QString &str)
  **************************************************************************/
 QGaimChat::QGaimChat(GaimConversation *conv, QWidget *parent,
 					 const char *name, WFlags fl)
-	: QGaimConversation(conv, parent, name, fl)
+	: QGaimConversation(conv, parent, name, fl), chat(GAIM_CHAT(conv))
 {
 	buildInterface();
 }
@@ -278,6 +276,29 @@ QGaimChat::removeUser(const char *user)
 void
 QGaimChat::buildInterface()
 {
+	QGridLayout *l = new QGridLayout(this, 2, 1, 5, 5);
+
+	text  = new QTextView(this);
+	entry = new QGaimMultiLineEdit(this);
+	entry->setWordWrap(QMultiLineEdit::WidgetWidth);
+	entry->setHistoryEnabled(true);
+	entry->setFixedVisibleLines(5);
+
+	l->addWidget(text,  0, 0);
+	l->addWidget(entry, 1, 0);
+
+	connect(entry, SIGNAL(returnPressed()),
+			this, SLOT(returnPressed()));
+	connect(entry, SIGNAL(textChanged()),
+			this, SLOT(updateTyping()));
+
+	entry->setFocus();
+}
+
+void
+QGaimChat::focusInEvent(QFocusEvent *)
+{
+	entry->setFocus();
 }
 
 void
@@ -292,6 +313,40 @@ QGaimChat::send()
 	entry->setText("");
 }
 
+void
+QGaimChat::returnPressed()
+{
+	send();
+}
+
+void
+QGaimChat::updated(GaimConvUpdateType type)
+{
+	if (type == GAIM_CONV_UPDATE_UNSEEN)
+	{
+		QGaimConvWindow *qwin;
+		GaimWindow *win;
+		QColor color;
+
+		color = black;
+
+		if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_NICK)
+		{
+			color.setRgb(0x31, 0x4E, 0x6C);
+		}
+		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
+		{
+			color.setRgb(0xDF, 0x42, 0x1E);
+		}
+
+		win = gaim_conversation_get_window(conv);
+		qwin = (QGaimConvWindow *)win->ui_data;
+
+		qwin->getTabs()->setTabColor(getTabId(), color);
+	}
+	else
+		QGaimConversation::updated(type);
+}
 
 /**************************************************************************
  * QGaimIm
@@ -346,8 +401,6 @@ QGaimIm::updated(GaimConvUpdateType type)
 		win = gaim_conversation_get_window(conv);
 		qwin = (QGaimConvWindow *)win->ui_data;
 
-		gaim_debug(GAIM_DEBUG_MISC, "QGaimConvWindow",
-				   "tab ID = %d\n", getTabId());
 		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
 	else
@@ -358,9 +411,8 @@ void
 QGaimIm::buildInterface()
 {
 	QGridLayout *l = new QGridLayout(this, 2, 1, 5, 5);
-	QString str;
 
-	text  = new QTextView(str, QString::null, this);
+	text  = new QTextView(this);
 	entry = new QGaimMultiLineEdit(this);
 	entry->setWordWrap(QMultiLineEdit::WidgetWidth);
 	entry->setHistoryEnabled(true);
@@ -544,8 +596,6 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 void
 QGaimConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 {
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "destroy\n");
-
 	gaim_window_destroy(win);
 
 	QMainWindow::destroy(destroyWindow, destroySubWindows);
@@ -557,8 +607,6 @@ QGaimConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 void
 QGaimConvWindow::closeEvent(QCloseEvent *e)
 {
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "closeEvent\n");
-
 	gaim_window_destroy(win);
 
 	QMainWindow::closeEvent(e);
@@ -849,8 +897,6 @@ qGaimWindowNew(GaimWindow *win)
 {
 	QGaimConvWindow *qwin;
 
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "qGaimWindowNew\n");
-
 	qwin = new QGaimConvWindow(win);
 	win->ui_data = qwin;
 
@@ -906,8 +952,6 @@ static void
 qGaimWindowAddConv(GaimWindow *win, GaimConversation *conv)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
-
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "add conversation\n");
 
 	qwin->addConversation(conv);
 }
