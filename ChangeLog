@@ -1,3 +1,8 @@
+Sun Aug 03 23:19:09 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimNotify.cpp:
+	  - Fixed some translation stuff.
+
 Sun Aug 03 23:11:41 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountBox.cpp:

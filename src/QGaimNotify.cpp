@@ -99,32 +99,21 @@ qGaimNotifyEmails(size_t count, gboolean, const char **subjects,
 	title = QObject::tr("You have new mail!");
 
 	str = "<p>";
-	str += *tos;
-	str += " has ";
-	str += QString::number(count);
 
 	if (count == 1)
-		str += " new e-mail.\n\n";
+		str += QObject::tr("%1 has 1 new e-mail.").arg(*tos);
 	else
-		str += " new e-mails.\n\n";
+		str += QObject::tr("%1 has %2 new e-mails.").arg(*tos, count);
 
 	str += "</p>";
 
 	if (count == 1)
 	{
 		if (froms != NULL)
-		{
-			str += "<p>From: ";
-			str += *froms;
-			str += "</p>";
-		}
+			str += QObject::tr("<p>From: %1</p>").arg(*froms);
 		
 		if (subjects != NULL)
-		{
-			str += "<p>Subject: ";
-			str += *subjects;
-			str += "</p>";
-		}
+			str += QObject::tr("<p>Subject: %1</p>").arg(*subjects);
 	}
 
 	QMessageBox::information(NULL, title, str);
