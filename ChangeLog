@@ -1,3 +1,9 @@
+Sun Jul 27 16:41:28 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - The text view now scrolls to the bottom when a new IM comes in
+	    or is sent.
+
 Sun Jul 27 16:26:41 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

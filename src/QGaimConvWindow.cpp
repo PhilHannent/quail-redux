@@ -89,6 +89,7 @@ QGaimConversation::write(const char *who, const char *message,
 	}
 
 	text->setText(text->text() + txt);
+	text->verticalScrollBar()->setValue(text->verticalScrollBar()->maxValue());
 
 	length = 0; flags = 0; mtime = 0;
 }
