@@ -1,3 +1,9 @@
+Mon Nov 03 00:46:06 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvButton.cpp:
+	  - Reduce the delay for the pop-up menu on the conversations button
+	    to 250ms.
+
 Mon Nov 03 00:36:53 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsBox.cpp:

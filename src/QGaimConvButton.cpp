@@ -49,6 +49,8 @@ QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
 	setAutoRaise(true);
 	setPixmap(Resource::loadPixmap("gaim/conversations"));
 
+	setPopupDelay(250);
+
 	menu = new QPopupMenu();
 
 	setPopup(menu);
