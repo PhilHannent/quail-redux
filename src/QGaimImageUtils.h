@@ -31,6 +31,7 @@ class QGaimImageUtils
 	public:
 		static QImage &greyImage(QImage &image);
 		static QImage &desaturate(QImage &image, float value);
+		static QImage &saturate(QImage &image, float value);
 
 		static void blendOnLower(int x, int y, const QImage &upper,
 								 QImage &lower);

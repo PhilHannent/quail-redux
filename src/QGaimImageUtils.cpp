@@ -48,6 +48,12 @@ QGaimImageUtils::greyImage(QImage &image)
 QImage &
 QGaimImageUtils::desaturate(QImage &image, float value)
 {
+	if (image.width() == 0 || image.height() == 0)
+		return image;
+
+	if (value < 0) value = 0.0;
+	if (value > 1) value = 1.0;
+
 	int pixels = (image.depth() > 8
 				  ? image.width() * image.height()
 				  : image.numColors());
@@ -62,10 +68,42 @@ QGaimImageUtils::desaturate(QImage &image, float value)
 	{
 		color.setRgb(data[i]);
 		color.hsv(&h, &s, &v);
-		color.setHsv(h, (int)(s * (1.0 - value) + 0.5), v);
+		color.setHsv(h, (int)(s * (1.0 - value)), v);
 
 		data[i] = qRgba(color.red(), color.green(), color.blue(),
 						qAlpha(data[i]));
+	}
+
+	return image;
+}
+
+QImage &
+QGaimImageUtils::saturate(QImage &image, float value)
+{
+	if (image.width() == 0 || image.height() == 0)
+		return image;
+
+	if (value < 0) value = 0.0;
+	if (value > 1) value = 1.0;
+
+	int pixels = (image.depth() > 8
+				  ? image.width() * image.height()
+				  : image.numColors());
+	unsigned int *data = (image.depth() > 8
+						  ? (unsigned int *)image.bits()
+						  : (unsigned int *)image.colorTable());
+
+	for (int i = 0; i < pixels; i++)
+	{
+		int intensity = (int)(qRed(data[i])   * 0.30 +
+							  qGreen(data[i]) * 0.59 +
+							  qBlue(data[i])  * 0.11);
+
+		int sRed   = (int)((1.0 - value) * intensity + value * qRed(data[i]));
+		int sGreen = (int)((1.0 - value) * intensity + value * qGreen(data[i]));
+		int sBlue  = (int)((1.0 - value) * intensity + value * qBlue(data[i]));
+
+		data[i] = qRgba(sRed, sGreen, sBlue, qAlpha(data[i]));
 	}
 
 	return image;

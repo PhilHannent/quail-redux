@@ -185,6 +185,18 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
 			QGaimImageUtils::blendOnLower(5, 5, emblemImage, statusImage);
 	}
 
+	/* Grey idle buddies. */
+	if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+		((struct buddy *)node)->present == GAIM_BUDDY_OFFLINE)
+	{
+		QGaimImageUtils::greyImage(statusImage);
+	}
+	else if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+			 ((struct buddy *)node)->idle)
+	{
+		QGaimImageUtils::saturate(statusImage, 0.25);
+	}
+
 	statusPixmap.convertFromImage(statusImage);
 
 	return statusPixmap;
