@@ -298,6 +298,8 @@ QGaimIm::send()
 	gaim_im_send(GAIM_IM(conv), text);
 
 	entry->setText("");
+
+	updateTyping();
 }
 
 void
@@ -315,8 +317,6 @@ QGaimIm::updateTyping()
 	if (gaim_im_get_type_again_timeout(im))
 		gaim_im_stop_type_again_timeout(im);
 
-	gaim_im_start_type_again_timeout(im);
-
 	if (entry->text().length() == 0)
 	{
 		/* We deleted all of it, so we'll keep typing off. */
@@ -325,18 +325,23 @@ QGaimIm::updateTyping()
 						 gaim_conversation_get_name(conv),
 						 GAIM_NOT_TYPING);
 	}
-	else if (entry->text().length() == 1 ||
+	else
+	{
+		gaim_im_start_type_again_timeout(im);
+
+		if (entry->text().length() == 1 ||
 			 (gaim_im_get_type_again(im) != 0 &&
 			  time(NULL) > gaim_im_get_type_again(im)))
-	{
-		int timeout = serv_send_typing(gaim_conversation_get_gc(conv),
-									   gaim_conversation_get_name(conv),
-									   GAIM_TYPING);
+		{
+			int timeout = serv_send_typing(gaim_conversation_get_gc(conv),
+										   gaim_conversation_get_name(conv),
+										   GAIM_TYPING);
 
-		if (timeout)
-			gaim_im_set_type_again(im, time(NULL) + timeout);
-		else
-			gaim_im_set_type_again(im, 0);
+			if (timeout)
+				gaim_im_set_type_again(im, time(NULL) + timeout);
+			else
+				gaim_im_set_type_again(im, 0);
+		}
 	}
 }
 
