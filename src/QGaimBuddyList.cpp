@@ -25,6 +25,7 @@
 #include <libgaim/debug.h>
 #include <libgaim/multi.h>
 #include <libgaim/prefs.h>
+#include <libgaim/request.h>
 #include <libgaim/server.h>
 
 #include <qpe/qpeapplication.h>
@@ -452,7 +453,7 @@ QGaimBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 		a->addTo(menu);
 
 		connect(a, SIGNAL(activated()),
-				this, SLOT(getUserInfoSlot()));
+				this, SLOT(userInfoSlot()));
 	}
 
 	/* IM */
@@ -474,7 +475,7 @@ QGaimBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 	a->addTo(menu);
 
 	connect(a, SIGNAL(activated()),
-			this, SLOT(showRemoveBuddySlot()));
+			this, SLOT(removeBuddySlot()));
 
 	if (asContact)
 	{
@@ -521,7 +522,7 @@ QGaimBuddyList::populateContactMenu(GaimContact *contact, QPopupMenu *menu)
 	a->addTo(menu);
 
 	connect(a, SIGNAL(activated()),
-			this, SLOT(showRemoveContactSlot()));
+			this, SLOT(removeContactSlot()));
 }
 
 void
@@ -536,12 +537,48 @@ QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 	if (prpl != NULL)
 		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
 
+	menu = NULL;
+	a = NULL;
 }
 
 void
-QGaimBuddyList::populateGroupMenu(GaimGroup *group, QPopupMenu *menu)
+QGaimBuddyList::populateGroupMenu(GaimGroup *, QPopupMenu *menu)
 {
+	QAction *a;
 
+	/* Add a Buddy */
+	a = new QAction(tr("Add a Buddy"),
+					QIconSet(Resource::loadPixmap("gaim/add")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(addBuddySlot()));
+
+	/* Add a Chat */
+	a = new QAction(tr("Add a Chat"),
+					QIconSet(Resource::loadPixmap("gaim/add")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(addChatSlot()));
+
+	/* Delete Group */
+	a = new QAction(tr("Remove Group"),
+					QIconSet(Resource::loadPixmap("gaim/remove")),
+					QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(removeGroupSlot()));
+
+	/* Rename */
+	a = new QAction(tr("Rename"), QString::null, 0, this, 0);
+	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(renameGroupSlot()));
 }
 
 void
@@ -584,124 +621,6 @@ QGaimBuddyList::nodeCollapsedSlot(QListViewItem *_item)
 	{
 		collapseContactSlot(item);
 	}
-}
-
-void
-QGaimBuddyList::showContextMenuSlot(QListViewItem *_item,
-									const QPoint &point, int)
-{
-	QGaimBListItem *item = (QGaimBListItem *)_item;
-	QPopupMenu *menu = NULL;
-	GaimBlistNode *node;
-
-	if (item == NULL)
-		return;
-
-	node = item->getBlistNode();
-
-	menu = new QPopupMenu(this);
-
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
-	{
-		populateBuddyMenu((GaimBuddy *)node, menu, false);
-	}
-	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
-	{
-		GaimContact *contact = (GaimContact *)node;
-
-		if (item->isExpanded())
-		{
-			populateContactMenu(contact, menu);
-		}
-		else
-		{
-			populateBuddyMenu(gaim_contact_get_priority_buddy(contact), menu,
-							  true);
-		}
-	}
-	else if (GAIM_BLIST_NODE_IS_CHAT(node))
-	{
-		populateChatMenu((GaimChat *)node, menu);
-	}
-	else if (GAIM_BLIST_NODE_IS_GROUP(node))
-	{
-		populateGroupMenu((GaimGroup *)node, menu);
-	}
-	else
-	{
-		delete menu;
-
-		return;
-	}
-
-	menu->popup(point);
-}
-
-void
-QGaimBuddyList::getUserInfoSlot()
-{
-	GaimBuddy *buddy;
-
-	if ((buddy = getSelectedBuddy()) == NULL)
-		return;
-
-	serv_get_info(gaim_account_get_connection(buddy->account), buddy->name);
-}
-
-void
-QGaimBuddyList::sendImSlot()
-{
-	GaimBuddy *buddy;
-
-	if ((buddy = getSelectedBuddy()) == NULL)
-		return;
-
-	emit openIm(buddy);
-}
-
-void
-QGaimBuddyList::showRemoveBuddySlot()
-{
-	GaimBuddy *buddy;
-
-	if ((buddy = getSelectedBuddy()) == NULL)
-		return;
-
-	emit removeBuddy(buddy);
-}
-
-void
-QGaimBuddyList::showRemoveContactSlot()
-{
-	GaimBlistNode *node;
-	QGaimBListItem *item;
-
-	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
-		return;
-
-	node = item->getBlistNode();
-
-	if (!GAIM_BLIST_NODE_IS_CONTACT(node))
-		return;
-
-	emit removeContact((GaimContact *)node);
-}
-
-void
-QGaimBuddyList::showRemoveGroupSlot()
-{
-	GaimBlistNode *node;
-	QGaimBListItem *item;
-
-	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
-		return;
-
-	node = item->getBlistNode();
-
-	if (!GAIM_BLIST_NODE_IS_GROUP(node))
-		return;
-
-	emit removeGroup((GaimGroup *)node);
 }
 
 void
@@ -765,6 +684,207 @@ void
 QGaimBuddyList::saveBlistSlot()
 {
 	gaim_blist_save();
+}
+
+void
+QGaimBuddyList::showContextMenuSlot(QListViewItem *_item,
+									const QPoint &point, int)
+{
+	QGaimBListItem *item = (QGaimBListItem *)_item;
+	QPopupMenu *menu = NULL;
+	GaimBlistNode *node;
+
+	if (item == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	menu = new QPopupMenu(this);
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	{
+		populateBuddyMenu((GaimBuddy *)node, menu, false);
+	}
+	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+	{
+		GaimContact *contact = (GaimContact *)node;
+
+		if (item->isExpanded())
+		{
+			populateContactMenu(contact, menu);
+		}
+		else
+		{
+			populateBuddyMenu(gaim_contact_get_priority_buddy(contact), menu,
+							  true);
+		}
+	}
+	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+	{
+		populateChatMenu((GaimChat *)node, menu);
+	}
+	else if (GAIM_BLIST_NODE_IS_GROUP(node))
+	{
+		populateGroupMenu((GaimGroup *)node, menu);
+	}
+	else
+	{
+		delete menu;
+
+		return;
+	}
+
+	menu->popup(point);
+}
+
+void
+QGaimBuddyList::addBuddySlot()
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_GROUP(node))
+		return;
+
+	emit addBuddy((GaimGroup *)node);
+}
+
+void
+QGaimBuddyList::addChatSlot()
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_GROUP(node))
+		return;
+
+	emit addChat((GaimGroup *)node);
+}
+
+void
+QGaimBuddyList::removeGroupSlot()
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_GROUP(node))
+		return;
+
+	emit removeGroup((GaimGroup *)node);
+}
+
+static void
+renameGroupCb(GaimGroup *group, const char *newName)
+{
+	gaim_blist_rename_group(group, newName);
+	gaim_blist_save();
+}
+
+void
+QGaimBuddyList::renameGroupSlot()
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+	GaimGroup *group;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_GROUP(node))
+		return;
+
+	group = (GaimGroup *)node;
+
+	gaim_request_input(NULL, tr("Rename Group"),
+					   tr("Rename Group"),
+					   tr("Please enter a new name for the selected group."),
+					   group->name, FALSE, FALSE,
+					   tr("Rename"), G_CALLBACK(renameGroupCb),
+					   tr("Cancel"), NULL, group);
+}
+
+void
+QGaimBuddyList::userInfoSlot()
+{
+	GaimBuddy *buddy;
+
+	if ((buddy = getSelectedBuddy()) == NULL)
+		return;
+
+	serv_get_info(gaim_account_get_connection(buddy->account), buddy->name);
+}
+
+void
+QGaimBuddyList::sendImSlot()
+{
+	GaimBuddy *buddy;
+
+	if ((buddy = getSelectedBuddy()) == NULL)
+		return;
+
+	emit openIm(buddy);
+}
+
+void
+QGaimBuddyList::removeBuddySlot()
+{
+	GaimBuddy *buddy;
+
+	if ((buddy = getSelectedBuddy()) == NULL)
+		return;
+
+	emit removeBuddy(buddy);
+}
+
+void
+QGaimBuddyList::removeContactSlot()
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_CONTACT(node))
+		return;
+
+	emit removeContact((GaimContact *)node);
+}
+
+void
+QGaimBuddyList::removeChatSlot()
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_CHAT(node))
+		return;
+
+	emit removeChat((GaimChat *)node);
 }
 
 void

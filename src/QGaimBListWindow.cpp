@@ -83,6 +83,12 @@ QGaimBListWindow::buildInterface()
 			this, SLOT(doubleClickList(QListViewItem *)));
 	connect(buddylist, SIGNAL(openIm(GaimBuddy *)),
 			this, SLOT(openImSlot(GaimBuddy *)));
+
+	connect(buddylist, SIGNAL(addBuddy(GaimGroup *)),
+			this, SLOT(showAddBuddy(GaimGroup *)));
+	connect(buddylist, SIGNAL(addChat(GaimGroup *)),
+			this, SLOT(showAddChat(GaimGroup *)));
+
 	connect(buddylist, SIGNAL(removeBuddy(GaimBuddy *)),
 			this, SLOT(showConfirmRemoveBuddy(GaimBuddy *)));
 	connect(buddylist, SIGNAL(removeContact(GaimContact *)),
@@ -328,27 +334,29 @@ QGaimBListWindow::doubleClickList(QListViewItem *_item)
 }
 
 void
-QGaimBListWindow::showAddBuddy()
+QGaimBListWindow::showAddBuddy(GaimGroup *group)
 {
 	QGaimAddBuddyDialog *dialog;
 	QGaimBListItem *item;
 	GaimBlistNode *node;
-	GaimGroup *group = NULL;
 
-	item = (QGaimBListItem *)buddylist->selectedItem();
-
-	if (item != NULL)
+	if (group == NULL)
 	{
-		node = item->getBlistNode();
+		item = (QGaimBListItem *)buddylist->selectedItem();
 
-		if (GAIM_BLIST_NODE_IS_GROUP(node))
+		if (item != NULL)
 		{
-			group = (GaimGroup *)node;
-		}
-		else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
-				 GAIM_BLIST_NODE_IS_CHAT(node))
-		{
-			group = ((GaimGroup *)node->parent);
+			node = item->getBlistNode();
+
+			if (GAIM_BLIST_NODE_IS_GROUP(node))
+			{
+				group = (GaimGroup *)node;
+			}
+			else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
+					 GAIM_BLIST_NODE_IS_CHAT(node))
+			{
+				group = ((GaimGroup *)node->parent);
+			}
 		}
 	}
 
@@ -361,27 +369,29 @@ QGaimBListWindow::showAddBuddy()
 }
 
 void
-QGaimBListWindow::showAddChat()
+QGaimBListWindow::showAddChat(GaimGroup *group)
 {
 	QGaimAddChatDialog *dialog;
 	QGaimBListItem *item;
 	GaimBlistNode *node;
-	GaimGroup *group = NULL;
 
-	item = (QGaimBListItem *)buddylist->selectedItem();
-
-	if (item != NULL)
+	if (group == NULL)
 	{
-		node = item->getBlistNode();
+		item = (QGaimBListItem *)buddylist->selectedItem();
 
-		if (GAIM_BLIST_NODE_IS_GROUP(node))
+		if (item != NULL)
 		{
-			group = (GaimGroup *)node;
-		}
-		else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
-				 GAIM_BLIST_NODE_IS_CHAT(node))
-		{
-			group = ((GaimGroup *)node->parent);
+			node = item->getBlistNode();
+
+			if (GAIM_BLIST_NODE_IS_GROUP(node))
+			{
+				group = (GaimGroup *)node;
+			}
+			else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
+					 GAIM_BLIST_NODE_IS_CHAT(node))
+			{
+				group = ((GaimGroup *)node->parent);
+			}
 		}
 	}
 

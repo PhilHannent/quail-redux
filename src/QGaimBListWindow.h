@@ -57,8 +57,8 @@ class QGaimBListWindow : public QMainWindow
 
 		void doubleClickList(QListViewItem *item);
 
-		void showAddBuddy();
-		void showAddChat();
+		void showAddBuddy(GaimGroup *group = NULL);
+		void showAddChat(GaimGroup *group = NULL);
 		void showAddGroup();
 
 		void showRemoveBuddy();

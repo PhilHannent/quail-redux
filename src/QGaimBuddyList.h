@@ -76,8 +76,11 @@ class QGaimBuddyList : public QListView
 
 	signals:
 		void openIm(GaimBuddy *buddy);
+		void addBuddy(GaimGroup *group);
+		void addChat(GaimGroup *group);
 		void removeBuddy(GaimBuddy *buddy);
 		void removeContact(GaimContact *contact);
+		void removeChat(GaimChat *chat);
 		void removeGroup(GaimGroup *group);
 
 	protected:
@@ -90,18 +93,31 @@ class QGaimBuddyList : public QListView
 	protected slots:
 		void nodeExpandedSlot(QListViewItem *item);
 		void nodeCollapsedSlot(QListViewItem *item);
-		void showContextMenuSlot(QListViewItem *item, const QPoint &point,
-								 int col);
-		void getUserInfoSlot();
-		void sendImSlot();
-		void showRemoveBuddySlot();
-		void showRemoveContactSlot();
-		void showRemoveGroupSlot();
 		void collapseContactSlot();
 		void collapseContactSlot(QGaimBListItem *item);
 		void expandContactSlot();
 		void expandContactSlot(QGaimBListItem *item);
 		void saveBlistSlot();
+
+		void showContextMenuSlot(QListViewItem *item, const QPoint &point,
+								 int col);
+
+		/* Group menu slots */
+		void addBuddySlot();
+		void addChatSlot();
+		void removeGroupSlot();
+		void renameGroupSlot();
+
+		/* Buddy menu slots */
+		void userInfoSlot();
+		void sendImSlot();
+		void removeBuddySlot();
+
+		/* Contact menu slots */
+		void removeContactSlot();
+
+		/* Chat menu slots */
+		void removeChatSlot();
 
 	private:
 		void addGroup(GaimBlistNode *node);
