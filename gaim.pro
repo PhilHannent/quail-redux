@@ -42,14 +42,12 @@ DEFINES += LOCAL_COMPILE
 INCLUDEPATH += \
 	$(QPEDIR)/include \
 	/usr/include/glib-2.0 \
-	/usr/lib/glib-2.0/include \
-	/home/chipx86/cvs/libgaim-root/include
+	/usr/lib/glib-2.0/include
 
 DEPENDPATH  += $(QPEDIR)/include
 DEFINES     += LOCAL_COMPILE
 LIBS        += \
 	-lqpe \
-	-L/home/chipx86/cvs/libgaim-root/lib \
 	-lgaim \
 	-lglib-2.0 \
 	-lgmodule-2.0

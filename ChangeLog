@@ -1,3 +1,8 @@
+Thu Jul 10 00:45:00 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* gaim.pro:
+	  - Removed the paths specific to my setup for linking.
+
 Wed Jul 09 16:43:04 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* mkipk.sh:
