@@ -41,6 +41,7 @@ $STRIP gaim
 cp gaim.desktop $TMPDIR/opt/QtPalmtop/apps/Applications
 cp gaim         $TMPDIR/opt/QtPalmtop/bin
 cp gaim.png     $TMPDIR/opt/QtPalmtop/pics
+cp gaim.png     $TMPDIR/opt/QtPalmtop/pics/gaim
 cp data/images/*.png $TMPDIR/opt/QtPalmtop/pics/gaim
 cp data/images/protocols/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/protocols
 cp data/images/status/*.png $TMPDIR/opt/QtPalmtop/pics/gaim/status
