@@ -1,3 +1,10 @@
+Sat Aug 09 00:40:22 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimConvWindow.cpp:
+	  - Fixed a crash when trying to get a protocol icon for a buddy not on
+	    your list.
+
 Sat Aug 09 00:03:19 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* gaim.pro:

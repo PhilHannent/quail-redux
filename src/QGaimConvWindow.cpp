@@ -22,6 +22,7 @@
 #include "QGaimConvWindow.h"
 #include "QGaimConvButton.h"
 #include "QGaimMultiLineEdit.h"
+#include "QGaimProtocolUtils.h"
 #include "QGaimTabBar.h"
 #include "QGaimTabWidget.h"
 #include "QGaim.h"
@@ -639,9 +640,18 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 
 	b = gaim_find_buddy(account, gaim_conversation_get_name(conv));
 
-	tabs->addTab(qconv,
-				 QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
-				 gaim_conversation_get_title(conv));
+	if (b == NULL)
+	{
+		tabs->addTab(qconv,
+					 QGaimProtocolUtils::getProtocolIcon(account),
+					 gaim_conversation_get_title(conv));
+	}
+	else
+	{
+		tabs->addTab(qconv,
+					 QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
+					 gaim_conversation_get_title(conv));
+	}
 
 	qconv->setTabId(tabs->getLastId());
 

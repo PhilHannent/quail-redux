@@ -120,6 +120,9 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
 	GaimPluginProtocolInfo *prplInfo = NULL;
 	char *se = NULL, *sw = NULL, *nw = NULL, *ne = NULL;
 
+	if (node == NULL)
+		return QPixmap();
+
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 		prpl = gaim_find_prpl(gaim_account_get_protocol(
 				((struct buddy *)node)->account));
