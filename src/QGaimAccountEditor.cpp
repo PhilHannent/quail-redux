@@ -91,6 +91,11 @@ QGaimAccountEditor::buildTabs()
 	widget = buildProxyTab();
 	tabs->addTab(widget, tr("Proxy"));
 	tabList.append(widget);
+
+	/* Ensure that the Protocol tab is only enabled if it contains stuff. */
+	tabs->setTabEnabled(protocolBox, (protocolOptEntries != NULL));
+
+	tabs->showPage(accountBox);
 }
 
 QWidget *
@@ -373,7 +378,6 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	/* Protocol */
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
 	protocolList = new QGaimProtocolBox(parent, "protocol combo");
-
 	protocolList->setCurrentProtocol(protocol);
 
 	grid->addWidget(protocolList, row++, 1);
@@ -564,15 +568,10 @@ QGaimAccountEditor::protocolChanged(int index)
 	tabs->removePage(proxyBox);
 
 #if 0
-	accountBox->close(true);
-	protocolBox->close(true);
-	proxyBox->close(true);
 	delete accountBox;
 	delete protocolBox;
 	delete proxyBox;
 #endif
 
 	buildTabs();
-
-	tabs->showPage(accountBox);
 }
