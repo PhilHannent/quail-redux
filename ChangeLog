@@ -1,3 +1,10 @@
+Sat Aug 09 00:03:19 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* gaim.pro:
+	* make.sh:
+	  - The code can now detect between cross-compiles and native compiles
+	    when called from the packaging scripts bundled in qpe-gaim.
+
 Fri Aug 08 23:39:28 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaim.h:

@@ -115,7 +115,6 @@ INCLUDEPATH += \
 	/usr/lib/glib-2.0/include
 
 DEPENDPATH  += $(QPEDIR)/include
-DEFINES     += LOCAL_COMPILE
 LIBS        += \
 	-lqpe \
 	-lgaim \
