@@ -75,7 +75,8 @@ class QGaimBListWindow : public QMainWindow
 		void blistToggled(bool state);
 		void openImSlot(GaimBuddy *buddy);
 		void openImSlot();
-		void openChat();
+		void openChatSlot(GaimChat *chat);
+		void openChatSlot();
 
 	private:
 		void buildInterface();

@@ -78,6 +78,7 @@ class QGaimBuddyList : public QListView
 		void openIm(GaimBuddy *buddy);
 		void addBuddy(GaimGroup *group);
 		void addChat(GaimGroup *group);
+		void joinChat(GaimChat *chat);
 		void removeBuddy(GaimBuddy *buddy);
 		void removeContact(GaimContact *contact);
 		void removeChat(GaimChat *chat);
@@ -117,6 +118,8 @@ class QGaimBuddyList : public QListView
 		void removeContactSlot();
 
 		/* Chat menu slots */
+		void joinChatSlot();
+		void autoJoinChatSlot(bool on);
 		void removeChatSlot();
 
 	private:

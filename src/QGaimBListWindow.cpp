@@ -89,12 +89,17 @@ QGaimBListWindow::buildInterface()
 	connect(buddylist, SIGNAL(addChat(GaimGroup *)),
 			this, SLOT(showAddChat(GaimGroup *)));
 
+	connect(buddylist, SIGNAL(joinChat(GaimChat *)),
+			this, SLOT(openChatSlot(GaimChat *)));
+
 	connect(buddylist, SIGNAL(removeBuddy(GaimBuddy *)),
 			this, SLOT(showConfirmRemoveBuddy(GaimBuddy *)));
 	connect(buddylist, SIGNAL(removeContact(GaimContact *)),
 			this, SLOT(showConfirmRemoveContact(GaimContact *)));
 	connect(buddylist, SIGNAL(removeGroup(GaimGroup *)),
 			this, SLOT(showConfirmRemoveGroup(GaimGroup *)));
+	connect(buddylist, SIGNAL(removeChat(GaimChat *)),
+			this, SLOT(showConfirmRemoveChat(GaimChat *)));
 
 	setCentralWidget(buddylist);
 }
@@ -128,7 +133,7 @@ QGaimBListWindow::buildToolBar()
 	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
-			this, SLOT(openChat()));
+			this, SLOT(openChatSlot()));
 
 	toolbar->addSeparator();
 
@@ -330,7 +335,7 @@ QGaimBListWindow::doubleClickList(QListViewItem *_item)
 	if (GAIM_BLIST_NODE_IS_BUDDY(node) || GAIM_BLIST_NODE_IS_CONTACT(node))
 		openImSlot();
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
-		openChat();
+		openChatSlot();
 }
 
 void
@@ -703,22 +708,26 @@ QGaimBListWindow::openImSlot()
 }
 
 void
-QGaimBListWindow::openChat()
+QGaimBListWindow::openChatSlot(GaimChat *chat)
 {
 	QGaimBListItem *item;
 	GaimBlistNode *node;
 
-	item = (QGaimBListItem *)buddylist->selectedItem();
-
-	if (item == NULL)
-		return;
-
-	node = item->getBlistNode();
-
-	if (GAIM_BLIST_NODE_IS_CHAT(node))
+	if (chat == NULL)
 	{
-		GaimChat *chat = (GaimChat *)item->getBlistNode();
+		item = (QGaimBListItem *)buddylist->selectedItem();
 
+		if (item == NULL)
+			return;
+
+		node = item->getBlistNode();
+
+		if (GAIM_BLIST_NODE_IS_CHAT(node))
+			chat = (GaimChat *)node;
+	}
+
+	if (chat != NULL)
+	{
 		serv_join_chat(gaim_account_get_connection(chat->account),
 					   chat->components);
 	}
@@ -732,6 +741,11 @@ QGaimBListWindow::openChat()
 	}
 }
 
+void
+QGaimBListWindow::openChatSlot()
+{
+	openChatSlot(NULL);
+}
 
 /**************************************************************************
  * Gaim callbacks

@@ -530,6 +530,7 @@ QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 {
 	GaimPlugin *prpl = NULL;
 	GaimPluginProtocolInfo *prplInfo = NULL;
+	const char *autojoin;
 	QAction *a;
 
 	prpl = gaim_find_prpl(gaim_account_get_protocol(chat->account));
@@ -543,9 +544,21 @@ QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 					QString::null, 0, this, 0);
 	a->addTo(menu);
 
+	connect(a, SIGNAL(activated()),
+			this, SLOT(joinChatSlot()));
+
 	/* Auto-Join */
-	a = new QAction(tr("Auto-Join"), QString::null, 0, this, 0);
+	a = new QAction(tr("Auto-Join"), QString::null, 0, this, 0, true);
+
+	autojoin = gaim_chat_get_setting(chat, "qpe-autojoin");
+
+	if (!strcmp(autojoin, "true"))
+		a->setOn(true);
+
 	a->addTo(menu);
+
+	connect(a, SIGNAL(toggled(bool)),
+			this, SLOT(autoJoinChatSlot(bool)));
 
 	/* Alias */
 	a = new QAction(tr("Alias"),
@@ -558,6 +571,9 @@ QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 					QIconSet(Resource::loadPixmap("gaim/remove")),
 					QString::null, 0, this, 0);
 	a->addTo(menu);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(removeChatSlot()));
 }
 
 void
@@ -887,6 +903,44 @@ QGaimBuddyList::removeContactSlot()
 		return;
 
 	emit removeContact((GaimContact *)node);
+}
+
+void
+QGaimBuddyList::joinChatSlot()
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_CHAT(node))
+		return;
+
+	emit joinChat((GaimChat *)node);
+}
+
+void
+QGaimBuddyList::autoJoinChatSlot(bool on)
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+	GaimChat *chat;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_CHAT(node))
+		return;
+
+	chat = (GaimChat *)node;
+
+	gaim_chat_set_setting(chat, "qpe-autojoin", (on ? "true" : NULL));
+	gaim_blist_save();
 }
 
 void
