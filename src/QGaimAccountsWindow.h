@@ -30,24 +30,37 @@
 
 class QAction;
 class QPixmap;
+class QTimer;
 class QToolBar;
 class QToolButton;
 class QVBox;
 
-class QGaimAccountListItem : public QListViewItem
+class QGaimAccountListItem : public QObject, public QListViewItem
 {
+	Q_OBJECT
+
 	public:
 		QGaimAccountListItem(QListView *parent, int index);
 		~QGaimAccountListItem();
+
+		void startPulse(QPixmap onlinePixmap);
+		void stopPulse();
 
 		void setAccount(GaimAccount *account);
 		GaimAccount *getAccount() const;
 
 		virtual QString key(int column, bool ascending) const;
 
+	protected slots:
+		void updatePulse();
+
 	private:
 		GaimAccount *account;
 		int index;
+		QTimer *pulseTimer;
+		bool pulseGrey;
+		float pulseStep;
+		QPixmap *pulseOrigPixmap;
 };
 
 class QGaimAccountsWindow : public QMainWindow

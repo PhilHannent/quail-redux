@@ -1,3 +1,11 @@
+Mon Oct 06 01:48:03 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimAccountsWindow.h:
+	  - Added a throbber for each protocol icon in the accounts window.
+	    When an account is signing on, the protocol icon will grey in,
+	    grey out.. throbby action!
+
 Mon Oct 06 00:41:47 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvButton.cpp:

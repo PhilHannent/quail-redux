@@ -37,6 +37,7 @@
 #include <qlistview.h>
 #include <qmenubar.h>
 #include <qpushbutton.h>
+#include <qtimer.h>
 #include <qtoolbar.h>
 #include <qtoolbutton.h>
 
@@ -44,12 +45,43 @@
  * QGaimAccountListItem
  **************************************************************************/
 QGaimAccountListItem::QGaimAccountListItem(QListView *parent, int index)
-	: QListViewItem(parent), account(NULL), index(index)
+	: QListViewItem(parent), account(NULL), index(index), pulseTimer(NULL)
 {
 }
 
 QGaimAccountListItem::~QGaimAccountListItem()
 {
+	stopPulse();
+}
+
+void
+QGaimAccountListItem::startPulse(QPixmap onlinePixmap)
+{
+	stopPulse();
+
+	pulseGrey = true;
+	pulseStep = 0;
+
+	pulseOrigPixmap = new QPixmap(onlinePixmap);
+	pulseTimer = new QTimer(this);
+
+	connect(pulseTimer, SIGNAL(timeout()),
+			this, SLOT(updatePulse()));
+
+	pulseTimer->start(100, false);
+}
+
+void
+QGaimAccountListItem::stopPulse()
+{
+	if (pulseTimer == NULL)
+		return;
+
+	delete pulseTimer;
+	delete pulseOrigPixmap;
+
+	pulseTimer      = NULL;
+	pulseOrigPixmap = NULL;
 }
 
 void
@@ -72,6 +104,24 @@ QGaimAccountListItem::key(int, bool) const
 	str.sprintf("%6d", index);
 
 	return str;
+}
+
+void
+QGaimAccountListItem::updatePulse()
+{
+	QPixmap tempPixmap(*pulseOrigPixmap);
+
+	setPixmap(0, QGaimImageUtils::saturate(tempPixmap, pulseStep));
+
+	if (pulseGrey)
+		pulseStep += 0.20;
+	else
+		pulseStep -= 0.20;
+
+	if (pulseStep >= 1)
+		pulseGrey = false;
+	else if (pulseStep <= 0)
+		pulseGrey = true;
 }
 
 /**************************************************************************
@@ -133,7 +183,10 @@ QGaimAccountsWindow::accountSignedOn(GaimAccount *account)
 		item = QGaimAccountsWindow::getItemFromAccount(account);
 
 	if (item != NULL)
+	{
+		item->stopPulse();
 		item->setPixmap(0, QGaimProtocolUtils::getProtocolIcon(account));
+	}
 }
 
 void
@@ -358,6 +411,8 @@ QGaimAccountsWindow::connectToAccount()
 	connectButton->setEnabled(false);
 
 	item = (QGaimAccountListItem *)accountsView->selectedItem();
+
+	item->startPulse(QGaimProtocolUtils::getProtocolIcon(item->getAccount()));
 
 	gaim_account_connect(item->getAccount());
 }
