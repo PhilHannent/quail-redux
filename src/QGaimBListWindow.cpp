@@ -113,23 +113,32 @@ QGaimBListWindow::buildToolBar()
 
 	toolbar->addSeparator();
 
+	/* Add */
+	button = new QToolButton(toolbar, "add");
+	button->setAutoRaise(true);
+	button->setPixmap(Resource::loadPixmap("gaim/add"));
+
+	addMenu = new QPopupMenu(button);
+	button->setPopup(addMenu);
+	button->setPopupDelay(0);
+
 	/* Add Buddy */
-	a = new QAction(tr("Add User"),
-					QIconSet(Resource::loadPixmap("gaim/add")),
+	a = new QAction(tr("Add Buddy"),
+					QIconSet(Resource::loadPixmap("gaim/user")),
 					QString::null, 0, this, 0);
 	addBuddyButton = a;
-	a->addTo(toolbar);
+	a->addTo(addMenu);
 	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(showAddBuddy()));
 
-	/* New Group */
-	a = new QAction(tr("New Group"),
+	/* Add Group */
+	a = new QAction(tr("Add Group"),
 					QIconSet(Resource::loadPixmap("gaim/new-group")),
 					QString::null, 0, this, 0);
 	addGroupButton = a;
-	a->addTo(toolbar);
+	a->addTo(addMenu);
 	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),

@@ -88,6 +88,7 @@ class QGaimBListWindow : public QMainWindow
 
 		QAction *blistButton;
 
+		QPopupMenu *addMenu;
 		QPopupMenu *settingsMenu;
 		QPopupMenu *convsMenu;
 
