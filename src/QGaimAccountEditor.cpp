@@ -56,24 +56,41 @@ QGaimAccountEditor::buildInterface()
 	tabs = new QTabWidget(this);
 	tabs->setMargin(6);
 
-	tabs->addTab(buildAccountTab(), "Account");
+	buildTabs();
+}
+
+void
+QGaimAccountEditor::buildTabs()
+{
+	QWidget *widget;
+
+	tabList.clear();
+
+	widget = buildAccountTab();
+	tabs->addTab(widget, tr("Account"));
+	tabList.append(widget);
 
 	if (plugin != NULL)
 	{
 		QPixmap *pixmap = QGaimProtocolUtils::getProtocolIcon(plugin);
 
+		widget = buildProtocolTab();
+
 		if (pixmap == NULL)
-			tabs->addTab(buildProtocolTab(), plugin->info->name);
+			tabs->addTab(widget, plugin->info->name);
 		else
 		{
-			tabs->addTab(buildProtocolTab(), QIconSet(*pixmap),
-						 plugin->info->name);
+			tabs->addTab(widget, QIconSet(*pixmap), plugin->info->name);
 
 			delete pixmap;
 		}
+
+		tabList.append(widget);
 	}
 
-	tabs->addTab(buildProxyTab(), "Proxy");
+	widget = buildProxyTab();
+	tabs->addTab(widget, tr("Proxy"));
+	tabList.append(widget);
 }
 
 QWidget *
@@ -87,7 +104,7 @@ QGaimAccountEditor::buildAccountTab()
 	int row = 0;
 
 	/* Create the main vbox. */
-	vbox = new QVBox(this);
+	accountBox = vbox = new QVBox(this);
 	vbox->setSpacing(5);
 
 	frame = new QFrame(vbox);
@@ -139,7 +156,7 @@ QGaimAccountEditor::buildProtocolTab()
 	int row = 0;
 
 	/* Create the main vbox */
-	vbox = new QVBox(this);
+	protocolBox = vbox = new QVBox(this);
 	vbox->setSpacing(5);
 
 	frame = new QFrame(vbox);
@@ -262,7 +279,7 @@ QGaimAccountEditor::buildProxyTab()
 	int row = 0;
 
 	/* Create the main vbox */
-	vbox = new QVBox(this);
+	proxyBox = vbox = new QVBox(this);
 	vbox->setSpacing(5);
 
 	frame = new QFrame(vbox);
@@ -357,8 +374,7 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
 	protocolList = new QGaimProtocolBox(parent, "protocol combo");
 
-	if (account != NULL)
-		protocolList->setCurrentProtocol(protocol);
+	protocolList->setCurrentProtocol(protocol);
 
 	grid->addWidget(protocolList, row++, 1);
 
@@ -502,36 +518,6 @@ QGaimAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 }
 
 void
-QGaimAccountEditor::updateAccountTab()
-{
-	if (prplInfo != NULL)
-	{
-		if (prplInfo->options & OPT_PROTO_NO_PASSWORD)
-		{
-			passwordLabel->hide();
-			passwordEntry->hide();
-			rememberPassCheck->hide();
-		}
-		else
-		{
-			passwordLabel->show();
-			passwordEntry->show();
-			rememberPassCheck->show();
-		}
-
-		if (prplInfo->options & OPT_PROTO_MAIL_CHECK)
-			mailNotificationCheck->show();
-		else
-			mailNotificationCheck->hide();
-	}
-}
-
-void
-QGaimAccountEditor::updateProtocolTab()
-{
-}
-
-void
 QGaimAccountEditor::proxyTypeChanged(int index)
 {
 	newProxyType = (GaimProxyType)(index - 1);
@@ -556,7 +542,6 @@ QGaimAccountEditor::proxyTypeChanged(int index)
 void
 QGaimAccountEditor::protocolChanged(int index)
 {
-	GaimPlugin *plugin;
 	GList *l;
 
 	l = g_list_nth(gaim_plugins_get_protocols(), index);
@@ -574,6 +559,20 @@ QGaimAccountEditor::protocolChanged(int index)
 	protocol   = prplInfo->protocol;
 	protocolId = plugin->info->id;
 
-	updateAccountTab();
-	updateProtocolTab();
+	tabs->removePage(accountBox);
+	tabs->removePage(protocolBox);
+	tabs->removePage(proxyBox);
+
+#if 0
+	accountBox->close(true);
+	protocolBox->close(true);
+	proxyBox->close(true);
+	delete accountBox;
+	delete protocolBox;
+	delete proxyBox;
+#endif
+
+	buildTabs();
+
+	tabs->showPage(accountBox);
 }

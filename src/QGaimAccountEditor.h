@@ -6,6 +6,7 @@
 #include <libgaim/prpl.h>
 
 #include <qdialog.h>
+#include <qlist.h>
 #include <qvariant.h>
 #include <qwidget.h>
 
@@ -17,6 +18,7 @@ class QLabel;
 class QLineEdit;
 class QPixmap;
 class QTabWidget;
+class QVBox;
 
 class QGaimAccountEditor : public QDialog
 {
@@ -30,15 +32,14 @@ class QGaimAccountEditor : public QDialog
 
 	protected:
 		virtual void buildInterface();
+		void buildTabs();
+
 		QWidget *buildAccountTab();
 		QWidget *buildProtocolTab();
 		QWidget *buildProxyTab();
 
 		void buildLoginOpts(QGridLayout *grid, QWidget *parent, int &row);
 		void buildUserOpts(QGridLayout *grid, QWidget *parent, int &row);
-
-		void updateAccountTab();
-		void updateProtocolTab();
 
 	protected slots:
 		void proxyTypeChanged(int index);
@@ -59,7 +60,10 @@ class QGaimAccountEditor : public QDialog
 
 		QTabWidget *tabs;
 
+		QList<QWidget> tabList;
+
 		/* Account tab */
+		QVBox *accountBox;
 		QGaimProtocolBox *protocolList;
 		QLineEdit *screenNameEntry;
 		QLabel *passwordLabel;
@@ -70,7 +74,11 @@ class QGaimAccountEditor : public QDialog
 
 		QCheckBox *mailNotificationCheck;
 
+		/* Protocol tab */
+		QVBox *protocolBox;
+
 		/* Proxy tab */
+		QVBox *proxyBox;
 		QComboBox *proxyDropDown;
 		QLineEdit *proxyHost;
 		QLineEdit *proxyPort;
