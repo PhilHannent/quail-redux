@@ -170,7 +170,7 @@ QGaimAddBuddyDialog::accept()
 
 	account = accountCombo->getCurrentAccount();
 
-	b = gaim_buddy_new(account, screenname, (alias.isEmpty() ? NULL : alias));
+	b = gaim_buddy_new(account, screenname, (alias.isEmpty() ? NULL : (const char *)alias));
 
 	gaim_blist_add_buddy(b, g, NULL);
 	serv_add_buddy(gaim_account_get_connection(account), screenname);

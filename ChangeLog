@@ -1,3 +1,9 @@
+Sat Aug 02 19:40:33 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimDialogs.cpp:
+	  - Fixed a compiler error that occurred on the gcc I'm using for arm.
+	    Picky picky.
+
 Sat Aug 02 19:36:07 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
