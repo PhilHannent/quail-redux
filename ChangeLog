@@ -1,3 +1,10 @@
+Wed Oct 08 21:30:55 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAction.h:
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Added protocol-specific actions in the buddy context-sensitive menu.
+
 Wed Oct 08 20:44:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAction.h:

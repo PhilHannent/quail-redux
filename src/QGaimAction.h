@@ -48,23 +48,28 @@ class QGaimAction : public QAction
 			  userData(data)
 		{ setupSignals(); }
 
-		void setUserData(void *data) { userData = data; }
-		void *getUserData() const    { return userData; }
+		void setUserData(void *data)  { userData  = data; }
+		void setUserData2(void *data) { userData2 = data; }
+		void *getUserData() const     { return userData;  }
+		void *getUserData2() const    { return userData2; }
 
 	signals:
 		void activated(void *data);
+		void activated(void *data1, void *data2);
 
 	private slots:
 		void activatedSlot() { emit activated(getUserData()); }
+		void activated2Slot() { emit activated(getUserData(), getUserData2()); }
 
 	private:
 		void setupSignals()
 		{
 			connect(this, SIGNAL(activated()), this, SLOT(activatedSlot()));
+			connect(this, SIGNAL(activated()), this, SLOT(activated2Slot()));
 		}
 
 	private:
-		void *userData;
+		void *userData, *userData2;
 };
 
 #endif /* _QGAIM_ACTION_H_ */

@@ -112,6 +112,7 @@ class QGaimBuddyList : public QListView
 		/* Buddy menu slots */
 		void userInfoSlot(void *data);
 		void sendImSlot(void *data);
+		void protoActionSlot(void *data1, void *data2);
 		void aliasBuddySlot(void *data);
 		void removeBuddySlot(void *data);
 

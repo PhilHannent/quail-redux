@@ -466,6 +466,30 @@ QGaimBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 	connect(a, SIGNAL(activated(void *)),
 			this, SLOT(sendImSlot(void *)));
 
+	/* Put in the protocol-specific actions */
+	if (prplInfo != NULL && prplInfo->buddy_menu != NULL)
+	{
+		GList *l;
+		GaimConnection *gc = gaim_account_get_connection(buddy->account);
+
+		for (l = prplInfo->buddy_menu(gc, buddy->name);
+			 l != NULL;
+			 l = l->next)
+		{
+			struct proto_buddy_menu *pbm;
+
+			pbm = (struct proto_buddy_menu *)l->data;
+
+			a = new QGaimAction(pbm->label, QString::null, 0, this, 0,
+								false, buddy);
+			a->setUserData2(pbm);
+			a->addTo(menu);
+
+			connect(a, SIGNAL(activated(void *, void *)),
+					this, SLOT(protoActionSlot(void *, void *)));
+		}
+	}
+
 	/* Separator */
 	menu->insertSeparator();
 
@@ -912,6 +936,16 @@ void
 QGaimBuddyList::sendImSlot(void *data)
 {
 	emit openIm((GaimBuddy *)data);
+}
+
+void
+QGaimBuddyList::protoActionSlot(void *data1, void *data2)
+{
+	GaimBuddy *buddy = (GaimBuddy *)data1;
+	struct proto_buddy_menu *pbm = (struct proto_buddy_menu *)data2;
+
+	if (pbm->callback != NULL)
+		pbm->callback(pbm->gc, buddy->name);
 }
 
 static void
