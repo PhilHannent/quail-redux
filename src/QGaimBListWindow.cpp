@@ -283,6 +283,8 @@ QGaimBListWindow::buildInterface()
 
 	connect(buddylist, SIGNAL(currentChanged(QListViewItem *)),
 			this, SLOT(nodeChanged(QListViewItem *)));
+	connect(buddylist, SIGNAL(doubleClicked(QListViewItem *)),
+			this, SLOT(sendIm()));
 
 	setCentralWidget(buddylist);
 }
@@ -417,12 +419,17 @@ void
 QGaimBListWindow::sendIm()
 {
 	QGaimBListItem *item;
-	struct buddy *buddy;
+	GaimBlistNode *node;
 
 	item = (QGaimBListItem *)buddylist->selectedItem();
-	buddy = (struct buddy *)item->getBlistNode();
+	node = item->getBlistNode();
 
-	gaim_conversation_new(GAIM_CONV_IM, buddy->account, buddy->name);
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	{
+		struct buddy *buddy = (struct buddy *)item->getBlistNode();
+
+		gaim_conversation_new(GAIM_CONV_IM, buddy->account, buddy->name);
+	}
 }
 
 void
