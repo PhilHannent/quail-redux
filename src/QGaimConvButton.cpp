@@ -19,6 +19,7 @@
  * MA  02111-1307  USA
  */
 #include "QGaimConvButton.h"
+#include "QGaimBuddyList.h"
 #include "QGaimProtocolUtils.h"
 #include "QGaim.h"
 #include "base.h"
@@ -109,13 +110,27 @@ QGaimConvButton::generateMenu()
 	for (l = gaim_get_conversations(), i = 0; l != NULL; l = l->next, i++)
 	{
 		GaimAccount *account;
+		GaimBuddy *buddy;
 
 		conv = (GaimConversation *)l->data;
 		account = gaim_conversation_get_account(conv);
 
-		menu->insertItem(
-			QGaimProtocolUtils::getProtocolIcon(account, QGAIM_PIXMAP_MENU),
-			gaim_conversation_get_title(conv), i);
+		buddy = gaim_find_buddy(account, gaim_conversation_get_name(conv));
+
+		if (buddy == NULL)
+		{
+			menu->insertItem(
+				QGaimProtocolUtils::getProtocolIcon(account,
+													QGAIM_PIXMAP_MENU),
+				gaim_conversation_get_title(conv), i);
+		}
+		else
+		{
+			menu->insertItem(
+				QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy,
+												   QGAIM_PIXMAP_MENU),
+				gaim_conversation_get_title(conv), i);
+		}
 
 		convs[i] = conv;
 	}
