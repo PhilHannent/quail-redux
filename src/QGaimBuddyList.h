@@ -121,6 +121,7 @@ class QGaimBuddyList : public QListView
 		void joinChatSlot();
 		void autoJoinChatSlot(bool on);
 		void removeChatSlot();
+		void aliasChatSlot();
 
 	private:
 		void addGroup(GaimBlistNode *node);

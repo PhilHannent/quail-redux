@@ -566,6 +566,9 @@ QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 					QString::null, 0, this, 0);
 	a->addTo(menu);
 
+	connect(a, SIGNAL(activated()),
+			this, SLOT(aliasChatSlot()));
+
 	/* Remove */
 	a = new QAction(tr("Remove Chat"),
 					QIconSet(Resource::loadPixmap("gaim/remove")),
@@ -958,6 +961,38 @@ QGaimBuddyList::removeChatSlot()
 		return;
 
 	emit removeChat((GaimChat *)node);
+}
+
+static void
+aliasChatCb(GaimChat *chat, const char *newAlias)
+{
+	gaim_blist_alias_chat(chat, newAlias);
+	gaim_blist_save();
+}
+
+void
+QGaimBuddyList::aliasChatSlot()
+{
+	GaimBlistNode *node;
+	QGaimBListItem *item;
+	GaimChat *chat;
+
+	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
+		return;
+
+	node = item->getBlistNode();
+
+	if (!GAIM_BLIST_NODE_IS_CHAT(node))
+		return;
+
+	chat = (GaimChat *)node;
+
+	gaim_request_input(NULL, tr("Alias Chat"),
+					   tr("Please enter an aliased name for this chat."),
+					   NULL,
+					   chat->alias, false, false,
+					   tr("Alias"), G_CALLBACK(aliasChatCb),
+					   tr("Cancel"), NULL, chat);
 }
 
 void
