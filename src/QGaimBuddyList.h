@@ -70,8 +70,16 @@ class QGaimBuddyList : public QListView
 		void reload(bool remove = false);
 
 	protected slots:
-		void groupExpanded(QListViewItem *item);
-		void groupCollapsed(QListViewItem *item);
+		void nodeExpanded(QListViewItem *item);
+		void nodeCollapsed(QListViewItem *item);
+		void showContextMenu(QListViewItem *item, const QPoint &point, int col);
+		void sendIm() {}
+		void showRemoveBuddy() {}
+		void showRemoveContact() {}
+		void collapseContact();
+		void collapseContact(QGaimBListItem *item);
+		void expandContact();
+		void expandContact(QGaimBListItem *item);
 		void saveBlist();
 
 	private:

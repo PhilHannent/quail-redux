@@ -29,7 +29,9 @@
 #include <qpe/qpeapplication.h>
 #include <qpe/resource.h>
 
+#include <qaction.h>
 #include <qheader.h>
+#include <qpopupmenu.h>
 #include <qtimer.h>
 
 
@@ -198,11 +200,15 @@ QGaimBuddyList::getBuddyStatusIcon(GaimBlistNode *node)
 		return QPixmap();
 
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	{
 		prpl = gaim_find_prpl(gaim_account_get_protocol(
 				((GaimBuddy *)node)->account));
+	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+	{
 		prpl = gaim_find_prpl(gaim_account_get_protocol(
 				((GaimBlistChat *)node)->account));
+	}
 
 	if (prpl == NULL)
 		return QPixmap();
@@ -299,9 +305,12 @@ QGaimBuddyList::QGaimBuddyList(QWidget *parent, const char *name)
 									   QPEApplication::RightOnHold);
 
 	connect(this, SIGNAL(expanded(QListViewItem *)),
-			this, SLOT(groupExpanded(QListViewItem *)));
+			this, SLOT(nodeExpanded(QListViewItem *)));
 	connect(this, SIGNAL(collapsed(QListViewItem *)),
-			this, SLOT(groupCollapsed(QListViewItem *)));
+			this, SLOT(nodeCollapsed(QListViewItem *)));
+	connect(this, SIGNAL(rightButtonPressed(QListViewItem *,
+											const QPoint &, int)),
+			this, SLOT(showContextMenu(QListViewItem *, const QPoint &, int)));
 
 	saveTimer = new QTimer(this);
 
@@ -338,153 +347,6 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 		default:
 			return;
 	}
-
-#if 0
-	QGaimBListItem *item = (QGaimBListItem *)node->ui_data;
-	bool expand = false;
-	bool new_entry = true;
-	bool show_offline_buddies;
-	bool show_empty_groups;
-
-	show_offline_buddies =
-		gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies");
-	show_empty_groups =
-		gaim_prefs_get_bool("/gaim/qpe/blist/show_empty_groups");
-
-	if (item == NULL)
-	{
-		new_entry = true;
-
-		if (GAIM_BLIST_NODE_IS_BUDDY(node))
-		{
-			GaimBuddy *buddy = (GaimBuddy *)node;
-
-			if (buddy->present != GAIM_BUDDY_OFFLINE ||
-				(gaim_account_is_connected(buddy->account) &&
-				 show_offline_buddies))
-			{
-				char *collapsed =
-					gaim_group_get_setting((GaimGroup *)node->parent,
-										   "collapsed");
-
-				if (node->parent != NULL && node->parent->ui_data == NULL)
-				{
-					/* Add the buddy's group. */
-					addGroup(node->parent);
-				}
-
-				if (!collapsed)
-					expand = true;
-				else
-					g_free(collapsed);
-
-				/* Add the buddy here. */
-				node->ui_data = new QGaimBListItem(
-					(QGaimBListItem *)(node->parent->ui_data), node);
-			}
-		}
-		else if (GAIM_BLIST_NODE_IS_CHAT(node) &&
-				 gaim_account_is_connected(((GaimBlistChat *)node)->account))
-		{
-			char *collapsed =
-				gaim_group_get_setting((GaimGroup *)node->parent,
-									   "collapsed");
-
-			if (node->parent != NULL && node->parent->ui_data == NULL)
-			{
-				/* Add the chat's group. */
-				addGroup(node->parent);
-			}
-
-			if (!collapsed)
-				expand = true;
-			else
-				g_free(collapsed);
-
-			/* Add the chat here. */
-			node->ui_data = new QGaimBListItem(
-				(QGaimBListItem *)node->parent->ui_data, node);
-		}
-		else if (GAIM_BLIST_NODE_IS_GROUP(node) && show_empty_groups)
-		{
-			addGroup(node);
-			expand = true;
-		}
-	}
-	else if (GAIM_BLIST_NODE_IS_GROUP(node))
-	{
-		if (gaim_blist_get_group_online_count((GaimGroup *)node) == 0 &&
-			!show_empty_groups && !show_offline_buddies)
-		{
-			item = (QGaimBListItem *)node->ui_data;
-
-			delete item;
-		}
-		else
-		{
-			addGroup(node);
-		}
-	}
-
-	item = (QGaimBListItem *)node->ui_data;
-
-	if (item == NULL)
-		return;
-
-	if (GAIM_BLIST_NODE_IS_CHAT(node))
-	{
-		GaimBlistChat *chat = (GaimBlistChat *)node;
-
-		if (gaim_account_is_connected(chat->account))
-		{
-			if (chat->alias)
-				item->setText(0, chat->alias);
-			else
-			{
-				GaimConnection *gc;
-				struct proto_chat_entry *pce;
-				GList *parts, *tmp;
-
-				gc = gaim_account_get_connection(chat->account);
-
-				parts = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
-				pce = (struct proto_chat_entry *)parts->data;
-				item->setText(0, (char *)g_hash_table_lookup(chat->components,
-															 pce->identifier));
-
-				for (tmp = parts; tmp != NULL; tmp = tmp->next)
-					g_free(tmp->data);
-
-				g_list_free(parts);
-			}
-		}
-		else
-		{
-			delete item;
-		}
-	}
-	else if (GAIM_BLIST_NODE_IS_BUDDY(node))
-	{
-		GaimBuddy *buddy = (GaimBuddy *)node;
-
-		if (buddy->present != GAIM_BUDDY_OFFLINE ||
-			(gaim_account_is_connected(buddy->account) && show_offline_buddies))
-		{
-			item->updateInfo();
-		}
-		else
-		{
-			delete item;
-		}
-	}
-	else if (GAIM_BLIST_NODE_IS_BUDDY(node) && !new_entry)
-	{
-		delete item;
-	}
-
-	if (expand && item->parent() != NULL)
-		item->parent()->setOpen(true);
-#endif
 }
 
 void
@@ -530,7 +392,7 @@ QGaimBuddyList::reload(bool remove)
 }
 
 void
-QGaimBuddyList::groupExpanded(QListViewItem *_item)
+QGaimBuddyList::nodeExpanded(QListViewItem *_item)
 {
 	QGaimBListItem *item = (QGaimBListItem *)_item;
 	GaimBlistNode *node;
@@ -544,10 +406,14 @@ QGaimBuddyList::groupExpanded(QListViewItem *_item)
 		if (!saveTimer->isActive())
 			saveTimer->start(2000, true);
 	}
+	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+	{
+
+	}
 }
 
 void
-QGaimBuddyList::groupCollapsed(QListViewItem *_item)
+QGaimBuddyList::nodeCollapsed(QListViewItem *_item)
 {
 	QGaimBListItem *item = (QGaimBListItem *)_item;
 	GaimBlistNode *node;
@@ -561,6 +427,185 @@ QGaimBuddyList::groupCollapsed(QListViewItem *_item)
 		if (!saveTimer->isActive())
 			saveTimer->start(2000, true);
 	}
+	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+	{
+		collapseContact(item);
+	}
+}
+
+void
+QGaimBuddyList::showContextMenu(QListViewItem *_item,
+								const QPoint &point, int)
+{
+	QGaimBListItem *item = (QGaimBListItem *)_item;
+	QPopupMenu *menu = NULL;
+	QAction *a;
+	GaimBlistNode *node;
+
+	node = item->getBlistNode();
+
+	menu = new QPopupMenu(this);
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	{
+		/* Get User Info */
+		a = new QAction(tr("Get Information"),
+						QIconSet(Resource::loadPixmap("gaim/info")),
+						QString::null, 0, this, 0);
+		a->addTo(menu);
+		a->setEnabled(false);
+
+		/* IM */
+		a = new QAction(tr("IM"),
+						QIconSet(Resource::loadPixmap("gaim/send-im")),
+						QString::null, 0, this, 0);
+		a->addTo(menu);
+
+		connect(a, SIGNAL(activated()),
+				this, SLOT(sendIm()));
+
+		/* Separator */
+		menu->insertSeparator();
+
+		/* Remove */
+		a = new QAction(tr("Remove"),
+						QIconSet(Resource::loadPixmap("gaim/remove")),
+						QString::null, 0, this, 0);
+		a->addTo(menu);
+
+		connect(a, SIGNAL(activated()),
+				this, SLOT(showRemoveBuddy()));
+	}
+	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+	{
+		if (item->isExpanded())
+		{
+			/* Collapse */
+			a = new QAction(tr("Collapse"),
+							QIconSet(Resource::loadPixmap("gaim/collapse")),
+							QString::null, 0, this, 0);
+			a->addTo(menu);
+
+			connect(a, SIGNAL(activated()),
+					this, SLOT(collapseContact()));
+
+			/* Remove */
+			a = new QAction(tr("Remove"),
+							QIconSet(Resource::loadPixmap("gaim/remove")),
+							QString::null, 0, this, 0);
+			a->addTo(menu);
+
+			connect(a, SIGNAL(activated()),
+					this, SLOT(showRemoveContact()));
+		}
+		else
+		{
+			/* Get User Info */
+			a = new QAction(tr("Get Information"),
+							QIconSet(Resource::loadPixmap("gaim/info")),
+							QString::null, 0, this, 0);
+			a->addTo(menu);
+			a->setEnabled(false);
+
+			/* IM */
+			a = new QAction(tr("IM"),
+							QIconSet(Resource::loadPixmap("gaim/send-im")),
+							QString::null, 0, this, 0);
+			a->addTo(menu);
+
+			connect(a, SIGNAL(activated()),
+					this, SLOT(sendIm()));
+
+			/* Separator */
+			menu->insertSeparator();
+
+			/* Remove */
+			a = new QAction(tr("Remove"),
+							QIconSet(Resource::loadPixmap("gaim/remove")),
+							QString::null, 0, this, 0);
+			a->addTo(menu);
+
+			connect(a, SIGNAL(activated()),
+					this, SLOT(showRemoveBuddy()));
+
+			/* Separator */
+			menu->insertSeparator();
+
+			/* Expand */
+			a = new QAction(tr("Expand"),
+							QIconSet(Resource::loadPixmap("gaim/expand")),
+							QString::null, 0, this, 0);
+			a->addTo(menu);
+
+			connect(a, SIGNAL(activated()),
+					this, SLOT(expandContact()));
+		}
+	}
+	else
+	{
+		delete menu;
+
+		return;
+	}
+
+	menu->popup(point);
+}
+
+void
+QGaimBuddyList::collapseContact()
+{
+	collapseContact((QGaimBListItem *)selectedItem());
+}
+
+void
+QGaimBuddyList::collapseContact(QGaimBListItem *item)
+{
+	GaimBlistNode *node;
+
+	g_return_if_fail(item != NULL);
+
+	node = item->getBlistNode();
+
+	g_return_if_fail(GAIM_BLIST_NODE_IS_CONTACT(node));
+
+	item->setExpanded(false);
+	item->setExpandable(false);
+
+	while (item->firstChild())
+		delete item->firstChild();
+
+	item->updateInfo();
+}
+
+void
+QGaimBuddyList::expandContact()
+{
+	expandContact((QGaimBListItem *)selectedItem());
+}
+
+void
+QGaimBuddyList::expandContact(QGaimBListItem *item)
+{
+	GaimBlistNode *node, *child;
+
+	g_return_if_fail(item != NULL);
+
+	node = item->getBlistNode();
+
+	g_return_if_fail(GAIM_BLIST_NODE_IS_CONTACT(node));
+
+	item->setExpanded(true);
+	item->setExpandable(true);
+	item->setOpen(true);
+
+	for (child = node->child; child != NULL; child = child->next)
+	{
+		child->ui_data = NULL;
+
+		updateNode(child);
+	}
+
+	item->updateInfo();
 }
 
 void
@@ -595,13 +640,15 @@ QGaimBuddyList::updateGroup(GaimBlistNode *node)
 		gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies") ||
 		gaim_blist_get_group_online_count(group) > 0)
 	{
+		char *collapsed;
+
 		if (item == NULL)
 		{
 			addGroup(node);
 			item = (QGaimBListItem *)node->ui_data;
 		}
 
-		char *collapsed = gaim_group_get_setting(group, "collapsed");
+		collapsed = gaim_group_get_setting(group, "collapsed");
 
 		if (!collapsed)
 			item->setOpen(true);
@@ -639,8 +686,6 @@ QGaimBuddyList::updateContact(GaimBlistNode *node)
 		{
 			node->ui_data = item = new QGaimBListItem(
 				(QGaimBListItem *)(node->parent->ui_data), node);
-
-			item->setExpandable(false);
 		}
 		else
 			item->updateInfo();

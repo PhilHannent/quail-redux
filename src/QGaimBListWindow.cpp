@@ -116,14 +116,6 @@ QGaimBListWindow::buildToolBar()
 	connect(a, SIGNAL(activated()),
 			this, SLOT(openChat()));
 
-	/* Get User Info */
-	a = new QAction(tr("Get User Information"),
-					QIconSet(Resource::loadPixmap("gaim/info")),
-					QString::null, 0, this, 0);
-	infoButton = a;
-	a->addTo(toolbar);
-	a->setEnabled(false);
-
 	toolbar->addSeparator();
 
 	/* Add */

@@ -1,3 +1,14 @@
+Thu Sep 25 16:16:20 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Contacts in the buddy list now behave as they do in gtk gaim,
+	    which means a contact looks like a normal buddy unless you
+	    tap-and-hold and click Expand, in which case it becomes a group.
+	    Clicking collapse or clicking the little collapse icon next to it
+	    will turn it back into its buddy form.
+
 Thu Sep 25 15:55:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* data/images/collapse.png:
