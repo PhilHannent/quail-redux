@@ -1,3 +1,15 @@
+Thu Sep 25 15:55:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* data/images/collapse.png:
+	* data/images/expand.png:
+	  - Added Expand and Collapse images.
+
+Thu Sep 25 08:51:51 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Unexpanding a contact now hides the buddies inside.
+
 Thu Sep 25 08:46:04 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:
