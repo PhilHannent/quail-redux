@@ -33,8 +33,10 @@
 #include <qpe/resource.h>
 #include <qaction.h>
 #include <qbutton.h>
+#include <qheader.h>
 #include <qlabel.h>
 #include <qlayout.h>
+#include <qlistview.h>
 #include <qpopupmenu.h>
 #include <qsplitter.h>
 #include <qtabwidget.h>
@@ -258,19 +260,49 @@ QGaimChat::write(const char *who, const char *message, int flags,
 void
 QGaimChat::addUser(const char *user)
 {
-	user = NULL;
+	QListViewItem *item = new QListViewItem(userList);
+
+	if (gaim_chat_is_user_ignored(chat, user))
+		item->setText(0, "X"); /* XXX */
+	else
+		item->setText(0, " ");
+
+	item->setText(1, user);
+	userList->insertItem(item);
 }
 
 void
 QGaimChat::renameUser(const char *oldName, const char *newName)
 {
-	oldName = NULL; newName = NULL;
+	QListViewItem *item;
+
+	for (item = userList->firstChild();
+		 item != NULL;
+		 item = item->nextSibling())
+	{
+		if (item->text(1) == oldName)
+		{
+			item->setText(1, newName);
+			break;
+		}
+	}
 }
 
 void
 QGaimChat::removeUser(const char *user)
 {
-	user = NULL;
+	QListViewItem *item;
+
+	for (item = userList->firstChild();
+		 item != NULL;
+		 item = item->nextSibling())
+	{
+		if (item->text(1) == user)
+		{
+			delete item;
+			break;
+		}
+	}	
 }
 
 void
@@ -279,13 +311,27 @@ QGaimChat::buildInterface()
 	QGridLayout *l = new QGridLayout(this, 2, 1, 5, 5);
 
 	text  = new QTextView(this);
+
 	entry = new QGaimMultiLineEdit(this);
 	entry->setWordWrap(QMultiLineEdit::WidgetWidth);
 	entry->setHistoryEnabled(true);
 	entry->setFixedVisibleLines(5);
 
+	userList = new QListView(this);
+	userList->addColumn(tr("Ignored"), 5);
+	userList->addColumn(tr("User"), -1);
+	userList->setAllColumnsShowFocus(true);
+	userList->setRootIsDecorated(false);
+	userList->header()->hide();
+	userList->setSorting(1);
+	userList->hide();
+
+	QPEApplication::setStylusOperation(userList->viewport(),
+									   QPEApplication::RightOnHold);
+
 	l->addWidget(text,  0, 0);
-	l->addWidget(entry, 1, 0);
+	l->addWidget(userList,  0, 1);
+	l->addMultiCellWidget(entry, 1, 1, 0, 1);
 
 	connect(entry, SIGNAL(returnPressed()),
 			this, SLOT(returnPressed()));
@@ -299,6 +345,15 @@ void
 QGaimChat::focusInEvent(QFocusEvent *)
 {
 	entry->setFocus();
+}
+
+void
+QGaimChat::setShowUserList(bool show)
+{
+	if (show)
+		userList->show();
+	else
+		userList->hide();
 }
 
 void
@@ -591,6 +646,11 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 
 	if (conv != NULL)
 		setCaption(gaim_conversation_get_title(conv));
+
+	if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
+		userListToggle->setEnabled(true);
+	else
+		userListToggle->setEnabled(false);
 }
 
 void
@@ -641,6 +701,23 @@ void
 QGaimConvWindow::conversationsToggled(bool)
 {
 	convsButton->setOn(true);
+}
+
+void
+QGaimConvWindow::userListToggled(bool on)
+{
+	/* Make sure this is a chat. */
+	GaimConversation *conv;
+	QGaimChat *qchat;
+
+	conv = gaim_window_get_active_conversation(win);
+	
+	if (gaim_conversation_get_type(conv) != GAIM_CONV_CHAT)
+		return;
+
+	qchat = (QGaimChat *)conv->ui_data;
+
+	qchat->setShowUserList(on);
 }
 
 void
@@ -751,6 +828,18 @@ QGaimConvWindow::setupToolbar()
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(send()));
+
+	/* Separator */
+	toolbar->addSeparator();
+
+	/* User List toggle */
+	userListToggle = button = new QToolButton(toolbar, "userlist");
+	button->setAutoRaise(true);
+	button->setPixmap(Resource::loadPixmap("gaim/userlist"));
+	button->setToggleButton(true);
+
+	connect(button, SIGNAL(toggled(bool)),
+			this, SLOT(userListToggled(bool)));
 
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);

@@ -1,3 +1,11 @@
+Mon Aug 04 01:27:08 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* data/images/userlist.png:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	* gaim.pro:
+	  - Added a user list to chats.
+
 Mon Aug 04 00:47:12 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimRequest.cpp:

@@ -30,6 +30,7 @@
 class QAction;
 class QGaimMultiLineEdit;
 class QGaimTabWidget;
+class QListView;
 class QPopupMenu;
 class QTabWidget;
 class QTextView;
@@ -85,6 +86,8 @@ class QGaimChat : public QGaimConversation
 		void renameUser(const char *oldName, const char *newName);
 		void removeUser(const char *user);
 
+		void setShowUserList(bool show);
+
 		void send();
 
 		virtual void updated(GaimConvUpdateType type);
@@ -99,6 +102,7 @@ class QGaimChat : public QGaimConversation
 
 	protected:
 		GaimChat *chat;
+		QListView *userList;
 };
 
 class QGaimIm : public QGaimConversation
@@ -162,6 +166,7 @@ class QGaimConvWindow : public QMainWindow
 		void send();
 		void showAccountsWindow();
 		void conversationsToggled(bool state);
+		void userListToggled(bool on);
 		void showBlist();
 
 	private:
@@ -184,6 +189,8 @@ class QGaimConvWindow : public QMainWindow
 
 		QPopupMenu *userMenu;
 		QPopupMenu *formatMenu;
+
+		QToolButton *userListToggle;
 };
 
 GaimWindowUiOps *qGaimGetConvWindowUiOps();
