@@ -96,6 +96,13 @@ QGaimBlistPrefPage::buildInterface()
 	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
 		idleTimes->setChecked(true);
 
+	/* Show warning levels */
+	idleTimes = new QCheckBox(tr("Show warning levels"),
+							  this, "warning levels checkbox");
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_warning_levels"))
+		showWarnings->setChecked(true);
+
 	/* Show numbers in groups */
 	groupCount = new QCheckBox(tr("Show numbers in groups"),
 							   this, "group count checkbox");
