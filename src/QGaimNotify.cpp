@@ -96,8 +96,8 @@ qGaimNotifyEmails(size_t count, gboolean, const char **subjects,
 	title = QObject::tr("You have new mail!");
 
 	str  = *tos;
-	str += "has ";
-	str += count;
+	str += " has ";
+	str += QString::number(count);
 
 	if (count == 1)
 		str += " new e-mail.\n\n";
