@@ -1,6 +1,11 @@
+Wed Jul 09 16:43:04 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkipk.sh:
+	  - Fixed up the ipk building script.
+
 Wed Jul 09 16:34:33 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
-	* mkipk.shh:
+	* mkipk.sh:
 	* mkstuff.conf:
 	* mktarball.sh:
 	  - Added utility scripts to produce an ipkg and tarball.
