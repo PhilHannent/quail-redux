@@ -212,9 +212,9 @@ QGaimIm::send()
 	char *buffer;
 	size_t len = entry->text().length();
 
-	buffer = new char[len + 1];
-	strncpy(buffer, entry->text().data(), len);
-	buffer[len] = '\0';
+	buffer = new char[len];
+	strncpy(buffer, entry->text().latin1(), len - 1);
+	buffer[len - 1] = '\0';
 
 	gaim_im_send(GAIM_IM(conv), buffer);
 
@@ -452,6 +452,7 @@ QGaimConvWindow::setupToolbar()
 					QString::null, 0, this, 0);
 	infoButton = a;
 	a->addTo(userMenu);
+	a->setEnabled(false);
 
 
 	/* Formatting */
@@ -464,11 +465,11 @@ QGaimConvWindow::setupToolbar()
 	/* Separator */
 	toolbar->addSeparator();
 
+	/* Send */
 	a = new QAction(tr("Send"),
 					QIconSet(QPixmap(DATA_PREFIX "images/send-im.png")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
-	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(send()));

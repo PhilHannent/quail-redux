@@ -1,3 +1,9 @@
+Thu Jul 31 00:56:54 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - One button was disabled when it shouldn't have been, and another
+	    was enabled when it shouldn't have been. Fixed.
+
 Wed Jul 30 23:11:22 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:
