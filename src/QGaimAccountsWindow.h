@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_ACCOUNTS_DIALOG_H_
-#define _QGAIM_ACCOUNTS_DIALOG_H_
+#ifndef _QGAIM_ACCOUNTS_WINDOW_H_
+#define _QGAIM_ACCOUNTS_WINDOW_H_
 
 #include <libgaim/prpl.h>
 
@@ -53,7 +53,7 @@ class QGaimAccountListItem : public QListViewItem
 class QGaimAccountsWindow : public QMainWindow
 {
 	Q_OBJECT
-	
+
 	public:
 		QGaimAccountsWindow();
 		~QGaimAccountsWindow();
@@ -99,4 +99,4 @@ class QGaimAccountsWindow : public QMainWindow
 
 GaimConnectionUiOps *qGaimGetConnectionUiOps();
 
-#endif /* _QGAIM_ACCOUNTS_DIALOG_H_ */
+#endif /* _QGAIM_ACCOUNTS_WINDOW_H_ */
