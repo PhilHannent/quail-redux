@@ -1,3 +1,8 @@
+Sun Nov 02 16:53:09 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	  - Small code tweak to turn 4 lines into 1.
+
 Thu Oct 23 21:12:29 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

@@ -118,10 +118,7 @@ QGaimAccountListItem::updatePulse()
 	else
 		pulseStep -= 0.20;
 
-	if (pulseStep >= 1)
-		pulseGrey = false;
-	else if (pulseStep <= 0)
-		pulseGrey = true;
+	pulseGrey = (pulseStep <= 0);
 }
 
 /**************************************************************************
