@@ -843,7 +843,6 @@ QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 {
 	GaimPlugin *prpl = NULL;
 	GaimPluginProtocolInfo *prplInfo = NULL;
-	const char *autojoin;
 	QAction *a;
 
 	prpl = gaim_plugins_find_with_id(
@@ -865,9 +864,7 @@ QGaimBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 	/* Auto-Join */
 	a = new QAction(tr("Auto-Join"), QString::null, 0, this, 0, true);
 
-	autojoin = gaim_chat_get_setting(chat, "qpe-autojoin");
-
-	if (!strcmp(autojoin, "true"))
+	if (gaim_blist_node_get_bool((GaimBlistNode *)chat, "qpe-autojoin"))
 		a->setOn(true);
 
 	a->addTo(menu);
@@ -960,7 +957,7 @@ QGaimBuddyList::nodeExpandedSlot(QListViewItem *_item)
 
 	if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
-		gaim_group_set_setting((GaimGroup *)node, "collapsed", NULL);
+		gaim_blist_node_set_bool(node, "collapsed", FALSE);
 
 		if (!saveTimer->isActive())
 			saveTimer->start(2000, true);
@@ -981,7 +978,7 @@ QGaimBuddyList::nodeCollapsedSlot(QListViewItem *_item)
 
 	if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
-		gaim_group_set_setting((GaimGroup *)node, "collapsed", "true");
+		gaim_blist_node_set_bool(node, "collapsed", TRUE);
 
 		if (!saveTimer->isActive())
 			saveTimer->start(2000, true);
@@ -1278,7 +1275,6 @@ QGaimBuddyList::autoJoinChatSlot(bool on)
 {
 	GaimBlistNode *node;
 	QGaimBListItem *item;
-	GaimChat *chat;
 
 	if ((item = (QGaimBListItem *)selectedItem()) == NULL)
 		return;
@@ -1288,9 +1284,7 @@ QGaimBuddyList::autoJoinChatSlot(bool on)
 	if (!GAIM_BLIST_NODE_IS_CHAT(node))
 		return;
 
-	chat = (GaimChat *)node;
-
-	gaim_chat_set_setting(chat, "qpe-autojoin", (on ? "true" : NULL));
+	gaim_blist_node_set_bool(node, "qpe-autojoin", on);
 	gaim_blist_save();
 }
 
@@ -1373,7 +1367,7 @@ QGaimBuddyList::updateGroup(GaimBlistNode *node)
 			item = (QGaimBListItem *)node->ui_data;
 		}
 
-		if (!gaim_group_get_setting(group, "collapsed"))
+		if (!gaim_blist_node_get_bool(node, "collapsed"))
 			item->setOpen(true);
 	}
 	else

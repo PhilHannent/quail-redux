@@ -299,7 +299,6 @@ QGaimBListWindow::accountSignedOn(GaimAccount *account)
 		for (cnode = gnode->child; cnode != NULL; cnode = cnode->next)
 		{
 			GaimChat *chat;
-			const char *autojoin;
 
 			if (!GAIM_BLIST_NODE_IS_CHAT(cnode))
 				continue;
@@ -309,9 +308,7 @@ QGaimBListWindow::accountSignedOn(GaimAccount *account)
 			if (chat->account != account)
 				continue;
 
-			autojoin = gaim_chat_get_setting(chat, "qpe-autojoin");
-
-			if (autojoin != NULL && !strcmp(autojoin, "true"))
+			if (gaim_blist_node_get_bool(cnode, "qpe-autojoin"))
 			{
 				serv_join_chat(gaim_account_get_connection(account),
 							   chat->components);
