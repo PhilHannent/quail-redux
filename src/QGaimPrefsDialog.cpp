@@ -44,7 +44,7 @@ QGaimBlistPrefPage::QGaimBlistPrefPage(QWidget *parent, const char *name)
 void
 QGaimBlistPrefPage::accept()
 {
-	gaim_prefs_set_bool("/gaim/qpe/blist/show_idle_time",
+	gaim_prefs_set_bool("/gaim/qpe/blist/show_idle_times",
 						idleTimes->isChecked());
 	gaim_prefs_set_bool("/gaim/qpe/blist/show_group_count",
 						groupCount->isChecked());
@@ -64,7 +64,7 @@ QGaimBlistPrefPage::buildInterface()
 	idleTimes = new QCheckBox(tr("Show idle times"),
 							  this, "idle times checkbox");
 
-	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_time"))
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
 		idleTimes->setChecked(true);
 
 	/* Show numbers in groups */

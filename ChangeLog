@@ -1,3 +1,8 @@
+Thu Oct 23 19:31:00 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimPrefsDialog.cpp:
+	  - Fixed a pref name.
+
 Thu Oct 23 19:30:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimMainWindow.cpp:
