@@ -1,3 +1,12 @@
+Mon Jun 30 03:16:31 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - The conversations window now has a (non-working) menubar and
+	    partially working window switching toolbar.
+
 Thu Jun 26 18:13:21 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

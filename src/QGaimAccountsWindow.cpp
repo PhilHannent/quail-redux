@@ -127,7 +127,7 @@ QGaimAccountsWindow::setupMenubar()
 
 	/* Conversations */
 	pixmap = new QPixmap(DATA_PREFIX "images/edit.png");
-	button = new QToolButton(NULL, "accounts");
+	button = new QToolButton(NULL, "conversations");
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);
 	menubar->insertItem(button);

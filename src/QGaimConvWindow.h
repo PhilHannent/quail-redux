@@ -7,6 +7,7 @@
 
 #include <libgaim/conversation.h>
 
+class QMenuBar;
 class QMultiLineEdit;
 class QTabWidget;
 class QTextView;
@@ -90,12 +91,22 @@ class QGaimConvWindow : public QMainWindow
 		void moveConversation(GaimConversation *conv, unsigned int newIndex);
 		int getActiveIndex() const;
 
+	private slots:
+		void showAccountsWindow();
+		void conversationsToggled(bool state);
+		void showBlist();
+
 	private:
 		void buildInterface();
 		QMenuBar *buildMenuBar();
 
 	private:
+		QMenuBar *menubar;
+
 		QTabWidget *tabs;
+		QToolButton *convsButton;
+
+		QPopupMenu *convMenu;
 
 		GaimWindow *win;
 };

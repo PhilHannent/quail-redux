@@ -1,4 +1,6 @@
 #include "QGaimConvWindow.h"
+#include "QGaim.h"
+#include "base.h"
 
 #include <qmultilineedit.h>
 #include <qsplitter.h>
@@ -7,6 +9,9 @@
 #include <qvbox.h>
 #include <qlayout.h>
 #include <qbutton.h>
+#include <qtoolbutton.h>
+#include <qmenubar.h>
+#include <qaction.h>
 
 #include <stdio.h>
 
@@ -255,8 +260,28 @@ QGaimConvWindow::getActiveIndex() const
 }
 
 void
+QGaimConvWindow::showAccountsWindow()
+{
+	qGaimGetHandle()->showAccountsWindow();
+}
+
+void
+QGaimConvWindow::conversationsToggled(bool)
+{
+	convsButton->setOn(true);
+}
+
+void
+QGaimConvWindow::showBlist()
+{
+	qGaimGetHandle()->showBlistWindow();
+}
+
+void
 QGaimConvWindow::buildInterface()
 {
+	buildMenuBar();
+
 	tabs = new QTabWidget(this, "conv tabs");
 
 	setCentralWidget(tabs);
@@ -265,7 +290,60 @@ QGaimConvWindow::buildInterface()
 QMenuBar *
 QGaimConvWindow::buildMenuBar()
 {
-	return NULL;
+	QToolButton *button;
+	QPixmap *pixmap;
+	QAction *a;
+
+	menubar = new QMenuBar(this);
+
+	/* Conversation menu. */
+	convMenu = new QPopupMenu(this);
+	menubar->insertItem(tr("&Conversation"), convMenu);
+
+	/* Close */
+	a = new QAction(tr("&Close"), QString::null, 0, this, 0);
+	a->addTo(convMenu);
+
+
+	/* Now we're going to construct the toolbar on the right. */
+	menubar->insertSeparator();
+
+	/* Buddy List */
+	pixmap = new QPixmap(DATA_PREFIX "images/blist.png");
+	button = new QToolButton(NULL, "blist");
+	button->setAutoRaise(true);
+	button->setPixmap(*pixmap);
+	menubar->insertItem(button);
+	delete pixmap;
+
+	connect(button, SIGNAL(clicked()),
+			this, SLOT(showBlist()));
+
+	/* Accounts */
+	pixmap = new QPixmap(DATA_PREFIX "images/accounts.png");
+	button = new QToolButton(NULL, "accounts");
+	button->setAutoRaise(true);
+	button->setPixmap(*pixmap);
+	menubar->insertItem(button);
+	delete pixmap;
+
+	connect(button, SIGNAL(clicked()),
+			this, SLOT(showAccountsWindow()));
+
+	/* Conversations */
+	pixmap = new QPixmap(DATA_PREFIX "images/edit.png");
+	convsButton = button = new QToolButton(NULL, "conversations");
+	button->setAutoRaise(true);
+	button->setPixmap(*pixmap);
+	button->setToggleButton(true);
+	button->setOn(true);
+	menubar->insertItem(button);
+	delete pixmap;
+
+	connect(button, SIGNAL(toggled(bool)),
+			this, SLOT(conversationsToggled(bool)));
+
+	return menubar;
 }
 
 /**************************************************************************
