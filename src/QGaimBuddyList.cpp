@@ -49,6 +49,8 @@ QGaimBListItem::QGaimBListItem(QListViewItem *parent, GaimBlistNode *node)
 
 QGaimBListItem::~QGaimBListItem()
 {
+	if (node != NULL)
+		node->ui_data = NULL;
 }
 
 GaimBlistNode *
@@ -324,7 +326,6 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 			item = (QGaimBListItem *)node->ui_data;
 
 			delete item;
-			node->ui_data = NULL;
 		}
 		else
 		{
@@ -367,7 +368,6 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 		else
 		{
 			delete item;
-			node->ui_data = NULL;
 		}
 	}
 	else if (GAIM_BLIST_NODE_IS_BUDDY(node))
@@ -382,13 +382,11 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 		else
 		{
 			delete item;
-			node->ui_data = NULL;
 		}
 	}
 	else if (GAIM_BLIST_NODE_IS_BUDDY(node) && !new_entry)
 	{
 		delete item;
-		node->ui_data = NULL;
 	}
 
 	if (expand && item->parent() != NULL)
