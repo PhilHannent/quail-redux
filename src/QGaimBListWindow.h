@@ -60,6 +60,7 @@ class QGaimBListWindow : public QMainWindow
 		void chat();
 
 		void showAddBuddy();
+		void showAddGroup();
 		void showRemoveBuddy();
 
 		void showAccountsWindow();

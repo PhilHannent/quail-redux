@@ -131,6 +131,9 @@ QGaimBListWindow::buildToolBar()
 	a->addTo(toolbar);
 	a->setEnabled(false);
 
+	connect(a, SIGNAL(activated()),
+			this, SLOT(showAddGroup()));
+
 	/* Remove */
 	a = new QAction(tr("Remove"),
 					QIconSet(Resource::loadPixmap("gaim/remove")),
@@ -188,13 +191,18 @@ void
 QGaimBListWindow::accountSignedOn(GaimAccount *)
 {
 	addBuddyButton->setEnabled(true);
+	addGroupButton->setEnabled(true);
 }
 
 void
 QGaimBListWindow::accountSignedOff(GaimAccount *)
 {
 	if (gaim_connections_get_all() == NULL)
+	{
 		addBuddyButton->setEnabled(false);
+		removeButton->setEnabled(false);
+		addGroupButton->setEnabled(false);
+	}
 }
 
 void
@@ -276,6 +284,27 @@ QGaimBListWindow::showAddBuddy()
 		dialog->setGroup(group->name);
 
 	dialog->showMaximized();
+}
+
+static void
+addGroupCb(void *, const char *groupName)
+{
+	struct group *group;
+
+	group = gaim_group_new(groupName);
+	gaim_blist_add_group(group, NULL);
+	gaim_blist_save();
+}
+
+void
+QGaimBListWindow::showAddGroup()
+{
+	gaim_request_input(this, tr("Add Group"),
+					   tr("Please enter the name of the group to be added."),
+					   NULL,
+					   NULL, FALSE, FALSE,
+					   tr("Add"), G_CALLBACK(addGroupCb),
+					   tr("Cancel"), NULL, NULL);
 }
 
 static void
