@@ -435,6 +435,8 @@ QGaimBListWindow::sendIm()
 
 		win = gaim_conversation_get_window(conv);
 		gaim_window_raise(win);
+
+		gaim_window_switch_conversation(win, gaim_conversation_get_index(conv));
 	}
 }
 
