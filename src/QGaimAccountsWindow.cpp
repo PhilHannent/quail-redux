@@ -1,4 +1,5 @@
 #include "QGaimAccountsWindow.h"
+#include "QGaimAccountEditor.h"
 #include "QGaimConnectionMeter.h"
 #include "QGaimConvButton.h"
 #include "QGaim.h"
@@ -120,6 +121,9 @@ QGaimAccountsWindow::setupToolbar()
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
 
+	connect(a, SIGNAL(activated()),
+			this, SLOT(newAccount()));
+
 	/* Delete */
 	a = new QAction(tr("Delete"),
 					QIconSet(QPixmap(DATA_PREFIX "images/delete.png")),
@@ -223,6 +227,16 @@ QGaimAccountsWindow::getProtocolName(GaimProtocol protocol)
 	return ((p != NULL && p->info->name != NULL)
 			? tr(p->info->name)
 			: tr("Unknown"));
+}
+
+void
+QGaimAccountsWindow::newAccount()
+{
+	QGaimAccountEditor *editor;
+
+	editor = new QGaimAccountEditor();
+
+	editor->showMaximized();
 }
 
 void

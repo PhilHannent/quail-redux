@@ -4,6 +4,7 @@ VERSION  = 0.1
 CONFIG   = qt warn_on debug
 
 HEADERS = \
+	src/QGaimAccountEditor.h \
 	src/QGaimAccountsWindow.h \
 	src/QGaimBListWindow.h \
 	src/QGaimConnectionMeter.h \
@@ -14,6 +15,7 @@ HEADERS = \
 	src/base.h
 
 SOURCES = \
+	src/QGaimAccountEditor.cpp \
 	src/QGaimAccountsWindow.cpp \
 	src/QGaimBListWindow.cpp \
 	src/QGaimConnectionMeter.cpp \

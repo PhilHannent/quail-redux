@@ -49,6 +49,7 @@ class QGaimAccountsWindow : public QMainWindow
 		QString getProtocolName(GaimProtocol protocol);
 
 	private slots:
+		void newAccount();
 		void connectToAccount();
 		void disconnectFromAccount();
 		void showBlist();
