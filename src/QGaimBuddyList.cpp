@@ -37,13 +37,13 @@
  * QGaimBListItem
  **************************************************************************/
 QGaimBListItem::QGaimBListItem(QListView *parent, GaimBlistNode *node)
-	: QListViewItem(parent), node(node)
+	: QListViewItem(parent), node(node), expanded(false)
 {
 	init();
 }
 
 QGaimBListItem::QGaimBListItem(QListViewItem *parent, GaimBlistNode *node)
-	: QListViewItem(parent), node(node)
+	: QListViewItem(parent), node(node), expanded(false)
 {
 	init();
 }
@@ -71,31 +71,44 @@ QGaimBListItem::updateInfo()
 		if (buddy == NULL)
 			return;
 
-		if (buddy->idle > 0)
+		if (isExpanded())
 		{
-			time_t t;
-			int ihrs, imin;
-			char *idle;
+			QImage image = Resource::loadPixmap("gaim").convertToImage();
+			QPixmap pixmap;
 
-			time(&t);
+			pixmap.convertFromImage(image.smoothScale(16, 16));
 
-			ihrs = (t - buddy->idle) / 3600;
-			imin = ((t - buddy->idle) / 60) % 60;
+			setPixmap(0, pixmap);
+		}
+		else
+		{
+			if (buddy->idle > 0)
+			{
+				time_t t;
+				int ihrs, imin;
+				char *idle;
 
-			if (ihrs > 0)
-				idle = g_strdup_printf("(%d:%02d)", ihrs, imin);
-			else
-				idle = g_strdup_printf("(%d)", imin);
+				time(&t);
 
-			QString str = idle;
+				ihrs = (t - buddy->idle) / 3600;
+				imin = ((t - buddy->idle) / 60) % 60;
 
-			setText(1, str);
+				if (ihrs > 0)
+					idle = g_strdup_printf("(%d:%02d)", ihrs, imin);
+				else
+					idle = g_strdup_printf("(%d)", imin);
 
-			g_free(idle);
+				QString str = idle;
+
+				setText(1, str);
+
+				g_free(idle);
+			}
+
+			setPixmap(0,
+				QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy));
 		}
 
-		setPixmap(0,
-			QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy));
 		setText(0, gaim_get_buddy_alias(buddy));
 	}
 	else if (GAIM_BLIST_NODE_IS_BUDDY(node))
@@ -138,9 +151,26 @@ QGaimBListItem::updateInfo()
 
 void
 QGaimBListItem::paintBranches(QPainter *p, const QColorGroup &cg,
-							  int width, int, int height, GUIStyle)
+							  int width, int x, int height, GUIStyle style)
 {
-	p->fillRect(0, 0, width, height, QBrush(cg.base()));
+	if (GAIM_BLIST_NODE_IS_CHAT(node) || GAIM_BLIST_NODE_IS_BUDDY(node))
+	{
+		p->fillRect(0, 0, width, height, QBrush(cg.base()));
+	}
+	else
+		return QListViewItem::paintBranches(p, cg, width, x, height, style);
+}
+
+void
+QGaimBListItem::setExpanded(bool expanded)
+{
+	this->expanded = expanded;
+}
+
+bool
+QGaimBListItem::isExpanded() const
+{
+	return expanded;
 }
 
 void
@@ -610,7 +640,7 @@ QGaimBuddyList::updateContact(GaimBlistNode *node)
 			node->ui_data = item = new QGaimBListItem(
 				(QGaimBListItem *)(node->parent->ui_data), node);
 
-			item->setExpandable(true);
+			item->setExpandable(false);
 		}
 		else
 			item->updateInfo();
@@ -629,6 +659,12 @@ QGaimBuddyList::updateBuddy(GaimBlistNode *node)
 	g_return_if_fail(GAIM_BLIST_NODE_IS_BUDDY(node));
 
 	updateContact(node->parent);
+
+	if (node->parent->ui_data != NULL &&
+		!((QGaimBListItem *)node->parent->ui_data)->isExpanded())
+	{
+		return;
+	}
 
 	buddy   = (GaimBuddy *)node;
 	contact = (GaimContact *)node->parent;

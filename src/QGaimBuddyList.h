@@ -40,11 +40,15 @@ class QGaimBListItem : public QListViewItem
 		void paintBranches(QPainter *p, const QColorGroup &cg,
 						   int width, int y, int height, GUIStyle s);
 
+		void setExpanded(bool expanded);
+		bool isExpanded() const;
+
 	protected:
 		void init();
 
 	private:
 		GaimBlistNode *node;
+		bool expanded;
 };
 
 class QGaimBuddyList : public QListView

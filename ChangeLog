@@ -1,3 +1,10 @@
+Thu Sep 25 08:46:04 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Display the gaim icon when a flag in the item says it's expanded.
+	    That's currently not set anywhere yet, though.
+
 Wed Sep 24 22:48:32 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:
