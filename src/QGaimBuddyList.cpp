@@ -63,7 +63,42 @@ QGaimBListItem::getBlistNode() const
 void
 QGaimBListItem::updateInfo()
 {
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	if (GAIM_BLIST_NODE_IS_CONTACT(node))
+	{
+		GaimContact *contact = (GaimContact *)node;
+		GaimBuddy *buddy = gaim_contact_get_priority_buddy(contact);
+
+		if (buddy == NULL)
+			return;
+
+		if (buddy->idle > 0)
+		{
+			time_t t;
+			int ihrs, imin;
+			char *idle;
+
+			time(&t);
+
+			ihrs = (t - buddy->idle) / 3600;
+			imin = ((t - buddy->idle) / 60) % 60;
+
+			if (ihrs > 0)
+				idle = g_strdup_printf("(%d:%02d)", ihrs, imin);
+			else
+				idle = g_strdup_printf("(%d)", imin);
+
+			QString str = idle;
+
+			setText(1, str);
+
+			g_free(idle);
+		}
+
+		setPixmap(0,
+			QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy));
+		setText(0, gaim_get_buddy_alias(buddy));
+	}
+	else if (GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
 		GaimBuddy *buddy = (GaimBuddy *)node;
 
@@ -264,6 +299,17 @@ QGaimBuddyList::getGaimBlist() const
 void
 QGaimBuddyList::updateNode(GaimBlistNode *node)
 {
+	switch (node->type)
+	{
+		case GAIM_BLIST_GROUP_NODE:   updateGroup(node);   break;
+		case GAIM_BLIST_CONTACT_NODE: updateContact(node); break;
+		case GAIM_BLIST_BUDDY_NODE:   updateBuddy(node);   break;
+		case GAIM_BLIST_CHAT_NODE:    updateChat(node);    break;
+		default:
+			return;
+	}
+
+#if 0
 	QGaimBListItem *item = (QGaimBListItem *)node->ui_data;
 	bool expand = false;
 	bool new_entry = true;
@@ -408,12 +454,13 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 
 	if (expand && item->parent() != NULL)
 		item->parent()->setOpen(true);
+#endif
 }
 
 void
 QGaimBuddyList::reload(bool remove)
 {
-	GaimBlistNode *group, *child;
+	GaimBlistNode *group, *cnode, *child;
 
 	if (remove)
 		clear();
@@ -427,11 +474,27 @@ QGaimBuddyList::reload(bool remove)
 
 		updateNode(group);
 
-		for (child = group->child; child != NULL; child = child->next)
+		for (cnode = group->child; cnode != NULL; cnode = cnode->next)
 		{
-			child->ui_data = NULL;
+			if (GAIM_BLIST_NODE_IS_CONTACT(cnode))
+			{
+				cnode->ui_data = NULL;
 
-			updateNode(child);
+				updateNode(cnode);
+
+				for (child = cnode->child; child != NULL; child = child->next)
+				{
+					child->ui_data = NULL;
+
+					updateNode(child);
+				}
+			}
+			else if (GAIM_BLIST_NODE_IS_CHAT(cnode))
+			{
+				cnode->ui_data = NULL;
+
+				updateNode(cnode);
+			}
 		}
 	}
 }
@@ -485,4 +548,129 @@ QGaimBuddyList::addGroup(GaimBlistNode *node)
 	item->setText(0, ((GaimGroup *)node)->name);
 
 	item->setExpandable(true);
+}
+
+void
+QGaimBuddyList::updateGroup(GaimBlistNode *node)
+{
+	GaimGroup *group;
+	QGaimBListItem *item;
+
+	g_return_if_fail(GAIM_BLIST_NODE_IS_GROUP(node));
+
+	item = (QGaimBListItem *)node->ui_data;
+	group = (GaimGroup *)node;
+
+	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_empty_groups")    ||
+		gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies") ||
+		gaim_blist_get_group_online_count(group) > 0)
+	{
+		if (item == NULL)
+		{
+			addGroup(node);
+			item = (QGaimBListItem *)node->ui_data;
+		}
+
+		char *collapsed = gaim_group_get_setting(group, "collapsed");
+
+		if (!collapsed)
+			item->setOpen(true);
+
+		g_free(collapsed);
+	}
+	else
+	{
+		if (item != NULL)
+			delete item;
+	}
+}
+
+void
+QGaimBuddyList::updateContact(GaimBlistNode *node)
+{
+	GaimContact *contact;
+	GaimBuddy *buddy;
+	QGaimBListItem *item;
+
+	g_return_if_fail(GAIM_BLIST_NODE_IS_CONTACT(node));
+
+	updateGroup(node->parent);
+
+	item    = (QGaimBListItem *)node->ui_data;
+	contact = (GaimContact *)node;
+	buddy   = gaim_contact_get_priority_buddy(contact);
+
+	if (buddy != NULL &&
+		(buddy->present != GAIM_BUDDY_OFFLINE ||
+		 (gaim_account_is_connected(buddy->account) &&
+		  gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"))))
+	{
+		if (item == NULL)
+		{
+			node->ui_data = item = new QGaimBListItem(
+				(QGaimBListItem *)(node->parent->ui_data), node);
+
+			item->setExpandable(true);
+		}
+		else
+			item->updateInfo();
+	}
+	else if (item != NULL)
+		delete item;
+}
+
+void
+QGaimBuddyList::updateBuddy(GaimBlistNode *node)
+{
+	GaimContact *contact;
+	GaimBuddy *buddy;
+	QGaimBListItem *item;
+
+	g_return_if_fail(GAIM_BLIST_NODE_IS_BUDDY(node));
+
+	updateContact(node->parent);
+
+	buddy   = (GaimBuddy *)node;
+	contact = (GaimContact *)node->parent;
+	item    = (QGaimBListItem *)node->ui_data;
+
+	if (buddy->present != GAIM_BUDDY_OFFLINE ||
+		(gaim_account_is_connected(buddy->account) &&
+		 gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies")))
+	{
+		if (item == NULL)
+		{
+			node->ui_data = item = new QGaimBListItem(
+				(QGaimBListItem *)(node->parent->ui_data), node);
+		}
+		else
+			item->updateInfo();
+	}
+	else if (item != NULL)
+		delete item;
+}
+
+void
+QGaimBuddyList::updateChat(GaimBlistNode *node)
+{
+	GaimBlistChat *chat;
+	QGaimBListItem *item;
+
+	g_return_if_fail(GAIM_BLIST_NODE_IS_CHAT(node));
+
+	chat = (GaimBlistChat *)node;
+	item = (QGaimBListItem *)node->ui_data;
+
+	if (gaim_account_is_connected(chat->account))
+	{
+		if (item == NULL)
+		{
+			node->ui_data = item = new QGaimBListItem(
+				(QGaimBListItem *)(node->parent->ui_data), node);
+		}
+		else
+			item->updateInfo();
+	}
+	else if (item != NULL)
+		delete item;
 }

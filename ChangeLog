@@ -1,3 +1,9 @@
+Wed Sep 24 22:48:32 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - The tree is now parsed and displayed as a tree with contacts.
+
 Wed Sep 24 20:55:18 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* make.sh:

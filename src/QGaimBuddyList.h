@@ -73,6 +73,11 @@ class QGaimBuddyList : public QListView
 	private:
 		void addGroup(GaimBlistNode *node);
 
+		void updateGroup(GaimBlistNode *node);
+		void updateContact(GaimBlistNode *node);
+		void updateBuddy(GaimBlistNode *node);
+		void updateChat(GaimBlistNode *node);
+
 	private:
 		struct gaim_buddy_list *gaimBlist;
 
