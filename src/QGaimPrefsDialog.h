@@ -23,7 +23,7 @@
 
 #include <qdialog.h>
 
-class QGaimTabWidget;
+class OTabWidget;
 
 class QGaimPrefPage : public QWidget
 {
@@ -139,7 +139,7 @@ class QGaimPrefsDialog : public QDialog
 		void buildInterface();
 
 	private:
-		QGaimTabWidget *tabs;
+		OTabWidget *tabs;
 
 		QGaimPrefPage *blistPage;
 		QGaimPrefPage *convPage;

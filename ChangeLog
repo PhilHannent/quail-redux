@@ -1,3 +1,10 @@
+Wed Oct 22 20:52:15 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimPrefsDialog.cpp:
+	* src/QGaimPrefsDialog.h:
+	* gaim.pro:
+	  - We're now using libopie!
+
 Mon Oct 20 22:13:34 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimInputDialog.cpp:

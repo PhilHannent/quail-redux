@@ -130,6 +130,7 @@ INCLUDEPATH += \
 DEPENDPATH  += $(QPEDIR)/include
 LIBS        += \
 	-lqpe \
+	-lopie \
 	-lgaim \
 	-lglib-2.0 \
 	-lgmodule-2.0

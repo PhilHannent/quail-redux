@@ -19,10 +19,12 @@
  * MA  02111-1307  USA
  */
 #include "QGaimPrefsDialog.h"
-#include "QGaimTabWidget.h"
+//#include "QGaimTabWidget.h"
 
 #include <qlabel.h>
 #include <qlayout.h>
+
+#include <opie/otabwidget.h>
 
 #include <qpe/resource.h>
 
@@ -163,7 +165,7 @@ QGaimPrefsDialog::buildInterface()
 	layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);
 
-	tabs = new QGaimTabWidget(this, "pref tabs");
+	tabs = new OTabWidget(this, "pref tabs");
 
 	blistPage    = new QGaimBlistPrefPage(this,  "blist page");
 	convPage     = new QGaimConvPrefPage(this,   "conv page");
@@ -172,18 +174,12 @@ QGaimPrefsDialog::buildInterface()
 	proxyPage    = new QGaimProxyPrefPage(this,  "proxy page");
 	pluginPage   = new QGaimPluginPrefPage(this, "plugin page");
 
-	tabs->addTab(blistPage, Resource::loadPixmap("gaim/blist"),
-				 tr("Buddy List"));
-	tabs->addTab(convPage, Resource::loadPixmap("gaim/conversations"),
-				 tr("Conversations"));
-	tabs->addTab(notifyPage, Resource::loadPixmap("gaim/warn"),
-				 tr("Notification"));
-	tabs->addTab(awayIdlePage, Resource::loadPixmap("gaim/away"),
-				 tr("Away/Idle"));
-	tabs->addTab(proxyPage, Resource::loadPixmap("gaim/network"),
-				 tr("Proxy"));
-	tabs->addTab(pluginPage, Resource::loadPixmap("gaim/connect"),
-				 tr("Plugins"));
+	tabs->addTab(blistPage, "gaim/blist",        tr("Buddy List"));
+	tabs->addTab(convPage, "gaim/conversations", tr("Conversations"));
+	tabs->addTab(notifyPage, "gaim/warn", tr("Notification"));
+	tabs->addTab(awayIdlePage, "gaim/away", tr("Away/Idle"));
+	tabs->addTab(proxyPage, "gaim/network", tr("Proxy"));
+	tabs->addTab(pluginPage, "gaim/connect", tr("Plugins"));
 }
 
 void
