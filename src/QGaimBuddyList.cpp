@@ -322,17 +322,17 @@ QGaimBuddyList::QGaimBuddyList(QWidget *parent, const char *name)
 									   QPEApplication::RightOnHold);
 
 	connect(this, SIGNAL(expanded(QListViewItem *)),
-			this, SLOT(nodeExpanded(QListViewItem *)));
+			this, SLOT(nodeExpandedSlot(QListViewItem *)));
 	connect(this, SIGNAL(collapsed(QListViewItem *)),
-			this, SLOT(nodeCollapsed(QListViewItem *)));
+			this, SLOT(nodeCollapsedSlot(QListViewItem *)));
 	connect(this, SIGNAL(rightButtonPressed(QListViewItem *,
 											const QPoint &, int)),
-			this, SLOT(showContextMenu(QListViewItem *, const QPoint &, int)));
+			this, SLOT(showContextMenuSlot(QListViewItem *, const QPoint &, int)));
 
 	saveTimer = new QTimer(this);
 
 	connect(saveTimer, SIGNAL(timeout()),
-			this, SLOT(saveBlist()));
+			this, SLOT(saveBlistSlot()));
 }
 
 QGaimBuddyList::~QGaimBuddyList()
@@ -430,7 +430,7 @@ QGaimBuddyList::getSelectedBuddy() const
 }
 
 void
-QGaimBuddyList::nodeExpanded(QListViewItem *_item)
+QGaimBuddyList::nodeExpandedSlot(QListViewItem *_item)
 {
 	QGaimBListItem *item = (QGaimBListItem *)_item;
 	GaimBlistNode *node;
@@ -451,7 +451,7 @@ QGaimBuddyList::nodeExpanded(QListViewItem *_item)
 }
 
 void
-QGaimBuddyList::nodeCollapsed(QListViewItem *_item)
+QGaimBuddyList::nodeCollapsedSlot(QListViewItem *_item)
 {
 	QGaimBListItem *item = (QGaimBListItem *)_item;
 	GaimBlistNode *node;
@@ -467,13 +467,13 @@ QGaimBuddyList::nodeCollapsed(QListViewItem *_item)
 	}
 	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
-		collapseContact(item);
+		collapseContactSlot(item);
 	}
 }
 
 void
-QGaimBuddyList::showContextMenu(QListViewItem *_item,
-								const QPoint &point, int)
+QGaimBuddyList::showContextMenuSlot(QListViewItem *_item,
+									const QPoint &point, int)
 {
 	GaimPlugin *prpl = NULL;
 	GaimPluginProtocolInfo *prplInfo = NULL;
@@ -519,7 +519,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 			a->addTo(menu);
 
 			connect(a, SIGNAL(activated()),
-					this, SLOT(getUserInfo()));
+					this, SLOT(getUserInfoSlot()));
 		}
 
 		/* IM */
@@ -529,7 +529,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 		a->addTo(menu);
 
 		connect(a, SIGNAL(activated()),
-				this, SLOT(sendIm()));
+				this, SLOT(sendImSlot()));
 
 		/* Separator */
 		menu->insertSeparator();
@@ -541,7 +541,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 		a->addTo(menu);
 
 		connect(a, SIGNAL(activated()),
-				this, SLOT(showRemoveBuddy()));
+				this, SLOT(showRemoveBuddySlot()));
 	}
 	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
@@ -554,7 +554,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 			a->addTo(menu);
 
 			connect(a, SIGNAL(activated()),
-					this, SLOT(collapseContact()));
+					this, SLOT(collapseContactSlot()));
 
 			/* Remove */
 			a = new QAction(tr("Remove"),
@@ -563,7 +563,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 			a->addTo(menu);
 
 			connect(a, SIGNAL(activated()),
-					this, SLOT(showRemoveContact()));
+					this, SLOT(showRemoveContactSlot()));
 		}
 		else
 		{
@@ -576,7 +576,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 				a->addTo(menu);
 
 				connect(a, SIGNAL(activated()),
-						this, SLOT(getUserInfo()));
+						this, SLOT(getUserInfoSlot()));
 			}
 
 			/* IM */
@@ -586,7 +586,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 			a->addTo(menu);
 
 			connect(a, SIGNAL(activated()),
-					this, SLOT(sendIm()));
+					this, SLOT(sendImSlot()));
 
 			/* Separator */
 			menu->insertSeparator();
@@ -598,7 +598,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 			a->addTo(menu);
 
 			connect(a, SIGNAL(activated()),
-					this, SLOT(showRemoveBuddy()));
+					this, SLOT(showRemoveBuddySlot()));
 
 			/* Separator */
 			menu->insertSeparator();
@@ -610,7 +610,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 			a->addTo(menu);
 
 			connect(a, SIGNAL(activated()),
-					this, SLOT(expandContact()));
+					this, SLOT(expandContactSlot()));
 		}
 	}
 	else
@@ -624,7 +624,7 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 }
 
 void
-QGaimBuddyList::getUserInfo()
+QGaimBuddyList::getUserInfoSlot()
 {
 	GaimBuddy *buddy;
 
@@ -635,7 +635,7 @@ QGaimBuddyList::getUserInfo()
 }
 
 void
-QGaimBuddyList::sendIm()
+QGaimBuddyList::sendImSlot()
 {
 	GaimBuddy *buddy;
 	GaimConversation *conv;
@@ -654,23 +654,23 @@ QGaimBuddyList::sendIm()
 }
 
 void
-QGaimBuddyList::showRemoveBuddy()
+QGaimBuddyList::showRemoveBuddySlot()
 {
 }
 
 void
-QGaimBuddyList::showRemoveContact()
+QGaimBuddyList::showRemoveContactSlot()
 {
 }
 
 void
-QGaimBuddyList::collapseContact()
+QGaimBuddyList::collapseContactSlot()
 {
-	collapseContact((QGaimBListItem *)selectedItem());
+	collapseContactSlot((QGaimBListItem *)selectedItem());
 }
 
 void
-QGaimBuddyList::collapseContact(QGaimBListItem *item)
+QGaimBuddyList::collapseContactSlot(QGaimBListItem *item)
 {
 	GaimBlistNode *node;
 
@@ -690,13 +690,13 @@ QGaimBuddyList::collapseContact(QGaimBListItem *item)
 }
 
 void
-QGaimBuddyList::expandContact()
+QGaimBuddyList::expandContactSlot()
 {
-	expandContact((QGaimBListItem *)selectedItem());
+	expandContactSlot((QGaimBListItem *)selectedItem());
 }
 
 void
-QGaimBuddyList::expandContact(QGaimBListItem *item)
+QGaimBuddyList::expandContactSlot(QGaimBListItem *item)
 {
 	GaimBlistNode *node, *child;
 
@@ -721,7 +721,7 @@ QGaimBuddyList::expandContact(QGaimBListItem *item)
 }
 
 void
-QGaimBuddyList::saveBlist()
+QGaimBuddyList::saveBlistSlot()
 {
 	gaim_blist_save();
 }

@@ -1,3 +1,10 @@
+Mon Oct 06 22:05:31 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	  - Appended a Slot suffix to some slot functions. I don't feel
+	    like updating the rest of qpe-gaim yet.
+
 Mon Oct 06 20:44:46 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:

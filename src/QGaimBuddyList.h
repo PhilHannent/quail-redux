@@ -74,19 +74,21 @@ class QGaimBuddyList : public QListView
 
 		GaimBuddy *getSelectedBuddy() const;
 
+
 	protected slots:
-		void nodeExpanded(QListViewItem *item);
-		void nodeCollapsed(QListViewItem *item);
-		void showContextMenu(QListViewItem *item, const QPoint &point, int col);
-		void getUserInfo();
-		void sendIm();
-		void showRemoveBuddy();
-		void showRemoveContact();
-		void collapseContact();
-		void collapseContact(QGaimBListItem *item);
-		void expandContact();
-		void expandContact(QGaimBListItem *item);
-		void saveBlist();
+		void nodeExpandedSlot(QListViewItem *item);
+		void nodeCollapsedSlot(QListViewItem *item);
+		void showContextMenuSlot(QListViewItem *item, const QPoint &point,
+								 int col);
+		void getUserInfoSlot();
+		void sendImSlot();
+		void showRemoveBuddySlot();
+		void showRemoveContactSlot();
+		void collapseContactSlot();
+		void collapseContactSlot(QGaimBListItem *item);
+		void expandContactSlot();
+		void expandContactSlot(QGaimBListItem *item);
+		void saveBlistSlot();
 
 	private:
 		void addGroup(GaimBlistNode *node);
