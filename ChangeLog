@@ -1,3 +1,13 @@
+Mon Jul 28 01:46:18 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountEditor.h:
+	* src/QGaimProtocolBox.cpp:
+	* src/QGaimProtocolBox.h:
+	* gaim.pro:
+	  - Added a new widget that extends QComboBox and provides a list
+	    of available protocols.
+
 Mon Jul 28 00:52:59 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:

@@ -11,6 +11,7 @@ HEADERS = \
 	src/QGaimConvButton.h \
 	src/QGaimConvWindow.h \
 	src/QGaimDebugWindow.h \
+	src/QGaimProtocolBox.h \
 	src/QGaimProtocolUtils.h \
 	src/QGaim.h \
 	src/base.h
@@ -23,6 +24,7 @@ SOURCES = \
 	src/QGaimConvButton.cpp \
 	src/QGaimConvWindow.cpp \
 	src/QGaimDebugWindow.cpp \
+	src/QGaimProtocolBox.cpp \
 	src/QGaimProtocolUtils.cpp \
 	src/main.cpp
 

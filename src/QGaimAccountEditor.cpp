@@ -1,18 +1,34 @@
 #include "QGaimAccountEditor.h"
+#include "QGaimProtocolBox.h"
 #include "QGaimProtocolUtils.h"
 #include "base.h"
-
-#include <libgaim/prpl.h>
 
 #include <qcombobox.h>
 #include <qgroupbox.h>
 #include <qlabel.h>
 #include <qpixmap.h>
+#include <qtabwidget.h>
 #include <qvbox.h>
 
 QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account)
-	: QMainWindow(), account(account)
+	: QMainWindow(), account(account), plugin(NULL), prplInfo(NULL)
 {
+	GaimProtocol protocol;
+
+	if (account == NULL)
+	{
+		protocolId = "prpl-oscar";
+		protocol   = GAIM_PROTO_OSCAR;
+	}
+	else
+	{
+		protocolId = gaim_account_get_protocol_id(account);
+		protocol   = gaim_account_get_protocol(account);
+	}
+
+	if ((plugin = gaim_find_prpl(protocol)) != NULL)
+		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
+
 	buildInterface();
 }
 
@@ -23,47 +39,72 @@ QGaimAccountEditor::~QGaimAccountEditor()
 void
 QGaimAccountEditor::buildInterface()
 {
-	QVBox *vbox;
-	QGroupBox *gbox;
-	QLabel *label;
-
 	if (account == NULL)
 		setCaption(tr("Add Account"));
 	else
 		setCaption(tr("Edit Account"));
 
-	/* Create the main vbox. */
-	vbox = new QVBox(this);
+	tabs = new QTabWidget(this);
+	tabs->setMargin(6);
 
-	/* Create the Login Options group box. */
-	gbox = new QGroupBox(2, Qt::Horizontal, tr("Login Options"), vbox);
+	setCentralWidget(tabs);
 
-	/* Protocol */
-	label = new QLabel(tr("Protocol:"), gbox);
+	tabs->addTab(buildAccountTab(), "Account");
 
-	protocolList = new QComboBox(gbox, "protocol combo");
-
-	/* Fill the protocol drop-down. */
-	GList *p;
-
-	for (p = gaim_plugins_get_protocols(); p != NULL; p = p->next)
+	if (plugin != NULL)
 	{
-		GaimPlugin *plugin;
-		GaimPluginProtocolInfo *prpl_info;
-
-		plugin = (GaimPlugin *)p->data;
-		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
-
 		QPixmap *pixmap = QGaimProtocolUtils::getProtocolIcon(plugin);
 
 		if (pixmap == NULL)
-			protocolList->insertItem(plugin->info->name);
+			tabs->addTab(buildProtocolTab(), plugin->info->name);
 		else
 		{
-			protocolList->insertItem(*pixmap, plugin->info->name);
+			tabs->addTab(buildProtocolTab(), QIconSet(*pixmap),
+						 plugin->info->name);
+
 			delete pixmap;
 		}
 	}
 
-	setCentralWidget(vbox);
+	tabs->addTab(buildProxyTab(), "Proxy");
 }
+
+QWidget *
+QGaimAccountEditor::buildAccountTab()
+{
+	QVBox *vbox;
+	QGroupBox *gbox;
+	QLabel *label;
+	QWidget *spacer;
+
+	/* Create the main vbox. */
+	vbox = new QVBox(this);
+
+	/* Create the Login Options group box. */
+//	gbox = new QGroupBox(2, Qt::Horizontal, tr("Login Options"), vbox);
+	gbox = new QGroupBox(2, Qt::Horizontal, vbox);
+
+	/* Protocol */
+	label = new QLabel(tr("Protocol:"), gbox);
+
+	protocolList = new QGaimProtocolBox(gbox, "protocol combo");
+
+	/* Add a spacer. */
+	spacer = new QLabel("", vbox);
+	vbox->setStretchFactor(spacer, 1);
+
+	return vbox;
+}
+
+QWidget *
+QGaimAccountEditor::buildProtocolTab()
+{
+	return new QLabel("Protocol", this);
+}
+
+QWidget *
+QGaimAccountEditor::buildProxyTab()
+{
+	return new QLabel("Proxy", this);
+}
+

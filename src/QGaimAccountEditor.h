@@ -3,6 +3,7 @@
 
 #include <libgaim/account.h>
 #include <libgaim/plugin.h>
+#include <libgaim/prpl.h>
 
 #include <qvariant.h>
 #include <qwidget.h>
@@ -10,6 +11,7 @@
 
 class QComboBox;
 class QPixmap;
+class QTabWidget;
 
 class QGaimAccountEditor : public QMainWindow
 {
@@ -21,10 +23,20 @@ class QGaimAccountEditor : public QMainWindow
 
 	protected:
 		virtual void buildInterface();
+		QWidget *buildAccountTab();
+		QWidget *buildProtocolTab();
+		QWidget *buildProxyTab();
 
 	private:
 		GaimAccount *account;
+		GaimPlugin *plugin;
+		GaimPluginProtocolInfo *prplInfo;
+
+		QString protocolId;
+		GaimProtocol protocol;
+
 		QComboBox *protocolList;
+		QTabWidget *tabs;
 };
 
 #endif /* _QGAIM_ACCOUNT_EDITOR_H_ */
