@@ -129,7 +129,9 @@ QGaimAccountsWindow::setupToolbar()
 	a = new QAction(tr("Edit Account"),
 					QIconSet(QPixmap(DATA_PREFIX "images/edit.png")),
 					QString::null, 0, this, 0);
+	editButton = a;
 	a->addTo(toolbar);
+	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(editAccount()));
@@ -138,7 +140,9 @@ QGaimAccountsWindow::setupToolbar()
 	a = new QAction(tr("Delete"),
 					QIconSet(QPixmap(DATA_PREFIX "images/delete.png")),
 					QString::null, 0, this, 0);
+	deleteButton = a;
 	a->addTo(toolbar);
+	a->setEnabled(false);
 
 	/* Separator */
 	toolbar->addSeparator();
@@ -295,6 +299,8 @@ QGaimAccountsWindow::accountSelected(QListViewItem *item)
 
 	account = accountItem->getAccount();
 
+	editButton->setEnabled(true);
+	deleteButton->setEnabled(true);
 	connectButton->setEnabled(!gaim_account_is_connected(account));
 	disconnectButton->setEnabled(gaim_account_is_connected(account));
 }

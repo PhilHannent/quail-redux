@@ -63,6 +63,8 @@ class QGaimAccountsWindow : public QMainWindow
 		QPopupMenu *accountMenu;
 		QToolButton *accountsButton;
 
+		QAction *editButton;
+		QAction *deleteButton;
 		QAction *connectButton;
 		QAction *disconnectButton;
 
