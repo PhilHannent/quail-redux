@@ -1,3 +1,19 @@
+Sun Jul 13 00:44:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Removed the menubar completely, and put a nice toolbar in its place.
+
+Sat Jul 12 02:11:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* data/images/add.png:
+	* data/images/info.png:
+	* data/images/new-group.png:
+	* data/images/prefs.png:
+	* data/images/remove.png:
+	* gaim.pro:
+	  - Added new toolbar icons.
+
 Fri Jul 11 01:46:30 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

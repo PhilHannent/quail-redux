@@ -58,18 +58,19 @@ class QGaimBListWindow : public QMainWindow
 
 	private:
 		void buildInterface();
-		void buildMenuBar();
 		void buildToolBar();
 
 		void add_group(GaimBlistNode *node);
+		QToolButton *newButton(QToolBar *toolbar, const QString image,
+							   bool toggle = false, bool on = false);
 
 	private:
 		struct gaim_buddy_list *gaimBlist;
 
-		QAction *imButton;
-		QAction *chatButton;
-		QAction *infoButton;
-		QAction *awayButton;
+		QToolButton *imButton;
+		QToolButton *chatButton;
+		QToolButton *infoButton;
+		QToolButton *awayButton;
 
 		QToolButton *blistButton;
 		QToolButton *convsButton;
@@ -81,7 +82,6 @@ class QGaimBListWindow : public QMainWindow
 		QPopupMenu *protocolMenu;
 
 		QListView *buddylist;
-		QMenuBar *menubar;
 		QToolBar *toolbar;
 };
 

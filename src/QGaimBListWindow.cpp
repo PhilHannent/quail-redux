@@ -7,9 +7,10 @@
 #include <libgaim/debug.h>
 
 #include <qaction.h>
+#include <qlabel.h>
 #include <qlayout.h>
 #include <qlistview.h>
-#include <qmenubar.h>
+#include <qtoolbar.h>
 #include <qpushbutton.h>
 #include <qtoolbutton.h>
 #include <qtoolbar.h>
@@ -295,8 +296,7 @@ QGaimBListWindow::buildInterface()
 {
 	setCaption(tr("Gaim - Buddy List"));
 
-	/* Setup the menubar */
-	buildMenuBar();
+	setToolBarsMovable(FALSE);
 
 	/* Setup the toolbar */
 	buildToolBar();
@@ -315,125 +315,53 @@ QGaimBListWindow::buildInterface()
 }
 
 void
-QGaimBListWindow::buildMenuBar()
+QGaimBListWindow::buildToolBar()
 {
 	QPixmap *pixmap;
-	QAction *a;
 	QToolButton *button;
+	QLabel *label;
 
-	menubar = new QMenuBar(this);
+	toolbar = new QToolBar(this);
+	toolbar->setHorizontalStretchable(TRUE);
 
-	/* Build the Buddies menu */
-	buddiesMenu = new QPopupMenu(this);
-	buddiesMenu->setCheckable(TRUE);
-	menubar->insertItem(tr("&Buddies"), buddiesMenu);
+	/* IM */
+	imButton = button = newButton(toolbar, DATA_PREFIX "images/send-im.png");
 
-	/* Buddies -> New Instant Message */
-	a = new QAction(tr("New &Instant Message..."), QString::null, 0, this, 0);
-	a->addTo(buddiesMenu);
+	connect(button, SIGNAL(clicked()),
+			this, SLOT(sendIm()));
 
-	connect(a, SIGNAL(activated()),
-			this, SLOT(im()));
+	/* Chat */
+	/* TODO */
 
-	/* Buddies -> Join A Chat */
-	a = new QAction(tr("Join a &Chat..."), QString::null, 0, this, 0);
-	a->addTo(buddiesMenu);
+	/* Get User Info */
+	button = infoButton = newButton(toolbar, DATA_PREFIX "images/info.png");
 
-	/* Buddies -> Get User Info */
-	a = new QAction(tr("Get &User Info"), QString::null, 0, this, 0);
-	a->addTo(buddiesMenu);
+	toolbar->addSeparator();
 
-	buddiesMenu->insertSeparator();
+	/* Add Buddy/Group */
+	button = newButton(toolbar, DATA_PREFIX "images/add.png");
 
-	/* Buddies -> Show Offline Buddies */
-	a = new QAction(tr("Show &Offline Buddies"), QString::null,
-					0, this, 0, TRUE);
-	a->addTo(buddiesMenu);
+	/* New Group */
+	button = newButton(toolbar, DATA_PREFIX "images/new-group.png");
 
-	/* Buddies -> Show Empty Groups */
-	a = new QAction(tr("Show &Empty Groups"), QString::null,
-					0, this, 0, TRUE);
-	a->addTo(buddiesMenu);
+	/* Remove */
+	button = newButton(toolbar, DATA_PREFIX "images/remove.png");
 
-	/* Buddies -> Add a Buddy */
-	a = new QAction(tr("&Add a Buddy..."), QString::null, 0, this, 0);
-	a->addTo(buddiesMenu);
-
-	/* Buddies -> Add a Chat */
-	a = new QAction(tr("&Add a Chat..."), QString::null, 0, this, 0);
-	a->addTo(buddiesMenu);
-
-	/* Buddies -> Add a Group */
-	a = new QAction(tr("Add a &Group..."), QString::null, 0, this, 0);
-	a->addTo(buddiesMenu);
-
-	buddiesMenu->insertSeparator();
-
-	/* Buddies -> Signoff */
-	a = new QAction(tr("&Signoff"), QString::null, 0, this, 0);
-	a->addTo(buddiesMenu);
-
-	/* Buddies -> Quit */
-	a = new QAction(tr("&Quit"), QString::null, 0, this, 0);
-	a->addTo(buddiesMenu);
-
-
-	/* Build the Tools menu */
-	toolsMenu = new QPopupMenu(this);
-
-	menubar->insertItem(tr("&Tools"), toolsMenu);
-
-	/* Tools -> Away */
-	awayMenu = new QPopupMenu(this);
-	toolsMenu->insertItem(tr("&Away"), awayMenu);
-
-	/* Tools -> Buddy Pounce */
-	pounceMenu = new QPopupMenu(this);
-	toolsMenu->insertItem(tr("Buddy &Pounce"), pounceMenu);
-
-	/* Tools -> Protocol Options */
-	protocolMenu = new QPopupMenu(this);
-	toolsMenu->insertItem(tr("P&rotocol Options"), protocolMenu);
-
-	toolsMenu->insertSeparator();
-
-	/* Tools -> Accounts */
-	a = new QAction(tr("A&ccounts"), QString::null, 0, this, 0);
-	a->addTo(toolsMenu);
-
-	connect(a, SIGNAL(activated()),
-			this, SLOT(showAccountsWindow()));
-
-	/* Tools -> File Transfers */
-	a = new QAction(tr("&File Transfers"), QString::null, 0, this, 0);
-	a->addTo(toolsMenu);
-
-	/* Tools -> Preferences */
-	a = new QAction(tr("Preferences"), QString::null, 0, this, 0);
-	a->addTo(toolsMenu);
-
-	/* Tools -> Privacy */
-	a = new QAction(tr("Pr&ivacy"), QString::null, 0, this, 0);
-	a->addTo(toolsMenu);
-
-	toolsMenu->insertSeparator();
-
-	/* Tools -> View System Log */
-	a = new QAction(tr("View System &Log"), QString::null, 0, this, 0);
-	a->addTo(toolsMenu);
-
+	/* Add some whitespace. */
+	label = new QLabel(toolbar);
+	label->setText("");
+	toolbar->setStretchableWidget(label);
 
 	/* Now we're going to construct the toolbar on the right. */
-	menubar->insertSeparator();
+	toolbar->addSeparator();
 
 	/* Buddy List */
 	pixmap = new QPixmap(DATA_PREFIX "images/blist.png");
-	blistButton = button = new QToolButton(NULL, "blist");
+	blistButton = button = new QToolButton(toolbar, "blist");
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);
 	button->setToggleButton(true);
 	button->setOn(true);
-	menubar->insertItem(button);
 	delete pixmap;
 
 	connect(button, SIGNAL(toggled(bool)),
@@ -441,10 +369,9 @@ QGaimBListWindow::buildMenuBar()
 
 	/* Accounts */
 	pixmap = new QPixmap(DATA_PREFIX "images/accounts.png");
-	button = new QToolButton(NULL, "accounts");
+	button = new QToolButton(toolbar, "accounts");
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);
-	menubar->insertItem(button);
 	delete pixmap;
 
 	connect(button, SIGNAL(clicked()),
@@ -452,37 +379,13 @@ QGaimBListWindow::buildMenuBar()
 
 	/* Conversations */
 	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
-	button = new QToolButton(NULL, "conversations");
+	button = new QToolButton(toolbar, "conversations");
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);
-	menubar->insertItem(button);
 	delete pixmap;
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(showConversations()));
-}
-
-void
-QGaimBListWindow::buildToolBar()
-{
-	QAction *a;
-
-	setToolBarsMovable(FALSE);
-
-	toolbar = new QToolBar(this);
-	toolbar->setHorizontalStretchable(FALSE);
-
-	addToolBar(toolbar);
-
-	/* IM */
-	a = new QAction(tr("IM"),
-					QIconSet(QPixmap(DATA_PREFIX "images/send-im.png")),
-					QString::null, 0, this, 0);
-	imButton = a;
-	a->addTo(toolbar);
-
-	connect(a, SIGNAL(activated()),
-			this, SLOT(sendIm()));
 }
 
 void
@@ -494,6 +397,24 @@ QGaimBListWindow::add_group(GaimBlistNode *node)
 	item->setText(0, ((struct group *)node)->name);
 
 	item->setExpandable(true);
+}
+
+QToolButton *
+QGaimBListWindow::newButton(QToolBar *toolbar, const QString image,
+							bool toggle, bool on)
+{
+	QPixmap *pixmap;
+	QToolButton *button;
+
+	pixmap = new QPixmap(image);
+	button = new QToolButton(toolbar);
+	button->setAutoRaise(true);
+	button->setPixmap(*pixmap);
+	button->setToggleButton(toggle);
+	button->setOn(on);
+	delete pixmap;
+
+	return button;
 }
 
 /**************************************************************************
