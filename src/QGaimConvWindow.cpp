@@ -655,9 +655,13 @@ QGaimConvIm::updateTyping()
 /**************************************************************************
  * QGaimConvWindow
  **************************************************************************/
-QGaimConvWindow::QGaimConvWindow(GaimConvWindow *win)
-	: QMainWindow(), win(win), convWinId(0)
+QGaimConvWindow::QGaimConvWindow(GaimConvWindow *win, QMainWindow *parent)
+	: QMainWindow(), parentMainWindow(parent), win(win), convWinId(0)
 {
+	connect(parent, SIGNAL(pixmapSizeChanged(bool)),
+			this, SLOT(setUsesBigPixmaps(bool)));
+	setUsesBigPixmaps(parent->usesBigPixmaps());
+
 	buildInterface();
 }
 
@@ -871,7 +875,7 @@ QGaimConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 }
 
 void
-QGaimConvWindow::closeEvent(QCloseEvent *e)
+QGaimConvWindow::closeEvent(QCloseEvent *)
 {
 	gaim_conv_window_destroy(win);
 }
@@ -1269,13 +1273,14 @@ static void
 qGaimConvWindowNew(GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin;
+	QGaimMainWindow *mainWin = qGaimGetMainWindow();
 
-	qwin = new QGaimConvWindow(win);
+	qwin = new QGaimConvWindow(win, mainWin);
 
-	qGaimGetMainWindow()->addConversationWindow(qwin);
+	mainWin->addConversationWindow(qwin);
 
-	qGaimGetMainWindow()->getWidgetStack()->addWidget(qwin, qwin->getId());
-	qGaimGetMainWindow()->getWidgetStack()->raiseWidget(qwin->getId());
+	mainWin->getWidgetStack()->addWidget(qwin, qwin->getId());
+	mainWin->getWidgetStack()->raiseWidget(qwin->getId());
 
 	win->ui_data = qwin;
 }

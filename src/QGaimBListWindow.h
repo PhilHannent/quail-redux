@@ -40,7 +40,7 @@ class QGaimBListWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-		QGaimBListWindow();
+		QGaimBListWindow(QMainWindow *parent);
 		~QGaimBListWindow();
 
 		/* Functions our blist UI must access. */
@@ -86,6 +86,8 @@ class QGaimBListWindow : public QMainWindow
 		void buildToolBar();
 
 	private:
+		QMainWindow *parentMainWindow;
+
 		QGaimBuddyList *buddylist;
 
 		QToolButton *addButton;

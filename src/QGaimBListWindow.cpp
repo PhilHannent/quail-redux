@@ -49,9 +49,13 @@
 /**************************************************************************
  * QGaimBListWindow
  **************************************************************************/
-QGaimBListWindow::QGaimBListWindow()
-	: QMainWindow(), convsMenu(NULL)
+QGaimBListWindow::QGaimBListWindow(QMainWindow *parent)
+	: QMainWindow(), parentMainWindow(parent), convsMenu(NULL)
 {
+	connect(parent, SIGNAL(pixmapSizeChanged(bool)),
+			this, SLOT(setUsesBigPixmaps(bool)));
+	setUsesBigPixmaps(parent->usesBigPixmaps());
+
 	buildInterface();
 }
 
@@ -64,8 +68,6 @@ QGaimBListWindow::~QGaimBListWindow()
 void
 QGaimBListWindow::buildInterface()
 {
-	setToolBarsMovable(FALSE);
-
 	newChatIconSet  = Resource::loadPixmap("gaim/new-chat");
 	openChatIconSet = Resource::loadPixmap("gaim/chat");
 	newImIconSet    = Resource::loadPixmap("gaim/new-im");
@@ -110,6 +112,8 @@ QGaimBListWindow::buildToolBar()
 	QAction *a;
 	QLabel *label;
 	QToolButton *button;
+
+	setToolBarsMovable(false);
 
 	toolbar = new QToolBar(this);
 	toolbar->setHorizontalStretchable(TRUE);

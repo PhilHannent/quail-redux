@@ -1,3 +1,14 @@
+Mon Nov 03 08:30:17 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimAccountsWindow.h:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	* src/QGaimMainWindow.cpp:
+	  - Toolbar buttons are 32x32 on larger screens.
+
 Mon Nov 03 00:46:06 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvButton.cpp:

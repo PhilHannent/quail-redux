@@ -68,7 +68,7 @@ class QGaimAccountsWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-		QGaimAccountsWindow();
+		QGaimAccountsWindow(QMainWindow *parent);
 		~QGaimAccountsWindow();
 
 		void updateAccounts();
@@ -100,6 +100,8 @@ class QGaimAccountsWindow : public QMainWindow
 		QGaimAccountListItem *getItemFromAccount(GaimAccount *account);
 
 	private:
+		QMainWindow *parentMainWindow;
+
 		QToolBar *toolbar;
 		QPopupMenu *accountMenu;
 		QAction *accountsButton;

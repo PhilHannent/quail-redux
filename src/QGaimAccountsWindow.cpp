@@ -139,9 +139,13 @@ signedOffCb(GaimConnection *gc, QGaimAccountsWindow *win)
 /**************************************************************************
  * QGaimAccountsWindow
  **************************************************************************/
-QGaimAccountsWindow::QGaimAccountsWindow()
-	: QMainWindow()
+QGaimAccountsWindow::QGaimAccountsWindow(QMainWindow *parent)
+	: QMainWindow(), parentMainWindow(parent)
 {
+	connect(parent, SIGNAL(pixmapSizeChanged(bool)),
+			this, SLOT(setUsesBigPixmaps(bool)));
+	setUsesBigPixmaps(parent->usesBigPixmaps());
+
 	buildInterface();
 
 	gaim_signal_connect(gaim_connections_get_handle(), "signed-on",

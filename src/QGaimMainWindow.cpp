@@ -269,7 +269,7 @@ QGaimMainWindow::showBlistWindow()
 {
 	if (blistWin == NULL)
 	{
-		blistWin = new QGaimBListWindow();
+		blistWin = new QGaimBListWindow(this);
 		widgetStack->addWidget(blistWin, 0);
 	}
 
@@ -282,7 +282,7 @@ QGaimMainWindow::showAccountsWindow()
 {
 	if (accountsWin == NULL)
 	{
-		accountsWin = new QGaimAccountsWindow();
+		accountsWin = new QGaimAccountsWindow(this);
 		widgetStack->addWidget(accountsWin, 1);
 	}
 

@@ -145,7 +145,7 @@ class QGaimConvWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-		QGaimConvWindow(GaimConvWindow *win);
+		QGaimConvWindow(GaimConvWindow *win, QMainWindow *parent);
 		~QGaimConvWindow();
 
 		void setGaimConvWindow(GaimConvWindow *win);
@@ -187,6 +187,8 @@ class QGaimConvWindow : public QMainWindow
 		void setupToolbar();
 
 	private:
+		QMainWindow *parentMainWindow;
+
 		GaimConvWindow *win;
 
 		int convWinId;
