@@ -1,3 +1,10 @@
+Sun Nov 16 01:22:49 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - Message notification should now activate whenever a message is
+	    sent to the non-active window.
+
 Sun Nov 16 01:13:58 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

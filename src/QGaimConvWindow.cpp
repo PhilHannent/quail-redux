@@ -166,6 +166,32 @@ QGaimConversation::write(const char *who, const char *message,
 
 	text->setText(text->text() + txt);
 	text->verticalScrollBar()->setValue(text->verticalScrollBar()->maxValue());
+
+	if (flags & GAIM_MESSAGE_RECV)
+	{
+		GaimConversation *activeConv;
+		GaimConvWindow *win;
+
+		win = gaim_conversation_get_window(conv);
+		activeConv = gaim_conv_window_get_active_conversation(win);
+
+		if (conv != activeConv ||
+			win != qGaimGetMainWindow()->getLastActiveConvWindow())
+		{
+			const char *prefName;
+
+			if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
+				prefName = "/gaim/qpe/notify/incoming_chat";
+			else
+				prefName = "/gaim/qpe/notify/incoming_im";
+
+			if (gaim_prefs_get_bool(prefName))
+			{
+				qGaimNotifyUser();
+				notifying = true;
+			}
+		}
+	}
 }
 
 void
@@ -563,12 +589,6 @@ QGaimConvIm::updated(GaimConvUpdateType type)
 		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
 		{
 			color.setRgb(0xDF, 0x42, 0x1E);
-
-			if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_im"))
-			{
-				qGaimNotifyUser();
-				notifying = true;
-			}
 		}
 		else
 		{
