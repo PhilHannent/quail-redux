@@ -45,6 +45,16 @@
 static QGaim *gaim = NULL;
 
 static void
+qGaimPrefsInit(void)
+{
+	gaim_prefs_add_none("/gaim");
+	gaim_prefs_add_none("/gaim/qpe");
+	gaim_prefs_add_none("/gaim/qpe/blist");
+	gaim_prefs_add_bool("/gaim/qpe/blist/show_offline_buddies", false);
+	gaim_prefs_add_bool("/gaim/qpe/blist/show_empty_groups", false);
+}
+
+static void
 qGaimCoreDebugInit(void)
 {
 	gaim_set_debug_ui_ops(qGaimGetDebugUiOps());
@@ -68,7 +78,7 @@ qGaimCoreQuit(void)
 
 static GaimCoreUiOps coreOps =
 {
-	NULL,
+	qGaimPrefsInit,
 	qGaimCoreDebugInit,
 	qGaimCoreUiInit,
 	qGaimCoreQuit

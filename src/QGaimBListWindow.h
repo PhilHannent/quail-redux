@@ -62,6 +62,7 @@ class QGaimBListWindow : public QMainWindow
 		void showAddBuddy();
 		void showAddGroup();
 		void showRemoveBuddy();
+		void showOfflineBuddies(bool on);
 
 		void showAccountsWindow();
 		void blistToggled(bool state);
@@ -82,6 +83,8 @@ class QGaimBListWindow : public QMainWindow
 		QAction *addBuddyButton;
 		QAction *addGroupButton;
 		QAction *removeButton;
+
+		QToolButton *showOfflineButton;
 
 		QToolButton *blistButton;
 

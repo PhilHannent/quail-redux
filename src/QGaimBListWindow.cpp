@@ -28,6 +28,7 @@
 
 #include <libgaim/debug.h>
 #include <libgaim/multi.h>
+#include <libgaim/prefs.h>
 #include <libgaim/request.h>
 
 #include <qpe/resource.h>
@@ -144,6 +145,18 @@ QGaimBListWindow::buildToolBar()
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(showRemoveBuddy()));
+
+	toolbar->addSeparator();
+
+	/* Show Offline Buddies */
+	showOfflineButton = button = new QToolButton(toolbar, "show_offline");
+	button->setAutoRaise(true);
+	button->setPixmap(Resource::loadPixmap("gaim/offline_buddies"));
+	button->setToggleButton(true);
+	button->setOn(gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"));
+
+	connect(button, SIGNAL(toggled(bool)),
+			this, SLOT(showOfflineBuddies(bool)));
 
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);
@@ -432,6 +445,14 @@ QGaimBListWindow::showRemoveBuddy()
 		if (result == 0)
 			removeGroupCb(group);
 	}
+}
+
+void
+QGaimBListWindow::showOfflineBuddies(bool on)
+{
+	gaim_prefs_set_bool("/gaim/qpe/blist/show_offline_buddies", on);
+
+	buddylist->reload(true);
 }
 
 void

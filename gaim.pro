@@ -91,6 +91,7 @@ DISTFILES = \
 	data/images/info.png \
 	data/images/new.png \
 	data/images/new-group.png \
+	data/images/offline_buddies.png \
 	data/images/prefs.png \
 	data/images/remove.png \
 	data/images/send-im.png \

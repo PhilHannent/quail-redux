@@ -63,6 +63,8 @@ class QGaimBuddyList : public QListView
 
 		void updateNode(GaimBlistNode *node);
 
+		void reload(bool remove = false);
+
 	private:
 		void addGroup(GaimBlistNode *node);
 

@@ -24,6 +24,7 @@
 
 #include <libgaim/debug.h>
 #include <libgaim/multi.h>
+#include <libgaim/prefs.h>
 
 #include <qpe/qpeapplication.h>
 #include <qpe/resource.h>
@@ -227,8 +228,13 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 	QGaimBListItem *item = (QGaimBListItem *)node->ui_data;
 	bool expand = false;
 	bool new_entry = true;
+	bool show_offline_buddies;
+	bool show_empty_groups;
 
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimBuddyList", "updateNode\n");
+	show_offline_buddies =
+		gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies");
+	show_empty_groups =
+		gaim_prefs_get_bool("/gaim/qpe/blist/show_empty_groups");
 
 	if (item == NULL)
 	{
@@ -239,7 +245,8 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 			struct buddy *buddy = (struct buddy *)node;
 
 			if (buddy->present != GAIM_BUDDY_OFFLINE ||
-				(gaim_account_is_connected(buddy->account) && 0)) // TODO
+				(gaim_account_is_connected(buddy->account) &&
+				 show_offline_buddies))
 			{
 				char *collapsed =
 					gaim_group_get_setting((struct group *)node->parent,
@@ -281,7 +288,7 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 			node->ui_data = new QGaimBListItem(
 				(QGaimBListItem *)node->parent->ui_data, node);
 		}
-		else if (GAIM_BLIST_NODE_IS_GROUP(node) && 0) /* TODO */
+		else if (GAIM_BLIST_NODE_IS_GROUP(node) && show_empty_groups)
 		{
 			addGroup(node);
 			expand = true;
@@ -289,7 +296,8 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 	}
 	else if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
-		if (gaim_blist_get_group_online_count((struct group *)node) == 0)
+		if (gaim_blist_get_group_online_count((struct group *)node) == 0 &&
+			!show_empty_groups && !show_offline_buddies)
 		{
 			item = (QGaimBListItem *)node->ui_data;
 
@@ -345,7 +353,7 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 		struct buddy *buddy = (struct buddy *)node;
 
 		if (buddy->present != GAIM_BUDDY_OFFLINE ||
-			(gaim_account_is_connected(buddy->account) && 0)) // XXX
+			(gaim_account_is_connected(buddy->account) && show_offline_buddies))
 		{
 			item->updateInfo();
 		}
@@ -363,6 +371,32 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 
 	if (expand)
 		item->setOpen(true);
+}
+
+void
+QGaimBuddyList::reload(bool remove)
+{
+	GaimBlistNode *group, *child;
+
+	if (remove)
+		clear();
+
+	for (group = gaimBlist->root; group != NULL; group = group->next)
+	{
+		if (!GAIM_BLIST_NODE_IS_GROUP(group))
+			continue;
+
+		group->ui_data = NULL;
+
+		updateNode(group);
+
+		for (child = group->child; child != NULL; child = child->next)
+		{
+			child->ui_data = NULL;
+
+			updateNode(child);
+		}
+	}
 }
 
 void
