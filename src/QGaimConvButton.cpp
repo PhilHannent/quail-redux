@@ -21,7 +21,7 @@
 #include "QGaimConvButton.h"
 #include "QGaimBuddyList.h"
 #include "QGaimProtocolUtils.h"
-#include "QGaim.h"
+#include "QGaimMainWindow.h"
 #include "base.h"
 
 #include <libgaim/debug.h>
@@ -163,7 +163,7 @@ QGaimConvButton::convActivated(int id)
 void
 QGaimConvButton::buttonClicked()
 {
-	GaimConvWindow *lastWin = qGaimGetHandle()->getLastActiveConvWindow();
+	GaimConvWindow *lastWin = qGaimGetMainWindow()->getLastActiveConvWindow();
 
 	if (lastWin != NULL)
 		gaim_conv_window_raise(lastWin);

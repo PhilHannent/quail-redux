@@ -24,7 +24,7 @@
 #include "QGaimConvWindow.h"
 #include "QGaimDialogs.h"
 #include "QGaimPrefsDialog.h"
-#include "QGaim.h"
+#include "QGaimMainWindow.h"
 #include "base.h"
 
 #include <libgaim/debug.h>
@@ -711,7 +711,7 @@ QGaimBListWindow::showPreferencesSlot()
 void
 QGaimBListWindow::showAccountsWindow()
 {
-	qGaimGetHandle()->showAccountsWindow();
+	qGaimGetMainWindow()->showAccountsWindow();
 }
 
 void
@@ -821,7 +821,7 @@ signedOffCb(GaimConnection *gc, GaimBuddyList *blist)
 static void
 qGaimBlistNewList(GaimBuddyList *blist)
 {
-	QGaimBListWindow *win = qGaimGetHandle()->getBlistWindow();
+	QGaimBListWindow *win = qGaimGetMainWindow()->getBlistWindow();
 	blist->ui_data = win;
 	win->setGaimBlist(blist);
 

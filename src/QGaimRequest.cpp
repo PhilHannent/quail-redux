@@ -20,7 +20,7 @@
  */
 #include "QGaimRequest.h"
 #include "QGaimInputDialog.h"
-#include "QGaim.h"
+#include "QGaimMainWindow.h"
 
 #include <libgaim/debug.h>
 
@@ -62,8 +62,7 @@ qGaimRequestInput(const char *title, const char *primary,
 	else
 		newTitle = title;
 
-	dialog = new QGaimInputDialog(multiline,
-								  qGaimGetHandle()->getMainWindow(),
+	dialog = new QGaimInputDialog(multiline, qGaimGetMainWindow(),
 								  "input request", true);
 	dialog->setCaption(newTitle);
 	dialog->setInfoText(message);

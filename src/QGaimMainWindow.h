@@ -1,5 +1,5 @@
 /**
- * @file QGaim.h Main Gaim class
+ * @file QGaimMainWindow.h Main gaim window
  *
  * @Copyright (C) 2003 Christian Hammond.
  *
@@ -18,31 +18,30 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_H_
-#define _QGAIM_H_
+#ifndef _QGAIM_MAIN_WINDOW_H_
+#define _QGAIM_MAIN_WINDOW_H_
 
-#include "QGaimBListWindow.h"
+#include <qmainwindow.h>
+#include <qwidgetstack.h>
 
 #include <libgaim/conversation.h>
 
-#include <qpe/qpeapplication.h>
-#include <qmainwindow.h>
-#include <qvariant.h>
-#include <qwidgetstack.h>
-
+class QGaimAccountsWindow;
+class QGaimBListWindow;
 class QGaimConnectionMeters;
 class QGaimConvWindow;
 
-class QGaim : QObject
+class QGaimMainWindow : public QMainWindow
 {
 	Q_OBJECT
-	
-	public:
-		QGaim(int argc, char **argv);
-		~QGaim();
 
-		void init();
-		int exec();
+	public:
+		static QString appName() { return QString::fromLatin1("gaim"); }
+
+	public:
+		QGaimMainWindow(QWidget *parent = 0, const char *name = 0,
+						WFlags fl = 0);
+		~QGaimMainWindow();
 
 		void addConversationWindow(QGaimConvWindow *win);
 		void removeConversationWindow(QGaimConvWindow *win);
@@ -54,30 +53,32 @@ class QGaim : QObject
 		GaimConvWindow *getLastActiveConvWindow() const;
 
 		QWidgetStack *getWidgetStack() const;
-		QMainWindow *getMainWindow() const;
-
 		QGaimConnectionMeters *getMeters() const;
 
 	public slots:
 		void showBlistWindow();
 		void showAccountsWindow();
 
+	protected:
+		void buildInterface();
+		void initCore();
+
+		void closeEvent(QCloseEvent *e);
+
 	private slots:
 		void doMainLoop();
 
 	private:
-		QPEApplication *app;
-		QMainWindow *mainWindow;
 		QWidgetStack *widgetStack;
-		QGaimBListWindow *blistWin;
 		QGaimAccountsWindow *accountsWin;
-		GaimConvWindow *lastConvWin;
-
+		QGaimBListWindow *blistWin;
 		QGaimConnectionMeters *meters;
+
+		GaimConvWindow *lastConvWin;
 
 		int nextConvWinId;
 };
 
-QGaim *qGaimGetHandle();
+QGaimMainWindow *qGaimGetMainWindow();
 
-#endif /* _QGAIM_H_ */
+#endif /* _QGAIM_MAIN_WINDOW_H_ */

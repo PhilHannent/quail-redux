@@ -17,6 +17,7 @@ HEADERS = \
 	src/QGaimDialogs.h \
 	src/QGaimImageUtils.h \
 	src/QGaimInputDialog.h \
+	src/QGaimMainWindow.h \
 	src/QGaimMultiLineEdit.h \
 	src/QGaimNotify.h \
 	src/QGaimPrefsDialog.h \
@@ -25,7 +26,6 @@ HEADERS = \
 	src/QGaimRequest.h \
 	src/QGaimTabBar.h \
 	src/QGaimTabWidget.h \
-	src/QGaim.h \
 	src/base.h
 
 
@@ -42,6 +42,7 @@ SOURCES = \
 	src/QGaimDialogs.cpp \
 	src/QGaimImageUtils.cpp \
 	src/QGaimInputDialog.cpp \
+	src/QGaimMainWindow.cpp \
 	src/QGaimMultiLineEdit.cpp \
 	src/QGaimNotify.cpp \
 	src/QGaimPrefsDialog.cpp \

@@ -24,7 +24,7 @@
 #include "QGaimConvButton.h"
 #include "QGaimImageUtils.h"
 #include "QGaimProtocolUtils.h"
-#include "QGaim.h"
+#include "QGaimMainWindow.h"
 #include "base.h"
 
 #include <libgaim/prpl.h>
@@ -430,7 +430,7 @@ QGaimAccountsWindow::disconnectFromAccount()
 void
 QGaimAccountsWindow::showBlist()
 {
-	qGaimGetHandle()->showBlistWindow();
+	qGaimGetMainWindow()->showBlistWindow();
 }
 
 void
@@ -491,7 +491,7 @@ qGaimConnConnectProgress(GaimConnection *gc, const char *text,
 	QGaimConnectionMeters *meters;
 	QGaimConnectionMeter *meter;
 
-	meters = qGaimGetHandle()->getMeters();
+	meters = qGaimGetMainWindow()->getMeters();
 	meter = meters->findMeter(gc);
 
 	if (meter == NULL)
@@ -503,7 +503,7 @@ qGaimConnConnectProgress(GaimConnection *gc, const char *text,
 static void
 qGaimConnConnected(GaimConnection *gc)
 {
-	QGaimConnectionMeters *meters = qGaimGetHandle()->getMeters();
+	QGaimConnectionMeters *meters = qGaimGetMainWindow()->getMeters();
 	QGaimConnectionMeter *meter;
 
 	meter = meters->findMeter(gc);
@@ -515,7 +515,7 @@ qGaimConnConnected(GaimConnection *gc)
 static void
 qGaimConnDisconnected(GaimConnection *gc)
 {
-	QGaimConnectionMeters *meters = qGaimGetHandle()->getMeters();
+	QGaimConnectionMeters *meters = qGaimGetMainWindow()->getMeters();
 	QGaimConnectionMeter *meter;
 
 	meter = meters->findMeter(gc);

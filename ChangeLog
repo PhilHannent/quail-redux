@@ -1,3 +1,17 @@
+Wed Oct 22 22:41:29 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaim.h:
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimConvButton.cpp:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimMainWindow.cpp:
+	* src/QGaimMainWindow.h:
+	* src/QGaimRequest.cpp:
+	* src/main.cpp:
+	  - Removed the QGaim class, and added QGaimMainWindow. This cleans up
+	    the code just a tad, and will allow for some startup progress stuff.
+
 Wed Oct 22 20:52:15 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimPrefsDialog.cpp:

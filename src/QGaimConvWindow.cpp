@@ -26,13 +26,15 @@
 #include "QGaimProtocolUtils.h"
 #include "QGaimTabBar.h"
 #include "QGaimTabWidget.h"
-#include "QGaim.h"
+#include "QGaimMainWindow.h"
 #include "base.h"
 
 #include <libgaim/debug.h>
 #include <libgaim/prefs.h>
 
 #include <qpe/resource.h>
+#include <qpe/qpeapplication.h>
+
 #include <qaction.h>
 #include <qbutton.h>
 #include <qheader.h>
@@ -722,8 +724,7 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 
 	if (gaim_conv_window_get_conversation_count(win) == 1)
 	{
-		qGaimGetHandle()->getMainWindow()->setCaption(
-				gaim_conversation_get_title(conv));
+		qGaimGetMainWindow()->setCaption(gaim_conversation_get_title(conv));
 		tabs->setCurrentPage(0);
 	}
 }
@@ -817,10 +818,7 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 	gaim_conversation_set_unseen(conv, GAIM_UNSEEN_NONE);
 
 	if (conv != NULL)
-	{
-		qGaimGetHandle()->getMainWindow()->setCaption(
-				gaim_conversation_get_title(conv));
-	}
+		qGaimGetMainWindow()->setCaption(gaim_conversation_get_title(conv));
 
 	prpl = gaim_find_prpl(gaim_account_get_protocol(account));
 
@@ -868,8 +866,8 @@ QGaimConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 
 	QMainWindow::destroy(destroyWindow, destroySubWindows);
 
-	if (qGaimGetHandle()->getLastActiveConvWindow() == getGaimConvWindow())
-		qGaimGetHandle()->setLastActiveConvWindow(NULL);
+	if (qGaimGetMainWindow()->getLastActiveConvWindow() == getGaimConvWindow())
+		qGaimGetMainWindow()->setLastActiveConvWindow(NULL);
 }
 
 void
@@ -970,7 +968,7 @@ QGaimConvWindow::send()
 void
 QGaimConvWindow::showAccountsWindow()
 {
-	qGaimGetHandle()->showAccountsWindow();
+	qGaimGetMainWindow()->showAccountsWindow();
 }
 
 void
@@ -993,7 +991,7 @@ QGaimConvWindow::userListToggled(bool on)
 void
 QGaimConvWindow::showBlist()
 {
-	qGaimGetHandle()->showBlistWindow();
+	qGaimGetMainWindow()->showBlistWindow();
 }
 
 void
@@ -1276,10 +1274,10 @@ qGaimConvWindowNew(GaimConvWindow *win)
 
 	qwin = new QGaimConvWindow(win);
 
-	qGaimGetHandle()->addConversationWindow(qwin);
+	qGaimGetMainWindow()->addConversationWindow(qwin);
 
-	qGaimGetHandle()->getWidgetStack()->addWidget(qwin, qwin->getId());
-	qGaimGetHandle()->getWidgetStack()->raiseWidget(qwin->getId());
+	qGaimGetMainWindow()->getWidgetStack()->addWidget(qwin, qwin->getId());
+	qGaimGetMainWindow()->getWidgetStack()->raiseWidget(qwin->getId());
 
 	win->ui_data = qwin;
 }
@@ -1289,7 +1287,7 @@ qGaimConvWindowDestroy(GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
-	qGaimGetHandle()->removeConversationWindow(qwin);
+	qGaimGetMainWindow()->removeConversationWindow(qwin);
 
 	win->ui_data = NULL;
 	delete qwin;
@@ -1300,7 +1298,7 @@ qGaimConvWindowShow(GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
-	qGaimGetHandle()->setLastActiveConvWindow(win);
+	qGaimGetMainWindow()->setLastActiveConvWindow(win);
 
 	qwin->show();
 }
@@ -1318,11 +1316,11 @@ qGaimConvWindowRaise(GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
-	qGaimGetHandle()->setLastActiveConvWindow(win);
+	qGaimGetMainWindow()->setLastActiveConvWindow(win);
 
 	gaim_debug(GAIM_DEBUG_MISC, "qGaimConvWindowRaise",
 			   "Raising window with ID %d\n", qwin->getId());
-	qGaimGetHandle()->getWidgetStack()->raiseWidget(qwin->getId());
+	qGaimGetMainWindow()->getWidgetStack()->raiseWidget(qwin->getId());
 }
 
 static void
