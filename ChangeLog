@@ -1,3 +1,17 @@
+Thu Aug 14 03:04:29 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimAccountsWindow.h:
+	* src/QGaimImageUtils.cpp:
+	* src/QGaimImageUtils.h:
+	  - Icons for accounts not signed on in the accounts window are
+	    now saturated, and accounts signed on are normal. It's now
+	    much easier to distinguish between signed on and signed off
+	    accounts without having to click them to see the status of the
+	    connect/disconnect buttons.
+	  - The connect/disconnect buttons now update the selected item when
+	    signed on or off.
+
 Thu Aug 14 02:41:49 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

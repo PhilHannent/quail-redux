@@ -60,6 +60,9 @@ class QGaimAccountsWindow : public QMainWindow
 
 		void updateAccounts();
 
+		void accountSignedOn(GaimAccount *account);
+		void accountSignedOff(GaimAccount *account);
+
 	private:
 		void buildInterface();
 		void setupToolbar();
@@ -78,8 +81,8 @@ class QGaimAccountsWindow : public QMainWindow
 		void accountsToggled(bool state);
 		void accountSelected(QListViewItem *item);
 
-	private:
-		QPixmap *getProtocolIcon(GaimAccount *account);
+	protected:
+		QGaimAccountListItem *getItemFromAccount(GaimAccount *account);
 
 	private:
 		QToolBar *toolbar;

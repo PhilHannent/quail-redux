@@ -22,6 +22,7 @@
 #include "QGaimAccountEditor.h"
 #include "QGaimConnectionMeter.h"
 #include "QGaimConvButton.h"
+#include "QGaimImageUtils.h"
 #include "QGaimProtocolUtils.h"
 #include "QGaim.h"
 #include "base.h"
@@ -73,12 +74,30 @@ QGaimAccountListItem::key(int, bool) const
 }
 
 /**************************************************************************
+ * QGaimAccountsWindow gaim callbacks
+ **************************************************************************/
+static void
+signedOnCb(GaimConnection *gc, QGaimAccountsWindow *win)
+{
+	win->accountSignedOn(gaim_connection_get_account(gc));
+}
+
+static void
+signedOffCb(GaimConnection *gc, QGaimAccountsWindow *win)
+{
+	win->accountSignedOff(gaim_connection_get_account(gc));
+}
+
+/**************************************************************************
  * QGaimAccountsWindow
  **************************************************************************/
 QGaimAccountsWindow::QGaimAccountsWindow()
 	: QMainWindow()
 {
 	buildInterface();
+
+	gaim_signal_connect(this, event_signon,  (void *)signedOnCb,  this);
+	gaim_signal_connect(this, event_signoff, (void *)signedOffCb, this);
 
 	loadAccounts();
 }
@@ -92,6 +111,50 @@ void
 QGaimAccountsWindow::updateAccounts()
 {
 	loadAccounts();
+}
+
+void
+QGaimAccountsWindow::accountSignedOn(GaimAccount *account)
+{
+	QGaimAccountListItem *item;
+
+	item = (QGaimAccountListItem *)accountsView->selectedItem();
+
+	if (item->getAccount() == account)
+	{
+		connectButton->setEnabled(false);
+		disconnectButton->setEnabled(true);
+		deleteButton->setEnabled(false);
+	}
+	else
+		item = QGaimAccountsWindow::getItemFromAccount(account);
+
+	if (item != NULL)
+		item->setPixmap(0, QGaimProtocolUtils::getProtocolIcon(account));
+}
+
+void
+QGaimAccountsWindow::accountSignedOff(GaimAccount *account)
+{
+	QGaimAccountListItem *item;
+
+	item = (QGaimAccountListItem *)accountsView->selectedItem();
+
+	if (item->getAccount() == account)
+	{
+		connectButton->setEnabled(true);
+		disconnectButton->setEnabled(false);
+		deleteButton->setEnabled(true);
+	}
+	else
+		item = QGaimAccountsWindow::getItemFromAccount(account);
+
+	if (item != NULL)
+	{
+		QPixmap protocolIcon = QGaimProtocolUtils::getProtocolIcon(account);
+
+		item->setPixmap(0, QGaimImageUtils::saturate(protocolIcon, 0.25));
+	}
 }
 
 void
@@ -110,7 +173,6 @@ QGaimAccountsWindow::buildInterface()
 
 	setCentralWidget(accountsView);
 }
-
 
 void
 QGaimAccountsWindow::setupToolbar()
@@ -224,15 +286,22 @@ QGaimAccountsWindow::loadAccounts()
 		 l != NULL;
 		 l = l->next, index++)
 	{
+		QPixmap protocolIcon;
 		QGaimAccountListItem *item;
 		GaimAccount *account = (GaimAccount *)l->data;
 		GaimProtocol protocol = gaim_account_get_protocol(account);
 
+		protocolIcon = QGaimProtocolUtils::getProtocolIcon(account);
+
 		item = new QGaimAccountListItem(accountsView, index);
 		item->setText(0, gaim_account_get_username(account));
 		item->setText(1, QGaimProtocolUtils::getProtocolName(protocol));
-		item->setPixmap(0, QGaimProtocolUtils::getProtocolIcon(account));
 		item->setAccount(account);
+
+		if (gaim_account_is_connected(account))
+			item->setPixmap(0, protocolIcon);
+		else
+			item->setPixmap(0, QGaimImageUtils::saturate(protocolIcon, 0.25));
 	}
 }
 
@@ -333,6 +402,28 @@ QGaimAccountsWindow::accountSelected(QListViewItem *item)
 
 	editButton->setEnabled(true);
 	deleteButton->setEnabled(true);
+}
+
+QGaimAccountListItem *
+QGaimAccountsWindow::getItemFromAccount(GaimAccount *account)
+{
+	QListViewItem *item;
+	QGaimAccountListItem *gitem;
+
+	if (account == NULL)
+		return NULL;
+
+	for (item = accountsView->firstChild();
+		 item != NULL;
+		 item = item->nextSibling())
+	{
+		gitem = (QGaimAccountListItem *)item;
+
+		if (gitem->getAccount() == account)
+			return gitem;
+	}
+
+	return NULL;
 }
 
 static void

@@ -109,6 +109,20 @@ QGaimImageUtils::saturate(QImage &image, float value)
 	return image;
 }
 
+QPixmap &
+QGaimImageUtils::saturate(QPixmap &pixmap, float value)
+{
+	QImage image;
+
+	image = pixmap.convertToImage();
+
+	saturate(image, value);
+
+	pixmap.convertFromImage(image);
+
+	return pixmap;
+}
+
 void
 QGaimImageUtils::blendOnLower(int xOffset, int yOffset, const QImage &upper,
 							  QImage &lower)
