@@ -1,3 +1,9 @@
+Sat Aug 02 02:15:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountBox.cpp:
+	  - Changing the cut-off point to 16 characters. I *will* find a
+	    better solution than this. Bet on it.
+
 Sat Aug 02 02:13:16 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

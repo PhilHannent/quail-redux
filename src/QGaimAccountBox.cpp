@@ -138,9 +138,9 @@ QGaimAccountBox::buildMenu(GaimAccount *account)
 
 		str = gaim_account_get_username(tempAccount);
 
-		if (str.length() > 18)
+		if (str.length() > 16)
 		{
-			str.truncate(18);
+			str.truncate(16);
 			str += "...";
 		}
 
