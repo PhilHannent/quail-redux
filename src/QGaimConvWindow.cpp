@@ -882,9 +882,11 @@ QGaimConvWindow::setupToolbar()
 	/* Separator */
 	toolbar->addSeparator();
 
+	/* Person actions */
 	button = new QToolButton(toolbar, "blist");
 	button->setAutoRaise(true);
 	button->setPixmap(Resource::loadPixmap("gaim/user"));
+	button->setEnabled(false);
 
 	userMenu = new QPopupMenu(button);
 	button->setPopup(userMenu);
