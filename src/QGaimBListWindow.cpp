@@ -340,6 +340,7 @@ QGaimBListWindow::buildToolBar()
 					QIconSet(Resource::loadPixmap("gaim/send-im")),
 					QString::null, 0, this, 0);
 	imButton = a;
+	a->addTo(toolbar);
 	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
@@ -353,6 +354,7 @@ QGaimBListWindow::buildToolBar()
 					QIconSet(Resource::loadPixmap("gaim/info")),
 					QString::null, 0, this, 0);
 	infoButton = a;
+	a->addTo(toolbar);
 	a->setEnabled(false);
 
 	toolbar->addSeparator();
@@ -362,6 +364,7 @@ QGaimBListWindow::buildToolBar()
 					QIconSet(Resource::loadPixmap("gaim/add")),
 					QString::null, 0, this, 0);
 	addBuddyButton = a;
+	a->addTo(toolbar);
 	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
@@ -372,6 +375,7 @@ QGaimBListWindow::buildToolBar()
 					QIconSet(Resource::loadPixmap("gaim/new-group")),
 					QString::null, 0, this, 0);
 	addGroupButton = a;
+	a->addTo(toolbar);
 	a->setEnabled(false);
 
 	/* Remove */
@@ -379,6 +383,7 @@ QGaimBListWindow::buildToolBar()
 					QIconSet(Resource::loadPixmap("gaim/remove")),
 					QString::null, 0, this, 0);
 	removeButton = a;
+	a->addTo(toolbar);
 	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
