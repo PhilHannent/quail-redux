@@ -14,7 +14,7 @@ newConvCb(char *, QGaimConvButton *button)
 static void
 delConvCb(char *, QGaimConvButton *button)
 {
-	if (gaim_get_conversations() == NULL)
+	if (gaim_get_conversations()->next == NULL)
 		button->setEnabled(false);
 }
 

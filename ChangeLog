@@ -1,3 +1,12 @@
+Mon Jul 14 16:08:50 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvButton.cpp:
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - The conversation button is now enabled/disabled depending on
+	    whether or not any conversations exist.
+	  - Core conversation windows are now closed when the window is closed.
+
 Mon Jul 14 04:35:12 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvButton.cpp:

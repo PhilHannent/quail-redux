@@ -45,7 +45,7 @@ class QGaimChat : public QGaimConversation
 	public:
 		QGaimChat(GaimConversation *conv, QWidget *parent = NULL,
 				  const char *name = NULL, WFlags fl = 0);
-		~QGaimChat();
+		virtual ~QGaimChat();
 
 		void write(const char *who, const char *message, int flags,
 				   time_t mtime);
@@ -65,7 +65,7 @@ class QGaimIm : public QGaimConversation
 	public:
 		QGaimIm(GaimConversation *conv, QWidget *parent = NULL,
 				const char *name = NULL, WFlags fl = 0);
-		~QGaimIm();
+		virtual ~QGaimIm();
 
 		void write(const char *who, const char *message,
 				   size_t len, int flags, time_t mtime);
@@ -92,6 +92,11 @@ class QGaimConvWindow : public QMainWindow
 		void moveConversation(GaimConversation *conv, unsigned int newIndex);
 		int getActiveIndex() const;
 
+	protected:
+		virtual void destroy(bool destroyWindow = TRUE,
+							 bool destroySubWindows = TRUE);
+		virtual void closeEvent(QCloseEvent *e);
+
 	private slots:
 		void showAccountsWindow();
 		void conversationsToggled(bool state);
@@ -113,7 +118,5 @@ class QGaimConvWindow : public QMainWindow
 };
 
 GaimWindowUiOps *qGaimGetConvWindowUiOps();
-
-QPopupMenu *qGaimBuildConvMenu();
 
 #endif /* _QGAIM_CONV_WIN_H_ */

@@ -180,9 +180,6 @@ QGaimIm::buildInterface()
 
 	l->addWidget(text, 0, 0);
 	l->addWidget(entry, 1, 0);
-
-//	l->setRowStretch(0, 0);
-//	l->setRowStretch(1, 1);
 }
 
 /**************************************************************************
@@ -196,6 +193,7 @@ QGaimConvWindow::QGaimConvWindow(GaimWindow *win)
 
 QGaimConvWindow::~QGaimConvWindow()
 {
+	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "destructor\n");
 }
 
 void
@@ -245,7 +243,10 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 void
 QGaimConvWindow::removeConversation(GaimConversation *conv)
 {
+	/* NOTE: This deletes conv->ui_data. Find out what to do here. */
 	tabs->removePage((QGaimConvWindow *)conv->ui_data);
+
+	conv->ui_data = NULL;
 }
 
 void
@@ -259,6 +260,26 @@ int
 QGaimConvWindow::getActiveIndex() const
 {
 	return tabs->currentPageIndex();
+}
+
+void
+QGaimConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
+{
+	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "destroy\n");
+
+	gaim_window_destroy(win);
+
+	QMainWindow::destroy(destroyWindow, destroySubWindows);
+}
+
+void
+QGaimConvWindow::closeEvent(QCloseEvent *e)
+{
+	gaim_debug(GAIM_DEBUG_INFO, "QGaimConvWindow", "closeEvent\n");
+
+	gaim_window_destroy(win);
+
+	QMainWindow::closeEvent(e);
 }
 
 void
@@ -356,7 +377,11 @@ qGaimConvDestroy(GaimConversation *conv)
 {
 	QGaimConversation *qconv = (QGaimConversation *)conv->ui_data;
 
+	if (qconv == NULL)
+		return;
+
 	conv->ui_data = NULL;
+
 	delete qconv;
 }
 
