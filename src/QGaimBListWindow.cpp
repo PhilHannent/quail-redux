@@ -567,9 +567,11 @@ QGaimBListWindow::sendIm()
 	GaimBlistNode *node;
 
 	item = (QGaimBListItem *)buddylist->selectedItem();
-	node = item->getBlistNode();
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	if (item != NULL)
+		node = item->getBlistNode();
+
+	if (node != NULL && GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
 		struct buddy *buddy = (struct buddy *)item->getBlistNode();
 		GaimConversation *conv;
@@ -581,7 +583,16 @@ QGaimBListWindow::sendIm()
 		win = gaim_conversation_get_window(conv);
 		gaim_window_raise(win);
 
-		gaim_window_switch_conversation(win, gaim_conversation_get_index(conv));
+		gaim_window_switch_conversation(win,
+				gaim_conversation_get_index(conv));
+	}
+	else
+	{
+		QGaimNewImDialog *dialog;
+
+		dialog = new QGaimNewImDialog(this);
+
+		dialog->showMaximized();
 	}
 }
 

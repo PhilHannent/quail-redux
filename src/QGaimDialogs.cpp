@@ -435,6 +435,97 @@ QGaimAddChatDialog::accept()
 
 
 /**************************************************************************
+ * QGaimNewImDialog
+ **************************************************************************/
+QGaimNewImDialog::QGaimNewImDialog(QWidget *parent, const char *name,
+								   WFlags fl)
+	: QDialog(parent, name, fl)
+{
+	buildInterface();
+}
+
+void
+QGaimNewImDialog::setScreenName(const QString &screenName)
+{
+	screenNameEntry->setText(screenName);
+}
+
+void
+QGaimNewImDialog::setAccount(GaimAccount *account)
+{
+	accountCombo->setCurrentAccount(account);
+}
+
+void
+QGaimNewImDialog::buildInterface()
+{
+	QFrame *frame;
+	QGridLayout *grid;
+	QLabel *label;
+	QLabel *spacer;
+	QVBox *vbox;
+	QVBoxLayout *layout;
+
+	setCaption(tr("New Message"));
+
+	layout = new QVBoxLayout(this);
+	layout->setAutoAdd(true);
+
+	vbox = new QVBox(this);
+	vbox->setSpacing(5);
+	vbox->setMargin(6);
+
+	label = new QLabel(tr("<p>Please enter the screen name of the person you "
+						  "would like to IM.</p>"),
+					   vbox);
+
+	frame = new QFrame(vbox);
+	grid = new QGridLayout(frame, 1, 1);
+	grid->setSpacing(5);
+
+	/* Screen Name */
+	grid->addWidget(new QLabel(tr("Screen Name:"), frame), 0, 0);
+	screenNameEntry = new QLineEdit(frame);
+	grid->addWidget(screenNameEntry, 0, 1);
+
+	/* Account */
+	grid->addWidget(new QLabel(tr("Account:"), frame), 3, 0);
+	accountCombo = new QGaimAccountBox(false, frame, "account");
+	grid->addWidget(accountCombo, 3, 1);
+
+	/* Add a spacer. */
+	spacer = new QLabel("", vbox);
+	vbox->setStretchFactor(spacer, 1);
+}
+
+void
+QGaimNewImDialog::accept()
+{
+	QString screenname = screenNameEntry->text();
+	GaimAccount *account;
+	GaimConversation *conv;
+
+	if (screenname.isEmpty())
+		return;
+
+	account = accountCombo->getCurrentAccount();
+
+	conv = gaim_find_conversation(screenname);
+
+	if (conv == NULL)
+		conv = gaim_conversation_new(GAIM_CONV_IM, account, screenname);
+	else
+	{
+		gaim_window_raise(gaim_conversation_get_window(conv));
+
+		if (account)
+			gaim_conversation_set_account(conv, account);
+	}
+
+	QDialog::accept();
+}
+
+/**************************************************************************
  * QGaimJoinChatDialog
  **************************************************************************/
 QGaimJoinChatDialog::QGaimJoinChatDialog(QWidget *parent, const char *name,

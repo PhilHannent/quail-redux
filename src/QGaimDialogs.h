@@ -93,6 +93,28 @@ class QGaimAddChatDialog : public QDialog
 		QList<QWidget> widgets;
 };
 
+class QGaimNewImDialog : public QDialog
+{
+	Q_OBJECT
+
+	public:
+		QGaimNewImDialog(QWidget *parent = NULL, const char *name = NULL,
+						 WFlags fl = 0);
+
+		void setScreenName(const QString &screenName);
+		void setAccount(GaimAccount *account);
+
+	protected:
+		void buildInterface();
+
+	protected slots:
+		void accept();
+
+	private:
+		QLineEdit *screenNameEntry;
+		QGaimAccountBox *accountCombo;
+};
+
 class QGaimJoinChatDialog : public QDialog
 {
 	Q_OBJECT

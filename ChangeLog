@@ -1,3 +1,23 @@
+Fri Aug 15 14:20:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimDialogs.cpp:
+	* src/QGaimDialogs.h:
+	  - Clicking the New IM button now brings up a dialog.
+
+Fri Aug 15 14:03:03 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* data/images/new-chat.png:
+	* data/images/new-im.png:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	* src/QGaimBuddyList.cpp:
+	* gaim.pro:
+	  - The Send/New IM and Open/New Chat icons now have a happy little
+	    magic star on the side of them when the action is to create a
+	    new IM or chat.
+
 Fri Aug 15 13:42:09 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:
