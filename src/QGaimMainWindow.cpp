@@ -107,6 +107,19 @@ QGaimMainWindow::QGaimMainWindow(QWidget *parent, const char *name, WFlags fl)
 
 	initCore();
 
+	/* We have to do these separately. Ugh. */
+	showBlistWindow();
+
+	gaim_set_blist(gaim_blist_new());
+	gaim_blist_load();
+
+	/* Setup the timer for the glib context loops */
+	QTimer *timer = new QTimer();
+	connect(timer, SIGNAL(timeout()),
+			this, SLOT(doMainLoop()));
+
+	timer->start(10, FALSE);
+
 	gaim_accounts_auto_login("qpe-gaim");
 }
 
@@ -127,8 +140,6 @@ QGaimMainWindow::buildInterface()
 	meters = new QGaimConnectionMeters(vbox);
 
 	setCentralWidget(vbox);
-
-	showBlistWindow();
 }
 
 void
@@ -159,16 +170,6 @@ QGaimMainWindow::initCore()
 
 	gaim_accounts_load();
 	gaim_pounces_load();
-
-	gaim_set_blist(gaim_blist_new());
-	gaim_blist_load();
-
-	/* Setup the timer for the glib context loops */
-	QTimer *timer = new QTimer();
-	connect(timer, SIGNAL(timeout()),
-			this, SLOT(doMainLoop()));
-
-	timer->start(10, FALSE);
 }
 
 void

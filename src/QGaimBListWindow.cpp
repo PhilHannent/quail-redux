@@ -257,7 +257,7 @@ QGaimBListWindow::buildToolBar()
 
 	/* Accounts */
 	a = new QAction(tr("Accounts"),
-				QIconSet(Resource::loadPixmap("gaim/16x16/accounts"),
+					QIconSet(Resource::loadPixmap("gaim/16x16/accounts"),
 							 Resource::loadPixmap("gaim/32x32/accounts")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);

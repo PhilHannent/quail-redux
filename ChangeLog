@@ -1,3 +1,9 @@
+Mon Nov 03 14:53:27 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimMainWindow.cpp:
+	  - Fixed the order of core and UI initialization, so that signals in
+	    QGaimBListWindow won't have problems.
+
 Mon Nov 03 10:59:17 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimPrefsDialog.cpp:
