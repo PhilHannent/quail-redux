@@ -28,7 +28,17 @@
 QGaimProtocolBox::QGaimProtocolBox(QWidget *parent, const char *name)
 	: QComboBox(parent, name)
 {
-	buildMenu(NULL);
+	GList *protocols;
+	GaimPlugin *prpl;
+
+	protocols = gaim_plugins_get_protocols();
+
+	if (protocols != NULL)
+	{
+		prpl = (GaimPlugin *)protocols->data;
+
+		buildMenu(prpl->info->id);
+	}
 }
 
 QGaimProtocolBox::QGaimProtocolBox(QString protocolId, QWidget *parent,
