@@ -1,3 +1,8 @@
+Fri Aug 01 13:25:00 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkstuff.conf:
+	  - Changed the version to 0.1-cvsdate.
+
 Fri Aug 01 13:23:17 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
@@ -6,6 +11,7 @@ Fri Aug 01 13:23:17 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 	* src/QGaimTabBar.h:
 	* src/QGaimTabWidget.cpp:
 	* src/QGaimTabWidget.h:
+	* gaim.pro:
 	  - Added a subclassed QTabBar and QTabWidget, which will be used
 	    for some things such as typing notification shortly.
 
