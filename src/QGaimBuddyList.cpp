@@ -166,6 +166,7 @@ QGaimBListItem::updateInfo()
 														 pixmapSize));
 		setText(0, gaim_chat_get_display_name(chat));
 	}
+#if 0
 	else if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
 		GaimGroup *group = (GaimGroup *)node;
@@ -186,27 +187,70 @@ QGaimBListItem::updateInfo()
 		else
 			setText(0, group->name);
 	}
+#endif
 }
 
 void
 QGaimBListItem::paintCell(QPainter *p, const QColorGroup &cg, int column,
 						  int width, int align)
 {
+	QListView *lv = listView();
+	const QPixmap *icon = pixmap(column);
+
+	p->fillRect(0, 0, width, height(), cg.base());
+
+	int itMarg = (lv == NULL ? 1 : lv->itemMargin());
+	int lmarg = itMarg;
+
+	if (isSelected() && (column == 0 || lv->allColumnsShowFocus()))
+	{
+		p->fillRect(0, 0, width, height(), cg.highlight());
+		p->setPen(cg.highlightedText());
+	}
+	else
+		p->setPen(cg.text());
+
+	if (icon)
+	{
+		p->drawPixmap(lmarg, (height() - icon->height()) / 2, *icon);
+		lmarg += icon->width() + itMarg;
+	}
+
 	if (0)
 	{
 		;
 	}
-	else
+	else if (column == 0 && GAIM_BLIST_NODE_IS_GROUP(node))
 	{
-		if (GAIM_BLIST_NODE_IS_GROUP(node))
+		GaimGroup *group = (GaimGroup *)getBlistNode();
+		QString groupName, detail;
+		QFont f = p->font();
+
+		groupName = group->name;
+
+		if (gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count"))
 		{
-			QFont f = p->font();
-			f.setBold(true);
-			p->setFont(f);
+			groupName += " ";
+			detail = QString("(%1/%2)").arg(
+				gaim_blist_get_group_online_count(group)).arg(
+				gaim_blist_get_group_size(group, FALSE));
 		}
 
-		QListViewItem::paintCell(p, cg, column, width, align);
+		f.setBold(true);
+		p->setFont(f);
+		p->drawText(lmarg, 0, width - lmarg - itMarg, height(),
+					align | AlignVCenter, groupName);
+
+		QRect r = p->boundingRect(lmarg, 0, width - lmarg - itMarg, height(),
+								  align | AlignVCenter, groupName);
+
+		f.setBold(false);
+		p->setFont(f);
+		p->drawText(lmarg + r.right(), 0, width - lmarg - itMarg, height(),
+					align | AlignVCenter, detail);
 	}
+	else
+		QListViewItem::paintCell(p, cg, column, width, align);
 }
 
 void
