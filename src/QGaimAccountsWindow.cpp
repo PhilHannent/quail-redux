@@ -220,9 +220,15 @@ QGaimAccountsWindow::buildInterface()
 
 	/* Create the accounts view */
 	accountsView = new QListView(this, "AccountsView");
+#if 0
 	accountsView->addColumn(tr("Screenname"), 160);
 	accountsView->addColumn(tr("Protocol"), -1);
+#endif
+	accountsView->addColumn(tr("Screenname"));
+	accountsView->addColumn(tr("Protocol"));
 	accountsView->setAllColumnsShowFocus(true);
+	accountsView->setColumnWidthMode(0, QListView::Manual);
+	accountsView->setColumnWidthMode(1, QListView::Manual);
 
 	connect(accountsView, SIGNAL(selectionChanged(QListViewItem *)),
 			this, SLOT(accountSelected(QListViewItem *)));
@@ -460,6 +466,14 @@ QGaimAccountsWindow::accountSelected(QListViewItem *item)
 
 	editButton->setEnabled(true);
 	deleteButton->setEnabled(true);
+}
+
+void
+QGaimAccountsWindow::resizeEvent(QResizeEvent *)
+{
+	accountsView->setColumnWidth(1, (accountsView->width()) / 4);
+	accountsView->setColumnWidth(0, accountsView->width() - 20 -
+								 accountsView->columnWidth(1));
 }
 
 QGaimAccountListItem *

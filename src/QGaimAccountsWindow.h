@@ -94,6 +94,8 @@ class QGaimAccountsWindow : public QMainWindow
 		void accountsToggled(bool state);
 		void accountSelected(QListViewItem *item);
 
+		void resizeEvent(QResizeEvent *event);
+
 	protected:
 		QGaimAccountListItem *getItemFromAccount(GaimAccount *account);
 
