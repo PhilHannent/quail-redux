@@ -442,6 +442,9 @@ QGaimBuddyList::showContextMenu(QListViewItem *_item,
 	QAction *a;
 	GaimBlistNode *node;
 
+	if (item == NULL)
+		return;
+
 	node = item->getBlistNode();
 
 	menu = new QPopupMenu(this);
