@@ -1,3 +1,12 @@
+Tue Jul 29 00:33:24 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountEditor.h:
+	* src/QGaimProtocolBox.cpp:
+	* src/QGaimProtocolBox.h:
+	  - The protocol box is now set to the active protocol in the
+	    account editor.
+
 Tue Jul 29 00:06:46 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:

@@ -19,8 +19,6 @@ QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account)
 	: QMainWindow(), account(account), plugin(NULL), prplInfo(NULL),
 	  userSplitEntries(NULL), protocolOptEntries(NULL)
 {
-	GaimProtocol protocol;
-
 	if (account == NULL)
 	{
 		protocolId = "prpl-oscar";
@@ -347,6 +345,10 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	/* Protocol */
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
 	protocolList = new QGaimProtocolBox(parent, "protocol combo");
+
+	if (account != NULL)
+		protocolList->setCurrentProtocol(protocol);
+
 	grid->addWidget(protocolList, row++, 1);
 
 	/* Screen Name */

@@ -11,6 +11,7 @@
 
 class QCheckBox;
 class QComboBox;
+class QGaimProtocolBox;
 class QGridLayout;
 class QLabel;
 class QLineEdit;
@@ -53,7 +54,7 @@ class QGaimAccountEditor : public QMainWindow
 		QTabWidget *tabs;
 
 		/* Account tab */
-		QComboBox *protocolList;
+		QGaimProtocolBox *protocolList;
 		QLineEdit *screenNameEntry;
 		QLabel *passwordLabel;
 		QLineEdit *passwordEntry;
