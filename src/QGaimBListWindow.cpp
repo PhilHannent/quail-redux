@@ -705,7 +705,7 @@ QGaimBListWindow::showPreferencesSlot()
 {
 	QGaimPrefsDialog *prefsDialog = new QGaimPrefsDialog();
 
-	prefsDialog->show();
+	prefsDialog->showMaximized();
 }
 
 void

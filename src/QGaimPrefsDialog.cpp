@@ -22,6 +22,7 @@
 #include "QGaimTabWidget.h"
 
 #include <qlabel.h>
+#include <qlayout.h>
 
 QGaimPrefsDialog::QGaimPrefsDialog(QWidget *parent, const char *name,
 								   WFlags fl)
@@ -37,7 +38,12 @@ QGaimPrefsDialog::~QGaimPrefsDialog()
 void
 QGaimPrefsDialog::buildInterface()
 {
+	QVBoxLayout *layout;
+
 	setCaption(tr("Preferences"));
+
+	layout = new QVBoxLayout(this);
+	layout->setAutoAdd(true);
 
 	tabs = new QGaimTabWidget(this, "pref tabs");
 
