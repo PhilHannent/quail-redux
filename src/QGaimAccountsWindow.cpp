@@ -235,7 +235,7 @@ QGaimAccountsWindow::newAccount()
 {
 	QGaimAccountEditor *editor;
 
-	editor = new QGaimAccountEditor();
+	editor = new QGaimAccountEditor(NULL, this);
 
 	editor->showMaximized();
 }
@@ -248,7 +248,7 @@ QGaimAccountsWindow::editAccount()
 
 	item = (QGaimAccountListItem *)accountsView->selectedItem();
 
-	editor = new QGaimAccountEditor(item->getAccount());
+	editor = new QGaimAccountEditor(item->getAccount(), this);
 
 	editor->showMaximized();
 }

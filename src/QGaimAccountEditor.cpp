@@ -15,9 +15,10 @@
 #include <qtabwidget.h>
 #include <qvbox.h>
 
-QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account)
-	: QMainWindow(), account(account), plugin(NULL), prplInfo(NULL),
-	  userSplitEntries(NULL), protocolOptEntries(NULL)
+QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account, QWidget *parent,
+									   const char *name, WFlags fl)
+	: QDialog(parent, name, fl), account(account), plugin(NULL),
+	  prplInfo(NULL), userSplitEntries(NULL), protocolOptEntries(NULL)
 {
 	if (account == NULL)
 	{
@@ -48,10 +49,11 @@ QGaimAccountEditor::buildInterface()
 	else
 		setCaption(tr("Edit Account"));
 
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setAutoAdd(true);
+
 	tabs = new QTabWidget(this);
 	tabs->setMargin(6);
-
-	setCentralWidget(tabs);
 
 	tabs->addTab(buildAccountTab(), "Account");
 

@@ -5,9 +5,9 @@
 #include <libgaim/plugin.h>
 #include <libgaim/prpl.h>
 
+#include <qdialog.h>
 #include <qvariant.h>
 #include <qwidget.h>
-#include <qmainwindow.h>
 
 class QCheckBox;
 class QComboBox;
@@ -18,12 +18,14 @@ class QLineEdit;
 class QPixmap;
 class QTabWidget;
 
-class QGaimAccountEditor : public QMainWindow
+class QGaimAccountEditor : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QGaimAccountEditor(GaimAccount *account = NULL);
+		QGaimAccountEditor(GaimAccount *account = NULL,
+						   QWidget *parent = NULL, const char *name = NULL,
+						   WFlags fl = 0);
 		~QGaimAccountEditor();
 
 	protected:

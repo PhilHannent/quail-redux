@@ -1,3 +1,10 @@
+Tue Jul 29 01:11:50 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountEditor.h:
+	* src/QGaimAccountsWindow.cpp:
+	  - The Add/Modify Account dialog is now of type QDialog.
+
 Tue Jul 29 00:33:24 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:
