@@ -132,8 +132,7 @@ QGaimInputDialog::getText() const
 }
 
 void
-QGaimInputDialog::addButtons(const QString &cancel = QString::null,
-							 const QString &ok = QString::null)
+QGaimInputDialog::addButtons(const QString &cancel, const QString &ok)
 {
 	addButton(ok, 1);
 	addButton(cancel, 0);
