@@ -1,6 +1,27 @@
 Gaim for Qtopia Release Notes
 -----------------------------
 
+version 0.2:
+	* Fixed a bug where Gaim would crash if libgaim-plugins-oscar
+	  wasn't installed.
+	* Fixed the buttons on the input dialog a bit.
+	* Fixed the userlist toggle buton.
+	* Fixed a bug where tab color changes got stuck.
+	* Fixed the focus on the entry widget when switching tabs.
+	* Fixed the delay in expanding and collapsing groups.
+	* Fixed a bug where chats in the buddy list weren't getting icons.
+	* Added options for adding chats to the buddy list and joining
+	  chats.
+	* Added a new IRC protocol icon.
+	* Added a new Send Message icon.
+	* Added idle times to the buddy list.
+	* Moved the Add Buddy and Add Group buttons into a drop-down
+	  Add menu.
+	* Messages can now be sent to users not on the buddy list.
+	* Double-clicking chats in the buddy list now joins the chat.
+	* The protocol icons for offline accounts in the accounts window
+	  are now dimmed.
+
 version 0.1 (Sunday, 10-August-2003):
 	* Initial release.
 
