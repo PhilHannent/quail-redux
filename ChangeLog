@@ -1,3 +1,12 @@
+Sat Aug 02 19:36:07 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - <font face="..."> lines with uninstalled fonts were causing QTextView
+	    to crash, at least on qtopia-free. We now strip these. Who wants to
+	    render people's custom fonts on their PDA anyway? As if they'd even
+	    have them installed half the time.
+
 Sat Aug 02 02:15:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountBox.cpp:

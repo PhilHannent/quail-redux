@@ -60,6 +60,7 @@ class QGaimConversation : public QWidget
 
 	protected:
 		bool meify(char *message, int len);
+		QString stripFontFace(const QString &str);
 
 	protected:
 		GaimConversation *conv;

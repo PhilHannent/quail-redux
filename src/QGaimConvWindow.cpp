@@ -78,7 +78,7 @@ QGaimConversation::write(const char *who, const char *message,
 		return;
 
 	if (length == (size_t)-1)
-		length = strlen(message) + 1;
+		length = strlen(message);
 
 	QString txt;
 
@@ -93,7 +93,7 @@ QGaimConversation::write(const char *who, const char *message,
 		QString color, nick;
 		char *newMessage;
 
-		newMessage = (char *)g_memdup(message, length);
+		newMessage = (char *)g_memdup(message, length + 1);
 
 		if (flags & WFLAG_WHISPER)
 		{
@@ -150,7 +150,9 @@ QGaimConversation::write(const char *who, const char *message,
 		txt += nick;
 		txt += "</b></font> ";
 
-		txt += newMessage;
+		gaim_debug(GAIM_DEBUG_MISC, "QGaimConvWindow",
+				   "newMessage = '%s'\n", newMessage);
+		txt += stripFontFace(newMessage);
 		txt += "<br>\n";
 
 		g_free(newMessage);
@@ -221,6 +223,16 @@ QGaimConversation::meify(char *message, int len)
 	}
 
 	return false;
+}
+
+QString
+QGaimConversation::stripFontFace(const QString &str)
+{
+	QString newStr = str;
+
+	newStr.replace(QRegExp(" FACE=\"?[^\"> ]+\"?", false), "");
+
+	return newStr;
 }
 
 /**************************************************************************
