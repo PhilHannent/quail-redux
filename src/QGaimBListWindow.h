@@ -26,34 +26,15 @@
 #include <qvariant.h>
 #include <qwidget.h>
 #include <qmainwindow.h>
-#include <qlistview.h>
 
 #include "QGaimAccountsWindow.h"
 
 class QAction;
+class QGaimBuddyList;
 class QMenuBar;
 class QToolBar;
 class QToolButton;
 class QGaimAccountsWindow;
-
-class QGaimBListItem : public QListViewItem
-{
-	public:
-		QGaimBListItem(QListView *parent, GaimBlistNode *node);
-		QGaimBListItem(QListViewItem *parent, GaimBlistNode *node);
-		~QGaimBListItem();
-
-		GaimBlistNode *getBlistNode() const;
-
-		void paintBranches(QPainter *p, const QColorGroup &cg,
-						   int width, int y, int height, GUIStyle s);
-
-	protected:
-		void init();
-
-	private:
-		GaimBlistNode *node;
-};
 
 class QGaimBListWindow : public QMainWindow
 {
@@ -63,15 +44,18 @@ class QGaimBListWindow : public QMainWindow
 		QGaimBListWindow();
 		~QGaimBListWindow();
 
+		/* Functions our blist UI must access. */
 		void setGaimBlist(struct gaim_buddy_list *list);
 		struct gaim_buddy_list *getGaimBlist() const;
-
-		void update(GaimBlistNode *node);
 
 		void accountSignedOn(GaimAccount *acocunt);
 		void accountSignedOff(GaimAccount *acocunt);
 
+		void updateNode(GaimBlistNode *node);
+
 	protected slots:
+		void nodeChanged(QListViewItem *item);
+
 		void im();
 		void chat();
 
@@ -82,16 +66,12 @@ class QGaimBListWindow : public QMainWindow
 		void blistToggled(bool state);
 		void sendIm();
 
-		void nodeChanged(QListViewItem *item);
-
 	private:
 		void buildInterface();
 		void buildToolBar();
 
-		void addGroup(GaimBlistNode *node);
-
 	private:
-		struct gaim_buddy_list *gaimBlist;
+		QGaimBuddyList *buddylist;
 
 		QAction *imButton;
 		QAction *chatButton;
@@ -106,7 +86,6 @@ class QGaimBListWindow : public QMainWindow
 
 		QPopupMenu *convsMenu;
 
-		QListView *buddylist;
 		QToolBar *toolbar;
 };
 

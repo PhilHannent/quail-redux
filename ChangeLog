@@ -1,3 +1,13 @@
+Thu Aug 07 02:00:59 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	* src/QGaimBuddyList.cpp:
+	* src/QGaimBuddyList.h:
+	* gaim.pro:
+	  - Split the buddy list code out of the buddy list window and into
+	    its own widget.
+
 Wed Aug 06 21:24:10 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimNotify.cpp:

@@ -8,6 +8,7 @@ HEADERS = \
 	src/QGaimAccountEditor.h \
 	src/QGaimAccountsWindow.h \
 	src/QGaimBListWindow.h \
+	src/QGaimBuddyList.h \
 	src/QGaimConnectionMeter.h \
 	src/QGaimConvButton.h \
 	src/QGaimConvWindow.h \
@@ -29,6 +30,7 @@ SOURCES = \
 	src/QGaimAccountEditor.cpp \
 	src/QGaimAccountsWindow.cpp \
 	src/QGaimBListWindow.cpp \
+	src/QGaimBuddyList.cpp \
 	src/QGaimConnectionMeter.cpp \
 	src/QGaimConvButton.cpp \
 	src/QGaimConvWindow.cpp \
