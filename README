@@ -5,8 +5,8 @@
 Gaim for Qtopia is a multi-protocol instant messaging client for the
 Qtopia and OPIE embedded environments, found on the Sharp Zaurus and
 iPaq PDAs running Linux. It is compatible with AIM (using the Oscar
-protocols), ICQ, MSN Messenger, Yahoo, IRC, Jabber, Gadu-Gadu,
-Napster, and Trepia networks.
+protocols), ICQ, MSN Messenger, Yahoo, IRC, Jabber, Gadu-Gadu, and
+Napster networks.
 
 Gaim for Qtopia uses the Gaim core library, so many of the features
 you may use on Gaim for Linux or Windows will be found here. Gaim for
