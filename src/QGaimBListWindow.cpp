@@ -97,7 +97,7 @@ QGaimBListWindow::buildToolBar()
 
 	/* IM */
 	a = new QAction(tr("Send IM"),
-					QIconSet(Resource::loadPixmap("gaim/send-im")),
+					QIconSet(Resource::loadPixmap("gaim/new-im")),
 					QString::null, 0, this, 0);
 	imButton = a;
 	a->addTo(toolbar);
@@ -107,7 +107,7 @@ QGaimBListWindow::buildToolBar()
 			this, SLOT(sendIm()));
 
 	/* Chat */
-	a = new QAction(tr("Open Chat"), openChatIconSet,
+	a = new QAction(tr("Open Chat"), newChatIconSet,
 					QString::null, 0, this, 0);
 	chatButton = a;
 	a->addTo(toolbar);
@@ -688,6 +688,10 @@ QGaimBListWindow::openChat()
 	GaimBlistNode *node;
 
 	item = (QGaimBListItem *)buddylist->selectedItem();
+
+	if (item == NULL)
+		return;
+
 	node = item->getBlistNode();
 
 	if (GAIM_BLIST_NODE_IS_CHAT(node))

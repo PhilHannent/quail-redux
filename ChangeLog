@@ -1,3 +1,11 @@
+Sat Sep 27 00:30:44 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	  - Fixed a crash when pressing the chat button when no nodes are
+	    selected.
+	  - Changed the default IM and Chat icons to be the New IM and
+	    New Chat icons.
+
 Sat Sep 27 00:23:52 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvButton.cpp:
