@@ -270,9 +270,10 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 					addGroup(node->parent);
 				}
 
-				expand = !collapsed;
-
-				g_free(collapsed);
+				if (!collapsed)
+					expand = true;
+				else
+					g_free(collapsed);
 
 				/* Add the buddy here. */
 				node->ui_data = new QGaimBListItem(
@@ -292,9 +293,10 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 				addGroup(node->parent);
 			}
 
-			expand = !collapsed;
-
-			g_free(collapsed);
+			if (!collapsed)
+				expand = true;
+			else
+				g_free(collapsed);
 
 			/* Add the chat here. */
 			node->ui_data = new QGaimBListItem(
@@ -381,8 +383,8 @@ QGaimBuddyList::updateNode(GaimBlistNode *node)
 		node->ui_data = NULL;
 	}
 
-	if (expand)
-		item->setOpen(true);
+	if (expand && item->parent() != NULL)
+		item->parent()->setOpen(true);
 }
 
 void
