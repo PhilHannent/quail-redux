@@ -180,6 +180,8 @@ QGaimPrefsDialog::buildInterface()
 	tabs->addTab(awayIdlePage, "gaim/away", tr("Away/Idle"));
 	tabs->addTab(proxyPage, "gaim/network", tr("Proxy"));
 	tabs->addTab(pluginPage, "gaim/connect", tr("Plugins"));
+
+	tabs->setCurrentTab(blistPage);
 }
 
 void

@@ -1,3 +1,9 @@
+Wed Oct 22 22:45:49 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimPrefsDialog.cpp:
+	  - Default to the Buddy List preference page when entering the
+	    Preferences dialog.
+
 Wed Oct 22 22:41:29 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaim.h:
