@@ -1,3 +1,10 @@
+Sun Jul 27 02:24:45 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvButton.cpp:
+	  - The QGaimConvButton class registering and unregistering the
+	    conversation signal handlers now passes itself as the module
+	    handle, so that the handlers are unique to it.
+
 Sun Jul 27 02:12:46 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvButton.cpp:

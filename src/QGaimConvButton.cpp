@@ -37,9 +37,9 @@ QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
 	connect(menu, SIGNAL(activated(int)),
 			this, SLOT(convActivated(int)));
 
-	gaim_signal_connect(NULL, event_new_conversation,
+	gaim_signal_connect(this, event_new_conversation,
 						(void *)newConvCb, this);
-	gaim_signal_connect(NULL, event_del_conversation,
+	gaim_signal_connect(this, event_del_conversation,
 						(void *)delConvCb, this);
 
 	if (gaim_get_conversations() == NULL)
@@ -53,8 +53,8 @@ QGaimConvButton::~QGaimConvButton()
 	if (convs != NULL)
 		delete convs;
 
-	gaim_signal_disconnect(NULL, event_new_conversation, (void *)newConvCb);
-	gaim_signal_disconnect(NULL, event_del_conversation, (void *)delConvCb);
+	gaim_signal_disconnect(this, event_new_conversation, (void *)newConvCb);
+	gaim_signal_disconnect(this, event_del_conversation, (void *)delConvCb);
 }
 
 void
