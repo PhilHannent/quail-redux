@@ -54,6 +54,7 @@ class QGaimBListWindow : public QMainWindow
 		void showAccountsWindow();
 		void showConversations();
 		void blistToggled(bool state);
+		void sendIm();
 
 	private:
 		void buildInterface();

@@ -464,7 +464,7 @@ QGaimBListWindow::buildMenuBar()
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
-	pixmap = new QPixmap(DATA_PREFIX "images/edit.png");
+	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
 	button = new QToolButton(NULL, "conversations");
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);
@@ -493,6 +493,9 @@ QGaimBListWindow::buildToolBar()
 					QString::null, 0, this, 0);
 	imButton = a;
 	a->addTo(toolbar);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(sendIm()));
 }
 
 void
@@ -534,6 +537,12 @@ void
 QGaimBListWindow::blistToggled(bool)
 {
 	blistButton->setOn(true);
+}
+
+void
+QGaimBListWindow::sendIm()
+{
+	
 }
 
 /**************************************************************************

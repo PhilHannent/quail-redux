@@ -331,7 +331,7 @@ QGaimConvWindow::buildMenuBar()
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
-	pixmap = new QPixmap(DATA_PREFIX "images/edit.png");
+	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
 	convsButton = button = new QToolButton(NULL, "conversations");
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);

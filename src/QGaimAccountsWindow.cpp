@@ -126,7 +126,7 @@ QGaimAccountsWindow::setupMenubar()
 			this, SLOT(accountsToggled(bool)));
 
 	/* Conversations */
-	pixmap = new QPixmap(DATA_PREFIX "images/edit.png");
+	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
 	button = new QToolButton(NULL, "conversations");
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);
