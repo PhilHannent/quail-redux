@@ -1,3 +1,10 @@
+Sun Aug 10 01:25:28 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - Event unseen types are now handled.
+	  - Synced with the 0.67cvs API changes.
+
 Sat Aug 09 23:11:03 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/main.cpp:

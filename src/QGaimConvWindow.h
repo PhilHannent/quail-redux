@@ -85,8 +85,10 @@ class QGaimChat : public QGaimConversation
 				   time_t mtime);
 
 		void addUser(const char *user);
+		void addUsers(GList *users);
 		void renameUser(const char *oldName, const char *newName);
 		void removeUser(const char *user);
+		void removeUsers(GList *users);
 
 		void setShowUserList(bool show);
 

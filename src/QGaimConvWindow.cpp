@@ -320,6 +320,13 @@ QGaimChat::addUser(const char *user)
 }
 
 void
+QGaimChat::addUsers(GList *users)
+{
+	for (GList *l = users; l != NULL; l = l->next)
+		addUser((const char *)l->data);
+}
+
+void
 QGaimChat::renameUser(const char *oldName, const char *newName)
 {
 	QListViewItem *item;
@@ -351,6 +358,13 @@ QGaimChat::removeUser(const char *user)
 			break;
 		}
 	}
+}
+
+void
+QGaimChat::removeUsers(GList *users)
+{
+	for (GList *l = users; l != NULL; l = l->next)
+		removeUser((const char *)l->data);
 }
 
 void
@@ -443,6 +457,10 @@ QGaimChat::updated(GaimConvUpdateType type)
 		{
 			color.setRgb(0x31, 0x4E, 0x6C);
 		}
+		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_EVENT)
+		{
+			color.setRgb(0x86, 0x82, 0x72);
+		}
 		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
 		{
 			color.setRgb(0xDF, 0x42, 0x1E);
@@ -498,6 +516,10 @@ QGaimIm::updated(GaimConvUpdateType type)
 		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_NICK)
 		{
 			color.setRgb(0x31, 0x4E, 0x6C);
+		}
+		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_EVENT)
+		{
+			color.setRgb(0x86, 0x82, 0x72);
 		}
 		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
 		{
@@ -1022,6 +1044,14 @@ qGaimConvChatAddUser(GaimConversation *conv, const char *user)
 }
 
 static void
+qGaimConvChatAddUsers(GaimConversation *conv, GList *users)
+{
+	QGaimChat *qchat = (QGaimChat *)conv->ui_data;
+
+	qchat->addUsers(users);
+}
+
+static void
 qGaimConvChatRenameUser(GaimConversation *conv, const char *oldName,
 						const char *newName)
 {
@@ -1036,6 +1066,14 @@ qGaimConvChatRemoveUser(GaimConversation *conv, const char *user)
 	QGaimChat *qchat = (QGaimChat *)conv->ui_data;
 
 	qchat->removeUser(user);
+}
+
+static void
+qGaimConvChatRemoveUsers(GaimConversation *conv, GList *users)
+{
+	QGaimChat *qchat = (QGaimChat *)conv->ui_data;
+
+	qchat->removeUsers(users);
 }
 
 static void
@@ -1061,8 +1099,10 @@ static GaimConversationUiOps convOps =
 	qGaimConvWriteIm,
 	qGaimConvWriteConv,
 	qGaimConvChatAddUser,
+	qGaimConvChatAddUsers,
 	qGaimConvChatRenameUser,
 	qGaimConvChatRemoveUser,
+	qGaimConvChatRemoveUsers,
 	qGaimConvSetTitle,
 	NULL,
 	qGaimConvUpdated
