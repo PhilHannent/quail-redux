@@ -20,8 +20,9 @@
  */
 #include <qpe/qpeapplication.h>
 
-#include <qvariant.h>
 #include <qtimer.h>
+#include <qvariant.h>
+#include <qvbox.h>
 
 #include <libgaim/prefs.h>
 #include <libgaim/conversation.h>
@@ -36,6 +37,7 @@
 
 #include "QGaim.h"
 #include "QGaimBListWindow.h"
+#include "QGaimConnectionMeter.h"
 #include "QGaimConvWindow.h"
 #include "QGaimDebugWindow.h"
 #include "QGaimNotify.h"
@@ -130,8 +132,15 @@ QGaim::init()
 	mainWindow = new QMainWindow();
 	mainWindow->showMaximized();
 
-	widgetStack = new QWidgetStack(mainWindow);
-	mainWindow->setCentralWidget(widgetStack);
+	QVBox *vbox = new QVBox(mainWindow);
+
+	widgetStack = new QWidgetStack(vbox);
+	vbox->setStretchFactor(widgetStack, 1);
+
+	/* Create the connection meters box. */
+	meters = new QGaimConnectionMeters(vbox);
+
+	mainWindow->setCentralWidget(vbox);
 
 	showBlistWindow();
 
@@ -229,6 +238,12 @@ QMainWindow *
 QGaim::getMainWindow() const
 {
 	return mainWindow;
+}
+
+QGaimConnectionMeters *
+QGaim::getMeters() const
+{
+	return meters;
 }
 
 void

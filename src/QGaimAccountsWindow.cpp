@@ -30,7 +30,6 @@
 
 #include <qpe/resource.h>
 #include <qaction.h>
-#include <qvbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlistview.h>
@@ -89,12 +88,6 @@ QGaimAccountsWindow::~QGaimAccountsWindow()
 	delete accountsView;
 }
 
-QGaimConnectionMeters *
-QGaimAccountsWindow::getMeters() const
-{
-	return meters;
-}
-
 void
 QGaimAccountsWindow::updateAccounts()
 {
@@ -104,15 +97,10 @@ QGaimAccountsWindow::updateAccounts()
 void
 QGaimAccountsWindow::buildInterface()
 {
-	QVBox *vbox;
-
 	setupToolbar();
 
-	/* Create the main vbox */
-	vbox = new QVBox(this);
-
 	/* Create the accounts view */
-	accountsView = new QListView(vbox, "AccountsView");
+	accountsView = new QListView(this, "AccountsView");
 	accountsView->addColumn(tr("Screenname"), 160);
 	accountsView->addColumn(tr("Protocol"), -1);
 	accountsView->setAllColumnsShowFocus(true);
@@ -120,10 +108,7 @@ QGaimAccountsWindow::buildInterface()
 	connect(accountsView, SIGNAL(selectionChanged(QListViewItem *)),
 			this, SLOT(accountSelected(QListViewItem *)));
 
-	/* Create the connection meters box. */
-	meters = new QGaimConnectionMeters(vbox);
-
-	setCentralWidget(vbox);
+	setCentralWidget(accountsView);
 }
 
 
@@ -354,20 +339,10 @@ static void
 qGaimConnConnectProgress(GaimConnection *gc, const char *text,
 						 size_t step, size_t step_count)
 {
-	QGaim *gaim = qGaimGetHandle();
-	QGaimAccountsWindow *accountsWin;
 	QGaimConnectionMeters *meters;
 	QGaimConnectionMeter *meter;
 
-	accountsWin = gaim->getAccountsWindow();
-
-	if (accountsWin == NULL)
-	{
-		qGaimGetHandle()->showAccountsWindow();
-		accountsWin = gaim->getAccountsWindow();
-	}
-
-	meters = accountsWin->getMeters();
+	meters = qGaimGetHandle()->getMeters();
 	meter = meters->findMeter(gc);
 
 	if (meter == NULL)
@@ -379,9 +354,7 @@ qGaimConnConnectProgress(GaimConnection *gc, const char *text,
 static void
 qGaimConnConnected(GaimConnection *gc)
 {
-	QGaim *gaim = qGaimGetHandle();
-	QGaimAccountsWindow *accountsWin = gaim->getAccountsWindow();
-	QGaimConnectionMeters *meters = accountsWin->getMeters();
+	QGaimConnectionMeters *meters = qGaimGetHandle()->getMeters();
 	QGaimConnectionMeter *meter;
 
 	meter = meters->findMeter(gc);
@@ -393,9 +366,7 @@ qGaimConnConnected(GaimConnection *gc)
 static void
 qGaimConnDisconnected(GaimConnection *gc, const char *reason)
 {
-	QGaim *gaim = qGaimGetHandle();
-	QGaimAccountsWindow *accountsWin = gaim->getAccountsWindow();
-	QGaimConnectionMeters *meters = accountsWin->getMeters();
+	QGaimConnectionMeters *meters = qGaimGetHandle()->getMeters();
 	QGaimConnectionMeter *meter;
 
 	meter = meters->findMeter(gc);

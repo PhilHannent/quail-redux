@@ -30,6 +30,7 @@
 #include <qvariant.h>
 #include <qwidgetstack.h>
 
+class QGaimConnectionMeters;
 class QGaimConvWindow;
 
 class QGaim : QObject
@@ -55,6 +56,8 @@ class QGaim : QObject
 		QWidgetStack *getWidgetStack() const;
 		QMainWindow *getMainWindow() const;
 
+		QGaimConnectionMeters *getMeters() const;
+
 	public slots:
 		void showBlistWindow();
 		void showAccountsWindow();
@@ -69,6 +72,8 @@ class QGaim : QObject
 		QGaimBListWindow *blistWin;
 		QGaimAccountsWindow *accountsWin;
 		GaimWindow *lastConvWin;
+
+		QGaimConnectionMeters *meters;
 
 		int nextConvWinId;
 };

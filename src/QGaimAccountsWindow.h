@@ -29,7 +29,6 @@
 #include <qlistview.h>
 
 class QAction;
-class QGaimConnectionMeters;
 class QPixmap;
 class QToolBar;
 class QToolButton;
@@ -58,8 +57,6 @@ class QGaimAccountsWindow : public QMainWindow
 	public:
 		QGaimAccountsWindow();
 		~QGaimAccountsWindow();
-
-		QGaimConnectionMeters *getMeters() const;
 
 		void updateAccounts();
 
@@ -95,8 +92,6 @@ class QGaimAccountsWindow : public QMainWindow
 		QAction *disconnectButton;
 
 		QListView *accountsView;
-
-		QGaimConnectionMeters *meters;
 };
 
 GaimConnectionUiOps *qGaimGetConnectionUiOps();
