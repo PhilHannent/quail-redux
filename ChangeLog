@@ -1,3 +1,9 @@
+Mon Aug 04 01:30:19 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - Hopefully prevented chat tabs from indicating that there's new
+	    messages in it when you're already on that tab.
+
 Mon Aug 04 01:27:08 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* data/images/userlist.png:

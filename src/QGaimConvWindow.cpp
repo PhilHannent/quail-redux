@@ -385,6 +385,12 @@ QGaimChat::updated(GaimConvUpdateType type)
 
 		color = black;
 
+		win = gaim_conversation_get_window(conv);
+		qwin = (QGaimConvWindow *)win->ui_data;
+
+		if (gaim_window_get_active_conversation(win) == conv)
+			return;
+
 		if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_NICK)
 		{
 			color.setRgb(0x31, 0x4E, 0x6C);
@@ -393,9 +399,6 @@ QGaimChat::updated(GaimConvUpdateType type)
 		{
 			color.setRgb(0xDF, 0x42, 0x1E);
 		}
-
-		win = gaim_conversation_get_window(conv);
-		qwin = (QGaimConvWindow *)win->ui_data;
 
 		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
