@@ -1,3 +1,11 @@
+Fri Aug 15 02:15:20 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimDialogs.cpp:
+	* src/QGaimDialogs.h:
+	  - Changing the account in the drop-down list in the Join Chat
+	    dialog now updates the widgets for specifying the
+	    protocol-dependent chat information.
+
 Fri Aug 15 00:55:11 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

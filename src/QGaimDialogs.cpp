@@ -227,12 +227,17 @@ QGaimJoinChatDialog::buildInterface()
 	grid = new QGridLayout(widgetsFrame, 1, 1);
 	grid->setSpacing(5);
 
+	labels.setAutoDelete(true);
 	widgets.setAutoDelete(true);
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Join Chat As:"), widgetsFrame), 0, 0);
 	accountCombo = new QGaimAccountBox(false, widgetsFrame, "account");
 	grid->addWidget(accountCombo, 0, 1);
+
+	/* Connect the signal */
+	connect(accountCombo, SIGNAL(activated(int)),
+			this, SLOT(accountChanged(int)));
 
 	/* Add a spacer. */
 	spacer = new QLabel("", vbox);
@@ -245,12 +250,14 @@ void
 QGaimJoinChatDialog::rebuildWidgetsFrame()
 {
 	GList *chatInfoList, *l;
+	QLabel *label;
 	GaimConnection *gc;
 	struct proto_chat_entry *pce;
 	int row;
 
 	gc = gaim_account_get_connection(accountCombo->getCurrentAccount());
 
+	labels.clear();
 	widgets.clear();
 
 	chatInfoList = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
@@ -259,7 +266,10 @@ QGaimJoinChatDialog::rebuildWidgetsFrame()
 	{
 		pce = (struct proto_chat_entry *)l->data;
 
-		grid->addWidget(new QLabel(tr(pce->label), widgetsFrame), row, 0);
+		label = new QLabel(tr(pce->label), widgetsFrame);
+		grid->addWidget(label, row, 0);
+		labels.append(label);
+		label->show();
 
 		if (pce->is_int)
 		{
@@ -270,6 +280,8 @@ QGaimJoinChatDialog::rebuildWidgetsFrame()
 			grid->addWidget(spinbox, row, 1);
 
 			widgets.append(spinbox);
+
+			spinbox->show();
 		}
 		else
 		{
@@ -278,12 +290,20 @@ QGaimJoinChatDialog::rebuildWidgetsFrame()
 			grid->addWidget(edit, row, 1);
 
 			widgets.append(edit);
+
+			edit->show();
 		}
 
 		g_free(pce);
 	}
 
 	g_list_free(chatInfoList);
+}
+
+void
+QGaimJoinChatDialog::accountChanged(int)
+{
+	rebuildWidgetsFrame();
 }
 
 void

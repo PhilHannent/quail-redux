@@ -74,12 +74,14 @@ class QGaimJoinChatDialog : public QDialog
 		void rebuildWidgetsFrame();
 
 	protected slots:
+		void accountChanged(int index);
 		void accept();
 
 	private:
 		QGaimAccountBox *accountCombo;
 		QGridLayout *grid;
 		QFrame *widgetsFrame;
+		QList<QWidget> labels;
 		QList<QWidget> widgets;
 };
 
