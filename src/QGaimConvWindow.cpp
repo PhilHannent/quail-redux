@@ -2,6 +2,8 @@
 #include "QGaim.h"
 #include "base.h"
 
+#include <libgaim/debug.h>
+
 #include <qmultilineedit.h>
 #include <qsplitter.h>
 #include <qtabwidget.h>
@@ -531,4 +533,27 @@ GaimWindowUiOps *
 qGaimGetConvWindowUiOps()
 {
 	return &winOps;
+}
+
+QPopupMenu *
+qGaimBuildConvMenu()
+{
+	QPopupMenu *menu;
+	GaimConversation *conv;
+	GList *l;
+
+	menu = new QPopupMenu();
+
+	for (l = gaim_get_conversations(); l != NULL; l = l->next)
+	{
+		conv = (GaimConversation *)l->data;
+
+		gaim_debug(GAIM_DEBUG_INFO, "qGaimBuildConvMenu",
+				   "Adding %s\n",
+				   gaim_conversation_get_title(conv));
+
+		menu->insertItem(gaim_conversation_get_title(conv));
+	}
+
+	return menu;
 }

@@ -1,4 +1,5 @@
 #include "QGaimBListWindow.h"
+#include "QGaimConvWindow.h"
 #include "QGaim.h"
 #include "base.h"
 
@@ -7,14 +8,14 @@
 #include <libgaim/debug.h>
 
 #include <qaction.h>
+#include <qheader.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlistview.h>
-#include <qtoolbar.h>
+#include <qpopupmenu.h>
 #include <qpushbutton.h>
-#include <qtoolbutton.h>
 #include <qtoolbar.h>
-#include <qheader.h>
+#include <qtoolbutton.h>
 
 /**************************************************************************
  * QGaimBListItem
@@ -105,13 +106,15 @@ QGaimBListItem::getProtocolIcon(GaimAccount *account)
  * QGaimBListWindow
  **************************************************************************/
 QGaimBListWindow::QGaimBListWindow()
-	: QMainWindow()
+	: QMainWindow(), convsMenu(NULL)
 {
 	buildInterface();
 }
 
 QGaimBListWindow::~QGaimBListWindow()
 {
+	if (convsMenu != NULL)
+		delete convsMenu;
 }
 
 void
@@ -380,6 +383,7 @@ QGaimBListWindow::buildToolBar()
 	/* Conversations */
 	pixmap = new QPixmap(DATA_PREFIX "images/conversations.png");
 	button = new QToolButton(toolbar, "conversations");
+	convsButton = button;
 	button->setAutoRaise(true);
 	button->setPixmap(*pixmap);
 	delete pixmap;
@@ -439,6 +443,20 @@ QGaimBListWindow::showAccountsWindow()
 void
 QGaimBListWindow::showConversations()
 {
+	gaim_debug(GAIM_DEBUG_INFO, "qblist", "showConversations\n");
+
+	if (convsMenu != NULL)
+		delete convsMenu;
+
+	convsMenu = qGaimBuildConvMenu();
+
+	convsMenu->popup(
+		mapToGlobal(QPoint(convsButton->x(),
+						   convsButton->y() + convsButton->height())));
+
+	gaim_debug(GAIM_DEBUG_INFO, "qblist",
+			   "Displaying at %d, %d\n",
+			   convsButton->x(), convsButton->y() + convsButton->height());
 }
 
 void

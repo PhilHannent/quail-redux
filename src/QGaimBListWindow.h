@@ -75,11 +75,7 @@ class QGaimBListWindow : public QMainWindow
 		QToolButton *blistButton;
 		QToolButton *convsButton;
 
-		QPopupMenu *buddiesMenu;
-		QPopupMenu *toolsMenu;
-		QPopupMenu *awayMenu;
-		QPopupMenu *pounceMenu;
-		QPopupMenu *protocolMenu;
+		QPopupMenu *convsMenu;
 
 		QListView *buddylist;
 		QToolBar *toolbar;

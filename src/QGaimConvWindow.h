@@ -9,6 +9,7 @@
 
 class QMenuBar;
 class QMultiLineEdit;
+class QPopupMenu;
 class QTabWidget;
 class QTextView;
 
@@ -112,5 +113,7 @@ class QGaimConvWindow : public QMainWindow
 };
 
 GaimWindowUiOps *qGaimGetConvWindowUiOps();
+
+QPopupMenu *qGaimBuildConvMenu();
 
 #endif /* _QGAIM_CONV_WIN_H_ */

@@ -1,3 +1,13 @@
+Mon Jul 14 02:41:27 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Added a drop-down menu to the Conversations button on the buddy
+	    list, which will be used for accessing other conversations not
+	    in view.
+
 Sun Jul 13 01:20:37 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* mkstuff.conf:
