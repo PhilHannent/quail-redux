@@ -397,8 +397,6 @@ QGaimChat::buildInterface()
 
 	connect(entry, SIGNAL(returnPressed()),
 			this, SLOT(returnPressed()));
-	connect(entry, SIGNAL(textChanged()),
-			this, SLOT(updateTyping()));
 
 	entry->setFocus();
 }
@@ -450,9 +448,6 @@ QGaimChat::updated(GaimConvUpdateType type)
 
 		win = gaim_conversation_get_window(conv);
 		qwin = (QGaimConvWindow *)win->ui_data;
-
-		if (gaim_window_get_active_conversation(win) == conv)
-			return;
 
 		if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_NICK)
 		{
@@ -975,7 +970,6 @@ QGaimConvWindow::setupToolbar()
 	/* Buddy List */
 	a = new QAction(tr("Buddy List"), Resource::loadPixmap("gaim/blist"),
 					QString::null, 0, this, 0);
-	a->setOn(true);
 	a->addTo(toolbar);
 
 	connect(a, SIGNAL(activated()),
