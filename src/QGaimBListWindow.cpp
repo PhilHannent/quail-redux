@@ -254,12 +254,42 @@ QGaimBListWindow::getGaimBlist() const
 }
 
 void
-QGaimBListWindow::accountSignedOn(GaimAccount *)
+QGaimBListWindow::accountSignedOn(GaimAccount *account)
 {
+	GaimBlistNode *gnode, *cnode;
+
 	chatButton->setEnabled(true);
 	addButton->setEnabled(true);
 	addBuddyButton->setEnabled(true);
 	addGroupButton->setEnabled(true);
+
+	for (gnode = gaim_get_blist()->root; gnode != NULL; gnode = gnode->next)
+	{
+		if (!GAIM_BLIST_NODE_IS_GROUP(gnode))
+			continue;
+
+		for (cnode = gnode->child; cnode != NULL; cnode = cnode->next)
+		{
+			GaimChat *chat;
+			const char *autojoin;
+
+			if (!GAIM_BLIST_NODE_IS_CHAT(cnode))
+				continue;
+
+			chat = (GaimChat *)cnode;
+
+			if (chat->account != account)
+				continue;
+
+			autojoin = gaim_chat_get_setting(chat, "qpe-autojoin");
+
+			if (autojoin != NULL && !strcmp(autojoin, "true"))
+			{
+				serv_join_chat(gaim_account_get_connection(account),
+							   chat->components);
+			}
+		}
+	}
 }
 
 void

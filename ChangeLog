@@ -1,3 +1,8 @@
+Wed Oct 08 00:33:11 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	  - Chats can now be auto-joined on connect.
+
 Wed Oct 08 00:27:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:
