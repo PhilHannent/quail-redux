@@ -99,6 +99,7 @@ DISTFILES = \
 	data/images/formatting.png \
 	data/images/info.png \
 	data/images/join_chat.png \
+	data/images/network.png \
 	data/images/new.png \
 	data/images/new-chat.png \
 	data/images/new-im.png \
