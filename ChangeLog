@@ -1,3 +1,9 @@
+Fri Aug 01 18:19:10 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkipk.sh:
+	  - The Depends line was being written to stdout, and not to the
+	    control file. Fixed.
+
 Fri Aug 01 15:57:12 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:
