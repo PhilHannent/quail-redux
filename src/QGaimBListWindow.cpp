@@ -785,7 +785,7 @@ QGaimBListWindow::openChatSlot(GaimChat *chat)
 		serv_join_chat(gaim_account_get_connection(chat->account),
 					   chat->components);
 	}
-	else if (node == NULL)
+	else
 	{
 		QGaimJoinChatDialog *dialog;
 

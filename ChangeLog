@@ -1,3 +1,8 @@
+Thu Oct 23 21:12:29 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	  - The Join Chat button actually works right now.
+
 Thu Oct 23 21:09:11 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:
