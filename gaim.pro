@@ -107,8 +107,6 @@ DISTFILES = \
 	mkipk.sh \
 	mktarball.sh
 
-DEFINES += LOCAL_COMPILE
-
 INCLUDEPATH += \
 	$(QPEDIR)/include \
 	/usr/include/glib-2.0 \
