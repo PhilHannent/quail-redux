@@ -760,19 +760,19 @@ void
 QGaimBListWindow::openChatSlot(GaimChat *chat)
 {
 	QGaimBListItem *item;
-	GaimBlistNode *node;
+	GaimBlistNode *node = NULL;
 
 	if (chat == NULL)
 	{
 		item = (QGaimBListItem *)buddylist->selectedItem();
 
-		if (item == NULL)
-			return;
+		if (item != NULL)
+		{
+			node = item->getBlistNode();
 
-		node = item->getBlistNode();
-
-		if (GAIM_BLIST_NODE_IS_CHAT(node))
-			chat = (GaimChat *)node;
+			if (GAIM_BLIST_NODE_IS_CHAT(node))
+				chat = (GaimChat *)node;
+		}
 	}
 
 	if (chat != NULL)
@@ -780,7 +780,7 @@ QGaimBListWindow::openChatSlot(GaimChat *chat)
 		serv_join_chat(gaim_account_get_connection(chat->account),
 					   chat->components);
 	}
-	else
+	else if (node == NULL)
 	{
 		QGaimJoinChatDialog *dialog;
 

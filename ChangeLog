@@ -1,3 +1,9 @@
+Thu Oct 23 19:33:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	  - The Join Chat button should now work even when a node isn't
+	    selected.
+
 Thu Oct 23 19:31:00 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimPrefsDialog.cpp:
