@@ -1,3 +1,8 @@
+Wed Sep 24 20:55:18 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* make.sh:
+	  - Rebuild Makefile every time make.sh is ran.
+
 Wed Sep 24 20:45:39 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:

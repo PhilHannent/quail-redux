@@ -22,5 +22,5 @@ else
 	exit 1
 fi
 
-[ ! -e Makefile ] && tmake $EXTRA_FLAGS -o Makefile gaim.pro
+tmake $EXTRA_FLAGS -o Makefile gaim.pro
 make
