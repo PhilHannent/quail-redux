@@ -108,6 +108,8 @@ QGaim::init()
 {
 	char *plugin_search_paths[1];
 
+	mainWindow = new QMainWindow();
+
 	gaim_set_core_ui_ops(qGaimGetCoreUiOps());
 
 	if (!gaim_core_init("qpe-gaim")) {
@@ -115,8 +117,11 @@ QGaim::init()
 				  "Please report this!\n"));
 	}
 
-//	plugin_search_paths[0] = "/usr/lib/gaim";
+#ifdef LOCAL_COMPILE
 	plugin_search_paths[0] = "/opt/Qtopia/lib/gaim";
+#else
+	plugin_search_paths[0] = "/usr/lib/gaim";
+#endif
 
 	gaim_plugins_set_search_paths(sizeof(plugin_search_paths) /
 								  sizeof(*plugin_search_paths),
@@ -129,8 +134,6 @@ QGaim::init()
 	gaim_accounts_load();
 	gaim_pounces_load();
 
-	mainWindow = new QMainWindow();
-	mainWindow->showMaximized();
 
 	QVBox *vbox = new QVBox(mainWindow);
 
