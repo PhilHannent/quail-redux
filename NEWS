@@ -2,17 +2,28 @@ Gaim for Qtopia Release Notes
 -----------------------------
 
 version 0.3:
-	* Added support for registering accounts on protocol plugins that
-	  support it (such as Jabber).
-	* Added Yahoo color support.
 	* Added contact support, where multiple buddies belonging to the
 	  same person can be grouped under that person's name.
+	* Added Yahoo color support.
+	* Added Yahoo chat and conference support.
+	* Added support for the new Yahoo and MSN protocols.
 	* Added support for getting a user's profile.
+	* Added support for registering accounts on protocol plugins that
+	  support it (such as Jabber).
+	* Added context-sensitive menus to groups, contacts, and buddies
+	  in the buddy list.
+	* Added support for adding/removing buddies from a conversation.
+	* Added support for aliasing buddies and chats.
+	* Added the ability to auto-join chats on sign-on.
+	* Added a "pulser" in the accounts window that indicates if an
+	  account is signing on.
 	* Fixed some proxy preference bugs.
 	* Fixed a crash when hold-and-tapping or right-clicking on parts of
 	  the buddy list.
 	* Fixed a crash when pressing the chat button when no buddies, groups,
 	  or chats are selected in the buddy list.
+	* The send button is now only clickable if text is entered in the
+	  text box in conversations.
 
 version 0.2 (Friday, 15-August-2003):
 	* Fixed a bug where Gaim would crash if libgaim-plugins-oscar
