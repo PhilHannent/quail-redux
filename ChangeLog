@@ -1,3 +1,8 @@
+Thu Jul 31 13:30:26 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkipk.sh:
+	  - Alternative package names for glib2 are now supported.
+
 Thu Jul 31 08:29:59 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
