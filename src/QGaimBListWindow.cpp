@@ -648,9 +648,18 @@ qGaimBlistUpdate(struct gaim_buddy_list *blist, GaimBlistNode *node)
 static void
 qGaimBlistRemove(struct gaim_buddy_list *, GaimBlistNode *node)
 {
+	QListViewItem *parent;
 	QGaimBListItem *item = (QGaimBListItem *)node->ui_data;
 
-	delete item;
+	if (item != NULL)
+	{
+		parent = item->parent();
+
+		delete item;
+
+		if (parent != NULL && parent->childCount() == 0)
+			delete parent;
+	}
 
 	node->ui_data = NULL;
 }
