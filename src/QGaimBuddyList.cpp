@@ -150,6 +150,7 @@ QGaimBListItem::updateInfo()
 		GaimChat *chat = (GaimChat *)node;
 
 		setPixmap(0, QGaimProtocolUtils::getProtocolIcon(chat->account));
+		setText(0, gaim_chat_get_display_name(chat));
 	}
 }
 
