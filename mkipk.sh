@@ -33,12 +33,18 @@ perl -pi -e "s/LOCAL_COMPILE//g" $TMPDIR/BUILD/gaim.pro
 
 # Remove the xcf files
 $RM -f $TMPDIR/BUILD/images/*.xcf
+$RM -rf $TMPDIR/BUILD/data/.cvsignore
+$RM -rf $TMPDIR/BUILD/data/CVS
+$RM -rf $TMPDIR/BUILD/data/images/.cvsignore
 $RM -rf $TMPDIR/BUILD/data/images/.xvpics
 $RM -rf $TMPDIR/BUILD/data/images/CVS
+$RM -rf $TMPDIR/BUILD/data/images/protocols/.cvsignore
 $RM -rf $TMPDIR/BUILD/data/images/protocols/.xvpics
 $RM -rf $TMPDIR/BUILD/data/images/protocols/CVS
+$RM -rf $TMPDIR/BUILD/data/images/protocols/small/.cvsignore
 $RM -rf $TMPDIR/BUILD/data/images/protocols/small/.xvpics
 $RM -rf $TMPDIR/BUILD/data/images/protocols/small/CVS
+$RM -rf $TMPDIR/BUILD/data/images/status/.cvsignore
 $RM -rf $TMPDIR/BUILD/data/images/status/.xvpics
 $RM -rf $TMPDIR/BUILD/data/images/status/CVS
 $RM -rf $TMPDIR/BUILD/src/CVS
@@ -75,8 +81,7 @@ echo
 echo "COPYING DATA FILES"
 
 mkdir -p $DIST/opt/QtPalmtop/share/gaim
-mkdir $DIST/opt/QtPalmtop/share/gaim/data
-cp -R $TMPDIR/BUILD/data/* $DIST/opt/QtPalmtop/share/gaim/data/
+cp -R $TMPDIR/BUILD/data/* $DIST/opt/QtPalmtop/share/gaim/
 
 echo
 echo "CREATING BINARIES"

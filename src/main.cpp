@@ -47,7 +47,7 @@ QGaim::init()
 	gaim_sound_init();
 	gaim_pounces_init();
 
-	plugin_search_paths[0] = "/home/chipx86/cvs/libgaim-root/lib/gaim";
+	plugin_search_paths[0] = "/opt/QtPalmtop/lib/gaim";
 
 	gaim_plugins_set_search_paths(sizeof(plugin_search_paths) /
 								  sizeof(*plugin_search_paths),
