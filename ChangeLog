@@ -1,233 +1,28 @@
-Mon Oct 20 00:32:10 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+Mon Oct 20 20:03:10 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
-	* NEWS:
-	* README:
-    * gaim.pro:
-	* mkstuff.conf:
-	  - 0.4cvs
+	* src/QGaimPrefsDialog.cpp:
+	  - Added icons to the tabs in the preferences.
 
-Sat Oct 11 02:07:32 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+Mon Oct 20 18:51:09 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
-	* NEWS:
-	* mkstuff.conf:
-	  - 0.3
+	* src/QGaimBListWindow.cpp:
+	  - Show the preferences dialog full-screen.
 
-Thu Oct 09 00:19:52 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+	* src/QGaimPrefsDialog.cpp:
+	  - The tab widget in the prefs dialog now takes up the whole dialog.
 
-	* src/QGaimConvWindow.cpp:
-	* src/QGaimConvWindow.h:
-	  - The Send button is disabled when the text field is empty in
-	    conversation windows.
+Mon Oct 20 18:46:22 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
-Thu Oct 09 00:00:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Added the Preferences item to the drop-down menu in the buddy list.
 
-	* src/QGaimBuddyList.cpp:
-	  - Fixed a problem when removing buddies. They didn't always
-	    leave the list.
+Mon Oct 20 18:30:35 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
-Wed Oct 08 23:41:55 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimConvWindow.cpp:
-	* src/QGaimConvWindow.h:
-	  - Added support for adding and removing buddies from conversations.
-
-Wed Oct 08 23:38:20 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	  - Fixed a crash when loading a buddy list that has Show Offline
-	    Buddies set. I'm glad that didn't slip into release.
-
-Wed Oct 08 21:55:07 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimConvWindow.cpp:
-	* src/QGaimConvWindow.h:
-	  - The Get Information button works in IMs.
-
-Wed Oct 08 21:30:55 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimAction.h:
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - Added protocol-specific actions in the buddy context-sensitive menu.
-
-Wed Oct 08 20:44:02 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimAction.h:
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
+	* src/QGaimPrefsDialog.cpp:
+	* src/QGaimPrefsDialog.h:
 	* gaim.pro:
-	  - Added QGaimAction, which is like QAction but can pass user data
-	    to the activated() slot.
-	  - Added a list of buddies in a contact's context-sensitive menu.
-
-Wed Oct 08 18:37:04 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - Added support for aliasing buddies.
-
-Wed Oct 08 00:33:11 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBListWindow.cpp:
-	  - Chats can now be auto-joined on connect.
-
-Wed Oct 08 00:27:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - Added the Alias Chat dialog.
-
-Tue Oct 07 22:43:47 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBListWindow.cpp:
-	* src/QGaimBListWindow.h:
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - The Join Chat and Remove Chat now works in the menu.
-
-Tue Oct 07 21:37:33 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	* gaim.pro:
-	  - Fixed a crash with chats in the buddy list.
-	  - Added the beginnings of the context-sensitive menu for chats.
-
-Tue Oct 07 21:11:16 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBListWindow.cpp:
-	* src/QGaimBListWindow.h:
-	* src/QGaimBuddyList.cpp:
-	  - The Add Buddy and Add Chat in the Add menu work again.
-
-Tue Oct 07 20:32:33 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	  - Chats display in the buddy list correctly.
-
-Tue Oct 07 20:03:25 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBListWindow.cpp:
-	* src/QGaimBListWindow.h:
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - Added the Group context-sensitive menu.
-
-Tue Oct 07 19:24:31 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - Rewrote the buddy list context-sensitive menu code to reduce
-	    code duplication and ease maintenance a bit.
-
-Tue Oct 07 19:07:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBListWindow.cpp:
-	  - Hooked up signals for removing buddies, groups, and contacts in
-	    the buddy list.
-
-Tue Oct 07 08:49:51 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	* src/QGaimBListWindow.cpp:
-	* src/QGaimBListWindow.h:
-	  - Now using signals to remove code duplicate between QGaimBuddyList
-	    and QGaimBListWindow.
-
-Mon Oct 06 22:05:31 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - Appended a Slot suffix to some slot functions. I don't feel
-	    like updating the rest of qpe-gaim yet.
-
-Mon Oct 06 20:44:46 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - Added a convenience function to QGaimBuddyList that returns the
-	    selected buddy, taking into account contacts.
-
-Mon Oct 06 20:33:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBListWindow.cpp:
-	* src/QGaimBListWindow.h:
-	  - The IM item in the context-sensitive menu for buddies and contacts
-	    now works.
-
-Mon Oct 06 19:09:23 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimNotify.cpp:
-	* src/QGaimNotify.h:
-	  - Added the UI for the notify formatted dialog.
-
-Mon Oct 06 16:22:28 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - Added support for Get User Info. There's just no UI for displaying
-	    it, yet :)
-
-Mon Oct 06 01:48:03 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimAccountsWindow.cpp:
-	* src/QGaimAccountsWindow.h:
-	  - Added a throbber for each protocol icon in the accounts window.
-	    When an account is signing on, the protocol icon will grey in,
-	    grey out.. throbby action!
-
-Mon Oct 06 00:41:47 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimConvButton.cpp:
-	  - The icons in the conversations drop-down menu now show buddy
-	    status.
-
-Mon Oct 06 00:38:42 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	  - Fixed scaling of emblems in the buddy list.
-
-Mon Oct 06 00:18:40 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	  - Fixed the scaling on conversation tabs.
-
-Mon Oct 06 00:12:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimConvButton.cpp:
-	* src/QGaimConvWindow.cpp:
-	  - Fixed the scaling on the conversations button and the tabs.
-
-Mon Oct 06 00:04:34 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaimAccountEditor.cpp:
-	* src/QGaimAccountsWidnow.cpp:
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimImageUtils.h:
-	* src/QGaimProtocolBox.cpp:
-	* src/QGaimProtocolUtils.cpp:
-	* src/QGaimProtocolUtils.h:
-	* gaim.pro:
-	  - The protocol icons and status icons are now their normal,
-	    larger versions, and are scaled down to the appropriate sizes
-	    in the buddy list, menus, drop-down boxes, tabs, and account
-	    editor. In time, we'll be able to have a Big List for
-	    users of larger resolution screens.
-
-Sun Oct 05 20:05:48 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
-
-	* src/QGaim.h:
-	* src/QGaimBListWindow.cpp:
-	* src/QGaimBListWindow.h:
-	* src/QGaimBuddyList.cpp:
-	* src/QGaimBuddyList.h:
-	* src/QGaimConvButton.cpp:
-	* src/QGaimConvWindow.cpp:
-	* src/QGaimConvWindow.h:
-	* src/QGaimDialogs.cpp:
-	* src/main.cpp:
-	  - API sync to libgaim 0.71cvs-20031005
+	  - Allow QGaimPrefsDialog to compile.
 
 Sat Sep 27 00:40:09 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 

@@ -24,6 +24,8 @@
 #include <qlabel.h>
 #include <qlayout.h>
 
+#include <qpe/resource.h>
+
 QGaimPrefsDialog::QGaimPrefsDialog(QWidget *parent, const char *name,
 								   WFlags fl)
 	: QDialog(parent, name, fl)
@@ -47,12 +49,24 @@ QGaimPrefsDialog::buildInterface()
 
 	tabs = new QGaimTabWidget(this, "pref tabs");
 
-	tabs->addTab(buildBuddyListTab(),     tr("Buddy List"));
-	tabs->addTab(buildConversationsTab(), tr("Conversations"));
-	tabs->addTab(buildNotificationTab(),  tr("Notification"));
-	tabs->addTab(buildAwayIdleTab(),      tr("Away/Idle"));
-	tabs->addTab(buildProxyTab(),         tr("Proxy"));
-	tabs->addTab(buildPluginsTab(),       tr("Plugins"));
+	tabs->addTab(buildBuddyListTab(),
+				 Resource::loadPixmap("gaim/blist"),
+				 tr("Buddy List"));
+	tabs->addTab(buildConversationsTab(),
+				 Resource::loadPixmap("gaim/conversations"),
+				 tr("Conversations"));
+	tabs->addTab(buildNotificationTab(),
+				 Resource::loadPixmap("gaim/warn"),
+				 tr("Notification"));
+	tabs->addTab(buildAwayIdleTab(),
+				 Resource::loadPixmap("gaim/away"),
+				 tr("Away/Idle"));
+	tabs->addTab(buildProxyTab(),
+				 Resource::loadPixmap("gaim/network"),
+				 tr("Proxy"));
+	tabs->addTab(buildPluginsTab(),
+				 Resource::loadPixmap("gaim/connect"),
+				 tr("Plugins"));
 }
 
 QWidget *
