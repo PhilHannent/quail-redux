@@ -8,6 +8,7 @@
 #include <libgaim/conversation.h>
 
 class QAction;
+class QGaimTabWidget;
 class QMultiLineEdit;
 class QPopupMenu;
 class QTabWidget;
@@ -122,7 +123,7 @@ class QGaimConvWindow : public QMainWindow
 		GaimWindow *win;
 
 		QToolBar *toolbar;
-		QTabWidget *tabs;
+		QGaimTabWidget *tabs;
 
 		QToolButton *convsButton;
 

@@ -13,8 +13,11 @@ HEADERS = \
 	src/QGaimDebugWindow.h \
 	src/QGaimProtocolBox.h \
 	src/QGaimProtocolUtils.h \
+	src/QGaimTabBar.h \
+	src/QGaimTabWidget.h \
 	src/QGaim.h \
 	src/base.h
+
 
 SOURCES = \
 	src/QGaimAccountEditor.cpp \
@@ -26,7 +29,10 @@ SOURCES = \
 	src/QGaimDebugWindow.cpp \
 	src/QGaimProtocolBox.cpp \
 	src/QGaimProtocolUtils.cpp \
+	src/QGaimTabBar.cpp \
+	src/QGaimTabWidget.cpp \
 	src/main.cpp
+
 
 DISTFILES = \
 	data/images/protocols/small/aim.png \

@@ -1,3 +1,14 @@
+Fri Aug 01 13:23:17 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	* src/QGaimTabBar.cpp:
+	* src/QGaimTabBar.h:
+	* src/QGaimTabWidget.cpp:
+	* src/QGaimTabWidget.h:
+	  - Added a subclassed QTabBar and QTabWidget, which will be used
+	    for some things such as typing notification shortly.
+
 Thu Jul 31 16:57:07 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

@@ -1,5 +1,6 @@
 #include "QGaimConvWindow.h"
 #include "QGaimConvButton.h"
+#include "QGaimTabWidget.h"
 #include "QGaim.h"
 #include "base.h"
 
@@ -393,7 +394,7 @@ QGaimConvWindow::buildInterface()
 {
 	setupToolbar();
 
-	tabs = new QTabWidget(this, "conv tabs");
+	tabs = new QGaimTabWidget(this, "conv tabs");
 
 	setCentralWidget(tabs);
 }
