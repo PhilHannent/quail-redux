@@ -82,7 +82,11 @@ QGaim::init()
 		abort();
 	}
 
-	plugin_search_paths[0] = "/opt/QtPalmtop/lib/gaim";
+#ifdef LOCAL_COMPILE
+	plugin_search_paths[0] = "/opt/Qtopia/lib/gaim";
+#else
+	plugin_search_paths[0] = "/usr/lib/gaim";
+#endif
 
 	gaim_plugins_set_search_paths(sizeof(plugin_search_paths) /
 								  sizeof(*plugin_search_paths),
@@ -104,6 +108,8 @@ QGaim::init()
 			this, SLOT(doMainLoop()));
 
 	timer->start(10, FALSE);
+
+	gaim_accounts_auto_login("qpe-gaim");
 
 	app->showMainWidget(blistWin);
 }
