@@ -1,3 +1,9 @@
+Sat Feb 07 16:24:50 PST 2004  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBuddyList.cpp:
+	  - Move from some deprecated functions to the new replacements.
+
 Sat Feb 07 16:08:59 PST 2004  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimProtocolBox.cpp:

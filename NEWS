@@ -1,6 +1,11 @@
 Gaim for Qtopia Release Notes
 -----------------------------
 
+version 0.5:
+	* Improved Jabber support (chats, SASL PLAIN).
+	* Fixed an MSN login bug.
+	* Yahoo chat should work for some people now, but it is still buggy.
+
 version 0.4 (Saturday, 22-November-2003):
 	* Added a preferences dialog.
 	* Added support for showing group numbers in the buddy list.
