@@ -1,4 +1,5 @@
 #include "QGaimAccountEditor.h"
+#include "QGaimAccountsWindow.h"
 #include "QGaimProtocolBox.h"
 #include "QGaimProtocolUtils.h"
 #include "base.h"
@@ -19,7 +20,8 @@
 QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account, QWidget *parent,
 									   const char *name, WFlags fl)
 	: QDialog(parent, name, fl), account(account), plugin(NULL),
-	  prplInfo(NULL), userSplitEntries(NULL), protocolOptEntries(NULL)
+	  prplInfo(NULL), accountsWin(NULL), userSplitEntries(NULL),
+	  protocolOptEntries(NULL), newProxyType(GAIM_PROXY_USE_GLOBAL)
 {
 	if (account == NULL)
 	{
@@ -40,6 +42,17 @@ QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account, QWidget *parent,
 
 QGaimAccountEditor::~QGaimAccountEditor()
 {
+	if (userSplitEntries != NULL)
+		g_list_free(userSplitEntries);
+
+	if (protocolOptEntries != NULL)
+		g_list_free(protocolOptEntries);
+}
+
+void
+QGaimAccountEditor::setAccountsWindow(QGaimAccountsWindow *accountsWin)
+{
+	this->accountsWin = accountsWin;
 }
 
 void
@@ -293,7 +306,7 @@ QGaimAccountEditor::buildProxyTab()
 
 	/* Proxy Type */
 	grid->addWidget(new QLabel(tr("Proxy Type:"), frame), row, 0);
-	proxyDropDown = new QComboBox(frame);
+	proxyDropDown = new QComboBox(frame, "proxy type");
 	grid->addWidget(proxyDropDown, row++, 1);
 	row++;
 
@@ -424,8 +437,11 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 		 l != NULL && l2 != NULL;
 		 l = l->prev, l2 = l2->prev)
 	{
-		GaimAccountUserSplit *split = (GaimAccountUserSplit *)l2->data;
+		GaimAccountUserSplit *split;
 		QString value;
+
+		entry = (QLineEdit *)l->data;
+		split = (GaimAccountUserSplit *)l2->data;
 
 		if (account != NULL)
 		{
@@ -574,4 +590,207 @@ QGaimAccountEditor::protocolChanged(int index)
 #endif
 
 	buildTabs();
+}
+
+void
+QGaimAccountEditor::accept()
+{
+	QString str, username;
+	GList *l, *l2;
+	bool newAccount = (account == NULL);
+
+	if (account == NULL)
+	{
+		/* New Account */
+		username = screenNameEntry->text();
+
+		account = gaim_account_new(username, protocolId);
+	}
+	else
+	{
+		/* Protocol */
+		gaim_account_set_protocol_id(account, protocolId);
+	}
+
+	/* Clear the existing settings. */
+	gaim_account_clear_settings(account);
+
+	/* Alias */
+	str = aliasEntry->text();
+
+	if (!str.isEmpty())
+		gaim_account_set_alias(account, str);
+	else
+		gaim_account_set_alias(account, NULL);
+
+	/* Buddy Icon */
+	/* TODO */
+
+	/* Remember Password */
+	gaim_account_set_remember_password(account,
+									   rememberPassCheck->isChecked());
+
+	/* Check Mail */
+	if (prplInfo->options & OPT_PROTO_MAIL_CHECK)
+		gaim_account_set_check_mail(account,
+									mailNotificationCheck->isChecked());
+
+	/* Auto-Login */
+	gaim_account_set_auto_login(account, "qpe-gaim",
+								autoLoginCheck->isChecked());
+
+	/* Password */
+	str = passwordEntry->text();
+
+	if (!str.isEmpty())
+		gaim_account_set_password(account, str);
+	else
+		gaim_account_set_password(account, NULL);
+
+	/* Build the username string. */
+	username = screenNameEntry->text();
+
+	for (l = prplInfo->user_splits, l2 = userSplitEntries;
+		 l != NULL && l2 != NULL;
+		 l = l->next, l2 = l2->next)
+	{
+		GaimAccountUserSplit *split = (GaimAccountUserSplit *)l->data;
+		QLineEdit *entry = (QLineEdit *)l2->data;
+		char sep[2] = " ";
+		char *tmp;
+
+		str = entry->text();
+
+		*sep = gaim_account_user_split_get_separator(split);
+
+		tmp = g_strconcat(username, sep,
+						  (!str.isEmpty() ? str.latin1() :
+						   gaim_account_user_split_get_default_value(split)),
+						  NULL);
+
+		username = tmp;
+
+		g_free(tmp);
+	}
+
+	gaim_account_set_username(account, username);
+
+	/* Add the protocol settings */
+	for (l = prplInfo->protocol_options, l2 = protocolOptEntries;
+		 l != NULL && l2 != NULL;
+		 l = l->next, l2 = l2->next)
+	{
+		GaimPrefType type;
+		GaimAccountOption *option = (GaimAccountOption *)l->data;
+		QWidget *widget = (QWidget *)l2->data;
+		QLineEdit *entry;
+		QCheckBox *checkbox;
+		const char *setting;
+		QString value;
+		int intValue;
+
+		type    = gaim_account_option_get_type(option);
+		setting = gaim_account_option_get_setting(option);
+
+		switch (type)
+		{
+			case GAIM_PREF_STRING:
+				entry = (QLineEdit *)widget;
+				value = entry->text();
+				gaim_account_set_string(account, setting, value);
+				break;
+
+			case GAIM_PREF_INT:
+				bool ok;
+
+				entry = (QLineEdit *)widget;
+				intValue = entry->text().toInt(&ok);
+
+				if (ok)
+					gaim_account_set_int(account, setting, intValue);
+				else
+					gaim_account_set_int(account, setting, 0);
+
+				break;
+
+			case GAIM_PREF_BOOLEAN:
+				checkbox = (QCheckBox *)widget;
+				gaim_account_set_bool(account, setting,
+									  checkbox->isChecked());
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	/* Set the proxy information */
+	if (newProxyType == GAIM_PROXY_NONE)
+		gaim_account_set_proxy_info(account, NULL);
+	else
+	{
+		GaimProxyInfo *proxyInfo;
+
+		proxyInfo = gaim_account_get_proxy_info(account);
+
+		/* Create the proxy info if it doesn't exist. */
+		if (proxyInfo == NULL)
+		{
+			proxyInfo = gaim_proxy_info_new();
+			gaim_account_set_proxy_info(account, proxyInfo);
+		}
+
+		/* Type */
+		gaim_proxy_info_set_type(proxyInfo, newProxyType);
+
+		/* Host */
+		str = proxyHost->text();
+
+		if (!str.isEmpty())
+			gaim_proxy_info_set_host(proxyInfo, str);
+		else
+			gaim_proxy_info_set_host(proxyInfo, NULL);
+
+		/* Port */
+		str = proxyPort->text();
+
+		if (!str.isEmpty())
+		{
+			bool ok;
+			int intVal;
+
+			intVal = str.toInt(&ok);
+
+			if (ok)
+				gaim_proxy_info_set_port(proxyInfo, intVal);
+			else
+				gaim_proxy_info_set_port(proxyInfo, 0);
+		}
+		else
+			gaim_proxy_info_set_port(proxyInfo, 0);
+
+		/* Username */
+		str = proxyUsername->text();
+
+		if (!str.isEmpty())
+			gaim_proxy_info_set_username(proxyInfo, str);
+		else
+			gaim_proxy_info_set_username(proxyInfo, NULL);
+
+		/* Password */
+		str = proxyPassword->text();
+
+		if (!str.isEmpty())
+			gaim_proxy_info_set_password(proxyInfo, str);
+		else
+			gaim_proxy_info_set_password(proxyInfo, NULL);
+	}
+
+	if (newAccount)
+		gaim_accounts_add(account);
+
+	QDialog::accept();
+
+	if (accountsWin != NULL)
+		accountsWin->updateAccounts();
 }

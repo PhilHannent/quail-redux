@@ -76,6 +76,12 @@ QGaimAccountsWindow::getMeters() const
 }
 
 void
+QGaimAccountsWindow::updateAccounts()
+{
+	loadAccounts();
+}
+
+void
 QGaimAccountsWindow::buildInterface()
 {
 	QVBox *vbox;
@@ -144,6 +150,9 @@ QGaimAccountsWindow::setupToolbar()
 	a->addTo(toolbar);
 	a->setEnabled(false);
 
+	connect(a, SIGNAL(activated()),
+			this, SLOT(deleteAccount()));
+
 	/* Separator */
 	toolbar->addSeparator();
 
@@ -211,6 +220,8 @@ QGaimAccountsWindow::loadAccounts()
 	GList *l;
 	int index;
 
+	accountsView->clear();
+
 	for (l = gaim_accounts_get_all(), index = 0;
 		 l != NULL;
 		 l = l->next, index++)
@@ -240,6 +251,7 @@ QGaimAccountsWindow::newAccount()
 	QGaimAccountEditor *editor;
 
 	editor = new QGaimAccountEditor(NULL, this);
+	editor->setAccountsWindow(this);
 
 	editor->showMaximized();
 }
@@ -253,8 +265,26 @@ QGaimAccountsWindow::editAccount()
 	item = (QGaimAccountListItem *)accountsView->selectedItem();
 
 	editor = new QGaimAccountEditor(item->getAccount(), this);
+	editor->setAccountsWindow(this);
 
 	editor->showMaximized();
+}
+
+void
+QGaimAccountsWindow::deleteAccount()
+{
+	QGaimAccountListItem *item;
+
+	item = (QGaimAccountListItem *)accountsView->selectedItem();
+
+	gaim_accounts_remove(item->getAccount());
+
+	delete item;
+
+	connectButton->setEnabled(false);
+	disconnectButton->setEnabled(false);
+	editButton->setEnabled(false);
+	deleteButton->setEnabled(false);
 }
 
 void

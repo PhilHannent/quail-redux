@@ -41,6 +41,8 @@ class QGaimAccountsWindow : public QMainWindow
 
 		QGaimConnectionMeters *getMeters() const;
 
+		void updateAccounts();
+
 	private:
 		void buildInterface();
 		void setupToolbar();
@@ -49,9 +51,13 @@ class QGaimAccountsWindow : public QMainWindow
 	private slots:
 		void newAccount();
 		void editAccount();
+		void deleteAccount();
+
 		void connectToAccount();
 		void disconnectFromAccount();
+
 		void showBlist();
+
 		void accountsToggled(bool state);
 		void accountSelected(QListViewItem *item);
 

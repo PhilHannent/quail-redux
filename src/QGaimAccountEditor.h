@@ -12,6 +12,7 @@
 
 class QCheckBox;
 class QComboBox;
+class QGaimAccountsWindow;
 class QGaimProtocolBox;
 class QGridLayout;
 class QLabel;
@@ -30,6 +31,8 @@ class QGaimAccountEditor : public QDialog
 						   WFlags fl = 0);
 		~QGaimAccountEditor();
 
+		void setAccountsWindow(QGaimAccountsWindow *accountsWin);
+
 	protected:
 		virtual void buildInterface();
 		void buildTabs();
@@ -45,10 +48,14 @@ class QGaimAccountEditor : public QDialog
 		void proxyTypeChanged(int index);
 		void protocolChanged(int index);
 
+		void accept();
+
 	private:
 		GaimAccount *account;
 		GaimPlugin *plugin;
 		GaimPluginProtocolInfo *prplInfo;
+
+		QGaimAccountsWindow *accountsWin;
 
 		QString protocolId;
 		GaimProtocol protocol;

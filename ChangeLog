@@ -1,3 +1,12 @@
+Wed Jul 30 19:36:56 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountEditor.h:
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimAccountsWindow.h:
+	  - The account editor dialog now works correctly in all tests.
+	  - Added a button for deleting an account.
+
 Wed Jul 30 18:34:28 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:
