@@ -958,6 +958,8 @@ QGaimConvWindow::setupToolbar()
 	userListToggle = new QAction(tr("Show User List"),
 								 Resource::loadPixmap("gaim/userlist"),
 								 QString::null, 0, this, 0, true);
+	userListToggle->addTo(toolbar);
+	userListToggle->setEnabled(false);
 
 	connect(userListToggle, SIGNAL(toggled(bool)),
 			this, SLOT(userListToggled(bool)));

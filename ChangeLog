@@ -1,3 +1,9 @@
+Fri Aug 15 02:25:19 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	  - The user list toggle button never got re-added after changing
+	    how the toolbar was created. Fixed.
+
 Fri Aug 15 02:15:20 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimDialogs.cpp:
