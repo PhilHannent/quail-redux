@@ -269,12 +269,14 @@ QGaimConvWindow::switchConversation(unsigned int index)
 void
 QGaimConvWindow::addConversation(GaimConversation *conv)
 {
-	QGaimConversation *qconv;
+	QGaimConversation *qconv = NULL;
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QGaimIm(conv, tabs);
 	else if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
 		qconv = new QGaimChat(conv);
+	else
+		return;
 
 	conv->ui_data = qconv;
 
