@@ -85,11 +85,13 @@ DISTFILES = \
 	data/images/block.png \
 	data/images/chat.png \
 	data/images/close_conv.png \
+	data/images/collapse.png \
 	data/images/connect.png \
 	data/images/conversations.png \
 	data/images/delete.png \
 	data/images/disconnect.png \
 	data/images/edit.png \
+	data/images/expand.png \
 	data/images/formatting.png \
 	data/images/info.png \
 	data/images/new.png \
