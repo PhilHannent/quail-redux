@@ -1,3 +1,9 @@
+Tue Jul 29 00:06:46 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	* src/QGaimAccountsWindow.h:
+	  - Added an Edit button to the Accounts window.
+
 Mon Jul 28 23:58:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* data/images/protocols/small/napster.png:

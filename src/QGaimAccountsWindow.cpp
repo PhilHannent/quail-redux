@@ -125,6 +125,15 @@ QGaimAccountsWindow::setupToolbar()
 	connect(a, SIGNAL(activated()),
 			this, SLOT(newAccount()));
 
+	/* Edit */
+	a = new QAction(tr("Edit Account"),
+					QIconSet(QPixmap(DATA_PREFIX "images/edit.png")),
+					QString::null, 0, this, 0);
+	a->addTo(toolbar);
+
+	connect(a, SIGNAL(activated()),
+			this, SLOT(editAccount()));
+
 	/* Delete */
 	a = new QAction(tr("Delete"),
 					QIconSet(QPixmap(DATA_PREFIX "images/delete.png")),
@@ -227,6 +236,19 @@ QGaimAccountsWindow::newAccount()
 	QGaimAccountEditor *editor;
 
 	editor = new QGaimAccountEditor();
+
+	editor->showMaximized();
+}
+
+void
+QGaimAccountsWindow::editAccount()
+{
+	QGaimAccountEditor *editor;
+	QGaimAccountListItem *item;
+
+	item = (QGaimAccountListItem *)accountsView->selectedItem();
+
+	editor = new QGaimAccountEditor(item->getAccount());
 
 	editor->showMaximized();
 }

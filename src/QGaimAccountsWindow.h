@@ -48,6 +48,7 @@ class QGaimAccountsWindow : public QMainWindow
 
 	private slots:
 		void newAccount();
+		void editAccount();
 		void connectToAccount();
 		void disconnectFromAccount();
 		void showBlist();
