@@ -830,12 +830,6 @@ QGaimConvWindow::showAccountsWindow()
 }
 
 void
-QGaimConvWindow::conversationsToggled(bool)
-{
-	convsButton->setOn(true);
-}
-
-void
 QGaimConvWindow::userListToggled(bool on)
 {
 	/* Make sure this is a chat. */
@@ -995,7 +989,7 @@ QGaimConvWindow::setupToolbar()
 	/* Accounts */
 	a = new QAction(tr("Accounts"),
 					Resource::loadPixmap("gaim/accounts"),
-					QString::null, 0, this, 0, true);
+					QString::null, 0, this, 0);
 	a->addTo(toolbar);
 
 	connect(a, SIGNAL(activated()),
@@ -1004,9 +998,6 @@ QGaimConvWindow::setupToolbar()
 	/* Conversations */
 	button = new QGaimConvButton(toolbar, "conversations");
 	button->setOn(true);
-
-	connect(button, SIGNAL(toggled(bool)),
-			this, SLOT(conversationsToggled(bool)));
 }
 
 /**************************************************************************

@@ -173,7 +173,6 @@ class QGaimConvWindow : public QMainWindow
 		void closeConv();
 		void send();
 		void showAccountsWindow();
-		void conversationsToggled(bool state);
 		void userListToggled(bool on);
 		void showBlist();
 

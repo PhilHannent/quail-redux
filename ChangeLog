@@ -1,3 +1,11 @@
+Fri Aug 15 03:08:17 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvWindow.cpp:
+	* src/QGaimConvWindow.h:
+	  - The account button in the conversations window now longer shows
+	    its state as active.
+	  - Removed old stuff that's not needed anymore.
+
 Fri Aug 15 02:53:00 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:
