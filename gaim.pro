@@ -12,6 +12,7 @@ HEADERS = \
 	src/QGaimConvWindow.h \
 	src/QGaimDebugWindow.h \
 	src/QGaimMultiLineEdit.h \
+	src/QGaimNotify.h \
 	src/QGaimProtocolBox.h \
 	src/QGaimProtocolUtils.h \
 	src/QGaimTabBar.h \
@@ -29,6 +30,7 @@ SOURCES = \
 	src/QGaimConvWindow.cpp \
 	src/QGaimDebugWindow.cpp \
 	src/QGaimMultiLineEdit.cpp \
+	src/QGaimNotify.cpp \
 	src/QGaimProtocolBox.cpp \
 	src/QGaimProtocolUtils.cpp \
 	src/QGaimTabBar.cpp \

@@ -38,6 +38,7 @@
 #include "QGaimBListWindow.h"
 #include "QGaimConvWindow.h"
 #include "QGaimDebugWindow.h"
+#include "QGaimNotify.h"
 #include "base.h"
 
 static QGaim *gaim = NULL;
@@ -54,6 +55,7 @@ qGaimCoreUiInit(void)
 	gaim_set_blist_ui_ops(qGaimGetBlistUiOps());
 	gaim_set_connection_ui_ops(qGaimGetConnectionUiOps());
 	gaim_set_win_ui_ops(qGaimGetConvWindowUiOps());
+	gaim_set_notify_ui_ops(qGaimGetNotifyUiOps());
 }
 
 static void
