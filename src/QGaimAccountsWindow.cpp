@@ -150,13 +150,21 @@ QGaimAccountsWindow::loadAccounts()
 {
 	for (GList *l = gaim_accounts_get_all(); l != NULL; l = l->next)
 	{
+		QPixmap *pixmap;
 		QGaimAccountListItem *item;
 		GaimAccount *account = (GaimAccount *)l->data;
+
+		pixmap = getProtocolIcon(account);
 
 		item = new QGaimAccountListItem(accountsView);
 		item->setText(0, gaim_account_get_username(account));
 		item->setText(1, getProtocolName(gaim_account_get_protocol(account)));
 		item->setAccount(account);
+
+		if (pixmap != NULL) {
+			item->setPixmap(0, *pixmap);
+			delete pixmap;
+		}
 	}
 }
 
@@ -195,4 +203,40 @@ QGaimAccountsWindow::accountsToggled(bool)
 void
 QGaimAccountsWindow::showConversations()
 {
+}
+
+QPixmap *
+QGaimAccountsWindow::getProtocolIcon(GaimAccount *account)
+{
+	GaimPlugin *prpl;
+	GaimPluginProtocolInfo *prpl_info = NULL;
+	const char *protoname = NULL;
+	QString path;
+
+	prpl = gaim_find_prpl(gaim_account_get_protocol(account));
+
+	if (prpl != NULL)
+	{
+		prpl_info = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+
+		if (prpl_info->list_icon != NULL)
+			protoname = prpl_info->list_icon(account, NULL);
+	}
+
+	if (protoname == NULL)
+		return NULL;
+
+	path  = DATA_PREFIX "images/protocols/small/";
+	path += protoname;
+	path += ".png";
+
+	QPixmap *pixmap = new QPixmap();
+
+	if (!pixmap->load(path))
+	{
+		delete pixmap;
+		return NULL;
+	}
+
+	return pixmap;
 }

@@ -10,6 +10,7 @@
 
 class QAction;
 class QMenuBar;
+class QPixmap;
 class QToolButton;
 
 class QGaimAccountListItem : public QListViewItem
@@ -46,6 +47,9 @@ class QGaimAccountsWindow : public QMainWindow
 		void showBlist();
 		void accountsToggled(bool state);
 		void showConversations();
+
+	private:
+		QPixmap *getProtocolIcon(GaimAccount *account);
 
 	private:
 		QMenuBar *menubar;
