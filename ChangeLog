@@ -1,3 +1,8 @@
+Wed Aug 13 09:39:09 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	  - Remove the dependency on OSCAR from the account editor.
+
 Sun Aug 10 14:19:28 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:

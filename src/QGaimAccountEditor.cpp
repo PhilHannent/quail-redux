@@ -46,17 +46,24 @@ QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account, QWidget *parent,
 {
 	if (account == NULL)
 	{
-		protocolId = "prpl-oscar";
-		protocol   = GAIM_PROTO_OSCAR;
+		if (gaim_plugins_get_protocols() != NULL)
+		{
+			plugin = (GaimPlugin *)gaim_plugins_get_protocols()->data;
+
+			prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
+
+			protocol   = prplInfo->protocol;
+			protocolId = plugin->info->id;
+		}
 	}
 	else
 	{
 		protocolId = gaim_account_get_protocol_id(account);
 		protocol   = gaim_account_get_protocol(account);
-	}
 
-	if ((plugin = gaim_find_prpl(protocol)) != NULL)
-		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
+		if ((plugin = gaim_find_prpl(protocol)) != NULL)
+			prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
+	}
 
 	buildInterface();
 }
