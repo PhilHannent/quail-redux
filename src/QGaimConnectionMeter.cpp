@@ -19,6 +19,7 @@
  * MA  02111-1307  USA
  */
 #include "QGaimConnectionMeter.h"
+#include "QGaimProtocolUtils.h"
 
 #include <libgaim/debug.h>
 
@@ -52,12 +53,27 @@ QGaimConnectionMeter::QGaimConnectionMeter(GaimConnection *gc,
 										   const char *name, WFlags fl)
 	: QHBox(parent, name, fl), gc(gc)
 {
-	QLabel *label;
+	QLabel *label, *icon;
 	GaimAccount *account;
+	QPixmap *pixmap;
+
+	setSpacing(2);
+	setMargin(2);
 
 	account = gaim_connection_get_account(gc);
 
+	icon = new QLabel(this);
+
+	pixmap = QGaimProtocolUtils::getProtocolIcon(account);
+
+	if (pixmap != NULL)
+	{
+		icon->setPixmap(*pixmap);
+		delete pixmap;
+	}
+
 	label = new QLabel(gaim_account_get_username(account), this);
+
 	progressBar = new QGaimConnectionProgressBar(this);
 }
 
@@ -100,8 +116,6 @@ QGaimConnectionMeters::~QGaimConnectionMeters()
 void
 QGaimConnectionMeters::addMeter(QGaimConnectionMeter *meter)
 {
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConnectionMeters",
-			   "Adding a meter\n");
 	meters.append(meter);
 
 	meter->show();
@@ -110,8 +124,6 @@ QGaimConnectionMeters::addMeter(QGaimConnectionMeter *meter)
 void
 QGaimConnectionMeters::removeMeter(QGaimConnectionMeter *meter)
 {
-	gaim_debug(GAIM_DEBUG_INFO, "QGaimConnectionMeters",
-			   "Removing a meter\n");
 	meters.remove(meter);
 }
 

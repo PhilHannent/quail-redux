@@ -1,3 +1,9 @@
+Sun Aug 03 23:04:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConnectionMeter.cpp:
+	  - Prettied up the connection meter a little. Adding some margins,
+	    spacing, and a protocol icon.
+
 Sun Aug 03 22:57:32 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:
