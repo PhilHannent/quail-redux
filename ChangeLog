@@ -1,3 +1,8 @@
+Wed Jul 30 23:11:22 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	  - Accounts set to auto-login no longer crash.
+
 Wed Jul 30 23:04:12 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/main.cpp:

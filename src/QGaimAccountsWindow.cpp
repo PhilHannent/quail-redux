@@ -349,10 +349,19 @@ qGaimConnConnectProgress(GaimConnection *gc, const char *text,
 						 size_t step, size_t step_count)
 {
 	QGaim *gaim = qGaimGetHandle();
-	QGaimAccountsWindow *accountsWin = gaim->getAccountsWindow();
-	QGaimConnectionMeters *meters = accountsWin->getMeters();
+	QGaimAccountsWindow *accountsWin;
+	QGaimConnectionMeters *meters;
 	QGaimConnectionMeter *meter;
 
+	accountsWin = gaim->getAccountsWindow();
+
+	if (accountsWin == NULL)
+	{
+		qGaimGetHandle()->showAccountsWindow();
+		accountsWin = gaim->getAccountsWindow();
+	}
+
+	meters = accountsWin->getMeters();
 	meter = meters->findMeter(gc);
 
 	if (meter == NULL)
