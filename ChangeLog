@@ -1,3 +1,9 @@
+Mon Jul 14 04:35:12 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvButton.cpp:
+	  - The conversation button is now only enabled if there are any
+	    active conversations.
+
 Mon Jul 14 04:27:35 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:

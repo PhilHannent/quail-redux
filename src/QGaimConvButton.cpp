@@ -5,6 +5,19 @@
 
 #include "qpopupmenu.h"
 
+static void
+newConvCb(char *, QGaimConvButton *button)
+{
+	button->setEnabled(true);
+}
+
+static void
+delConvCb(char *, QGaimConvButton *button)
+{
+	if (gaim_get_conversations() == NULL)
+		button->setEnabled(false);
+}
+
 QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
 	: QToolButton(parent, name), convs(NULL)
 {
@@ -23,6 +36,14 @@ QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
 			this, SLOT(generateMenu()));
 	connect(menu, SIGNAL(activated(int)),
 			this, SLOT(convActivated(int)));
+
+	gaim_signal_connect(NULL, event_new_conversation,
+						(void *)newConvCb, this);
+	gaim_signal_connect(NULL, event_del_conversation,
+						(void *)delConvCb, this);
+
+	if (gaim_get_conversations() == NULL)
+		setEnabled(false);
 }
 
 QGaimConvButton::~QGaimConvButton()
@@ -91,3 +112,4 @@ QGaimConvButton::convActivated(int id)
 	gaim_window_switch_conversation(win, gaim_conversation_get_index(conv));
 	gaim_window_raise(win);
 }
+
