@@ -1,3 +1,10 @@
+Mon Jul 28 11:46:19 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountEditor.cpp:
+	* src/QGaimAccountEditor.h:
+	  - qpe-gaim actually compiles again.
+	  - Moved some complex stuff into their own functions.
+
 Mon Jul 28 03:15:08 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountEditor.cpp:

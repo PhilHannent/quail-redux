@@ -11,6 +11,7 @@
 
 class QCheckBox;
 class QComboBox;
+class QLabel;
 class QLineEdit;
 class QPixmap;
 class QTabWidget;
@@ -28,6 +29,9 @@ class QGaimAccountEditor : public QMainWindow
 		QWidget *buildAccountTab();
 		QWidget *buildProtocolTab();
 		QWidget *buildProxyTab();
+
+		QWidget *buildLoginOpts(QWidget *parent);
+		QWidget *buildUserOpts(QWidget *parent);
 
 	private:
 		GaimAccount *account;

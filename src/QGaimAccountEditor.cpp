@@ -78,21 +78,67 @@ QGaimAccountEditor::buildInterface()
 QWidget *
 QGaimAccountEditor::buildAccountTab()
 {
-	QFrame *frame;
 	QFrame *sep;
-	QGridLayout *grid;
 	QVBox *vbox;
-	QLineEdit *entry;
 	QWidget *spacer;
+
+	/* Create the main vbox. */
+	vbox = new QVBox(this);
+	vbox->setSpacing(5);
+
+	buildLoginOpts(vbox);
+
+	/* Separator */
+	sep = new QFrame(vbox);
+	sep->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+
+	buildUserOpts(vbox);
+
+	/* Add a spacer. */
+	spacer = new QLabel("", vbox);
+	vbox->setStretchFactor(spacer, 1);
+
+	/*
+	 * We want to hide a couple of things if the protocol doesn't want
+	 * a password.
+	 */
+	if (prplInfo != NULL &&
+		(prplInfo->options & OPT_PROTO_NO_PASSWORD))
+	{
+		passwordLabel->hide();
+		passwordEntry->hide();
+		rememberPassCheck->hide();
+	}
+
+	
+
+	return vbox;
+}
+
+QWidget *
+QGaimAccountEditor::buildProtocolTab()
+{
+	return new QLabel("Protocol", this);
+}
+
+QWidget *
+QGaimAccountEditor::buildProxyTab()
+{
+	return new QLabel("Proxy", this);
+}
+
+QWidget *
+QGaimAccountEditor::buildLoginOpts(QWidget *parent)
+{
+	QFrame *frame;
+	QGridLayout *grid;
+	QLineEdit *entry;
 	QString username;
 	GList *userSplits, *l, *l2;
 	int row = 0;
 
-	/* Create the main vbox. */
-	vbox = new QVBox(this);
-
 	/* Create the Login Options group box. */
-	frame = new QFrame(vbox);
+	frame = new QFrame(parent);
 	grid = new QGridLayout(frame, 1, 1);
 	grid->setSpacing(4);
 
@@ -203,16 +249,6 @@ QGaimAccountEditor::buildAccountTab()
 		autoLoginCheck->setChecked(
 				gaim_account_get_auto_login(account, "qpe-gaim"));
 
-	/* Separator */
-	sep = new QFrame(frame);
-	sep->setFrameStyle(QFrame::HLine | QFrame::Sunken);
-	grid->addMultiCellWidget(sep, row, row, 0, 2);
-	row++;
-
-	/* Add a spacer. */
-	spacer = new QLabel("", vbox);
-	vbox->setStretchFactor(spacer, 1);
-
 	/*
 	 * We want to hide a couple of things if the protocol doesn't want
 	 * a password.
@@ -225,18 +261,11 @@ QGaimAccountEditor::buildAccountTab()
 		rememberPassCheck->hide();
 	}
 
-	return vbox;
+	return frame;
 }
 
 QWidget *
-QGaimAccountEditor::buildProtocolTab()
+QGaimAccountEditor::buildUserOpts(QWidget *parent)
 {
-	return new QLabel("Protocol", this);
+	return new QLabel("", parent);
 }
-
-QWidget *
-QGaimAccountEditor::buildProxyTab()
-{
-	return new QLabel("Proxy", this);
-}
-
