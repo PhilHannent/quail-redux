@@ -7,6 +7,7 @@
 
 #include <libgaim/conversation.h>
 
+class QAction;
 class QMultiLineEdit;
 class QPopupMenu;
 class QTabWidget;
@@ -106,14 +107,18 @@ class QGaimConvWindow : public QMainWindow
 		void setupToolbar();
 
 	private:
-		QToolBar *toolbar;
+		GaimWindow *win;
 
+		QToolBar *toolbar;
 		QTabWidget *tabs;
+
 		QToolButton *convsButton;
 
-		QPopupMenu *convMenu;
-
-		GaimWindow *win;
+		QAction *warnButton;
+		QAction *blockButton;
+		QAction *addButton;
+		QAction *removeButton;
+		QAction *infoButton;
 };
 
 GaimWindowUiOps *qGaimGetConvWindowUiOps();

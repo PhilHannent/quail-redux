@@ -108,8 +108,8 @@ QGaimConversation::updated(GaimConvUpdateType)
 /**************************************************************************
  * QGaimChat
  **************************************************************************/
-QGaimChat::QGaimChat(GaimConversation *conv, QWidget *parent = NULL,
-					 const char *name = NULL, WFlags fl = 0)
+QGaimChat::QGaimChat(GaimConversation *conv, QWidget *parent,
+					 const char *name, WFlags fl)
 	: QGaimConversation(conv, parent, name, fl)
 {
 	buildInterface();
@@ -152,8 +152,8 @@ QGaimChat::buildInterface()
 /**************************************************************************
  * QGaimIm
  **************************************************************************/
-QGaimIm::QGaimIm(GaimConversation *conv, QWidget *parent = NULL,
-				 const char *name = NULL, WFlags fl = 0)
+QGaimIm::QGaimIm(GaimConversation *conv, QWidget *parent,
+				 const char *name, WFlags fl)
 	: QGaimConversation(conv, parent, name, fl)
 {
 	buildInterface();
@@ -323,6 +323,58 @@ QGaimConvWindow::setupToolbar()
 	setToolBarsMovable(false);
 
 	toolbar = new QToolBar(this);
+
+	/* Close Conversation */
+	a = new QAction(tr("Close"),
+					QIconSet(QPixmap(DATA_PREFIX "images/close_conv.png")),
+					QString::null, 0, this, 0);
+	a->addTo(toolbar);
+
+	/* Separator */
+	toolbar->addSeparator();
+
+	/* Warn */
+	a = new QAction(tr("Warn"),
+					QIconSet(QPixmap(DATA_PREFIX "images/warn.png")),
+					QString::null, 0, this, 0);
+	warnButton = a;
+	a->addTo(toolbar);
+
+	/* Block */
+	a = new QAction(tr("Block"),
+					QIconSet(QPixmap(DATA_PREFIX "images/block.png")),
+					QString::null, 0, this, 0);
+	blockButton = a;
+	a->addTo(toolbar);
+
+	/* Add */
+	a = new QAction(tr("Add"),
+					QIconSet(QPixmap(DATA_PREFIX "images/add.png")),
+					QString::null, 0, this, 0);
+	addButton = a;
+	a->addTo(toolbar);
+
+	/* Remove */
+	a = new QAction(tr("Remove"),
+					QIconSet(QPixmap(DATA_PREFIX "images/remove.png")),
+					QString::null, 0, this, 0);
+	removeButton = a;
+
+	/* Info */
+	a = new QAction(tr("Get Information"),
+					QIconSet(QPixmap(DATA_PREFIX "images/info.png")),
+					QString::null, 0, this, 0);
+	infoButton = a;
+	a->addTo(toolbar);
+
+	/* Separator */
+	toolbar->addSeparator();
+
+	/* Formatting */
+	a = new QAction(tr("Formatting"),
+					QIconSet(QPixmap(DATA_PREFIX "images/formatting.png")),
+					QString::null, 0, this, 0);
+	a->addTo(toolbar);
 
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);
