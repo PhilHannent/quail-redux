@@ -18,7 +18,10 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#include "QGaimprefsWindow.h"
+#include "QGaimPrefsDialog.h"
+#include "QGaimTabWidget.h"
+
+#include <qlabel.h>
 
 QGaimPrefsDialog::QGaimPrefsDialog(QWidget *parent, const char *name,
 								   WFlags fl)
@@ -34,6 +37,8 @@ QGaimPrefsDialog::~QGaimPrefsDialog()
 void
 QGaimPrefsDialog::buildInterface()
 {
+	setCaption(tr("Preferences"));
+
 	tabs = new QGaimTabWidget(this, "pref tabs");
 
 	tabs->addTab(buildBuddyListTab(),     tr("Buddy List"));
@@ -42,37 +47,40 @@ QGaimPrefsDialog::buildInterface()
 	tabs->addTab(buildAwayIdleTab(),      tr("Away/Idle"));
 	tabs->addTab(buildProxyTab(),         tr("Proxy"));
 	tabs->addTab(buildPluginsTab(),       tr("Plugins"));
-
-	setCentralWidget(tabs);
 }
 
 QWidget *
 QGaimPrefsDialog::buildBuddyListTab()
 {
+	return new QLabel(this, "Buddy List");
 }
 
 QWidget *
 QGaimPrefsDialog::buildConversationsTab()
 {
+	return new QLabel(this, "Conversations");
 }
 
 QWidget *
 QGaimPrefsDialog::buildNotificationTab()
 {
+	return new QLabel(this, "Notification");
 }
 
 QWidget *
 QGaimPrefsDialog::buildAwayIdleTab()
 {
+	return new QLabel(this, "Away/Idle");
 }
 
 QWidget *
 QGaimPrefsDialog::buildProxyTab()
 {
+	return new QLabel(this, "Proxy");
 }
 
 QWidget *
 QGaimPrefsDialog::buildPluginsTab()
 {
-
+	return new QLabel(this, "Plugins");
 }

@@ -19,6 +19,7 @@ HEADERS = \
 	src/QGaimInputDialog.h \
 	src/QGaimMultiLineEdit.h \
 	src/QGaimNotify.h \
+	src/QGaimPrefsDialog.h \
 	src/QGaimProtocolBox.h \
 	src/QGaimProtocolUtils.h \
 	src/QGaimRequest.h \
@@ -43,6 +44,7 @@ SOURCES = \
 	src/QGaimInputDialog.cpp \
 	src/QGaimMultiLineEdit.cpp \
 	src/QGaimNotify.cpp \
+	src/QGaimPrefsDialog.cpp \
 	src/QGaimProtocolBox.cpp \
 	src/QGaimProtocolUtils.cpp \
 	src/QGaimRequest.cpp \

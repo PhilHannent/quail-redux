@@ -21,6 +21,8 @@
 #ifndef _QGAIM_PREFS_DIALOG_H_
 #define _QGAIM_PREFS_DIALOG_H_
 
+#include <qdialog.h>
+
 class QGaimTabWidget;
 
 class QGaimPrefsDialog : public QDialog
