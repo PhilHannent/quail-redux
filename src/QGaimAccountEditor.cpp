@@ -152,87 +152,95 @@ QGaimAccountEditor::buildProtocolTab()
 		protocolOptEntries = NULL;
 	}
 
-	for (l = prplInfo->protocol_options; l != NULL; l = l->next)
+	if (prplInfo != NULL)
 	{
-		GaimAccountOption *option = (GaimAccountOption *)l->data;
-
-		switch (gaim_account_option_get_type(option))
+		for (l = prplInfo->protocol_options; l != NULL; l = l->next)
 		{
-			case GAIM_PREF_BOOLEAN:
-				bool boolValue;
+			GaimAccountOption *option = (GaimAccountOption *)l->data;
 
-				if (account == NULL ||
-					gaim_account_get_protocol(account) != protocol)
-				{
-					boolValue = gaim_account_option_get_default_bool(option);
-				}
-				else
-					boolValue = gaim_account_get_bool(account,
-							gaim_account_option_get_setting(option),
-							gaim_account_option_get_default_bool(option));
+			switch (gaim_account_option_get_type(option))
+			{
+				case GAIM_PREF_BOOLEAN:
+					bool boolValue;
 
-				check = new QCheckBox(gaim_account_option_get_text(option),
-									  vbox);
-				grid->addMultiCellWidget(check, row, row, 1, 2);
-				row++;
+					if (account == NULL ||
+						gaim_account_get_protocol(account) != protocol)
+					{
+						boolValue =
+							gaim_account_option_get_default_bool(option);
+					}
+					else
+						boolValue = gaim_account_get_bool(account,
+								gaim_account_option_get_setting(option),
+								gaim_account_option_get_default_bool(option));
 
-				protocolOptEntries = g_list_append(protocolOptEntries, check);
+					check = new QCheckBox(gaim_account_option_get_text(option),
+										  vbox);
+					grid->addMultiCellWidget(check, row, row, 1, 2);
+					row++;
 
-				break;
+					protocolOptEntries =
+						g_list_append(protocolOptEntries, check);
 
-			case GAIM_PREF_INT:
-				int intValue;
+					break;
 
-				if (account == NULL ||
-					gaim_account_get_protocol(account) != protocol)
-				{
-					intValue = gaim_account_option_get_default_int(option);
-				}
-				else
-				{
-					intValue = gaim_account_get_int(account,
-							gaim_account_option_get_setting(option),
-							gaim_account_option_get_default_int(option));
-				}
+				case GAIM_PREF_INT:
+					int intValue;
 
-				buf  = gaim_account_option_get_text(option);
-				buf += ":";
+					if (account == NULL ||
+						gaim_account_get_protocol(account) != protocol)
+					{
+						intValue = gaim_account_option_get_default_int(option);
+					}
+					else
+					{
+						intValue = gaim_account_get_int(account,
+								gaim_account_option_get_setting(option),
+								gaim_account_option_get_default_int(option));
+					}
 
-				grid->addWidget(new QLabel(buf, frame), row, 0);
+					buf  = gaim_account_option_get_text(option);
+					buf += ":";
 
-				entry = new QLineEdit(QString::number(intValue), frame);
-				grid->addWidget(entry, row++, 1);
+					grid->addWidget(new QLabel(buf, frame), row, 0);
 
-				protocolOptEntries = g_list_append(protocolOptEntries, entry);
+					entry = new QLineEdit(QString::number(intValue), frame);
+					grid->addWidget(entry, row++, 1);
 
-				break;
+					protocolOptEntries =
+						g_list_append(protocolOptEntries, entry);
 
-			case GAIM_PREF_STRING:
-				QString strValue;
+					break;
 
-				if (account == NULL ||
-					gaim_account_get_protocol(account) != protocol)
-				{
-					strValue = gaim_account_option_get_default_string(option);
-				}
-				else
-				{
-					strValue = gaim_account_get_string(account,
-							gaim_account_option_get_setting(option),
-							gaim_account_option_get_default_string(option));
-				}
+				case GAIM_PREF_STRING:
+					QString strValue;
 
-				buf  = gaim_account_option_get_text(option);
-				buf += ":";
+					if (account == NULL ||
+						gaim_account_get_protocol(account) != protocol)
+					{
+						strValue =
+							gaim_account_option_get_default_string(option);
+					}
+					else
+					{
+						strValue = gaim_account_get_string(account,
+								gaim_account_option_get_setting(option),
+								gaim_account_option_get_default_string(option));
+					}
 
-				grid->addWidget(new QLabel(buf, frame), row, 0);
+					buf  = gaim_account_option_get_text(option);
+					buf += ":";
 
-				entry = new QLineEdit(strValue, frame);
-				grid->addWidget(entry, row++, 1);
+					grid->addWidget(new QLabel(buf, frame), row, 0);
 
-				protocolOptEntries = g_list_append(protocolOptEntries, entry);
+					entry = new QLineEdit(strValue, frame);
+					grid->addWidget(entry, row++, 1);
 
-				break;
+					protocolOptEntries =
+						g_list_append(protocolOptEntries, entry);
+
+					break;
+			}
 		}
 	}
 
@@ -343,7 +351,7 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 {
 	QLineEdit *entry;
 	QString username;
-	GList *userSplits, *l, *l2;
+	GList *userSplits = NULL, *l, *l2;
 
 	/* Protocol */
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
@@ -364,7 +372,8 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	grid->addWidget(screenNameEntry, row++, 1);
 
 	/* User split stuff. */
-	userSplits = prplInfo->user_splits;
+	if (prplInfo != NULL)
+		userSplits = prplInfo->user_splits;
 
 	if (account != NULL)
 		username = gaim_account_get_username(account);
@@ -488,30 +497,33 @@ QGaimAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 		mailNotificationCheck->setChecked(
 				gaim_account_get_check_mail(account));
 
-	if (!(prplInfo->options & OPT_PROTO_MAIL_CHECK))
+	if (prplInfo != NULL && !(prplInfo->options & OPT_PROTO_MAIL_CHECK))
 		mailNotificationCheck->hide();
 }
 
 void
 QGaimAccountEditor::updateAccountTab()
 {
-	if (prplInfo->options & OPT_PROTO_NO_PASSWORD)
+	if (prplInfo != NULL)
 	{
-		passwordLabel->hide();
-		passwordEntry->hide();
-		rememberPassCheck->hide();
-	}
-	else
-	{
-		passwordLabel->show();
-		passwordEntry->show();
-		rememberPassCheck->show();
-	}
+		if (prplInfo->options & OPT_PROTO_NO_PASSWORD)
+		{
+			passwordLabel->hide();
+			passwordEntry->hide();
+			rememberPassCheck->hide();
+		}
+		else
+		{
+			passwordLabel->show();
+			passwordEntry->show();
+			rememberPassCheck->show();
+		}
 
-	if (prplInfo->options & OPT_PROTO_MAIL_CHECK)
-		mailNotificationCheck->show();
-	else
-		mailNotificationCheck->hide();
+		if (prplInfo->options & OPT_PROTO_MAIL_CHECK)
+			mailNotificationCheck->show();
+		else
+			mailNotificationCheck->hide();
+	}
 }
 
 void

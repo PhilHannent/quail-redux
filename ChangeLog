@@ -1,3 +1,8 @@
+Tue Jul 29 01:39:54 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimAccountsWindow.cpp:
+	  - Editting an account without a protocol no longer crashes qpe-gaim.
+
 Tue Jul 29 01:35:52 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:
