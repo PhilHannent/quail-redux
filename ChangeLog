@@ -1,3 +1,9 @@
+Tue Oct 07 19:07:13 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	  - Hooked up signals for removing buddies, groups, and contacts in
+	    the buddy list.
+
 Tue Oct 07 08:49:51 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:

@@ -83,6 +83,12 @@ QGaimBListWindow::buildInterface()
 			this, SLOT(doubleClickList(QListViewItem *)));
 	connect(buddylist, SIGNAL(openIm(GaimBuddy *)),
 			this, SLOT(openImSlot(GaimBuddy *)));
+	connect(buddylist, SIGNAL(removeBuddy(GaimBuddy *)),
+			this, SLOT(showConfirmRemoveBuddy(GaimBuddy *)));
+	connect(buddylist, SIGNAL(removeContact(GaimContact *)),
+			this, SLOT(showConfirmRemoveContact(GaimContact *)));
+	connect(buddylist, SIGNAL(removeGroup(GaimGroup *)),
+			this, SLOT(showConfirmRemoveGroup(GaimGroup *)));
 
 	setCentralWidget(buddylist);
 }
