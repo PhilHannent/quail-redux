@@ -28,12 +28,15 @@
 
 class QGaimTimer : public QTimer
 {
+	Q_OBJECT
+
 	public:
 		QGaimTimer(guint sourceId, GSourceFunc func, gpointer data);
 
-	private:
+	private slots:
 		void update();
 
+	private:
 		guint sourceId;
 		GSourceFunc func;
 		gpointer userData;
@@ -48,9 +51,10 @@ class QGaimInputNotifier : public QObject
 						   GaimInputFunction func, gpointer userData);
 		~QGaimInputNotifier();
 
-	private:
+	private slots:
 		void ioInvoke(int fd);
 
+	private:
 		GaimInputCondition cond;
 		GaimInputFunction func;
 		gpointer userData;
