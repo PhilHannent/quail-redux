@@ -24,9 +24,12 @@
 #include <libgaim/account.h>
 
 #include <qdialog.h>
+#include <qlist.h>
 
 class QComboBox;
+class QFrame;
 class QGaimAccountBox;
+class QGridLayout;
 class QLineEdit;
 
 class QGaimAddBuddyDialog : public QDialog
@@ -54,6 +57,30 @@ class QGaimAddBuddyDialog : public QDialog
 		QLineEdit *aliasEntry;
 		QComboBox *groupCombo;
 		QGaimAccountBox *accountCombo;
+};
+
+class QGaimJoinChatDialog : public QDialog
+{
+	Q_OBJECT
+
+	public:
+		QGaimJoinChatDialog(QWidget *parent = NULL, const char *name = NULL,
+							WFlags fl = 0);
+
+		void setAccount(GaimAccount *account);
+
+	protected:
+		void buildInterface();
+		void rebuildWidgetsFrame();
+
+	protected slots:
+		void accept();
+
+	private:
+		QGaimAccountBox *accountCombo;
+		QGridLayout *grid;
+		QFrame *widgetsFrame;
+		QList<QWidget> widgets;
 };
 
 #endif /* _QGAIM_DIALOGS_H_ */

@@ -541,7 +541,11 @@ QGaimBListWindow::sendIm()
 void
 QGaimBListWindow::openChat()
 {
-	
+	QGaimJoinChatDialog *dialog;
+
+	dialog = new QGaimJoinChatDialog(this, "", true);
+
+	dialog->showMaximized();
 }
 
 

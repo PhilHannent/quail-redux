@@ -23,7 +23,9 @@
 
 #include <libgaim/blist.h>
 #include <libgaim/conversation.h>
+#include <libgaim/multi.h>
 #include <libgaim/notify.h>
+#include <libgaim/prpl.h>
 
 #include <qcombobox.h>
 #include <qframe.h>
@@ -31,8 +33,12 @@
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
+#include <qspinbox.h>
 #include <qvbox.h>
 
+/**************************************************************************
+ * QGaimAddBuddyDialog
+ **************************************************************************/
 QGaimAddBuddyDialog::QGaimAddBuddyDialog(QWidget *parent, const char *name,
 										 WFlags fl)
 	: QDialog(parent, name, fl)
@@ -170,7 +176,8 @@ QGaimAddBuddyDialog::accept()
 
 	account = accountCombo->getCurrentAccount();
 
-	b = gaim_buddy_new(account, screenname, (alias.isEmpty() ? NULL : (const char *)alias));
+	b = gaim_buddy_new(account, screenname,
+					   (alias.isEmpty() ? NULL : (const char *)alias));
 
 	gaim_blist_add_buddy(b, g, NULL);
 	serv_add_buddy(gaim_account_get_connection(account), screenname);
@@ -179,6 +186,153 @@ QGaimAddBuddyDialog::accept()
 		gaim_conversation_update(conv, GAIM_CONV_UPDATE_ADD);
 
 	gaim_blist_save();
+
+	QDialog::accept();
+}
+
+
+/**************************************************************************
+ * QGaimJoinChatDialog
+ **************************************************************************/
+QGaimJoinChatDialog::QGaimJoinChatDialog(QWidget *parent, const char *name,
+										 WFlags fl)
+	: QDialog(parent, name, fl)
+{
+	buildInterface();
+}
+
+void
+QGaimJoinChatDialog::setAccount(GaimAccount *account)
+{
+	accountCombo->setCurrentAccount(account);
+}
+
+void
+QGaimJoinChatDialog::buildInterface()
+{
+	QLabel *spacer;
+	QVBox *vbox;
+	QVBoxLayout *layout;
+
+	setCaption(tr("Join Chat"));
+
+	layout = new QVBoxLayout(this);
+	layout->setAutoAdd(true);
+
+	vbox = new QVBox(this);
+	vbox->setSpacing(5);
+	vbox->setMargin(6);
+
+	widgetsFrame = new QFrame(vbox);
+	grid = new QGridLayout(widgetsFrame, 1, 1);
+	grid->setSpacing(5);
+
+	widgets.setAutoDelete(true);
+
+	/* Account */
+	grid->addWidget(new QLabel(tr("Join Chat As:"), widgetsFrame), 0, 0);
+	accountCombo = new QGaimAccountBox(false, widgetsFrame, "account");
+	grid->addWidget(accountCombo, 0, 1);
+
+	/* Add a spacer. */
+	spacer = new QLabel("", vbox);
+	vbox->setStretchFactor(spacer, 1);
+
+	rebuildWidgetsFrame();
+}
+
+void
+QGaimJoinChatDialog::rebuildWidgetsFrame()
+{
+	GList *chatInfoList, *l;
+	GaimConnection *gc;
+	struct proto_chat_entry *pce;
+	int row;
+
+	gc = gaim_account_get_connection(accountCombo->getCurrentAccount());
+
+	widgets.clear();
+
+	chatInfoList = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
+
+	for (l = chatInfoList, row = 1; l != NULL; l = l->next, row++)
+	{
+		pce = (struct proto_chat_entry *)l->data;
+
+		grid->addWidget(new QLabel(tr(pce->label), widgetsFrame), row, 0);
+
+		if (pce->is_int)
+		{
+			QSpinBox *spinbox = new QSpinBox(pce->min, pce->max, 1,
+											 widgetsFrame);
+			spinbox->setValue(pce->min);
+
+			grid->addWidget(spinbox, row, 1);
+
+			widgets.append(spinbox);
+		}
+		else
+		{
+			QLineEdit *edit = new QLineEdit(pce->def, widgetsFrame);
+
+			grid->addWidget(edit, row, 1);
+
+			widgets.append(edit);
+		}
+
+		g_free(pce);
+	}
+
+	g_list_free(chatInfoList);
+}
+
+void
+QGaimJoinChatDialog::accept()
+{
+	GaimConnection *gc;
+	GHashTable *components;
+	QWidget *widget;
+	GList *chatInfoList, *l;
+	struct proto_chat_entry *pce;
+
+	gc = gaim_account_get_connection(accountCombo->getCurrentAccount());
+
+	components = g_hash_table_new_full(g_str_hash, g_str_equal,
+									   g_free, g_free);
+
+	chatInfoList = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
+
+	for (widget = widgets.first(), l = chatInfoList;
+		 widget != NULL && l != NULL;
+		 widget = widgets.next(), l = l->next)
+	{
+		pce = (struct proto_chat_entry *)l->data;
+
+		if (pce->is_int)
+		{
+			QSpinBox *spinbox = (QSpinBox *)widget;
+
+			g_hash_table_replace(components,
+								 g_strdup(pce->identifier),
+								 g_strdup(spinbox->cleanText()));
+		}
+		else
+		{
+			QLineEdit *edit = (QLineEdit *)widget;
+
+			g_hash_table_replace(components,
+								 g_strdup(pce->identifier),
+								 g_strdup(edit->text()));
+		}
+
+		g_free(pce);
+	}
+
+	g_list_free(chatInfoList);
+
+	serv_join_chat(gc, components);
+
+	g_hash_table_destroy(components);
 
 	QDialog::accept();
 }
