@@ -52,6 +52,9 @@ QGaimConvButton::~QGaimConvButton()
 
 	if (convs != NULL)
 		delete convs;
+
+	gaim_signal_disconnect(NULL, event_new_conversation, (void *)newConvCb);
+	gaim_signal_disconnect(NULL, event_del_conversation, (void *)delConvCb);
 }
 
 void

@@ -1,3 +1,9 @@
+Sun Jul 27 02:12:46 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimConvButton.cpp:
+	  - The conversation new/delete signal callbacks are now unregistered
+	    when a conversations list button is destroyed.
+
 Sun Jul 27 02:10:54 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:
