@@ -14,6 +14,7 @@ HEADERS = \
 	src/QGaimConvWindow.h \
 	src/QGaimDebugWindow.h \
 	src/QGaimDialogs.h \
+	src/QGaimImageUtils.h \
 	src/QGaimMultiLineEdit.h \
 	src/QGaimNotify.h \
 	src/QGaimProtocolBox.h \
@@ -36,6 +37,7 @@ SOURCES = \
 	src/QGaimConvWindow.cpp \
 	src/QGaimDebugWindow.cpp \
 	src/QGaimDialogs.cpp \
+	src/QGaimImageUtils.cpp \
 	src/QGaimMultiLineEdit.cpp \
 	src/QGaimNotify.cpp \
 	src/QGaimProtocolBox.cpp \
@@ -55,6 +57,9 @@ DISTFILES = \
 	data/images/protocols/small/msn.png \
 	data/images/protocols/small/trepia.png \
 	data/images/protocols/small/yahoo.png \
+	data/images/status/small/away.png \
+	data/images/status/small/login.png \
+	data/images/status/small/logout.png \
 	data/images/accounts.png \
 	data/images/add.png \
 	data/images/away.png \
