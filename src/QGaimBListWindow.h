@@ -67,6 +67,9 @@ class QGaimBListWindow : public QMainWindow
 
 		void update(GaimBlistNode *node);
 
+		void accountSignedOn(GaimAccount *acocunt);
+		void accountSignedOff(GaimAccount *acocunt);
+
 	protected slots:
 		void im();
 		void chat();
@@ -92,6 +95,10 @@ class QGaimBListWindow : public QMainWindow
 		QToolButton *chatButton;
 		QToolButton *infoButton;
 		QToolButton *awayButton;
+
+		QToolButton *addBuddyButton;
+		QToolButton *addGroupButton;
+		QToolButton *removeButton;
 
 		QToolButton *blistButton;
 

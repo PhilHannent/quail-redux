@@ -1,3 +1,10 @@
+Sun Aug 03 01:51:58 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - The Add Buddy button is no longer enabled when no accounts are
+	    signed on. Thanks to treke for reporting this bug.
+
 Sat Aug 02 19:40:33 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimDialogs.cpp:

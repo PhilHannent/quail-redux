@@ -283,6 +283,19 @@ QGaimBListWindow::update(GaimBlistNode *node)
 }
 
 void
+QGaimBListWindow::accountSignedOn(GaimAccount *)
+{
+	addBuddyButton->setEnabled(true);
+}
+
+void
+QGaimBListWindow::accountSignedOff(GaimAccount *)
+{
+	if (gaim_connections_get_all() == NULL)
+		addBuddyButton->setEnabled(false);
+}
+
+void
 QGaimBListWindow::buildInterface()
 {
 	setCaption(tr("Gaim - Buddy List"));
@@ -338,16 +351,20 @@ QGaimBListWindow::buildToolBar()
 
 	/* Add Buddy */
 	button = newButton(toolbar, DATA_PREFIX "images/add.png");
+	addBuddyButton = button;
+	button->setEnabled(false);
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(showAddBuddy()));
 
 	/* New Group */
 	button = newButton(toolbar, DATA_PREFIX "images/new-group.png");
+	addGroupButton = button;
 	button->setEnabled(false);
 
 	/* Remove */
 	button = newButton(toolbar, DATA_PREFIX "images/remove.png");
+	removeButton = button;
 	button->setEnabled(false);
 
 	/* Add some whitespace. */
@@ -526,9 +543,19 @@ QGaimBListWindow::nodeChanged(QListViewItem *_item)
  * Gaim callbacks
  **************************************************************************/
 static void
-signedOnOffCb(GaimConnection *gc, struct gaim_buddy_list *blist)
+signedOnCb(GaimConnection *gc, struct gaim_buddy_list *blist)
 {
-	gc = NULL; blist = NULL;
+	QGaimBListWindow *qblist = (QGaimBListWindow *)blist->ui_data;
+
+	qblist->accountSignedOn(gaim_connection_get_account(gc));
+}
+
+static void
+signedOffCb(GaimConnection *gc, struct gaim_buddy_list *blist)
+{
+	QGaimBListWindow *qblist = (QGaimBListWindow *)blist->ui_data;
+
+	qblist->accountSignedOff(gaim_connection_get_account(gc));
 }
 
 /**************************************************************************
@@ -543,9 +570,9 @@ qGaimBlistNewList(struct gaim_buddy_list *blist)
 
 	/* Setup some signal handlers */
 	gaim_signal_connect(blist->ui_data, event_signon,
-						(void *)signedOnOffCb, blist);
+						(void *)signedOnCb, blist);
 	gaim_signal_connect(blist->ui_data, event_signoff,
-						(void *)signedOnOffCb, blist);
+						(void *)signedOffCb, blist);
 }
 
 static void
