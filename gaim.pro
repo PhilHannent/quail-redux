@@ -20,9 +20,12 @@ SOURCES = \
 
 DISTFILES = \
 	data/images/protocols/small/aim.png \
+	data/images/protocols/small/gadu-gadu.png \
 	data/images/protocols/small/icq.png \
 	data/images/protocols/small/irc.png \
+	data/images/protocols/small/jabber.png \
 	data/images/protocols/small/msn.png \
+	data/images/protocols/small/trepia.png \
 	data/images/accounts.png \
 	data/images/away.png \
 	data/images/blist.png \
