@@ -57,9 +57,25 @@ DISTFILES = \
 	data/images/protocols/small/msn.png \
 	data/images/protocols/small/trepia.png \
 	data/images/protocols/small/yahoo.png \
+	data/images/status/small/activebuddy.png \
+	data/images/status/small/admin.png \
+	data/images/status/small/aol.png \
 	data/images/status/small/away.png \
+	data/images/status/small/dnd.png \
+	data/images/status/small/extendedaway.png \
+	data/images/status/small/female.png \
+	data/images/status/small/freeforchat.png \
+	data/images/status/small/game.png \
+	data/images/status/small/hiptop.png \
+	data/images/status/small/invisible.png \
 	data/images/status/small/login.png \
 	data/images/status/small/logout.png \
+	data/images/status/small/male.png \
+	data/images/status/small/na.png \
+	data/images/status/small/notauthorized.png \
+	data/images/status/small/occupied.png \
+	data/images/status/small/offline.png \
+	data/images/status/small/wireless.png \
 	data/images/accounts.png \
 	data/images/add.png \
 	data/images/away.png \
