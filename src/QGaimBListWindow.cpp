@@ -12,6 +12,7 @@
 #include <qmenubar.h>
 #include <qpushbutton.h>
 #include <qtoolbutton.h>
+#include <qtoolbar.h>
 #include <qheader.h>
 
 /**************************************************************************
@@ -297,6 +298,9 @@ QGaimBListWindow::buildInterface()
 	/* Setup the menubar */
 	buildMenuBar();
 
+	/* Setup the toolbar */
+	buildToolBar();
+
 	/* Setup the list view */
 	buddylist = new QListView(this, "BuddyList");
 	buddylist->addColumn(tr("Buddy"), -1);
@@ -310,7 +314,7 @@ QGaimBListWindow::buildInterface()
 	setCentralWidget(buddylist);
 }
 
-QMenuBar *
+void
 QGaimBListWindow::buildMenuBar()
 {
 	QPixmap *pixmap;
@@ -469,8 +473,26 @@ QGaimBListWindow::buildMenuBar()
 
 	connect(button, SIGNAL(clicked()),
 			this, SLOT(showConversations()));
+}
 
-	return menubar;
+void
+QGaimBListWindow::buildToolBar()
+{
+	QAction *a;
+
+	setToolBarsMovable(FALSE);
+
+	toolbar = new QToolBar(this);
+	toolbar->setHorizontalStretchable(FALSE);
+
+	addToolBar(toolbar);
+
+	/* IM */
+	a = new QAction(tr("IM"),
+					QIconSet(QPixmap(DATA_PREFIX "images/send-im.png")),
+					QString::null, 0, this, 0);
+	imButton = a;
+	a->addTo(toolbar);
 }
 
 void

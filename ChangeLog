@@ -1,3 +1,9 @@
+Wed Jul 02 12:14:50 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Added a toolbar to the buddy list window.
+
 Mon Jun 30 03:16:31 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:
