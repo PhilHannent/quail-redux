@@ -1,3 +1,11 @@
+Sun Aug 03 02:48:47 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBListWindow.cpp:
+	* src/QGaimBListWindow.h:
+	  - Removing buddies from the buddy list is now supported. Well, it
+	    would be, if I had a UI in place for the Request API. I'll look
+	    into that nightmare tomorrow.
+
 Sun Aug 03 02:32:23 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimDebugWindow.cpp:

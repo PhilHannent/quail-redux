@@ -73,7 +73,10 @@ class QGaimBListWindow : public QMainWindow
 	protected slots:
 		void im();
 		void chat();
+
 		void showAddBuddy();
+		void showRemoveBuddy();
+
 		void showAccountsWindow();
 		void blistToggled(bool state);
 		void sendIm();

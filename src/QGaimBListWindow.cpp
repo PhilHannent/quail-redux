@@ -26,10 +26,11 @@
 #include "QGaim.h"
 #include "base.h"
 
-#include <qpe/qpeapplication.h>
-#include <libgaim/multi.h>
 #include <libgaim/debug.h>
+#include <libgaim/multi.h>
+#include <libgaim/request.h>
 
+#include <qpe/qpeapplication.h>
 #include <qaction.h>
 #include <qheader.h>
 #include <qlabel.h>
@@ -367,6 +368,9 @@ QGaimBListWindow::buildToolBar()
 	removeButton = button;
 	button->setEnabled(false);
 
+	connect(button, SIGNAL(clicked()),
+			this, SLOT(showRemoveBuddy()));
+
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);
 	label->setText("");
@@ -474,6 +478,56 @@ QGaimBListWindow::showAddBuddy()
 		dialog->setGroup(group->name);
 
 	dialog->showMaximized();
+}
+
+static void
+removeBuddyCb(struct buddy *buddy)
+{
+	struct group *group;
+	GaimConversation *conv;
+	QString name;
+
+	if (buddy == NULL)
+		return;
+
+	group = gaim_find_buddys_group(buddy);
+	name = buddy->name;
+
+	serv_remove_buddy(gaim_account_get_connection(buddy->account), name,
+					  group->name);
+	gaim_blist_remove_buddy(buddy);
+	gaim_blist_save();
+
+	conv = gaim_find_conversation(name);
+
+	if (conv != NULL)
+		gaim_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
+}
+
+void
+QGaimBListWindow::showRemoveBuddy()
+{
+	QGaimBListItem *item;
+	GaimBlistNode *node;
+
+	item = (QGaimBListItem *)buddylist->selectedItem();
+	node = item->getBlistNode();
+
+	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+	{
+		struct buddy *buddy = (struct buddy *)item->getBlistNode();
+		QString text;
+		QString name = buddy->name;
+
+		text = tr("You are about to remove " + name + "from your buddy list.\n"
+				  "Do you want to continue?");
+
+		gaim_request_action(this, tr("Remove Buddy"), text, NULL,
+							(size_t)-1, buddy, 2,
+							(const char *)tr("Yes"),
+							G_CALLBACK(removeBuddyCb),
+							(const char *)tr("No"), NULL);
+	}
 }
 
 void
