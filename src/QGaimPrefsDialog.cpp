@@ -48,6 +48,8 @@ QGaimBlistPrefPage::accept()
 {
 	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times") ==
 		idleTimes->isChecked() &&
+		gaim_prefs_get_bool("/gaim/qpe/blist/show_warning_levels") ==
+		showWarnings->isChecked() &&
 		gaim_prefs_get_bool("/gaim/qpe/blist/show_group_count") ==
 		groupCount->isChecked() &&
 		gaim_prefs_get_bool("/gaim/qpe/blist/show_large_icons") ==
@@ -60,6 +62,8 @@ QGaimBlistPrefPage::accept()
 
 	gaim_prefs_set_bool("/gaim/qpe/blist/show_idle_times",
 						idleTimes->isChecked());
+	gaim_prefs_set_bool("/gaim/qpe/blist/show_warning_levels",
+						showWarnings->isChecked());
 	gaim_prefs_set_bool("/gaim/qpe/blist/show_group_count",
 						groupCount->isChecked());
 	gaim_prefs_set_bool("/gaim/qpe/blist/show_large_icons",
@@ -233,18 +237,22 @@ QGaimPrefsDialog::buildInterface()
 	tabs = new OTabWidget(this, "pref tabs");
 
 	blistPage    = new QGaimBlistPrefPage(this,  "blist page");
+#if 0
 	convPage     = new QGaimConvPrefPage(this,   "conv page");
 	notifyPage   = new QGaimNotifyPrefPage(this, "notify page");
 	awayIdlePage = new QGaimAwayPrefPage(this,   "awayIdle page");
 	proxyPage    = new QGaimProxyPrefPage(this,  "proxy page");
 	pluginPage   = new QGaimPluginPrefPage(this, "plugin page");
+#endif
 
 	tabs->addTab(blistPage,    "gaim/16x16/blist",         tr("Buddy List"));
+#if 0
 	tabs->addTab(convPage,     "gaim/16x16/conversations", tr("Conversations"));
 	tabs->addTab(notifyPage,   "gaim/16x16/warn",          tr("Notification"));
 	tabs->addTab(awayIdlePage, "gaim/16x16/away",          tr("Away/Idle"));
 	tabs->addTab(proxyPage,    "gaim/16x16/network",       tr("Proxy"));
 	tabs->addTab(pluginPage,   "gaim/16x16/connect",       tr("Plugins"));
+#endif
 
 	tabs->setCurrentTab(blistPage);
 }
