@@ -1,3 +1,8 @@
+Wed Aug 06 21:24:10 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimNotify.cpp:
+	  - Synced with the changes in gaim CVS.
+
 Mon Aug 04 01:30:19 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

@@ -126,6 +126,7 @@ static GaimNotifyUiOps notifyOps =
 	qGaimNotifyMessage,
 	qGaimNotifyEmail,
 	qGaimNotifyEmails,
+	NULL,
 	NULL
 };
 
