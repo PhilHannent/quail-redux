@@ -1,3 +1,8 @@
+Fri Aug 08 17:09:23 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimBuddyList.cpp:
+	  - Added an offset for the emblem on buddy status icons.
+
 Fri Aug 08 16:43:05 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBuddyList.cpp:
