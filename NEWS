@@ -1,6 +1,8 @@
 Gaim for Qtopia Release Notes
 -----------------------------
 
+version 0.3:
+
 version 0.2 (Friday, 15-August-2003):
 	* Fixed a bug where Gaim would crash if libgaim-plugins-oscar
 	  wasn't installed.

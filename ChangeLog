@@ -1,3 +1,11 @@
+Thu Aug 28 22:39:54 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* NEWS:
+	* README:
+	* gaim.pro:
+	* mkstuff.conf:
+	  - Bumped the version up to 0.3cvs.
+
 Thu Aug 28 22:27:53 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimAccountsWindow.cpp:

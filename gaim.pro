@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET   = gaim
-VERSION  = 0.2
+VERSION  = 0.3
 CONFIG   = qt warn_on debug
 
 HEADERS = \
