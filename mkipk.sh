@@ -13,7 +13,7 @@ else
 	exit 1
 fi
 
-if [ "$1" != "no-clean" ]; then
+if [ "$2" != "no-clean" ]; then
 	[ -e Makefile ] && make clean
 	rm -f Makefile
 fi
@@ -55,7 +55,7 @@ done
 
 cat > $TMPDIR/CONTROL/control <<END
 Package: ${PACKAGE}
-Version: ${VER}
+Version: ${VER}-${RELEASE}
 Depends: qpe-base (\$QPE_VERSION), libgaim >= 0.67cvs-20030802, libglib2.0 | libglib2.0-0 | glib-2.0
 Priority: optional
 Section: Applications

@@ -1,3 +1,17 @@
+Sun Aug 03 22:40:59 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkipk.sh:
+	* mkstuff.conf:
+	  - CVS snapshot packages now have a release of 0.$RELEASE.
+
+Sun Aug 03 22:38:44 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* gaim.desktop:
+	* mkipk.sh:
+	* mkstuff.conf:
+	* make.sh:
+	  - Redid the build system.
+
 Sun Aug 03 02:48:47 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimBListWindow.cpp:
