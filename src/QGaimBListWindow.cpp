@@ -58,7 +58,7 @@ QGaimBListItem::init()
 	{
 		struct buddy *buddy = (struct buddy *)node;
 		QPixmap *pixmap;
-		
+
 		pixmap = QGaimProtocolUtils::getProtocolIcon(buddy->account);
 
 		if (pixmap != NULL)

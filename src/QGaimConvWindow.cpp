@@ -1,5 +1,6 @@
 #include "QGaimConvWindow.h"
 #include "QGaimConvButton.h"
+#include "QGaimProtocolUtils.h"
 #include "QGaimTabBar.h"
 #include "QGaimTabWidget.h"
 #include "QGaim.h"
@@ -333,6 +334,7 @@ void
 QGaimConvWindow::addConversation(GaimConversation *conv)
 {
 	QGaimConversation *qconv = NULL;
+	QPixmap *pixmap;
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QGaimIm(conv, tabs);
@@ -343,7 +345,20 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 
 	conv->ui_data = qconv;
 
-	tabs->addTab(qconv, gaim_conversation_get_title(conv));
+	pixmap = QGaimProtocolUtils::getProtocolIcon(
+			gaim_conversation_get_account(conv));
+
+	if (pixmap != NULL)
+	{
+		tabs->addTab(qconv, QIconSet(*pixmap),
+					 gaim_conversation_get_title(conv));
+	}
+	else
+	{
+		tabs->addTab(qconv, gaim_conversation_get_title(conv));
+	}
+
+	delete pixmap;
 
 	qconv->setTabId(tabs->getLastId());
 

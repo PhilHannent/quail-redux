@@ -55,11 +55,28 @@ QGaimTabBar::paintLabel(QPainter *p, const QRect &rect,
 						QTab *tab, bool hasFocus) const
 {
 	QRect r = rect;
+	bool selected = (currentTab() == tab->id);
 
-	QTabBar::paintLabel(p, rect, tab, hasFocus);
+	if (tab->iconSet())
+	{
+		QIconSet::Mode mode = ((tab->isEnabled() && isEnabled())
+							   ? QIconSet::Normal : QIconSet::Disabled);
 
-	if (tab->id == currentTab())
-		r.setBottom(r.bottom() - style().defaultFrameWidth());
+		if (mode == QIconSet::Normal && hasFocus)
+			mode = QIconSet::Active;
+
+		QPixmap pixmap = tab->iconSet()->pixmap(QIconSet::Small, mode);
+
+		int pixw = pixmap.width();
+		int pixh = pixmap.height();
+
+		r.setLeft(r.left() + pixw + 2);
+//		r.setRight(r.right() + 2);
+
+		p->drawPixmap(rect.left() + 2,
+					  rect.center().y() - pixh / 2,
+					  pixmap);
+	}
 
 	p->setPen(colors[tab->id]);
 	p->drawText(r, AlignCenter | ShowPrefix, tab->label);
