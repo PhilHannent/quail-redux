@@ -627,7 +627,10 @@ QGaimConvWindow::getGaimWindow() const
 void
 QGaimConvWindow::switchConversation(unsigned int index)
 {
-	tabs->setCurrentPage(index);
+	if (index == (unsigned int)tabs->getCurrentIndex())
+		return;
+
+	tabs->setCurrentIndex(index);
 }
 
 void
@@ -692,7 +695,20 @@ QGaimConvWindow::moveConversation(GaimConversation *conv,
 int
 QGaimConvWindow::getActiveIndex() const
 {
-	return tabs->getCurrentIndex();
+	int currentId = tabs->currentPageIndex();
+	int currentIndex = -1;
+	GList *l;
+
+	for (l = gaim_window_get_conversations(win); l != NULL; l = l->next)
+	{
+		GaimConversation *conv   = (GaimConversation *)l->data;
+		QGaimConversation *qconv = (QGaimConversation *)conv->ui_data;
+
+		if (qconv->getTabId() == currentId)
+			return gaim_conversation_get_index(conv);
+	}
+
+	return currentIndex;
 }
 
 QGaimTabWidget *
