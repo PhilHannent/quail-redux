@@ -1,3 +1,8 @@
+Fri Nov 21 23:30:52 PST 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* mkipk.sh:
+	  - Require libopie.
+
 Sun Nov 16 14:55:02 PST 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimConvWindow.cpp:

@@ -61,7 +61,7 @@ done
 cat > $TMPDIR/CONTROL/control <<END
 Package: ${PACKAGE}
 Version: ${VER}-${RELEASE}
-Depends: qpe-base (\$QPE_VERSION), libgaim >= 0.71
+Depends: qpe-base (\$QPE_VERSION), libopie, libgaim >= 0.71
 Priority: optional
 Section: Applications
 Maintainer: Christian Hammond <chipx86@gnupdate.org>
