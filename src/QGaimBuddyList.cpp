@@ -1163,8 +1163,9 @@ QGaimBuddyList::updateBuddy(GaimBlistNode *node)
 
 	updateContact(node->parent);
 
-	if (node->parent->ui_data != NULL &&
-		!((QGaimBListItem *)node->parent->ui_data)->isExpanded())
+	if (node->parent->ui_data == NULL ||
+		(node->parent->ui_data != NULL &&
+		 !((QGaimBListItem *)node->parent->ui_data)->isExpanded()))
 	{
 		return;
 	}
