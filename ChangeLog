@@ -1,3 +1,9 @@
+Mon Oct 20 20:56:46 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
+
+	* src/QGaimPrefsDialog.cpp:
+	* src/QGaimPrefsDialog.h:
+	  - Setup the base framework for the preference pages.
+
 Mon Oct 20 20:03:10 PDT 2003  Christian Hammond <chipx86@gnupdate.org>
 
 	* src/QGaimPrefsDialog.cpp:

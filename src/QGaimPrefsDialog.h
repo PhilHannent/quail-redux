@@ -25,6 +25,104 @@
 
 class QGaimTabWidget;
 
+class QGaimPrefPage : public QWidget
+{
+	Q_OBJECT
+
+	public:
+		QGaimPrefPage(QWidget *parent = 0, const char *name = 0)
+			: QWidget(parent, name), dirty(false) { buildInterface(); }
+
+		void setDirty(bool dirty) { this->dirty = dirty; }
+		bool isDirty() const { return dirty; }
+
+		virtual void accept() = 0;
+
+	protected:
+		virtual void buildInterface() {}
+
+	private:
+		bool dirty;
+};
+
+class QGaimBlistPrefPage : public QGaimPrefPage
+{
+	Q_OBJECT
+
+	public:
+		QGaimBlistPrefPage(QWidget *parent = 0, const char *name = 0);
+
+		void accept();
+
+	protected:
+		void buildInterface();
+};
+
+class QGaimConvPrefPage : public QGaimPrefPage
+{
+	Q_OBJECT
+
+	public:
+		QGaimConvPrefPage(QWidget *parent = 0, const char *name = 0);
+
+		void accept();
+
+	protected:
+		void buildInterface();
+};
+
+class QGaimNotifyPrefPage : public QGaimPrefPage
+{
+	Q_OBJECT
+
+	public:
+		QGaimNotifyPrefPage(QWidget *parent = 0, const char *name = 0);
+
+		void accept();
+
+	protected:
+		void buildInterface();
+};
+
+class QGaimAwayPrefPage : public QGaimPrefPage
+{
+	Q_OBJECT
+
+	public:
+		QGaimAwayPrefPage(QWidget *parent = 0, const char *name = 0);
+
+		void accept();
+
+	protected:
+		void buildInterface();
+};
+
+class QGaimProxyPrefPage : public QGaimPrefPage
+{
+	Q_OBJECT
+
+	public:
+		QGaimProxyPrefPage(QWidget *parent = 0, const char *name = 0);
+
+		void accept();
+
+	protected:
+		void buildInterface();
+};
+
+class QGaimPluginPrefPage : public QGaimPrefPage
+{
+	Q_OBJECT
+
+	public:
+		QGaimPluginPrefPage(QWidget *parent = 0, const char *name = 0);
+
+		void accept();
+
+	protected:
+		void buildInterface();
+};
+
 class QGaimPrefsDialog : public QDialog
 {
 	Q_OBJECT
@@ -34,18 +132,21 @@ class QGaimPrefsDialog : public QDialog
 						 WFlags fl = 0);
 		~QGaimPrefsDialog();
 
+		virtual void accept();
+		virtual void done(int r);
+
 	protected:
 		void buildInterface();
 
-		QWidget *buildBuddyListTab();
-		QWidget *buildConversationsTab();
-		QWidget *buildNotificationTab();
-		QWidget *buildAwayIdleTab();
-		QWidget *buildProxyTab();
-		QWidget *buildPluginsTab();
-
 	private:
 		QGaimTabWidget *tabs;
+
+		QGaimPrefPage *blistPage;
+		QGaimPrefPage *convPage;
+		QGaimPrefPage *notifyPage;
+		QGaimPrefPage *awayIdlePage;
+		QGaimPrefPage *proxyPage;
+		QGaimPrefPage *pluginPage;
 };
 
 #endif /* _QGAIM_PREFS_DIALOG_H_ */

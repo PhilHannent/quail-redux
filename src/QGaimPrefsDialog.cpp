@@ -26,6 +26,122 @@
 
 #include <qpe/resource.h>
 
+/**************************************************************************
+ * QGaimBlistPrefPage
+ **************************************************************************/
+QGaimBlistPrefPage::QGaimBlistPrefPage(QWidget *parent, const char *name)
+	: QGaimPrefPage(parent, name)
+{
+}
+
+void
+QGaimBlistPrefPage::accept()
+{
+}
+
+void
+QGaimBlistPrefPage::buildInterface()
+{
+}
+
+/**************************************************************************
+ * QGaimConvPrefPage
+ **************************************************************************/
+QGaimConvPrefPage::QGaimConvPrefPage(QWidget *parent, const char *name)
+	: QGaimPrefPage(parent, name)
+{
+}
+
+void
+QGaimConvPrefPage::accept()
+{
+}
+
+void
+QGaimConvPrefPage::buildInterface()
+{
+}
+
+
+/**************************************************************************
+ * QGaimNotifyPrefPage
+ **************************************************************************/
+QGaimNotifyPrefPage::QGaimNotifyPrefPage(QWidget *parent, const char *name)
+	: QGaimPrefPage(parent, name)
+{
+}
+
+void
+QGaimNotifyPrefPage::accept()
+{
+}
+
+void
+QGaimNotifyPrefPage::buildInterface()
+{
+}
+
+
+/**************************************************************************
+ * QGaimAwayPrefPage
+ **************************************************************************/
+QGaimAwayPrefPage::QGaimAwayPrefPage(QWidget *parent, const char *name)
+	: QGaimPrefPage(parent, name)
+{
+}
+
+void
+QGaimAwayPrefPage::accept()
+{
+}
+
+void
+QGaimAwayPrefPage::buildInterface()
+{
+}
+
+
+/**************************************************************************
+ * QGaimProxyPrefPage
+ **************************************************************************/
+QGaimProxyPrefPage::QGaimProxyPrefPage(QWidget *parent, const char *name)
+	: QGaimPrefPage(parent, name)
+{
+}
+
+void
+QGaimProxyPrefPage::accept()
+{
+}
+
+void
+QGaimProxyPrefPage::buildInterface()
+{
+}
+
+
+/**************************************************************************
+ * QGaimPluginPrefPage
+ **************************************************************************/
+QGaimPluginPrefPage::QGaimPluginPrefPage(QWidget *parent, const char *name)
+	: QGaimPrefPage(parent, name)
+{
+}
+
+void
+QGaimPluginPrefPage::accept()
+{
+}
+
+void
+QGaimPluginPrefPage::buildInterface()
+{
+}
+
+
+/**************************************************************************
+ * QGaimPrefsDialog
+ **************************************************************************/
 QGaimPrefsDialog::QGaimPrefsDialog(QWidget *parent, const char *name,
 								   WFlags fl)
 	: QDialog(parent, name, fl)
@@ -49,58 +165,44 @@ QGaimPrefsDialog::buildInterface()
 
 	tabs = new QGaimTabWidget(this, "pref tabs");
 
-	tabs->addTab(buildBuddyListTab(),
-				 Resource::loadPixmap("gaim/blist"),
+	blistPage    = new QGaimBlistPrefPage(this,  "blist page");
+	convPage     = new QGaimConvPrefPage(this,   "conv page");
+	notifyPage   = new QGaimNotifyPrefPage(this, "notify page");
+	awayIdlePage = new QGaimAwayPrefPage(this,   "awayIdle page");
+	proxyPage    = new QGaimProxyPrefPage(this,  "proxy page");
+	pluginPage   = new QGaimPluginPrefPage(this, "plugin page");
+
+	tabs->addTab(blistPage, Resource::loadPixmap("gaim/blist"),
 				 tr("Buddy List"));
-	tabs->addTab(buildConversationsTab(),
-				 Resource::loadPixmap("gaim/conversations"),
+	tabs->addTab(convPage, Resource::loadPixmap("gaim/conversations"),
 				 tr("Conversations"));
-	tabs->addTab(buildNotificationTab(),
-				 Resource::loadPixmap("gaim/warn"),
+	tabs->addTab(notifyPage, Resource::loadPixmap("gaim/warn"),
 				 tr("Notification"));
-	tabs->addTab(buildAwayIdleTab(),
-				 Resource::loadPixmap("gaim/away"),
+	tabs->addTab(awayIdlePage, Resource::loadPixmap("gaim/away"),
 				 tr("Away/Idle"));
-	tabs->addTab(buildProxyTab(),
-				 Resource::loadPixmap("gaim/network"),
+	tabs->addTab(proxyPage, Resource::loadPixmap("gaim/network"),
 				 tr("Proxy"));
-	tabs->addTab(buildPluginsTab(),
-				 Resource::loadPixmap("gaim/connect"),
+	tabs->addTab(pluginPage, Resource::loadPixmap("gaim/connect"),
 				 tr("Plugins"));
 }
 
-QWidget *
-QGaimPrefsDialog::buildBuddyListTab()
+void
+QGaimPrefsDialog::accept()
 {
-	return new QLabel(this, "Buddy List");
+	blistPage->accept();
+	convPage->accept();
+	notifyPage->accept();
+	awayIdlePage->accept();
+	proxyPage->accept();
+	pluginPage->accept();
+
+	QDialog::accept();
 }
 
-QWidget *
-QGaimPrefsDialog::buildConversationsTab()
+void
+QGaimPrefsDialog::done(int r)
 {
-	return new QLabel(this, "Conversations");
-}
+	QDialog::done(r);
 
-QWidget *
-QGaimPrefsDialog::buildNotificationTab()
-{
-	return new QLabel(this, "Notification");
-}
-
-QWidget *
-QGaimPrefsDialog::buildAwayIdleTab()
-{
-	return new QLabel(this, "Away/Idle");
-}
-
-QWidget *
-QGaimPrefsDialog::buildProxyTab()
-{
-	return new QLabel(this, "Proxy");
-}
-
-QWidget *
-QGaimPrefsDialog::buildPluginsTab()
-{
-	return new QLabel(this, "Plugins");
+	close();
 }
