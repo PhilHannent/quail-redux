@@ -419,6 +419,7 @@ QGaimConvWindow::setupToolbar()
 					QString::null, 0, this, 0);
 	warnButton = a;
 	a->addTo(userMenu);
+	a->setEnabled(false);
 
 	/* Block */
 	a = new QAction(tr("Block"),
@@ -426,6 +427,7 @@ QGaimConvWindow::setupToolbar()
 					QString::null, 0, this, 0);
 	blockButton = a;
 	a->addTo(userMenu);
+	a->setEnabled(false);
 
 	/* Add */
 	a = new QAction(tr("Add"),
@@ -433,12 +435,14 @@ QGaimConvWindow::setupToolbar()
 					QString::null, 0, this, 0);
 	addButton = a;
 	a->addTo(userMenu);
+	a->setEnabled(false);
 
 	/* Remove */
 	a = new QAction(tr("Remove"),
 					QIconSet(QPixmap(DATA_PREFIX "images/remove.png")),
 					QString::null, 0, this, 0);
 	removeButton = a;
+	a->setEnabled(false);
 
 	/* Info */
 	a = new QAction(tr("Get Information"),
@@ -453,6 +457,7 @@ QGaimConvWindow::setupToolbar()
 					QIconSet(QPixmap(DATA_PREFIX "images/formatting.png")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
+	a->setEnabled(false);
 
 	/* Separator */
 	toolbar->addSeparator();
@@ -461,6 +466,7 @@ QGaimConvWindow::setupToolbar()
 					QIconSet(QPixmap(DATA_PREFIX "images/send-im.png")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
+	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(send()));
