@@ -1,23 +1,13 @@
 ------------------------------------------------------------------------
-  Gaim for Qtopia v0.5 - "Duckie"
+  Quail Instant Messenger
 ------------------------------------------------------------------------
 
-Gaim for Qtopia is a multi-protocol instant messaging client for the
-Qtopia and OPIE embedded environments, found on the Sharp Zaurus and
-iPaq PDAs running Linux. It is compatible with AIM (using the Oscar
-protocols), ICQ, MSN Messenger, Yahoo, IRC, Jabber, Gadu-Gadu, and
-Napster networks.
+Quail is a multi-protocol instant messaging client using libpurple and
+based on qpe-gaim.
 
-Gaim for Qtopia uses the Gaim core library, so many of the features
-you may use on Gaim for Linux or Windows will be found here. Gaim for
-Qtopia is an official port of Gaim. For more information on Gaim,
-please see our main website at http://gaim.sourceforge.net/.
+This projects main aim is to integrate libpurple and Qt to create a cross-
+platform application primarily targetting Windows, Linux and Android.
 
-Gaim users can log in to multiple accounts on multiple IM networks
-simultaneously. This means that you can be chatting with friends on
-AOL Instant Messenger, talking to a friend on Yahoo Messenger, and
-sitting in an IRC channel all at the same time from your PDA.
+All help appreciated.
 
-Gaim for Qtopia is under constant development, and releases are
-usually frequent. The latest news regarding Gaim can be found on the
-news page at http://qpe-gaim.sourceforge.net/
+Phil Hannent
