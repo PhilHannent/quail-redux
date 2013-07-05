@@ -165,10 +165,12 @@ INCLUDEPATH += \
 	/usr/lib/glib-2.0/include
 }
 win32 {
-    INCLUDEPATH += /cygdrive/c/dev/pidgin-main/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
-        /cygdrive/c/dev/pidgin-main/win32-dev/gtk_2_0-2.14/include/glib-2.0/include \
+    INCLUDEPATH += /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
+        /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0/include \
         /cygdrive/c/dev/pidgin-main \
-        c:/dev/pidgin-main
+        c:/dev/pidgin-main \
+        c:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
+        C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
 }
 
 
@@ -180,3 +182,15 @@ LIBS        += \
 
 OBJECTS_DIR = obj
 MOC_DIR     = moc
+
+exists(.hg):DEFINES += BUILDREVISION=\\\"$$system(hg log -r tip --template \'{node}\')\\\"
+else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
+
+win32 {
+    DEFINES += BUILDTIME=\\\"$$system('time/T')\\\"
+    DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
+}
+else {
+    DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M.%s')\\\"
+    DEFINES += BUILDDATE=\\\"$$system(date '+%d/%m/%y')\\\"
+}
