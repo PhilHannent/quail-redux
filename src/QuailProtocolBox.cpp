@@ -29,13 +29,13 @@ QQuailProtocolBox::QQuailProtocolBox(QWidget *parent, const char *name)
 	: QComboBox(parent, name)
 {
 	GList *protocols;
-	GaimPlugin *prpl;
+	PurplePlugin *prpl;
 
 	protocols = gaim_plugins_get_protocols();
 
 	if (protocols != NULL)
 	{
-		prpl = (GaimPlugin *)protocols->data;
+		prpl = (PurplePlugin *)protocols->data;
 
 		buildMenu(prpl->info->id);
 	}
@@ -51,7 +51,7 @@ QQuailProtocolBox::QQuailProtocolBox(QString protocolId, QWidget *parent,
 void
 QQuailProtocolBox::setCurrentProtocol(QString protocolId)
 {
-	GaimPlugin *plugin;
+	PurplePlugin *plugin;
 	GList *p;
 	int i;
 
@@ -59,7 +59,7 @@ QQuailProtocolBox::setCurrentProtocol(QString protocolId)
 		 p != NULL;
 		 p = p->next, i++)
 	{
-		plugin = (GaimPlugin *)p->data;
+		plugin = (PurplePlugin *)p->data;
 
 		if (plugin->info->id == protocolId)
 		{
@@ -79,9 +79,9 @@ QQuailProtocolBox::buildMenu(QString protocolId)
 		 p != NULL;
 		 p = p->next, count++)
 	{
-		GaimPlugin *plugin;
+		PurplePlugin *plugin;
 
-		plugin = (GaimPlugin *)p->data;
+		plugin = (PurplePlugin *)p->data;
 
 		insertItem(
 			QQuailProtocolUtils::getProtocolIcon(plugin, QGAIM_PIXMAP_MENU),

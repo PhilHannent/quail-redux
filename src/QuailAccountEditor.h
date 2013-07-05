@@ -76,8 +76,8 @@ class QQuailAccountEditor : public QDialog
 
 	private:
 		GaimAccount *account;
-		GaimPlugin *plugin;
-		GaimPluginProtocolInfo *prplInfo;
+		PurplePlugin *plugin;
+		PurplePluginProtocolInfo *prplInfo;
 
 		QQuailAccountsWindow *accountsWin;
 

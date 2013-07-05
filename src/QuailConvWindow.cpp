@@ -873,8 +873,8 @@ QQuailConvWindow::tabChanged(QWidget *widget)
 	QQuailConversation *qconv = (QQuailConversation *)widget;
 	GaimConversation *conv = qconv->getGaimConversation();
 	GaimAccount *account = gaim_conversation_get_account(conv);
-	GaimPlugin *prpl;
-	GaimPluginProtocolInfo *prplInfo = NULL;
+	PurplePlugin *prpl;
+	PurplePluginProtocolInfo *prplInfo = NULL;
 
 	gaim_conversation_set_unseen(conv, GAIM_UNSEEN_NONE);
 

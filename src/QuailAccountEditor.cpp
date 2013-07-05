@@ -49,7 +49,7 @@ QQuailAccountEditor::QQuailAccountEditor(GaimAccount *account, QWidget *parent,
 	{
 		if (gaim_plugins_get_protocols() != NULL)
 		{
-			plugin = (GaimPlugin *)gaim_plugins_get_protocols()->data;
+			plugin = (PurplePlugin *)gaim_plugins_get_protocols()->data;
 
 			prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 
@@ -613,7 +613,7 @@ QQuailAccountEditor::protocolChanged(int index)
 		abort();
 	}
 
-	plugin = (GaimPlugin *)l->data;
+	plugin = (PurplePlugin *)l->data;
 
 	prplInfo   = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 	protocolId = plugin->info->id;

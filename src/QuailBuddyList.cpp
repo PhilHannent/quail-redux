@@ -269,8 +269,8 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
 		{
 			if (dirty)
 			{
-				GaimPlugin *prpl = NULL;
-				GaimPluginProtocolInfo *prplInfo = NULL;
+				PurplePlugin *prpl = NULL;
+				PurplePluginProtocolInfo *prplInfo = NULL;
 				QRect topRect, bottomRect;
 				QString statusText;
 				QString idleTime;
@@ -438,8 +438,8 @@ QQuailBuddyList::getBuddyStatusIcon(GaimBlistNode *node, QQuailPixmapSize size)
 	QImage emblemImage;
 	QPixmap statusPixmap;
 	const char *protoName = NULL;
-	GaimPlugin *prpl = NULL;
-	GaimPluginProtocolInfo *prplInfo = NULL;
+	PurplePlugin *prpl = NULL;
+	PurplePluginProtocolInfo *prplInfo = NULL;
 	GaimAccount *account;
 	char *se = NULL, *sw = NULL, *nw = NULL, *ne = NULL;
 
@@ -675,8 +675,8 @@ void
 QQuailBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 								  bool asContact)
 {
-	GaimPlugin *prpl = NULL;
-	GaimPluginProtocolInfo *prplInfo = NULL;
+	PurplePlugin *prpl = NULL;
+	PurplePluginProtocolInfo *prplInfo = NULL;
 	QQuailAction *a;
 
 	prpl = gaim_plugins_find_with_id(
@@ -807,8 +807,8 @@ QQuailBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 void
 QQuailBuddyList::populateContactMenu(GaimContact *contact, QPopupMenu *menu)
 {
-	GaimPlugin *prpl = NULL;
-	GaimPluginProtocolInfo *prplInfo = NULL;
+	PurplePlugin *prpl = NULL;
+	PurplePluginProtocolInfo *prplInfo = NULL;
 	QAction *a;
 
 	prpl = gaim_plugins_find_with_id(gaim_account_get_protocol_id(
@@ -841,8 +841,8 @@ QQuailBuddyList::populateContactMenu(GaimContact *contact, QPopupMenu *menu)
 void
 QQuailBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 {
-	GaimPlugin *prpl = NULL;
-	GaimPluginProtocolInfo *prplInfo = NULL;
+	PurplePlugin *prpl = NULL;
+	PurplePluginProtocolInfo *prplInfo = NULL;
 	QAction *a;
 
 	prpl = gaim_plugins_find_with_id(
