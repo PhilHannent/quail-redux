@@ -26,7 +26,7 @@
 
 #include <qlistview.h>
 
-#include "QGaimImageUtils.h"
+#include "QuailImageUtils.h"
 
 class QGaimBListItem : public QListViewItem
 {

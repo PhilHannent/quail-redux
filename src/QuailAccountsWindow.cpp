@@ -18,13 +18,13 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#include "QGaimAccountsWindow.h"
-#include "QGaimAccountEditor.h"
-#include "QGaimConnectionMeter.h"
-#include "QGaimConvButton.h"
-#include "QGaimImageUtils.h"
-#include "QGaimProtocolUtils.h"
-#include "QGaimMainWindow.h"
+#include "QuailAccountsWindow.h"
+#include "QuailAccountEditor.h"
+#include "QuailConnectionMeter.h"
+#include "QuailConvButton.h"
+#include "QuailImageUtils.h"
+#include "QuailProtocolUtils.h"
+#include "QuailMainWindow.h"
 #include "base.h"
 
 #include <libgaim/prpl.h>

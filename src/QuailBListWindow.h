@@ -26,8 +26,8 @@
 #include <qiconset.h>
 #include <qmainwindow.h>
 
-#include "QGaimAccountsWindow.h"
-#include "QGaimBuddyList.h"
+#include "QuailAccountsWindow.h"
+#include "QuailBuddyList.h"
 
 class QAction;
 class QMenuBar;

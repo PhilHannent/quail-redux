@@ -18,7 +18,7 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#include "QGaimMainWindow.h"
+#include "QuailMainWindow.h"
 
 #include <qtimer.h>
 #include <qvariant.h>
@@ -33,12 +33,12 @@
 #include <libgaim/pounce.h>
 #include <libgaim/plugin.h>
 
-#include "QGaimConnectionMeter.h"
-#include "QGaimConvWindow.h"
-#include "QGaimDebugWindow.h"
-#include "QGaimEventLoop.h"
-#include "QGaimNotify.h"
-#include "QGaimRequest.h"
+#include "QuailConnectionMeter.h"
+#include "QuailConvWindow.h"
+#include "QuailDebugWindow.h"
+#include "QuailEventLoop.h"
+#include "QuailNotify.h"
+#include "QuailRequest.h"
 #include "base.h"
 
 static QGaimMainWindow *mainWin = NULL;

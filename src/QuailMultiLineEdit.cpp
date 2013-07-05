@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#include "QGaimMultiLineEdit.h"
+#include "QuailMultiLineEdit.h"
 
 QGaimMultiLineEdit::QGaimMultiLineEdit(QWidget *parent, const char *name)
 	: QMultiLineEdit(parent, name), historyEnabled(false)

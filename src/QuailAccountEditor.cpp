@@ -18,11 +18,11 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#include "QGaimAccountEditor.h"
-#include "QGaimAccountsWindow.h"
-#include "QGaimProtocolBox.h"
-#include "QGaimProtocolUtils.h"
-#include "QGaimTabWidget.h"
+#include "QuailAccountEditor.h"
+#include "QuailAccountsWindow.h"
+#include "QuailProtocolBox.h"
+#include "QuailProtocolUtils.h"
+#include "QuailTabWidget.h"
 #include "base.h"
 
 #include <libgaim/accountopt.h>

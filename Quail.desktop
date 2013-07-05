@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Gaim
-Icon=gaim
-Exec=gaim
+Name=Quail
+Icon=quail
+Exec=Quail
 Comment=Multi-protocol Instant Messaging Client
 Comment[es]=Cliente de mensajería instantánea multiprotocolo
 Comment[fr]=Client de messagerie instantanée multiprotocole

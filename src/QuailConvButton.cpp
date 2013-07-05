@@ -18,10 +18,10 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#include "QGaimConvButton.h"
-#include "QGaimBuddyList.h"
-#include "QGaimProtocolUtils.h"
-#include "QGaimMainWindow.h"
+#include "QuailConvButton.h"
+#include "QuailBuddyList.h"
+#include "QuailProtocolUtils.h"
+#include "QuailMainWindow.h"
 #include "base.h"
 
 #include <libgaim/debug.h>

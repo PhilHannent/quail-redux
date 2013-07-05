@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#include "QGaimAccountBox.h"
-#include "QGaimProtocolUtils.h"
+#include "QuailAccountBox.h"
+#include "QuailProtocolUtils.h"
 
 #include <libgaim/debug.h>
 
