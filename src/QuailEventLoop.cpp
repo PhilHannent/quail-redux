@@ -33,7 +33,7 @@ typedef struct
 
 } QGaimSourceInfo;
 
-static void qGaimSourceRemove(guint handle);
+static void qQuailSourceRemove(guint handle);
 
 static guint nextSourceId = 0;
 static QIntDict<QGaimSourceInfo> sources;
@@ -49,7 +49,7 @@ void
 QGaimTimer::update()
 {
 	if (!func(userData))
-		qGaimSourceRemove(sourceId);
+		qQuailSourceRemove(sourceId);
 }
 
 QGaimInputNotifier::QGaimInputNotifier(int fd, GaimInputCondition cond,
@@ -100,7 +100,7 @@ QGaimInputNotifier::ioInvoke(int fd)
 
 
 static guint
-qGaimTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
+qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 {
 	QGaimSourceInfo *info = new QGaimSourceInfo;
 
@@ -115,15 +115,15 @@ qGaimTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 }
 
 static guint
-qGaimTimeoutRemove(guint handle)
+qQuailTimeoutRemove(guint handle)
 {
-	qGaimSourceRemove(handle);
+	qQuailSourceRemove(handle);
 
 	return 0;
 }
 
 static guint
-qGaimInputAdd(int fd, GaimInputCondition cond, GaimInputFunction func,
+qQuailInputAdd(int fd, GaimInputCondition cond, GaimInputFunction func,
 			  gpointer userData)
 {
 	QGaimSourceInfo *info = new QGaimSourceInfo;
@@ -138,7 +138,7 @@ qGaimInputAdd(int fd, GaimInputCondition cond, GaimInputFunction func,
 }
 
 static void
-qGaimSourceRemove(guint handle)
+qQuailSourceRemove(guint handle)
 {
 	QGaimSourceInfo *info;
 
@@ -159,14 +159,14 @@ qGaimSourceRemove(guint handle)
 
 static GaimEventLoopUiOps eventloop_ops =
 {
-	qGaimTimeoutAdd,
-	qGaimTimeoutRemove,
-	qGaimInputAdd,
-	qGaimSourceRemove
+	qQuailTimeoutAdd,
+	qQuailTimeoutRemove,
+	qQuailInputAdd,
+	qQuailSourceRemove
 };
 
 GaimEventLoopUiOps *
-qGaimGetEventLoopUiOps(void)
+qQuailGetEventLoopUiOps(void)
 {
 	return &eventloop_ops;
 }

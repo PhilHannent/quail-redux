@@ -23,7 +23,7 @@
 
 #include <libpurple/debug.h>
 
-GaimDebugUiOps *qGaimGetDebugUiOps(void);
+GaimDebugUiOps *qQuailGetDebugUiOps(void);
 
 #endif /* _QGAIM_DEBUG_WIN_H_ */
 

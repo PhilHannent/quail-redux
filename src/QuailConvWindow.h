@@ -212,6 +212,6 @@ class QGaimConvWindow : public QMainWindow
 		QAction *userListToggle;
 };
 
-GaimConvWindowUiOps *qGaimGetConvWindowUiOps();
+GaimConvWindowUiOps *qQuailGetConvWindowUiOps();
 
 #endif /* _QGAIM_CONV_WIN_H_ */

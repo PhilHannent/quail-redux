@@ -166,7 +166,7 @@ QGaimConvButton::convActivated(int id)
 void
 QGaimConvButton::buttonClicked()
 {
-	GaimConvWindow *lastWin = qGaimGetMainWindow()->getLastActiveConvWindow();
+	GaimConvWindow *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
 
 	if (lastWin != NULL)
 		gaim_conv_window_raise(lastWin);

@@ -23,15 +23,15 @@
 
 #include <libpurple/notify.h>
 
-GaimNotifyUiOps *qGaimGetNotifyUiOps();
+GaimNotifyUiOps *qQuailGetNotifyUiOps();
 
-void qGaimNotifyBuzzer(void);
-void qGaimNotifyLedStart(void);
-void qGaimNotifyLedStop(void);
-void qGaimNotifySound(void);
-void qGaimNotifyUser(void);
-void qGaimNotifyUserStop(void);
+void qQuailNotifyBuzzer(void);
+void qQuailNotifyLedStart(void);
+void qQuailNotifyLedStop(void);
+void qQuailNotifySound(void);
+void qQuailNotifyUser(void);
+void qQuailNotifyUserStop(void);
 
-void qGaimNotifyInit(void);
+void qQuailNotifyInit(void);
 
 #endif /* _QGAIM_NOTIFY_H_ */

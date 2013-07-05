@@ -66,16 +66,16 @@ class QGaimInputNotifier : public QObject
  *
  * @return The Qt event loop UI operations structure.
  */
-GaimEventLoopUiOps *qGaimGetEventLoopUiOps(void);
+GaimEventLoopUiOps *qQuailGetEventLoopUiOps(void);
 
 /**
  * Initializes the Qt event loop subsystem.
  */
-void qGaimEventLoopInit(void);
+void qQuailEventLoopInit(void);
 
 /**
  * Uninitializes the Qt evnet loop subsystem.
  */
-void qGaimEventLoopUninit(void);
+void qQuailEventLoopUninit(void);
 
 #endif /* _QGAIM_EVENT_LOOP_H_ */

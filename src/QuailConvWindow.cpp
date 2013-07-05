@@ -176,7 +176,7 @@ QGaimConversation::write(const char *who, const char *message,
 		activeConv = gaim_conv_window_get_active_conversation(win);
 
 		if (conv != activeConv ||
-			win != qGaimGetMainWindow()->getLastActiveConvWindow())
+			win != qQuailGetMainWindow()->getLastActiveConvWindow())
 		{
 			const char *prefName;
 
@@ -188,9 +188,9 @@ QGaimConversation::write(const char *who, const char *message,
 			if (gaim_prefs_get_bool(prefName))
 			{
 				if (notifying)
-					qGaimNotifyUserStop();
+					qQuailNotifyUserStop();
 
-				qGaimNotifyUser();
+				qQuailNotifyUser();
 				notifying = true;
 			}
 		}
@@ -521,7 +521,7 @@ QGaimConvChat::updated(GaimConvUpdateType type)
 
 			if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_chat"))
 			{
-				qGaimNotifyUser();
+				qQuailNotifyUser();
 				notifying = true;
 			}
 		}
@@ -529,7 +529,7 @@ QGaimConvChat::updated(GaimConvUpdateType type)
 		{
 			if (notifying)
 			{
-				qGaimNotifyUserStop();
+				qQuailNotifyUserStop();
 				notifying = false;
 			}
 		}
@@ -600,7 +600,7 @@ QGaimConvIm::updated(GaimConvUpdateType type)
 		}
 		else if (notifying)
 		{
-			qGaimNotifyUserStop();
+			qQuailNotifyUserStop();
 			notifying = false;
 		}
 
@@ -781,7 +781,7 @@ QGaimConvWindow::addConversation(GaimConversation *conv)
 
 	if (gaim_conv_window_get_conversation_count(win) == 1)
 	{
-		qGaimGetMainWindow()->setCaption(gaim_conversation_get_title(conv));
+		qQuailGetMainWindow()->setCaption(gaim_conversation_get_title(conv));
 		tabs->setCurrentPage(0);
 	}
 }
@@ -879,7 +879,7 @@ QGaimConvWindow::tabChanged(QWidget *widget)
 	gaim_conversation_set_unseen(conv, GAIM_UNSEEN_NONE);
 
 	if (conv != NULL)
-		qGaimGetMainWindow()->setCaption(gaim_conversation_get_title(conv));
+		qQuailGetMainWindow()->setCaption(gaim_conversation_get_title(conv));
 
 	prpl = gaim_plugins_find_with_id(gaim_account_get_protocol_id(account));
 
@@ -931,8 +931,8 @@ QGaimConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 
 	QMainWindow::destroy(destroyWindow, destroySubWindows);
 
-	if (qGaimGetMainWindow()->getLastActiveConvWindow() == getGaimConvWindow())
-		qGaimGetMainWindow()->setLastActiveConvWindow(NULL);
+	if (qQuailGetMainWindow()->getLastActiveConvWindow() == getGaimConvWindow())
+		qQuailGetMainWindow()->setLastActiveConvWindow(NULL);
 }
 
 void
@@ -1031,7 +1031,7 @@ QGaimConvWindow::send()
 void
 QGaimConvWindow::showAccountsWindow()
 {
-	qGaimGetMainWindow()->showAccountsWindow();
+	qQuailGetMainWindow()->showAccountsWindow();
 }
 
 void
@@ -1054,7 +1054,7 @@ QGaimConvWindow::userListToggled(bool on)
 void
 QGaimConvWindow::showBlist()
 {
-	qGaimGetMainWindow()->showBlistWindow();
+	qQuailGetMainWindow()->showBlistWindow();
 }
 
 void
@@ -1221,7 +1221,7 @@ QGaimConvWindow::setupToolbar()
  * Conversation UI ops
  **************************************************************************/
 static void
-qGaimConvDestroy(GaimConversation *conv)
+qQuailConvDestroy(GaimConversation *conv)
 {
 	QGaimConversation *qconv = (QGaimConversation *)conv->ui_data;
 
@@ -1234,7 +1234,7 @@ qGaimConvDestroy(GaimConversation *conv)
 }
 
 static void
-qGaimConvWriteChat(GaimConversation *conv, const char *who,
+qQuailConvWriteChat(GaimConversation *conv, const char *who,
 				   const char *message, GaimMessageFlags flags, time_t mtime)
 {
 	QGaimConvChat *qchat = (QGaimConvChat *)conv->ui_data;
@@ -1243,7 +1243,7 @@ qGaimConvWriteChat(GaimConversation *conv, const char *who,
 }
 
 static void
-qGaimConvWriteIm(GaimConversation *conv, const char *who,
+qQuailConvWriteIm(GaimConversation *conv, const char *who,
 				 const char *message, GaimMessageFlags flags, time_t mtime)
 {
 	QGaimConvIm *qim = (QGaimConvIm *)conv->ui_data;
@@ -1252,7 +1252,7 @@ qGaimConvWriteIm(GaimConversation *conv, const char *who,
 }
 
 static void
-qGaimConvWriteConv(GaimConversation *conv, const char *who,
+qQuailConvWriteConv(GaimConversation *conv, const char *who,
 				   const char *message, GaimMessageFlags flags, time_t mtime)
 {
 	QGaimConversation *qconv = (QGaimConversation *)conv->ui_data;
@@ -1261,7 +1261,7 @@ qGaimConvWriteConv(GaimConversation *conv, const char *who,
 }
 
 static void
-qGaimConvChatAddUser(GaimConversation *conv, const char *user)
+qQuailConvChatAddUser(GaimConversation *conv, const char *user)
 {
 	QGaimConvChat *qchat = (QGaimConvChat *)conv->ui_data;
 
@@ -1269,7 +1269,7 @@ qGaimConvChatAddUser(GaimConversation *conv, const char *user)
 }
 
 static void
-qGaimConvChatAddUsers(GaimConversation *conv, GList *users)
+qQuailConvChatAddUsers(GaimConversation *conv, GList *users)
 {
 	QGaimConvChat *qchat = (QGaimConvChat *)conv->ui_data;
 
@@ -1277,7 +1277,7 @@ qGaimConvChatAddUsers(GaimConversation *conv, GList *users)
 }
 
 static void
-qGaimConvChatRenameUser(GaimConversation *conv, const char *oldName,
+qQuailConvChatRenameUser(GaimConversation *conv, const char *oldName,
 						const char *newName)
 {
 	QGaimConvChat *qchat = (QGaimConvChat *)conv->ui_data;
@@ -1286,7 +1286,7 @@ qGaimConvChatRenameUser(GaimConversation *conv, const char *oldName,
 }
 
 static void
-qGaimConvChatRemoveUser(GaimConversation *conv, const char *user)
+qQuailConvChatRemoveUser(GaimConversation *conv, const char *user)
 {
 	QGaimConvChat *qchat = (QGaimConvChat *)conv->ui_data;
 
@@ -1294,7 +1294,7 @@ qGaimConvChatRemoveUser(GaimConversation *conv, const char *user)
 }
 
 static void
-qGaimConvChatRemoveUsers(GaimConversation *conv, GList *users)
+qQuailConvChatRemoveUsers(GaimConversation *conv, GList *users)
 {
 	QGaimConvChat *qchat = (QGaimConvChat *)conv->ui_data;
 
@@ -1302,7 +1302,7 @@ qGaimConvChatRemoveUsers(GaimConversation *conv, GList *users)
 }
 
 static void
-qGaimConvUpdated(GaimConversation *conv, GaimConvUpdateType type)
+qQuailConvUpdated(GaimConversation *conv, GaimConvUpdateType type)
 {
 	QGaimConversation *qconv = (QGaimConversation *)conv->ui_data;
 
@@ -1311,21 +1311,21 @@ qGaimConvUpdated(GaimConversation *conv, GaimConvUpdateType type)
 
 static GaimConversationUiOps convOps =
 {
-	qGaimConvDestroy,
-	qGaimConvWriteChat,
-	qGaimConvWriteIm,
-	qGaimConvWriteConv,
-	qGaimConvChatAddUser,
-	qGaimConvChatAddUsers,
-	qGaimConvChatRenameUser,
-	qGaimConvChatRemoveUser,
-	qGaimConvChatRemoveUsers,
+	qQuailConvDestroy,
+	qQuailConvWriteChat,
+	qQuailConvWriteIm,
+	qQuailConvWriteConv,
+	qQuailConvChatAddUser,
+	qQuailConvChatAddUsers,
+	qQuailConvChatRenameUser,
+	qQuailConvChatRemoveUser,
+	qQuailConvChatRemoveUsers,
 	NULL,
-	qGaimConvUpdated
+	qQuailConvUpdated
 };
 
 static GaimConversationUiOps *
-qGaimConvWindowGetConvUiOps()
+qQuailConvWindowGetConvUiOps()
 {
 	return &convOps;
 }
@@ -1334,10 +1334,10 @@ qGaimConvWindowGetConvUiOps()
  * Window UI ops
  **************************************************************************/
 static void
-qGaimConvWindowNew(GaimConvWindow *win)
+qQuailConvWindowNew(GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin;
-	QGaimMainWindow *mainWin = qGaimGetMainWindow();
+	QGaimMainWindow *mainWin = qQuailGetMainWindow();
 
 	qwin = new QGaimConvWindow(win, mainWin);
 
@@ -1350,28 +1350,28 @@ qGaimConvWindowNew(GaimConvWindow *win)
 }
 
 static void
-qGaimConvWindowDestroy(GaimConvWindow *win)
+qQuailConvWindowDestroy(GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
-	qGaimGetMainWindow()->removeConversationWindow(qwin);
+	qQuailGetMainWindow()->removeConversationWindow(qwin);
 
 	win->ui_data = NULL;
 	delete qwin;
 }
 
 static void
-qGaimConvWindowShow(GaimConvWindow *win)
+qQuailConvWindowShow(GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
-	qGaimGetMainWindow()->setLastActiveConvWindow(win);
+	qQuailGetMainWindow()->setLastActiveConvWindow(win);
 
 	qwin->show();
 }
 
 static void
-qGaimConvWindowHide(GaimConvWindow *win)
+qQuailConvWindowHide(GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
@@ -1379,17 +1379,17 @@ qGaimConvWindowHide(GaimConvWindow *win)
 }
 
 static void
-qGaimConvWindowRaise(GaimConvWindow *win)
+qQuailConvWindowRaise(GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
-	qGaimGetMainWindow()->setLastActiveConvWindow(win);
+	qQuailGetMainWindow()->setLastActiveConvWindow(win);
 
-	qGaimGetMainWindow()->getWidgetStack()->raiseWidget(qwin->getId());
+	qQuailGetMainWindow()->getWidgetStack()->raiseWidget(qwin->getId());
 }
 
 static void
-qGaimConvWindowSwitchConv(GaimConvWindow *win, unsigned int index)
+qQuailConvWindowSwitchConv(GaimConvWindow *win, unsigned int index)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
@@ -1397,7 +1397,7 @@ qGaimConvWindowSwitchConv(GaimConvWindow *win, unsigned int index)
 }
 
 static void
-qGaimConvWindowAddConv(GaimConvWindow *win, GaimConversation *conv)
+qQuailConvWindowAddConv(GaimConvWindow *win, GaimConversation *conv)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
@@ -1405,7 +1405,7 @@ qGaimConvWindowAddConv(GaimConvWindow *win, GaimConversation *conv)
 }
 
 static void
-qGaimConvWindowRemoveConv(GaimConvWindow *win, GaimConversation *conv)
+qQuailConvWindowRemoveConv(GaimConvWindow *win, GaimConversation *conv)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
@@ -1413,7 +1413,7 @@ qGaimConvWindowRemoveConv(GaimConvWindow *win, GaimConversation *conv)
 }
 
 static void
-qGaimConvWindowMoveConv(GaimConvWindow *win, GaimConversation *conv,
+qQuailConvWindowMoveConv(GaimConvWindow *win, GaimConversation *conv,
 					unsigned int newIndex)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
@@ -1422,7 +1422,7 @@ qGaimConvWindowMoveConv(GaimConvWindow *win, GaimConversation *conv,
 }
 
 static int
-qGaimConvWindowGetActiveIndex(const GaimConvWindow *win)
+qQuailConvWindowGetActiveIndex(const GaimConvWindow *win)
 {
 	QGaimConvWindow *qwin = (QGaimConvWindow *)win->ui_data;
 
@@ -1431,22 +1431,22 @@ qGaimConvWindowGetActiveIndex(const GaimConvWindow *win)
 
 static GaimConvWindowUiOps winOps =
 {
-	qGaimConvWindowGetConvUiOps,
-	qGaimConvWindowNew,
-	qGaimConvWindowDestroy,
-	qGaimConvWindowShow,
-	qGaimConvWindowHide,
-	qGaimConvWindowRaise,
+	qQuailConvWindowGetConvUiOps,
+	qQuailConvWindowNew,
+	qQuailConvWindowDestroy,
+	qQuailConvWindowShow,
+	qQuailConvWindowHide,
+	qQuailConvWindowRaise,
 	NULL,
-	qGaimConvWindowSwitchConv,
-	qGaimConvWindowAddConv,
-	qGaimConvWindowRemoveConv,
-	qGaimConvWindowMoveConv,
-	qGaimConvWindowGetActiveIndex
+	qQuailConvWindowSwitchConv,
+	qQuailConvWindowAddConv,
+	qQuailConvWindowRemoveConv,
+	qQuailConvWindowMoveConv,
+	qQuailConvWindowGetActiveIndex
 };
 
 GaimConvWindowUiOps *
-qGaimGetConvWindowUiOps()
+qQuailGetConvWindowUiOps()
 {
 	return &winOps;
 }

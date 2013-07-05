@@ -30,7 +30,7 @@
  * UI operations
  **************************************************************************/
 static void *
-qGaimRequestInput(const char *title, const char *primary,
+qQuailRequestInput(const char *title, const char *primary,
 				  const char *secondary, const char *defaultValue,
 				  gboolean multiline, gboolean masked,
 				  const char *okText, GCallback okCb,
@@ -62,7 +62,7 @@ qGaimRequestInput(const char *title, const char *primary,
 	else
 		newTitle = title;
 
-	dialog = new QGaimInputDialog(multiline, qGaimGetMainWindow(),
+	dialog = new QGaimInputDialog(multiline, qQuailGetMainWindow(),
 								  "input request", true);
 	dialog->setCaption(newTitle);
 	dialog->setInfoText(message);
@@ -96,7 +96,7 @@ qGaimRequestInput(const char *title, const char *primary,
 }
 
 static void *
-qGaimRequestAction(const char *title, const char *primary,
+qQuailRequestAction(const char *title, const char *primary,
 				   const char *secondary, unsigned int,
 				   void *userData, size_t actionCount, va_list actions)
 {
@@ -186,15 +186,15 @@ qGaimRequestAction(const char *title, const char *primary,
 
 static GaimRequestUiOps requestOps =
 {
-	qGaimRequestInput,
+	qQuailRequestInput,
 	NULL,
-	qGaimRequestAction,
+	qQuailRequestAction,
 	NULL,
 	NULL
 };
 
 GaimRequestUiOps *
-qGaimGetRequestUiOps()
+qQuailGetRequestUiOps()
 {
 	return &requestOps;
 }

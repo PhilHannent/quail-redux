@@ -441,7 +441,7 @@ QGaimAccountsWindow::disconnectFromAccount()
 void
 QGaimAccountsWindow::showBlist()
 {
-	qGaimGetMainWindow()->showBlistWindow();
+	qQuailGetMainWindow()->showBlistWindow();
 }
 
 void
@@ -506,13 +506,13 @@ QGaimAccountsWindow::getItemFromAccount(GaimAccount *account)
 }
 
 static void
-qGaimConnConnectProgress(GaimConnection *gc, const char *text,
+qQuailConnConnectProgress(GaimConnection *gc, const char *text,
 						 size_t step, size_t step_count)
 {
 	QGaimConnectionMeters *meters;
 	QGaimConnectionMeter *meter;
 
-	meters = qGaimGetMainWindow()->getMeters();
+	meters = qQuailGetMainWindow()->getMeters();
 	meter = meters->findMeter(gc);
 
 	if (meter == NULL)
@@ -522,9 +522,9 @@ qGaimConnConnectProgress(GaimConnection *gc, const char *text,
 }
 
 static void
-qGaimConnConnected(GaimConnection *gc)
+qQuailConnConnected(GaimConnection *gc)
 {
-	QGaimConnectionMeters *meters = qGaimGetMainWindow()->getMeters();
+	QGaimConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QGaimConnectionMeter *meter;
 
 	meter = meters->findMeter(gc);
@@ -534,9 +534,9 @@ qGaimConnConnected(GaimConnection *gc)
 }
 
 static void
-qGaimConnDisconnected(GaimConnection *gc)
+qQuailConnDisconnected(GaimConnection *gc)
 {
-	QGaimConnectionMeters *meters = qGaimGetMainWindow()->getMeters();
+	QGaimConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QGaimConnectionMeter *meter;
 
 	meter = meters->findMeter(gc);
@@ -546,7 +546,7 @@ qGaimConnDisconnected(GaimConnection *gc)
 }
 
 static void
-qGaimConnNotice(GaimConnection *gc, const char *text)
+qQuailConnNotice(GaimConnection *gc, const char *text)
 {
 	/* XXX */
 	gc = NULL;
@@ -555,15 +555,15 @@ qGaimConnNotice(GaimConnection *gc, const char *text)
 
 static GaimConnectionUiOps connUiOps =
 {
-	qGaimConnConnectProgress,
-	qGaimConnConnected,
-	qGaimConnDisconnected,
-	qGaimConnNotice,
+	qQuailConnConnectProgress,
+	qQuailConnConnected,
+	qQuailConnDisconnected,
+	qQuailConnNotice,
 	NULL
 };
 
 GaimConnectionUiOps *
-qGaimGetConnectionUiOps()
+qQuailGetConnectionUiOps()
 {
 	return &connUiOps;
 }

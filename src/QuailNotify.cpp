@@ -37,13 +37,13 @@ static int notifyActiveCount = 0;
 /**************************************************************************
  * UI operations
  **************************************************************************/
-static void *qGaimNotifyEmails(size_t count, gboolean detailed,
+static void *qQuailNotifyEmails(size_t count, gboolean detailed,
 							   const char **subjects, const char **froms,
 							   const char **tos, const char **urls,
 							   GCallback cb, void *userData);
 
 static void *
-qGaimNotifyMessage(GaimNotifyMsgType type, const char *title,
+qQuailNotifyMessage(GaimNotifyMsgType type, const char *title,
 				   const char *primary, const char *secondary,
 				   GCallback, void *)
 {
@@ -93,10 +93,10 @@ qGaimNotifyMessage(GaimNotifyMsgType type, const char *title,
 }
 
 static void *
-qGaimNotifyEmail(const char *subject, const char *from, const char *to,
+qQuailNotifyEmail(const char *subject, const char *from, const char *to,
 				 const char *url, GCallback cb, void *userData)
 {
-	return qGaimNotifyEmails(1, true,
+	return qQuailNotifyEmails(1, true,
 							 (subject == NULL ? NULL : &subject),
 							 (from    == NULL ? NULL : &from),
 							 (to      == NULL ? NULL : &to),
@@ -105,7 +105,7 @@ qGaimNotifyEmail(const char *subject, const char *from, const char *to,
 }
 
 static void *
-qGaimNotifyEmails(size_t count, gboolean, const char **subjects,
+qQuailNotifyEmails(size_t count, gboolean, const char **subjects,
 				  const char **froms, const char **tos, const char **,
 				  GCallback, void *)
 {
@@ -137,7 +137,7 @@ qGaimNotifyEmails(size_t count, gboolean, const char **subjects,
 }
 
 static void *
-qGaimNotifyFormatted(const char *title, const char *primary,
+qQuailNotifyFormatted(const char *title, const char *primary,
 					 const char *secondary, const char *text,
 					 GCallback, void *)
 {
@@ -195,22 +195,22 @@ qGaimNotifyFormatted(const char *title, const char *primary,
 
 static GaimNotifyUiOps notifyOps =
 {
-	qGaimNotifyMessage,
-	qGaimNotifyEmail,
-	qGaimNotifyEmails,
-	qGaimNotifyFormatted,
+	qQuailNotifyMessage,
+	qQuailNotifyEmail,
+	qQuailNotifyEmails,
+	qQuailNotifyFormatted,
 	NULL,
 	NULL
 };
 
 GaimNotifyUiOps *
-qGaimGetNotifyUiOps()
+qQuailGetNotifyUiOps()
 {
 	return &notifyOps;
 }
 
 void
-qGaimNotifyBuzzer(void)
+qQuailNotifyBuzzer(void)
 {
 	if (!gaim_prefs_get_bool("/gaim/qpe/notify/use_buzzer"))
 		return;
@@ -219,7 +219,7 @@ qGaimNotifyBuzzer(void)
 }
 
 void
-qGaimNotifyLedStart(void)
+qQuailNotifyLedStart(void)
 {
 	if (!gaim_prefs_get_bool("/gaim/qpe/notify/use_led"))
 		return;
@@ -238,7 +238,7 @@ qGaimNotifyLedStart(void)
 }
 
 void
-qGaimNotifyLedStop(void)
+qQuailNotifyLedStop(void)
 {
 	ODevice *device = ODevice::inst();
 
@@ -252,33 +252,33 @@ qGaimNotifyLedStop(void)
 }
 
 void
-qGaimNotifySound(void)
+qQuailNotifySound(void)
 {
 	if (!gaim_prefs_get_bool("/gaim/qpe/notify/use_sound"))
 		return;
 }
 
 void
-qGaimNotifyUser(void)
+qQuailNotifyUser(void)
 {
-	qGaimNotifyBuzzer();
-	qGaimNotifyLedStart();
-	qGaimNotifySound();
+	qQuailNotifyBuzzer();
+	qQuailNotifyLedStart();
+	qQuailNotifySound();
 
 	notifyActiveCount++;
 }
 
 void
-qGaimNotifyUserStop(void)
+qQuailNotifyUserStop(void)
 {
 	if (--notifyActiveCount > 0)
 		return;
 
-	qGaimNotifyLedStop();
+	qQuailNotifyLedStop();
 }
 
 void
-qGaimNotifyInit(void)
+qQuailNotifyInit(void)
 {
 	gaim_prefs_add_none("/gaim/qpe/notify");
 	gaim_prefs_add_bool("/gaim/qpe/notify/incoming_im",   true);

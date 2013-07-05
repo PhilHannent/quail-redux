@@ -29,7 +29,7 @@
 #include <qapplication.h>
 
 static void
-qGaimDebugPrint(GaimDebugLevel, const char *category,
+qQuailDebugPrint(GaimDebugLevel, const char *category,
 				const char *format, va_list args)
 {
 	gchar *arg_s;
@@ -49,11 +49,11 @@ qGaimDebugPrint(GaimDebugLevel, const char *category,
 
 static GaimDebugUiOps ops =
 {
-	qGaimDebugPrint
+	qQuailDebugPrint
 };
 
 GaimDebugUiOps *
-qGaimGetDebugUiOps(void)
+qQuailGetDebugUiOps(void)
 {
 	return &ops;
 }

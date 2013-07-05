@@ -72,7 +72,7 @@ QGaimBlistPrefPage::accept()
 	gaim_prefs_set_bool("/gaim/qpe/blist/dim_idle_buddies",
 						dimIdle->isChecked());
 
-	qGaimGetMainWindow()->getBlistWindow()->reloadList();
+	qQuailGetMainWindow()->getBlistWindow()->reloadList();
 }
 
 void

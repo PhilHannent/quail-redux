@@ -77,6 +77,6 @@ class QGaimMainWindow : public QMainWindow
 		int nextConvWinId;
 };
 
-QGaimMainWindow *qGaimGetMainWindow();
+QGaimMainWindow *qQuailGetMainWindow();
 
 #endif /* _QGAIM_MAIN_WINDOW_H_ */

@@ -118,6 +118,6 @@ class QGaimBListWindow : public QMainWindow
 		QToolBar *toolbar;
 };
 
-GaimBlistUiOps *qGaimGetBlistUiOps();
+GaimBlistUiOps *qQuailGetBlistUiOps();
 
 #endif /* _QGAIM_BLIST_WIN_H_ */

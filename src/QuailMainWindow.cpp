@@ -47,7 +47,7 @@ static QGaimMainWindow *mainWin = NULL;
  * Core stuff
  **************************************************************************/
 static void
-qGaimPrefsInit(void)
+qQuailPrefsInit(void)
 {
 	gaim_prefs_add_none("/gaim");
 	gaim_prefs_add_none("/gaim/qpe");
@@ -61,41 +61,41 @@ qGaimPrefsInit(void)
 						(QPEApplication::desktop()->width() >= 600));
 	gaim_prefs_add_bool("/gaim/qpe/blist/dim_idle_buddies",     true);
 
-	qGaimNotifyInit();
+	qQuailNotifyInit();
 }
 
 static void
-qGaimCoreDebugInit(void)
+qQuailCoreDebugInit(void)
 {
-	gaim_debug_set_ui_ops(qGaimGetDebugUiOps());
+	gaim_debug_set_ui_ops(qQuailGetDebugUiOps());
 }
 
 static void
-qGaimCoreUiInit(void)
+qQuailCoreUiInit(void)
 {
-	gaim_blist_set_ui_ops(qGaimGetBlistUiOps());
-	gaim_connections_set_ui_ops(qGaimGetConnectionUiOps());
-	gaim_conversations_set_win_ui_ops(qGaimGetConvWindowUiOps());
-	gaim_notify_set_ui_ops(qGaimGetNotifyUiOps());
-	gaim_request_set_ui_ops(qGaimGetRequestUiOps());
+	gaim_blist_set_ui_ops(qQuailGetBlistUiOps());
+	gaim_connections_set_ui_ops(qQuailGetConnectionUiOps());
+	gaim_conversations_set_win_ui_ops(qQuailGetConvWindowUiOps());
+	gaim_notify_set_ui_ops(qQuailGetNotifyUiOps());
+	gaim_request_set_ui_ops(qQuailGetRequestUiOps());
 }
 
 static void
-qGaimCoreQuit(void)
+qQuailCoreQuit(void)
 {
 	exit(0);
 }
 
 static GaimCoreUiOps coreOps =
 {
-	qGaimPrefsInit,
-	qGaimCoreDebugInit,
-	qGaimCoreUiInit,
-	qGaimCoreQuit
+	qQuailPrefsInit,
+	qQuailCoreDebugInit,
+	qQuailCoreUiInit,
+	qQuailCoreQuit
 };
 
 static GaimCoreUiOps *
-qGaimGetCoreUiOps()
+qQuailGetCoreUiOps()
 {
 	return &coreOps;
 }
@@ -147,8 +147,8 @@ QGaimMainWindow::initCore()
 {
 	char *plugin_search_paths[1];
 
-	gaim_core_set_ui_ops(qGaimGetCoreUiOps());
-	gaim_eventloop_set_ui_ops(qGaimGetEventLoopUiOps());
+	gaim_core_set_ui_ops(qQuailGetCoreUiOps());
+	gaim_eventloop_set_ui_ops(qQuailGetEventLoopUiOps());
 
 	if (!gaim_core_init("qpe-gaim")) {
 		qFatal(tr("Initialization of the Gaim core failed.\n"
@@ -293,7 +293,7 @@ QGaimMainWindow::showAccountsWindow()
 }
 
 QGaimMainWindow *
-qGaimGetMainWindow()
+qQuailGetMainWindow()
 {
 	return mainWin;
 }

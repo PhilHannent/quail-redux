@@ -731,7 +731,7 @@ QGaimBListWindow::showPreferencesSlot()
 void
 QGaimBListWindow::showAccountsWindow()
 {
-	qGaimGetMainWindow()->showAccountsWindow();
+	qQuailGetMainWindow()->showAccountsWindow();
 }
 
 void
@@ -839,9 +839,9 @@ signedOffCb(GaimConnection *gc, GaimBuddyList *blist)
  * blist UI
  **************************************************************************/
 static void
-qGaimBlistNewList(GaimBuddyList *blist)
+qQuailBlistNewList(GaimBuddyList *blist)
 {
-	QGaimBListWindow *win = qGaimGetMainWindow()->getBlistWindow();
+	QGaimBListWindow *win = qQuailGetMainWindow()->getBlistWindow();
 	blist->ui_data = win;
 	win->setGaimBlist(blist);
 
@@ -853,12 +853,12 @@ qGaimBlistNewList(GaimBuddyList *blist)
 }
 
 static void
-qGaimBlistNewNode(GaimBlistNode *)
+qQuailBlistNewNode(GaimBlistNode *)
 {
 }
 
 static void
-qGaimBlistShow(GaimBuddyList *blist)
+qQuailBlistShow(GaimBuddyList *blist)
 {
 	QGaimBListWindow *blist_win = (QGaimBListWindow *)blist->ui_data;
 
@@ -866,14 +866,14 @@ qGaimBlistShow(GaimBuddyList *blist)
 }
 
 static void
-qGaimBlistUpdate(GaimBuddyList *blist, GaimBlistNode *node)
+qQuailBlistUpdate(GaimBuddyList *blist, GaimBlistNode *node)
 {
 	QGaimBListWindow *blist_win = (QGaimBListWindow *)blist->ui_data;
 	blist_win->updateNode(node);
 }
 
 static void
-qGaimBlistRemove(GaimBuddyList *blist, GaimBlistNode *node)
+qQuailBlistRemove(GaimBuddyList *blist, GaimBlistNode *node)
 {
 	QGaimBListWindow *blist_win = (QGaimBListWindow *)blist->ui_data;
 	QGaimBListItem *item = (QGaimBListItem *)node->ui_data;
@@ -893,7 +893,7 @@ qGaimBlistRemove(GaimBuddyList *blist, GaimBlistNode *node)
 }
 
 static void
-qGaimBlistDestroy(GaimBuddyList *blist)
+qQuailBlistDestroy(GaimBuddyList *blist)
 {
 	QGaimBListWindow *qblist = (QGaimBListWindow *)blist->ui_data;
 
@@ -903,7 +903,7 @@ qGaimBlistDestroy(GaimBuddyList *blist)
 }
 
 static void
-qGaimBlistSetVisible(GaimBuddyList *blist, gboolean show)
+qQuailBlistSetVisible(GaimBuddyList *blist, gboolean show)
 {
 	QGaimBListWindow *qblist = (QGaimBListWindow *)blist->ui_data;
 
@@ -915,20 +915,20 @@ qGaimBlistSetVisible(GaimBuddyList *blist, gboolean show)
 
 static GaimBlistUiOps blistUiOps =
 {
-	qGaimBlistNewList,
-	qGaimBlistNewNode,
-	qGaimBlistShow,
-	qGaimBlistUpdate,
-	qGaimBlistRemove,
-	qGaimBlistDestroy,
-	qGaimBlistSetVisible,
+	qQuailBlistNewList,
+	qQuailBlistNewNode,
+	qQuailBlistShow,
+	qQuailBlistUpdate,
+	qQuailBlistRemove,
+	qQuailBlistDestroy,
+	qQuailBlistSetVisible,
 	NULL,
 	NULL,
 	NULL
 };
 
 GaimBlistUiOps *
-qGaimGetBlistUiOps()
+qQuailGetBlistUiOps()
 {
 	return &blistUiOps;
 }
