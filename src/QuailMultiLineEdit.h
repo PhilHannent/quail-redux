@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimMultiLineEdit.h Multi-line edit widget with history
+ * @file QQuailMultiLineEdit.h Multi-line edit widget with history
  *                            functionality
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -24,12 +24,12 @@
 
 #include <QTextEdit>
 
-class QGaimMultiLineEdit : public QTextEdit
+class QQuailMultiLineEdit : public QTextEdit
 {
 	Q_OBJECT
 
 	public:
-		QGaimMultiLineEdit(QWidget *parent = NULL, const char *name = NULL);
+		QQuailMultiLineEdit(QWidget *parent = NULL, const char *name = NULL);
 
 		void setHistoryEnabled(bool enabled);
 		bool isHistoryEnabled() const;

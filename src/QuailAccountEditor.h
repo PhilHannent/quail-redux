@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimAccountEditor.h Account editor dialog
+ * @file QQuailAccountEditor.h Account editor dialog
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -32,9 +32,9 @@
 
 class QCheckBox;
 class QComboBox;
-class QGaimAccountsWindow;
-class QGaimProtocolBox;
-class QGaimTabWidget;
+class QQuailAccountsWindow;
+class QQuailProtocolBox;
+class QQuailTabWidget;
 class QGridLayout;
 class QLabel;
 class QLineEdit;
@@ -43,17 +43,17 @@ class QPushButton;
 class QTabWidget;
 class QVBox;
 
-class QGaimAccountEditor : public QDialog
+class QQuailAccountEditor : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QGaimAccountEditor(GaimAccount *account = NULL,
+		QQuailAccountEditor(GaimAccount *account = NULL,
 						   QWidget *parent = NULL, const char *name = NULL,
 						   WFlags fl = 0);
-		~QGaimAccountEditor();
+		~QQuailAccountEditor();
 
-		void setAccountsWindow(QGaimAccountsWindow *accountsWin);
+		void setAccountsWindow(QQuailAccountsWindow *accountsWin);
 
 	protected:
 		virtual void buildInterface();
@@ -79,7 +79,7 @@ class QGaimAccountEditor : public QDialog
 		GaimPlugin *plugin;
 		GaimPluginProtocolInfo *prplInfo;
 
-		QGaimAccountsWindow *accountsWin;
+		QQuailAccountsWindow *accountsWin;
 
 		QString protocolId;
 
@@ -88,13 +88,13 @@ class QGaimAccountEditor : public QDialog
 
 		GaimProxyType newProxyType;
 
-		QGaimTabWidget *tabs;
+		QQuailTabWidget *tabs;
 
 		QList<QWidget> tabList;
 
 		/* Account tab */
 		QVBox *accountBox;
-		QGaimProtocolBox *protocolList;
+		QQuailProtocolBox *protocolList;
 		QLineEdit *screenNameEntry;
 		QLabel *passwordLabel;
 		QLineEdit *passwordEntry;

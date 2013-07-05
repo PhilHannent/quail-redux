@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimConvButton.h Conversation menu button
+ * @file QQuailConvButton.h Conversation menu button
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -29,13 +29,13 @@
 
 class QPopupMenu;
 
-class QGaimConvButton : public QToolButton
+class QQuailConvButton : public QToolButton
 {
 	Q_OBJECT
 
 	public:
-		QGaimConvButton(QWidget *parent = NULL, const char *name = NULL);
-		~QGaimConvButton();
+		QQuailConvButton(QWidget *parent = NULL, const char *name = NULL);
+		~QQuailConvButton();
 
 	protected slots:
 		void generateMenu();

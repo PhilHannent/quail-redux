@@ -1,5 +1,5 @@
 /**
- * @file QGaimImageUtils.h Image utility functions
+ * @file QQuailImageUtils.h Image utility functions
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -32,9 +32,9 @@ typedef enum
 	QGAIM_PIXMAP_SMALL,
 	QGAIM_PIXMAP_MENU
 
-} QGaimPixmapSize;
+} QQuailPixmapSize;
 
-class QGaimImageUtils
+class QQuailImageUtils
 {
 	public:
 		static QImage &greyImage(QImage &image);

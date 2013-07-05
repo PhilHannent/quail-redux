@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimConnectionMeter.h Connection meters
+ * @file QQuailConnectionMeter.h Connection meters
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -33,53 +33,53 @@
 class QProgressBar;
 class QVBox;
 
-class QGaimConnectionProgressBar : public QProgressBar
+class QQuailConnectionProgressBar : public QProgressBar
 {
 	Q_OBJECT
 
 	public:
-		QGaimConnectionProgressBar(QWidget *parent = NULL,
+		QQuailConnectionProgressBar(QWidget *parent = NULL,
 								   const char *name = NULL, WFlags fl = 0);
 
 		bool setIndicator(QString &str, int progress, int totalSteps);
 };
 
-class QGaimConnectionMeter : public QHBox
+class QQuailConnectionMeter : public QHBox
 {
 	Q_OBJECT
 
 	public:
-		QGaimConnectionMeter(GaimConnection *gc, QWidget *parent = NULL,
+		QQuailConnectionMeter(GaimConnection *gc, QWidget *parent = NULL,
 							 const char *name = NULL, WFlags fl = 0);
-		virtual ~QGaimConnectionMeter();
+		virtual ~QQuailConnectionMeter();
 
 		void update(QString str, int totalSteps, int progress);
 
 		GaimConnection *getConnection() const;
 
 	private:
-		QGaimConnectionProgressBar *progressBar;
+		QQuailConnectionProgressBar *progressBar;
 		GaimConnection *gc;
 };
 
-class QGaimConnectionMeters : public QVBox
+class QQuailConnectionMeters : public QVBox
 {
 	Q_OBJECT
 
 	public:
-		QGaimConnectionMeters(QWidget *parent = NULL,
+		QQuailConnectionMeters(QWidget *parent = NULL,
 							  const char *name = NULL, WFlags fl = 0);
-		virtual ~QGaimConnectionMeters();
+		virtual ~QQuailConnectionMeters();
 
-		void addMeter(QGaimConnectionMeter *meter);
-		void removeMeter(QGaimConnectionMeter *meter);
+		void addMeter(QQuailConnectionMeter *meter);
+		void removeMeter(QQuailConnectionMeter *meter);
 
-		QGaimConnectionMeter *addConnection(GaimConnection *gc);
+		QQuailConnectionMeter *addConnection(GaimConnection *gc);
 
-		QGaimConnectionMeter *findMeter(GaimConnection *gc);
+		QQuailConnectionMeter *findMeter(GaimConnection *gc);
 
 	public:
-		QList<QGaimConnectionMeter> meters;
+		QList<QQuailConnectionMeter> meters;
 };
 
 #endif /* _QGAIM_CONNECTION_METER_H_ */

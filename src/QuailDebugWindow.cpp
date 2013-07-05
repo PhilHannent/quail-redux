@@ -1,5 +1,5 @@
 /**
- * @file QGaimDebugWindow.cpp Debug window
+ * @file QQuailDebugWindow.cpp Debug window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *

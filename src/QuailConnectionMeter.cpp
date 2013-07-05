@@ -1,5 +1,5 @@
 /**
- * @file QGaimConnectionMeter.cpp Connection meters
+ * @file QQuailConnectionMeter.cpp Connection meters
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -27,9 +27,9 @@
 #include <qlabel.h>
 
 /**************************************************************************
- * QGaimConnectionProgressBar
+ * QQuailConnectionProgressBar
  **************************************************************************/
-QGaimConnectionProgressBar::QGaimConnectionProgressBar(QWidget *parent,
+QQuailConnectionProgressBar::QQuailConnectionProgressBar(QWidget *parent,
 													   const char *name,
 													   WFlags fl)
 	: QProgressBar(parent, name, fl)
@@ -38,7 +38,7 @@ QGaimConnectionProgressBar::QGaimConnectionProgressBar(QWidget *parent,
 }
 
 bool
-QGaimConnectionProgressBar::setIndicator(QString &str, int progress,
+QQuailConnectionProgressBar::setIndicator(QString &str, int progress,
 										 int totalSteps)
 {
 	return QProgressBar::setIndicator(str, progress, totalSteps);
@@ -46,9 +46,9 @@ QGaimConnectionProgressBar::setIndicator(QString &str, int progress,
 
 
 /**************************************************************************
- * QGaimConnectionMeter
+ * QQuailConnectionMeter
  **************************************************************************/
-QGaimConnectionMeter::QGaimConnectionMeter(GaimConnection *gc,
+QQuailConnectionMeter::QQuailConnectionMeter(GaimConnection *gc,
 										   QWidget *parent,
 										   const char *name, WFlags fl)
 	: QHBox(parent, name, fl), gc(gc)
@@ -62,19 +62,19 @@ QGaimConnectionMeter::QGaimConnectionMeter(GaimConnection *gc,
 	account = gaim_connection_get_account(gc);
 
 	icon = new QLabel(this);
-	icon->setPixmap(QGaimProtocolUtils::getProtocolIcon(account));
+	icon->setPixmap(QQuailProtocolUtils::getProtocolIcon(account));
 
 	label = new QLabel(gaim_account_get_username(account), this);
 
-	progressBar = new QGaimConnectionProgressBar(this);
+	progressBar = new QQuailConnectionProgressBar(this);
 }
 
-QGaimConnectionMeter::~QGaimConnectionMeter()
+QQuailConnectionMeter::~QQuailConnectionMeter()
 {
 }
 
 void
-QGaimConnectionMeter::update(QString, int progress, int totalSteps)
+QQuailConnectionMeter::update(QString, int progress, int totalSteps)
 {
 	if (progress == 0)
 		progressBar->setTotalSteps(totalSteps);
@@ -85,28 +85,28 @@ QGaimConnectionMeter::update(QString, int progress, int totalSteps)
 }
 
 GaimConnection *
-QGaimConnectionMeter::getConnection() const
+QQuailConnectionMeter::getConnection() const
 {
 	return gc;
 }
 
 
 /**************************************************************************
- * QGaimConnectionMeters
+ * QQuailConnectionMeters
  **************************************************************************/
-QGaimConnectionMeters::QGaimConnectionMeters(QWidget *parent,
+QQuailConnectionMeters::QQuailConnectionMeters(QWidget *parent,
 											 const char *name, WFlags fl)
 	: QVBox(parent, name, fl)
 {
 	meters.setAutoDelete(true);
 }
 
-QGaimConnectionMeters::~QGaimConnectionMeters()
+QQuailConnectionMeters::~QQuailConnectionMeters()
 {
 }
 
 void
-QGaimConnectionMeters::addMeter(QGaimConnectionMeter *meter)
+QQuailConnectionMeters::addMeter(QQuailConnectionMeter *meter)
 {
 	meters.append(meter);
 
@@ -114,27 +114,27 @@ QGaimConnectionMeters::addMeter(QGaimConnectionMeter *meter)
 }
 
 void
-QGaimConnectionMeters::removeMeter(QGaimConnectionMeter *meter)
+QQuailConnectionMeters::removeMeter(QQuailConnectionMeter *meter)
 {
 	meters.remove(meter);
 }
 
-QGaimConnectionMeter *
-QGaimConnectionMeters::addConnection(GaimConnection *gc)
+QQuailConnectionMeter *
+QQuailConnectionMeters::addConnection(GaimConnection *gc)
 {
-	QGaimConnectionMeter *meter;
+	QQuailConnectionMeter *meter;
 
-	meter = new QGaimConnectionMeter(gc, this);
+	meter = new QQuailConnectionMeter(gc, this);
 
 	addMeter(meter);
 
 	return meter;
 }
 
-QGaimConnectionMeter *
-QGaimConnectionMeters::findMeter(GaimConnection *gc)
+QQuailConnectionMeter *
+QQuailConnectionMeters::findMeter(GaimConnection *gc)
 {
-	QGaimConnectionMeter *meter;
+	QQuailConnectionMeter *meter;
 
 	for (meter = meters.first(); meter != NULL; meter = meters.next())
 	{

@@ -1,5 +1,5 @@
 /**
- * @file QGaimAccountsWindow.cpp Accounts window
+ * @file QQuailAccountsWindow.cpp Accounts window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -42,20 +42,20 @@
 #include <qtoolbutton.h>
 
 /**************************************************************************
- * QGaimAccountListItem
+ * QQuailAccountListItem
  **************************************************************************/
-QGaimAccountListItem::QGaimAccountListItem(QListView *parent, int index)
+QQuailAccountListItem::QQuailAccountListItem(QListView *parent, int index)
 	: QListViewItem(parent), account(NULL), index(index), pulseTimer(NULL)
 {
 }
 
-QGaimAccountListItem::~QGaimAccountListItem()
+QQuailAccountListItem::~QQuailAccountListItem()
 {
 	stopPulse();
 }
 
 void
-QGaimAccountListItem::startPulse(QPixmap onlinePixmap)
+QQuailAccountListItem::startPulse(QPixmap onlinePixmap)
 {
 	stopPulse();
 
@@ -72,7 +72,7 @@ QGaimAccountListItem::startPulse(QPixmap onlinePixmap)
 }
 
 void
-QGaimAccountListItem::stopPulse()
+QQuailAccountListItem::stopPulse()
 {
 	if (pulseTimer == NULL)
 		return;
@@ -85,19 +85,19 @@ QGaimAccountListItem::stopPulse()
 }
 
 void
-QGaimAccountListItem::setAccount(GaimAccount *account)
+QQuailAccountListItem::setAccount(GaimAccount *account)
 {
 	this->account = account;
 }
 
 GaimAccount *
-QGaimAccountListItem::getAccount() const
+QQuailAccountListItem::getAccount() const
 {
 	return account;
 }
 
 QString
-QGaimAccountListItem::key(int, bool) const
+QQuailAccountListItem::key(int, bool) const
 {
 	QString str;
 
@@ -107,11 +107,11 @@ QGaimAccountListItem::key(int, bool) const
 }
 
 void
-QGaimAccountListItem::updatePulse()
+QQuailAccountListItem::updatePulse()
 {
 	QPixmap tempPixmap(*pulseOrigPixmap);
 
-	setPixmap(0, QGaimImageUtils::saturate(tempPixmap, pulseStep));
+	setPixmap(0, QQuailImageUtils::saturate(tempPixmap, pulseStep));
 
 	if (pulseGrey)
 		pulseStep += 0.20;
@@ -122,24 +122,24 @@ QGaimAccountListItem::updatePulse()
 }
 
 /**************************************************************************
- * QGaimAccountsWindow gaim callbacks
+ * QQuailAccountsWindow gaim callbacks
  **************************************************************************/
 static void
-signedOnCb(GaimConnection *gc, QGaimAccountsWindow *win)
+signedOnCb(GaimConnection *gc, QQuailAccountsWindow *win)
 {
 	win->accountSignedOn(gaim_connection_get_account(gc));
 }
 
 static void
-signedOffCb(GaimConnection *gc, QGaimAccountsWindow *win)
+signedOffCb(GaimConnection *gc, QQuailAccountsWindow *win)
 {
 	win->accountSignedOff(gaim_connection_get_account(gc));
 }
 
 /**************************************************************************
- * QGaimAccountsWindow
+ * QQuailAccountsWindow
  **************************************************************************/
-QGaimAccountsWindow::QGaimAccountsWindow(QMainWindow *parent)
+QQuailAccountsWindow::QQuailAccountsWindow(QMainWindow *parent)
 	: QMainWindow(), parentMainWindow(parent)
 {
 	connect(parent, SIGNAL(pixmapSizeChanged(bool)),
@@ -156,23 +156,23 @@ QGaimAccountsWindow::QGaimAccountsWindow(QMainWindow *parent)
 	loadAccounts();
 }
 
-QGaimAccountsWindow::~QGaimAccountsWindow()
+QQuailAccountsWindow::~QQuailAccountsWindow()
 {
 	delete accountsView;
 }
 
 void
-QGaimAccountsWindow::updateAccounts()
+QQuailAccountsWindow::updateAccounts()
 {
 	loadAccounts();
 }
 
 void
-QGaimAccountsWindow::accountSignedOn(GaimAccount *account)
+QQuailAccountsWindow::accountSignedOn(GaimAccount *account)
 {
-	QGaimAccountListItem *item;
+	QQuailAccountListItem *item;
 
-	item = (QGaimAccountListItem *)accountsView->selectedItem();
+	item = (QQuailAccountListItem *)accountsView->selectedItem();
 
 	if (item->getAccount() == account)
 	{
@@ -181,21 +181,21 @@ QGaimAccountsWindow::accountSignedOn(GaimAccount *account)
 		deleteButton->setEnabled(false);
 	}
 	else
-		item = QGaimAccountsWindow::getItemFromAccount(account);
+		item = QQuailAccountsWindow::getItemFromAccount(account);
 
 	if (item != NULL)
 	{
 		item->stopPulse();
-		item->setPixmap(0, QGaimProtocolUtils::getProtocolIcon(account));
+		item->setPixmap(0, QQuailProtocolUtils::getProtocolIcon(account));
 	}
 }
 
 void
-QGaimAccountsWindow::accountSignedOff(GaimAccount *account)
+QQuailAccountsWindow::accountSignedOff(GaimAccount *account)
 {
-	QGaimAccountListItem *item;
+	QQuailAccountListItem *item;
 
-	item = (QGaimAccountListItem *)accountsView->selectedItem();
+	item = (QQuailAccountListItem *)accountsView->selectedItem();
 
 	if (item->getAccount() == account)
 	{
@@ -204,18 +204,18 @@ QGaimAccountsWindow::accountSignedOff(GaimAccount *account)
 		deleteButton->setEnabled(true);
 	}
 	else
-		item = QGaimAccountsWindow::getItemFromAccount(account);
+		item = QQuailAccountsWindow::getItemFromAccount(account);
 
 	if (item != NULL)
 	{
-		QPixmap protocolIcon = QGaimProtocolUtils::getProtocolIcon(account);
+		QPixmap protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
 
-		item->setPixmap(0, QGaimImageUtils::greyPixmap(protocolIcon));
+		item->setPixmap(0, QQuailImageUtils::greyPixmap(protocolIcon));
 	}
 }
 
 void
-QGaimAccountsWindow::buildInterface()
+QQuailAccountsWindow::buildInterface()
 {
 	setupToolbar();
 
@@ -234,7 +234,7 @@ QGaimAccountsWindow::buildInterface()
 }
 
 void
-QGaimAccountsWindow::setupToolbar()
+QQuailAccountsWindow::setupToolbar()
 {
 	QAction *a;
 	QLabel *label;
@@ -338,11 +338,11 @@ QGaimAccountsWindow::setupToolbar()
 			this, SLOT(accountsToggled(bool)));
 
 	/* Conversations */
-	button = new QGaimConvButton(toolbar, "conversations");
+	button = new QQuailConvButton(toolbar, "conversations");
 }
 
 void
-QGaimAccountsWindow::loadAccounts()
+QQuailAccountsWindow::loadAccounts()
 {
 	GList *l;
 	int index;
@@ -354,55 +354,55 @@ QGaimAccountsWindow::loadAccounts()
 		 l = l->next, index++)
 	{
 		QPixmap protocolIcon;
-		QGaimAccountListItem *item;
+		QQuailAccountListItem *item;
 		GaimAccount *account = (GaimAccount *)l->data;
 		QString protocolId = gaim_account_get_protocol_id(account);
 
-		protocolIcon = QGaimProtocolUtils::getProtocolIcon(account);
+		protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
 
-		item = new QGaimAccountListItem(accountsView, index);
+		item = new QQuailAccountListItem(accountsView, index);
 		item->setText(0, gaim_account_get_username(account));
-		item->setText(1, QGaimProtocolUtils::getProtocolName(protocolId));
+		item->setText(1, QQuailProtocolUtils::getProtocolName(protocolId));
 		item->setAccount(account);
 
 		if (gaim_account_is_connected(account))
 			item->setPixmap(0, protocolIcon);
 		else
-			item->setPixmap(0, QGaimImageUtils::greyPixmap(protocolIcon));
+			item->setPixmap(0, QQuailImageUtils::greyPixmap(protocolIcon));
 	}
 }
 
 void
-QGaimAccountsWindow::newAccount()
+QQuailAccountsWindow::newAccount()
 {
-	QGaimAccountEditor *editor;
+	QQuailAccountEditor *editor;
 
-	editor = new QGaimAccountEditor(NULL, this, "", true);
+	editor = new QQuailAccountEditor(NULL, this, "", true);
 	editor->setAccountsWindow(this);
 
 	editor->showMaximized();
 }
 
 void
-QGaimAccountsWindow::editAccount()
+QQuailAccountsWindow::editAccount()
 {
-	QGaimAccountEditor *editor;
-	QGaimAccountListItem *item;
+	QQuailAccountEditor *editor;
+	QQuailAccountListItem *item;
 
-	item = (QGaimAccountListItem *)accountsView->selectedItem();
+	item = (QQuailAccountListItem *)accountsView->selectedItem();
 
-	editor = new QGaimAccountEditor(item->getAccount(), this, "", true);
+	editor = new QQuailAccountEditor(item->getAccount(), this, "", true);
 	editor->setAccountsWindow(this);
 
 	editor->showMaximized();
 }
 
 void
-QGaimAccountsWindow::deleteAccount()
+QQuailAccountsWindow::deleteAccount()
 {
-	QGaimAccountListItem *item;
+	QQuailAccountListItem *item;
 
-	item = (QGaimAccountListItem *)accountsView->selectedItem();
+	item = (QQuailAccountListItem *)accountsView->selectedItem();
 
 	gaim_accounts_remove(item->getAccount());
 
@@ -415,45 +415,45 @@ QGaimAccountsWindow::deleteAccount()
 }
 
 void
-QGaimAccountsWindow::connectToAccount()
+QQuailAccountsWindow::connectToAccount()
 {
-	QGaimAccountListItem *item;
+	QQuailAccountListItem *item;
 
 	connectButton->setEnabled(false);
 
-	item = (QGaimAccountListItem *)accountsView->selectedItem();
+	item = (QQuailAccountListItem *)accountsView->selectedItem();
 
-	item->startPulse(QGaimProtocolUtils::getProtocolIcon(item->getAccount()));
+	item->startPulse(QQuailProtocolUtils::getProtocolIcon(item->getAccount()));
 
 	gaim_account_connect(item->getAccount());
 }
 
 void
-QGaimAccountsWindow::disconnectFromAccount()
+QQuailAccountsWindow::disconnectFromAccount()
 {
-	QGaimAccountListItem *item;
+	QQuailAccountListItem *item;
 
-	item = (QGaimAccountListItem *)accountsView->selectedItem();
+	item = (QQuailAccountListItem *)accountsView->selectedItem();
 
 	gaim_account_disconnect(item->getAccount());
 }
 
 void
-QGaimAccountsWindow::showBlist()
+QQuailAccountsWindow::showBlist()
 {
 	qQuailGetMainWindow()->showBlistWindow();
 }
 
 void
-QGaimAccountsWindow::accountsToggled(bool)
+QQuailAccountsWindow::accountsToggled(bool)
 {
 	accountsButton->setOn(true);
 }
 
 void
-QGaimAccountsWindow::accountSelected(QListViewItem *item)
+QQuailAccountsWindow::accountSelected(QListViewItem *item)
 {
-	QGaimAccountListItem *accountItem = (QGaimAccountListItem *)item;
+	QQuailAccountListItem *accountItem = (QQuailAccountListItem *)item;
 	GaimAccount *account;
 	const char *protocolId;
 
@@ -476,18 +476,18 @@ QGaimAccountsWindow::accountSelected(QListViewItem *item)
 }
 
 void
-QGaimAccountsWindow::resizeEvent(QResizeEvent *)
+QQuailAccountsWindow::resizeEvent(QResizeEvent *)
 {
 	accountsView->setColumnWidth(1, (accountsView->width()) / 4);
 	accountsView->setColumnWidth(0, accountsView->width() - 20 -
 								 accountsView->columnWidth(1));
 }
 
-QGaimAccountListItem *
-QGaimAccountsWindow::getItemFromAccount(GaimAccount *account)
+QQuailAccountListItem *
+QQuailAccountsWindow::getItemFromAccount(GaimAccount *account)
 {
 	QListViewItem *item;
-	QGaimAccountListItem *gitem;
+	QQuailAccountListItem *gitem;
 
 	if (account == NULL)
 		return NULL;
@@ -496,7 +496,7 @@ QGaimAccountsWindow::getItemFromAccount(GaimAccount *account)
 		 item != NULL;
 		 item = item->nextSibling())
 	{
-		gitem = (QGaimAccountListItem *)item;
+		gitem = (QQuailAccountListItem *)item;
 
 		if (gitem->getAccount() == account)
 			return gitem;
@@ -509,8 +509,8 @@ static void
 qQuailConnConnectProgress(GaimConnection *gc, const char *text,
 						 size_t step, size_t step_count)
 {
-	QGaimConnectionMeters *meters;
-	QGaimConnectionMeter *meter;
+	QQuailConnectionMeters *meters;
+	QQuailConnectionMeter *meter;
 
 	meters = qQuailGetMainWindow()->getMeters();
 	meter = meters->findMeter(gc);
@@ -524,8 +524,8 @@ qQuailConnConnectProgress(GaimConnection *gc, const char *text,
 static void
 qQuailConnConnected(GaimConnection *gc)
 {
-	QGaimConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
-	QGaimConnectionMeter *meter;
+	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
+	QQuailConnectionMeter *meter;
 
 	meter = meters->findMeter(gc);
 
@@ -536,8 +536,8 @@ qQuailConnConnected(GaimConnection *gc)
 static void
 qQuailConnDisconnected(GaimConnection *gc)
 {
-	QGaimConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
-	QGaimConnectionMeter *meter;
+	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
+	QQuailConnectionMeter *meter;
 
 	meter = meters->findMeter(gc);
 

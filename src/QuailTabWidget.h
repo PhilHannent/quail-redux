@@ -1,5 +1,5 @@
 /**
- * @file QGaimTabWidget.h Tab widget with colored label support.
+ * @file QQuailTabWidget.h Tab widget with colored label support.
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -23,12 +23,12 @@
 
 #include <qtabwidget.h>
 
-class QGaimTabWidget : public QTabWidget
+class QQuailTabWidget : public QTabWidget
 {
 	Q_OBJECT
 
 	public:
-		QGaimTabWidget(QWidget *parent = NULL, const char *name = NULL);
+		QQuailTabWidget(QWidget *parent = NULL, const char *name = NULL);
 
 		void setCurrentIndex(int index);
 		int getCurrentIndex() const;

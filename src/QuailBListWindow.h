@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimBListWindow.h Buddy list window
+ * @file QQuailBListWindow.h Buddy list window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -33,15 +33,15 @@ class QAction;
 class QMenuBar;
 class QToolBar;
 class QToolButton;
-class QGaimAccountsWindow;
+class QQuailAccountsWindow;
 
-class QGaimBListWindow : public QMainWindow
+class QQuailBListWindow : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-		QGaimBListWindow(QMainWindow *parent);
-		~QGaimBListWindow();
+		QQuailBListWindow(QMainWindow *parent);
+		~QQuailBListWindow();
 
 		/* Functions our blist UI must access. */
 		void setGaimBlist(GaimBuddyList *list);
@@ -88,7 +88,7 @@ class QGaimBListWindow : public QMainWindow
 	private:
 		QMainWindow *parentMainWindow;
 
-		QGaimBuddyList *buddylist;
+		QQuailBuddyList *buddylist;
 
 		QToolButton *addButton;
 

@@ -1,5 +1,5 @@
 /**
- * @file QGaimMenuLoop.cpp Gaim Qt Event Loop implementation
+ * @file QQuailMenuLoop.cpp Gaim Qt Event Loop implementation
  *
  * @Copyright (C) 2004 Christian Hammond.
  *
@@ -27,18 +27,18 @@ typedef struct
 
 	union
 	{
-		QGaimTimer *timer;
-		QGaimInputNotifier *notifier;
+		QQuailTimer *timer;
+		QQuailInputNotifier *notifier;
 	};
 
-} QGaimSourceInfo;
+} QQuailSourceInfo;
 
 static void qQuailSourceRemove(guint handle);
 
 static guint nextSourceId = 0;
-static QIntDict<QGaimSourceInfo> sources;
+static QIntDict<QQuailSourceInfo> sources;
 
-QGaimTimer::QGaimTimer(guint sourceId, GSourceFunc func, gpointer data)
+QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
 	: QTimer(), sourceId(sourceId), func(func), userData(data)
 {
 	connect(this, SIGNAL(timeout()),
@@ -46,13 +46,13 @@ QGaimTimer::QGaimTimer(guint sourceId, GSourceFunc func, gpointer data)
 }
 
 void
-QGaimTimer::update()
+QQuailTimer::update()
 {
 	if (!func(userData))
 		qQuailSourceRemove(sourceId);
 }
 
-QGaimInputNotifier::QGaimInputNotifier(int fd, GaimInputCondition cond,
+QQuailInputNotifier::QQuailInputNotifier(int fd, GaimInputCondition cond,
 									   GaimInputFunction func,
 									   gpointer userData)
 	: QObject(), func(func), userData(userData), readNotifier(NULL),
@@ -75,7 +75,7 @@ QGaimInputNotifier::QGaimInputNotifier(int fd, GaimInputCondition cond,
 	}
 }
 
-QGaimInputNotifier::~QGaimInputNotifier()
+QQuailInputNotifier::~QQuailInputNotifier()
 {
 	if (readNotifier != NULL)
 		delete readNotifier;
@@ -85,7 +85,7 @@ QGaimInputNotifier::~QGaimInputNotifier()
 }
 
 void
-QGaimInputNotifier::ioInvoke(int fd)
+QQuailInputNotifier::ioInvoke(int fd)
 {
 	int cond = 0;
 
@@ -102,11 +102,11 @@ QGaimInputNotifier::ioInvoke(int fd)
 static guint
 qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 {
-	QGaimSourceInfo *info = new QGaimSourceInfo;
+	QQuailSourceInfo *info = new QQuailSourceInfo;
 
 	info->handle = nextSourceId++;
 
-	info->timer = new QGaimTimer(info->handle, func, data);
+	info->timer = new QQuailTimer(info->handle, func, data);
 	info->timer->start(interval);
 
 	sources.insert(info->handle, info);
@@ -126,11 +126,11 @@ static guint
 qQuailInputAdd(int fd, GaimInputCondition cond, GaimInputFunction func,
 			  gpointer userData)
 {
-	QGaimSourceInfo *info = new QGaimSourceInfo;
+	QQuailSourceInfo *info = new QQuailSourceInfo;
 
 	info->handle = nextSourceId++;
 
-	info->notifier = new QGaimInputNotifier(fd, cond, func, userData);
+	info->notifier = new QQuailInputNotifier(fd, cond, func, userData);
 
 	sources.insert(info->handle, info);
 
@@ -140,7 +140,7 @@ qQuailInputAdd(int fd, GaimInputCondition cond, GaimInputFunction func,
 static void
 qQuailSourceRemove(guint handle)
 {
-	QGaimSourceInfo *info;
+	QQuailSourceInfo *info;
 
 	info = sources.find(handle);
 

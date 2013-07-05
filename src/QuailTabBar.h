@@ -1,5 +1,5 @@
 /**
- * @file QGaimTabBar.h Tab bar with colored label support
+ * @file QQuailTabBar.h Tab bar with colored label support
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -26,12 +26,12 @@
 #include <qmap.h>
 #include <qtabbar.h>
 
-class QGaimTabBar : public QTabBar
+class QQuailTabBar : public QTabBar
 {
 	Q_OBJECT
 
 	public:
-		QGaimTabBar(QWidget *parent = NULL, const char *name = NULL);
+		QQuailTabBar(QWidget *parent = NULL, const char *name = NULL);
 
 		void setTabColor(int id, const QColor &color);
 		const QColor &getTabColor(int id) const;

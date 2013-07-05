@@ -1,5 +1,5 @@
 /**
- * @file QGaimProtocolUtils.cpp Protocol utility functions
+ * @file QQuailProtocolUtils.cpp Protocol utility functions
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -31,7 +31,7 @@ static QDict<QPixmap> smallPixmaps;
 static QDict<QPixmap> menuPixmaps;
 
 QString
-QGaimProtocolUtils::getProtocolName(QString protocolId)
+QQuailProtocolUtils::getProtocolName(QString protocolId)
 {
 	GaimPlugin *p = gaim_plugins_find_with_id(protocolId);
 
@@ -41,8 +41,8 @@ QGaimProtocolUtils::getProtocolName(QString protocolId)
 }
 
 QPixmap
-QGaimProtocolUtils::getProtocolIcon(const GaimPlugin *prpl,
-									QGaimPixmapSize size)
+QQuailProtocolUtils::getProtocolIcon(const GaimPlugin *prpl,
+									QQuailPixmapSize size)
 {
 	GaimPluginProtocolInfo *prplInfo = NULL;
 
@@ -58,8 +58,8 @@ QGaimProtocolUtils::getProtocolIcon(const GaimPlugin *prpl,
 }
 
 QPixmap
-QGaimProtocolUtils::getProtocolIcon(GaimAccount *account,
-									QGaimPixmapSize size)
+QQuailProtocolUtils::getProtocolIcon(GaimAccount *account,
+									QQuailPixmapSize size)
 {
 	GaimPluginProtocolInfo *prplInfo = NULL;
 	GaimPlugin *prpl;
@@ -81,8 +81,8 @@ QGaimProtocolUtils::getProtocolIcon(GaimAccount *account,
 }
 
 QPixmap
-QGaimProtocolUtils::getProtocolIcon(const QString &protoName,
-									QGaimPixmapSize size)
+QQuailProtocolUtils::getProtocolIcon(const QString &protoName,
+									QQuailPixmapSize size)
 {
 	QPixmap *pixmap;
 	QDict<QPixmap> *pixmaps;

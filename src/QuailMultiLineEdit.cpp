@@ -1,5 +1,5 @@
 /**
- * @file QGaimMultiLineEdit.cpp Multi-line edit widget with history
+ * @file QQuailMultiLineEdit.cpp Multi-line edit widget with history
  *                              functionality
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,7 +21,7 @@
  */
 #include "QuailMultiLineEdit.h"
 
-QGaimMultiLineEdit::QGaimMultiLineEdit(QWidget *parent, const char *name)
+QQuailMultiLineEdit::QQuailMultiLineEdit(QWidget *parent, const char *name)
 	: QMultiLineEdit(parent, name), historyEnabled(false)
 {
 	index = -1;
@@ -29,19 +29,19 @@ QGaimMultiLineEdit::QGaimMultiLineEdit(QWidget *parent, const char *name)
 }
 
 void
-QGaimMultiLineEdit::setHistoryEnabled(bool enabled)
+QQuailMultiLineEdit::setHistoryEnabled(bool enabled)
 {
 	historyEnabled = enabled;
 }
 
 bool
-QGaimMultiLineEdit::isHistoryEnabled() const
+QQuailMultiLineEdit::isHistoryEnabled() const
 {
 	return historyEnabled;
 }
 
 bool
-QGaimMultiLineEdit::eventFilter(QObject *object, QEvent *event)
+QQuailMultiLineEdit::eventFilter(QObject *object, QEvent *event)
 {
 	if (event->type() == QEvent::KeyPress)
 	{
@@ -58,7 +58,7 @@ QGaimMultiLineEdit::eventFilter(QObject *object, QEvent *event)
 }
 
 void
-QGaimMultiLineEdit::keyPressEvent(QKeyEvent *event)
+QQuailMultiLineEdit::keyPressEvent(QKeyEvent *event)
 {
 	int key = event->key();
 

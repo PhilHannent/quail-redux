@@ -1,5 +1,5 @@
 /**
- * @file QGaimPrefsWindow.cpp Preferences window
+ * @file QQuailPrefsWindow.cpp Preferences window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -36,16 +36,16 @@
 #include <qpe/resource.h>
 
 /**************************************************************************
- * QGaimBlistPrefPage
+ * QQuailBlistPrefPage
  **************************************************************************/
-QGaimBlistPrefPage::QGaimBlistPrefPage(QWidget *parent, const char *name)
-	: QGaimPrefPage(parent, name)
+QQuailBlistPrefPage::QQuailBlistPrefPage(QWidget *parent, const char *name)
+	: QQuailPrefPage(parent, name)
 {
 	buildInterface();
 }
 
 void
-QGaimBlistPrefPage::accept()
+QQuailBlistPrefPage::accept()
 {
 	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_idle_times") ==
 		idleTimes->isChecked() &&
@@ -76,7 +76,7 @@ QGaimBlistPrefPage::accept()
 }
 
 void
-QGaimBlistPrefPage::buildInterface()
+QQuailBlistPrefPage::buildInterface()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);
@@ -124,35 +124,35 @@ QGaimBlistPrefPage::buildInterface()
 }
 
 /**************************************************************************
- * QGaimConvPrefPage
+ * QQuailConvPrefPage
  **************************************************************************/
-QGaimConvPrefPage::QGaimConvPrefPage(QWidget *parent, const char *name)
-	: QGaimPrefPage(parent, name)
+QQuailConvPrefPage::QQuailConvPrefPage(QWidget *parent, const char *name)
+	: QQuailPrefPage(parent, name)
 {
 }
 
 void
-QGaimConvPrefPage::accept()
+QQuailConvPrefPage::accept()
 {
 }
 
 void
-QGaimConvPrefPage::buildInterface()
+QQuailConvPrefPage::buildInterface()
 {
 }
 
 
 /**************************************************************************
- * QGaimNotifyPrefPage
+ * QQuailNotifyPrefPage
  **************************************************************************/
-QGaimNotifyPrefPage::QGaimNotifyPrefPage(QWidget *parent, const char *name)
-	: QGaimPrefPage(parent, name)
+QQuailNotifyPrefPage::QQuailNotifyPrefPage(QWidget *parent, const char *name)
+	: QQuailPrefPage(parent, name)
 {
 	buildInterface();
 }
 
 void
-QGaimNotifyPrefPage::accept()
+QQuailNotifyPrefPage::accept()
 {
 	if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_im") ==
 		incomingIm->isChecked() &&
@@ -177,7 +177,7 @@ QGaimNotifyPrefPage::accept()
 }
 
 void
-QGaimNotifyPrefPage::buildInterface()
+QQuailNotifyPrefPage::buildInterface()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	QVGroupBox *groupBox;
@@ -226,78 +226,78 @@ QGaimNotifyPrefPage::buildInterface()
 
 
 /**************************************************************************
- * QGaimAwayPrefPage
+ * QQuailAwayPrefPage
  **************************************************************************/
-QGaimAwayPrefPage::QGaimAwayPrefPage(QWidget *parent, const char *name)
-	: QGaimPrefPage(parent, name)
+QQuailAwayPrefPage::QQuailAwayPrefPage(QWidget *parent, const char *name)
+	: QQuailPrefPage(parent, name)
 {
 }
 
 void
-QGaimAwayPrefPage::accept()
+QQuailAwayPrefPage::accept()
 {
 }
 
 void
-QGaimAwayPrefPage::buildInterface()
+QQuailAwayPrefPage::buildInterface()
 {
 }
 
 
 /**************************************************************************
- * QGaimProxyPrefPage
+ * QQuailProxyPrefPage
  **************************************************************************/
-QGaimProxyPrefPage::QGaimProxyPrefPage(QWidget *parent, const char *name)
-	: QGaimPrefPage(parent, name)
+QQuailProxyPrefPage::QQuailProxyPrefPage(QWidget *parent, const char *name)
+	: QQuailPrefPage(parent, name)
 {
 }
 
 void
-QGaimProxyPrefPage::accept()
+QQuailProxyPrefPage::accept()
 {
 }
 
 void
-QGaimProxyPrefPage::buildInterface()
+QQuailProxyPrefPage::buildInterface()
 {
 }
 
 
 /**************************************************************************
- * QGaimPluginPrefPage
+ * QQuailPluginPrefPage
  **************************************************************************/
-QGaimPluginPrefPage::QGaimPluginPrefPage(QWidget *parent, const char *name)
-	: QGaimPrefPage(parent, name)
+QQuailPluginPrefPage::QQuailPluginPrefPage(QWidget *parent, const char *name)
+	: QQuailPrefPage(parent, name)
 {
 }
 
 void
-QGaimPluginPrefPage::accept()
+QQuailPluginPrefPage::accept()
 {
 }
 
 void
-QGaimPluginPrefPage::buildInterface()
+QQuailPluginPrefPage::buildInterface()
 {
 }
 
 
 /**************************************************************************
- * QGaimPrefsDialog
+ * QQuailPrefsDialog
  **************************************************************************/
-QGaimPrefsDialog::QGaimPrefsDialog(QWidget *parent, const char *name,
+QQuailPrefsDialog::QQuailPrefsDialog(QWidget *parent, const char *name,
 								   WFlags fl)
 	: QDialog(parent, name, fl)
 {
 	buildInterface();
 }
 
-QGaimPrefsDialog::~QGaimPrefsDialog()
+QQuailPrefsDialog::~QQuailPrefsDialog()
 {
 }
 
 void
-QGaimPrefsDialog::buildInterface()
+QQuailPrefsDialog::buildInterface()
 {
 	QVBoxLayout *layout;
 
@@ -308,13 +308,13 @@ QGaimPrefsDialog::buildInterface()
 
 	tabs = new OTabWidget(this, "pref tabs");
 
-	blistPage    = new QGaimBlistPrefPage(this,  "blist page");
-	notifyPage   = new QGaimNotifyPrefPage(this, "notify page");
+	blistPage    = new QQuailBlistPrefPage(this,  "blist page");
+	notifyPage   = new QQuailNotifyPrefPage(this, "notify page");
 #if 0
-	convPage     = new QGaimConvPrefPage(this,   "conv page");
-	awayIdlePage = new QGaimAwayPrefPage(this,   "awayIdle page");
-	proxyPage    = new QGaimProxyPrefPage(this,  "proxy page");
-	pluginPage   = new QGaimPluginPrefPage(this, "plugin page");
+	convPage     = new QQuailConvPrefPage(this,   "conv page");
+	awayIdlePage = new QQuailAwayPrefPage(this,   "awayIdle page");
+	proxyPage    = new QQuailProxyPrefPage(this,  "proxy page");
+	pluginPage   = new QQuailPluginPrefPage(this, "plugin page");
 #endif
 
 	tabs->addTab(blistPage,    "gaim/16x16/blist",         tr("Buddy List"));
@@ -330,7 +330,7 @@ QGaimPrefsDialog::buildInterface()
 }
 
 void
-QGaimPrefsDialog::accept()
+QQuailPrefsDialog::accept()
 {
 	OWait wait(this);
 
@@ -351,7 +351,7 @@ QGaimPrefsDialog::accept()
 }
 
 void
-QGaimPrefsDialog::done(int r)
+QQuailPrefsDialog::done(int r)
 {
 	QDialog::done(r);
 

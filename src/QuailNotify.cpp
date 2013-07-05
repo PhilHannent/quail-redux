@@ -1,5 +1,5 @@
 /**
- * @file QGaimNotify.cpp Notification UI
+ * @file QQuailNotify.cpp Notification UI
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *

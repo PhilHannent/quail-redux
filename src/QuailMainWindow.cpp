@@ -1,5 +1,5 @@
 /**
- * @file QGaimMainWindow.cpp Main gaim window
+ * @file QQuailMainWindow.cpp Main gaim window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -41,7 +41,7 @@
 #include "QuailRequest.h"
 #include "base.h"
 
-static QGaimMainWindow *mainWin = NULL;
+static QQuailMainWindow *mainWin = NULL;
 
 /**************************************************************************
  * Core stuff
@@ -102,9 +102,9 @@ qQuailGetCoreUiOps()
 
 
 /**************************************************************************
- * QGaimMainWindow
+ * QQuailMainWindow
  **************************************************************************/
-QGaimMainWindow::QGaimMainWindow(QWidget *parent, const char *name, WFlags fl)
+QQuailMainWindow::QQuailMainWindow(QWidget *parent, const char *name, WFlags fl)
 	: QMainWindow(parent, name, fl),
 	  accountsWin(NULL), blistWin(NULL), nextConvWinId(0)
 {
@@ -123,13 +123,13 @@ QGaimMainWindow::QGaimMainWindow(QWidget *parent, const char *name, WFlags fl)
 	gaim_accounts_auto_login("qpe-gaim");
 }
 
-QGaimMainWindow::~QGaimMainWindow()
+QQuailMainWindow::~QQuailMainWindow()
 {
 	gaim_core_quit();
 }
 
 void
-QGaimMainWindow::buildInterface()
+QQuailMainWindow::buildInterface()
 {
 	QVBox *vbox = new QVBox(this);
 
@@ -137,13 +137,13 @@ QGaimMainWindow::buildInterface()
 	vbox->setStretchFactor(widgetStack, 1);
 
 	/* Create the connection meters box. */
-	meters = new QGaimConnectionMeters(vbox);
+	meters = new QQuailConnectionMeters(vbox);
 
 	setCentralWidget(vbox);
 }
 
 void
-QGaimMainWindow::initCore()
+QQuailMainWindow::initCore()
 {
 	char *plugin_search_paths[1];
 
@@ -174,7 +174,7 @@ QGaimMainWindow::initCore()
 }
 
 void
-QGaimMainWindow::closeEvent(QCloseEvent *event)
+QQuailMainWindow::closeEvent(QCloseEvent *event)
 {
 	QWidget *visibleWidget = widgetStack->visibleWidget();
 
@@ -184,7 +184,7 @@ QGaimMainWindow::closeEvent(QCloseEvent *event)
 	{
 		/* This had better be a conversation window... */
 
-		QGaimConvWindow *qwin = (QGaimConvWindow *)visibleWidget;
+		QQuailConvWindow *qwin = (QQuailConvWindow *)visibleWidget;
 
 		gaim_conv_window_destroy(qwin->getGaimConvWindow());
 
@@ -193,7 +193,7 @@ QGaimMainWindow::closeEvent(QCloseEvent *event)
 }
 
 void
-QGaimMainWindow::addConversationWindow(QGaimConvWindow *win)
+QQuailMainWindow::addConversationWindow(QQuailConvWindow *win)
 {
 	win->setId(nextConvWinId++);
 
@@ -201,7 +201,7 @@ QGaimMainWindow::addConversationWindow(QGaimConvWindow *win)
 }
 
 void
-QGaimMainWindow::removeConversationWindow(QGaimConvWindow *win)
+QQuailMainWindow::removeConversationWindow(QQuailConvWindow *win)
 {
 	GList *l;
 	GaimConvWindow *newWin = NULL;
@@ -219,7 +219,7 @@ QGaimMainWindow::removeConversationWindow(QGaimConvWindow *win)
 
 		if (newWin != NULL)
 		{
-			QGaimConvWindow *qwin = (QGaimConvWindow *)newWin->ui_data;
+			QQuailConvWindow *qwin = (QQuailConvWindow *)newWin->ui_data;
 
 			getWidgetStack()->raiseWidget(qwin);
 
@@ -230,48 +230,48 @@ QGaimMainWindow::removeConversationWindow(QGaimConvWindow *win)
 	showBlistWindow();
 }
 
-QGaimBListWindow *
-QGaimMainWindow::getBlistWindow() const
+QQuailBListWindow *
+QQuailMainWindow::getBlistWindow() const
 {
 	return blistWin;
 }
 
-QGaimAccountsWindow *
-QGaimMainWindow::getAccountsWindow() const
+QQuailAccountsWindow *
+QQuailMainWindow::getAccountsWindow() const
 {
 	return accountsWin;
 }
 
 void
-QGaimMainWindow::setLastActiveConvWindow(GaimConvWindow *win)
+QQuailMainWindow::setLastActiveConvWindow(GaimConvWindow *win)
 {
 	lastConvWin = win;
 }
 
 GaimConvWindow *
-QGaimMainWindow::getLastActiveConvWindow() const
+QQuailMainWindow::getLastActiveConvWindow() const
 {
 	return lastConvWin;
 }
 
 QWidgetStack *
-QGaimMainWindow::getWidgetStack() const
+QQuailMainWindow::getWidgetStack() const
 {
 	return widgetStack;
 }
 
-QGaimConnectionMeters *
-QGaimMainWindow::getMeters() const
+QQuailConnectionMeters *
+QQuailMainWindow::getMeters() const
 {
 	return meters;
 }
 
 void
-QGaimMainWindow::showBlistWindow()
+QQuailMainWindow::showBlistWindow()
 {
 	if (blistWin == NULL)
 	{
-		blistWin = new QGaimBListWindow(this);
+		blistWin = new QQuailBListWindow(this);
 		widgetStack->addWidget(blistWin, 0);
 	}
 
@@ -280,11 +280,11 @@ QGaimMainWindow::showBlistWindow()
 }
 
 void
-QGaimMainWindow::showAccountsWindow()
+QQuailMainWindow::showAccountsWindow()
 {
 	if (accountsWin == NULL)
 	{
-		accountsWin = new QGaimAccountsWindow(this);
+		accountsWin = new QQuailAccountsWindow(this);
 		widgetStack->addWidget(accountsWin, 1);
 	}
 
@@ -292,7 +292,7 @@ QGaimMainWindow::showAccountsWindow()
 	widgetStack->raiseWidget(accountsWin);
 }
 
-QGaimMainWindow *
+QQuailMainWindow *
 qQuailGetMainWindow()
 {
 	return mainWin;

@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimNotify.h Notification UI
+ * @file QQuailNotify.h Notification UI
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *

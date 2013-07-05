@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimMenuLoop.h Gaim Qt Event Loop implementation
+ * @file QQuailMenuLoop.h Gaim Qt Event Loop implementation
  *
  * @Copyright (C) 2004 Christian Hammond.
  *
@@ -26,12 +26,12 @@
 #include <qtimer.h>
 #include <qsocketnotifier.h>
 
-class QGaimTimer : public QTimer
+class QQuailTimer : public QTimer
 {
 	Q_OBJECT
 
 	public:
-		QGaimTimer(guint sourceId, GSourceFunc func, gpointer data);
+		QQuailTimer(guint sourceId, GSourceFunc func, gpointer data);
 
 	private slots:
 		void update();
@@ -42,14 +42,14 @@ class QGaimTimer : public QTimer
 		gpointer userData;
 };
 
-class QGaimInputNotifier : public QObject
+class QQuailInputNotifier : public QObject
 {
 	Q_OBJECT
 
 	public:
-		QGaimInputNotifier(int fd, GaimInputCondition cond,
+		QQuailInputNotifier(int fd, GaimInputCondition cond,
 						   GaimInputFunction func, gpointer userData);
-		~QGaimInputNotifier();
+		~QQuailInputNotifier();
 
 	private slots:
 		void ioInvoke(int fd);

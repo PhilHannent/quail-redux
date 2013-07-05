@@ -1,5 +1,5 @@
 /**
- * @file QGaimInputDialog.h Input dialog
+ * @file QQuailInputDialog.h Input dialog
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -27,12 +27,12 @@ class QHBox;
 class QLabel;
 class QSignalMapper;
 
-class QGaimInputDialog : public QDialog
+class QQuailInputDialog : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QGaimInputDialog(bool multiline = false, QWidget *parent = NULL,
+		QQuailInputDialog(bool multiline = false, QWidget *parent = NULL,
 						 const char *name = NULL, bool modal = false,
 						 WFlags fl = 0);
 

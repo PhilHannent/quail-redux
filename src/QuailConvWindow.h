@@ -1,5 +1,5 @@
 /**
- * @file QGaimConvWindow.h Conversation windows
+ * @file QQuailConvWindow.h Conversation windows
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -28,21 +28,21 @@
 #include <libpurple/conversation.h>
 
 class QAction;
-class QGaimMultiLineEdit;
-class QGaimTabWidget;
+class QQuailMultiLineEdit;
+class QQuailTabWidget;
 class QListView;
 class QPopupMenu;
 class QTabWidget;
 class QTextView;
 
-class QGaimConversation : public QWidget
+class QQuailConversation : public QWidget
 {
 	Q_OBJECT
 
 	public:
-		QGaimConversation(GaimConversation *conv, QWidget *parent = NULL,
+		QQuailConversation(GaimConversation *conv, QWidget *parent = NULL,
 						  const char *name = NULL, WFlags fl = 0);
-		virtual ~QGaimConversation();
+		virtual ~QQuailConversation();
 
 		void setGaimConversation(GaimConversation *conv);
 		GaimConversation *getGaimConversation() const;
@@ -68,19 +68,19 @@ class QGaimConversation : public QWidget
 	protected:
 		GaimConversation *conv;
 		QTextView *text;
-		QGaimMultiLineEdit *entry;
+		QQuailMultiLineEdit *entry;
 		int tabId;
 		bool notifying;
 };
 
-class QGaimConvChat : public QGaimConversation
+class QQuailConvChat : public QQuailConversation
 {
 	Q_OBJECT
 
 	public:
-		QGaimConvChat(GaimConversation *conv, QWidget *parent = NULL,
+		QQuailConvChat(GaimConversation *conv, QWidget *parent = NULL,
 				  const char *name = NULL, WFlags fl = 0);
-		virtual ~QGaimConvChat();
+		virtual ~QQuailConvChat();
 
 		void write(const char *who, const char *message,
 				   GaimMessageFlags flags, time_t mtime);
@@ -112,14 +112,14 @@ class QGaimConvChat : public QGaimConversation
 		QListView *userList;
 };
 
-class QGaimConvIm : public QGaimConversation
+class QQuailConvIm : public QQuailConversation
 {
 	Q_OBJECT
 
 	public:
-		QGaimConvIm(GaimConversation *conv, QWidget *parent = NULL,
+		QQuailConvIm(GaimConversation *conv, QWidget *parent = NULL,
 				const char *name = NULL, WFlags fl = 0);
-		virtual ~QGaimConvIm();
+		virtual ~QQuailConvIm();
 
 		void write(const char *who, const char *message,
 				   GaimMessageFlags flags, time_t mtime);
@@ -141,13 +141,13 @@ class QGaimConvIm : public QGaimConversation
 		GaimConvIm *im;
 };
 
-class QGaimConvWindow : public QMainWindow
+class QQuailConvWindow : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-		QGaimConvWindow(GaimConvWindow *win, QMainWindow *parent);
-		~QGaimConvWindow();
+		QQuailConvWindow(GaimConvWindow *win, QMainWindow *parent);
+		~QQuailConvWindow();
 
 		void setGaimConvWindow(GaimConvWindow *win);
 		GaimConvWindow *getGaimConvWindow() const;
@@ -161,7 +161,7 @@ class QGaimConvWindow : public QMainWindow
 		void updateAddRemoveButton();
 		void setSendEnabled(bool enabled);
 
-		QGaimTabWidget *getTabs() const;
+		QQuailTabWidget *getTabs() const;
 
 		void setId(int id);
 		int getId() const;
@@ -195,7 +195,7 @@ class QGaimConvWindow : public QMainWindow
 		int convWinId;
 
 		QToolBar *toolbar;
-		QGaimTabWidget *tabs;
+		QQuailTabWidget *tabs;
 
 		QToolButton *convsButton;
 

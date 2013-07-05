@@ -1,5 +1,5 @@
 /**
- * @file QGaimAccountBox.cpp Account drop-down menu
+ * @file QQuailAccountBox.cpp Account drop-down menu
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -25,7 +25,7 @@
 
 #include <qpixmap.h>
 
-QGaimAccountBox::QGaimAccountBox(bool showAll, QWidget *parent,
+QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
 								 const char *name)
 	: QComboBox(parent, name), showAll(showAll)
 {
@@ -41,7 +41,7 @@ QGaimAccountBox::QGaimAccountBox(bool showAll, QWidget *parent,
 	}
 }
 
-QGaimAccountBox::QGaimAccountBox(GaimAccount *account, bool showAll,
+QQuailAccountBox::QQuailAccountBox(GaimAccount *account, bool showAll,
 								 QWidget *parent, const char *name)
 	: QComboBox(parent, name), showAll(showAll)
 {
@@ -49,7 +49,7 @@ QGaimAccountBox::QGaimAccountBox(GaimAccount *account, bool showAll,
 }
 
 void
-QGaimAccountBox::setCurrentAccount(GaimAccount *account)
+QQuailAccountBox::setCurrentAccount(GaimAccount *account)
 {
 	GaimAccount *tempAccount;
 	GList *l, *list;
@@ -80,7 +80,7 @@ QGaimAccountBox::setCurrentAccount(GaimAccount *account)
 }
 
 GaimAccount *
-QGaimAccountBox::getCurrentAccount() const
+QQuailAccountBox::getCurrentAccount() const
 {
 	int index = currentItem();
 	GList *l;
@@ -110,7 +110,7 @@ QGaimAccountBox::getCurrentAccount() const
 }
 
 void
-QGaimAccountBox::buildMenu(GaimAccount *account)
+QQuailAccountBox::buildMenu(GaimAccount *account)
 {
 	GList *l, *list;
 	int count;
@@ -141,7 +141,7 @@ QGaimAccountBox::buildMenu(GaimAccount *account)
 
 		str = gaim_account_get_username(tempAccount);
 
-		pixmap = QGaimProtocolUtils::getProtocolIcon(tempAccount);
+		pixmap = QQuailProtocolUtils::getProtocolIcon(tempAccount);
 
 		int pw = (pixmap.isNull() ? 10 : pixmap.width() + 10);
 		int itemWidth;
@@ -172,7 +172,7 @@ QGaimAccountBox::buildMenu(GaimAccount *account)
 }
 
 void
-QGaimAccountBox::resizeEvent(QResizeEvent *event)
+QQuailAccountBox::resizeEvent(QResizeEvent *event)
 {
 	buildMenu(getCurrentAccount());
 

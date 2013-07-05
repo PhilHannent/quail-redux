@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimProtocolUtils.h Protocol utility functions
+ * @file QQuailProtocolUtils.h Protocol utility functions
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -31,18 +31,18 @@
 
 class QPixmap;
 
-class QGaimProtocolUtils
+class QQuailProtocolUtils
 {
 	public:
 		static QString getProtocolName(QString protocolId);
 		static QPixmap getProtocolIcon(GaimAccount *account,
-				QGaimPixmapSize size = QGAIM_PIXMAP_SMALL);
+				QQuailPixmapSize size = QGAIM_PIXMAP_SMALL);
 		static QPixmap getProtocolIcon(const GaimPlugin *plugin,
-				QGaimPixmapSize size = QGAIM_PIXMAP_SMALL);
+				QQuailPixmapSize size = QGAIM_PIXMAP_SMALL);
 
 	protected:
 		static QPixmap getProtocolIcon(const QString &protoName,
-				QGaimPixmapSize size = QGAIM_PIXMAP_SMALL);
+				QQuailPixmapSize size = QGAIM_PIXMAP_SMALL);
 };
 
 #endif /* _QGAIM_PROTOCOL_UTILS_H_ */

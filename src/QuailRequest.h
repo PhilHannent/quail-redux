@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimRequest.h Request UI
+ * @file QQuailRequest.h Request UI
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *

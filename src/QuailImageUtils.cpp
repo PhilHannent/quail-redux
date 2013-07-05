@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimImageUtils.h Image utility functions
+ * @file QQuailImageUtils.h Image utility functions
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -25,7 +25,7 @@
 #include <glib.h>
 
 QImage &
-QGaimImageUtils::greyImage(QImage &image)
+QQuailImageUtils::greyImage(QImage &image)
 {
 	int pixels = (image.depth() > 8
 				  ? image.width() * image.height()
@@ -46,7 +46,7 @@ QGaimImageUtils::greyImage(QImage &image)
 }
 
 QImage &
-QGaimImageUtils::desaturate(QImage &image, float value)
+QQuailImageUtils::desaturate(QImage &image, float value)
 {
 	if (image.width() == 0 || image.height() == 0)
 		return image;
@@ -78,7 +78,7 @@ QGaimImageUtils::desaturate(QImage &image, float value)
 }
 
 QImage &
-QGaimImageUtils::saturate(QImage &image, float value)
+QQuailImageUtils::saturate(QImage &image, float value)
 {
 	if (image.width() == 0 || image.height() == 0)
 		return image;
@@ -110,7 +110,7 @@ QGaimImageUtils::saturate(QImage &image, float value)
 }
 
 QPixmap &
-QGaimImageUtils::greyPixmap(QPixmap &pixmap)
+QQuailImageUtils::greyPixmap(QPixmap &pixmap)
 {
 	QImage image;
 
@@ -124,7 +124,7 @@ QGaimImageUtils::greyPixmap(QPixmap &pixmap)
 }
 
 QPixmap &
-QGaimImageUtils::saturate(QPixmap &pixmap, float value)
+QQuailImageUtils::saturate(QPixmap &pixmap, float value)
 {
 	QImage image;
 
@@ -138,7 +138,7 @@ QGaimImageUtils::saturate(QPixmap &pixmap, float value)
 }
 
 void
-QGaimImageUtils::blendOnLower(int xOffset, int yOffset, const QImage &upper,
+QQuailImageUtils::blendOnLower(int xOffset, int yOffset, const QImage &upper,
 							  QImage &lower)
 {
 	int upperWidth  = upper.width();

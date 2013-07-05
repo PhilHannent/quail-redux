@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimBuddyList.h Buddy list widget
+ * @file QQuailBuddyList.h Buddy list widget
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -28,12 +28,12 @@
 
 #include "QuailImageUtils.h"
 
-class QGaimBListItem : public QListViewItem
+class QQuailBListItem : public QListViewItem
 {
 	public:
-		QGaimBListItem(QListView *parent, GaimBlistNode *node);
-		QGaimBListItem(QListViewItem *parent, GaimBlistNode *node);
-		~QGaimBListItem();
+		QQuailBListItem(QListView *parent, GaimBlistNode *node);
+		QQuailBListItem(QListViewItem *parent, GaimBlistNode *node);
+		~QQuailBListItem();
 
 		GaimBlistNode *getBlistNode() const;
 
@@ -64,17 +64,17 @@ class QGaimBListItem : public QListViewItem
 		int textY1, textY2;
 };
 
-class QGaimBuddyList : public QListView
+class QQuailBuddyList : public QListView
 {
 	Q_OBJECT
 
 	public:
 		static QPixmap getBuddyStatusIcon(GaimBlistNode *node,
-			QGaimPixmapSize size = QGAIM_PIXMAP_SMALL);
+			QQuailPixmapSize size = QGAIM_PIXMAP_SMALL);
 
 	public:
-		QGaimBuddyList(QWidget *parent = NULL, const char *name = NULL);
-		virtual ~QGaimBuddyList();
+		QQuailBuddyList(QWidget *parent = NULL, const char *name = NULL);
+		virtual ~QQuailBuddyList();
 
 		void setGaimBlist(GaimBuddyList *list);
 		GaimBuddyList *getGaimBlist() const;
@@ -108,9 +108,9 @@ class QGaimBuddyList : public QListView
 		void nodeExpandedSlot(QListViewItem *item);
 		void nodeCollapsedSlot(QListViewItem *item);
 		void collapseContactSlot();
-		void collapseContactSlot(QGaimBListItem *item);
+		void collapseContactSlot(QQuailBListItem *item);
 		void expandContactSlot();
-		void expandContactSlot(QGaimBListItem *item);
+		void expandContactSlot(QQuailBListItem *item);
 		void saveBlistSlot();
 
 		void showContextMenuSlot(QListViewItem *item, const QPoint &point,

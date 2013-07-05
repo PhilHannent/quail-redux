@@ -1,5 +1,5 @@
 /**
- * @file QGaimConvButton.cpp Conversation menu button
+ * @file QQuailConvButton.cpp Conversation menu button
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -31,19 +31,19 @@
 #include <qpopupmenu.h>
 
 static void
-newConvCb(char *, QGaimConvButton *button)
+newConvCb(char *, QQuailConvButton *button)
 {
 	button->setEnabled(true);
 }
 
 static void
-delConvCb(char *, QGaimConvButton *button)
+delConvCb(char *, QQuailConvButton *button)
 {
 	if (gaim_get_conversations()->next == NULL)
 		button->setEnabled(false);
 }
 
-QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
+QQuailConvButton::QQuailConvButton(QWidget *parent, const char *name)
 	: QToolButton(parent, name), convs(NULL)
 {
 	setAutoRaise(true);
@@ -75,7 +75,7 @@ QGaimConvButton::QGaimConvButton(QWidget *parent, const char *name)
 		setEnabled(false);
 }
 
-QGaimConvButton::~QGaimConvButton()
+QQuailConvButton::~QQuailConvButton()
 {
 	delete menu;
 
@@ -91,7 +91,7 @@ QGaimConvButton::~QGaimConvButton()
 }
 
 void
-QGaimConvButton::generateMenu()
+QQuailConvButton::generateMenu()
 {
 	GaimConversation *conv;
 	GList *l;
@@ -123,14 +123,14 @@ QGaimConvButton::generateMenu()
 		if (buddy == NULL)
 		{
 			menu->insertItem(
-				QGaimProtocolUtils::getProtocolIcon(account,
+				QQuailProtocolUtils::getProtocolIcon(account,
 													QGAIM_PIXMAP_MENU),
 				gaim_conversation_get_title(conv), i);
 		}
 		else
 		{
 			menu->insertItem(
-				QGaimBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy,
+				QQuailBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy,
 												   QGAIM_PIXMAP_MENU),
 				gaim_conversation_get_title(conv), i);
 		}
@@ -140,7 +140,7 @@ QGaimConvButton::generateMenu()
 }
 
 void
-QGaimConvButton::convActivated(int id)
+QQuailConvButton::convActivated(int id)
 {
 	GaimConversation *conv;
 	GaimConvWindow *win;
@@ -164,7 +164,7 @@ QGaimConvButton::convActivated(int id)
 }
 
 void
-QGaimConvButton::buttonClicked()
+QQuailConvButton::buttonClicked()
 {
 	GaimConvWindow *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
 

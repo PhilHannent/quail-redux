@@ -1,5 +1,5 @@
 /**
- * @file QGaimTabWidget.cpp Tab widget with colored label support.
+ * @file QQuailTabWidget.cpp Tab widget with colored label support.
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -21,32 +21,32 @@
 #include "QuailTabWidget.h"
 #include "QuailTabBar.h"
 
-QGaimTabWidget::QGaimTabWidget(QWidget *parent, const char *name)
+QQuailTabWidget::QQuailTabWidget(QWidget *parent, const char *name)
 	: QTabWidget(parent, name)
 {
-	setTabBar(new QGaimTabBar(this, "tab control"));
+	setTabBar(new QQuailTabBar(this, "tab control"));
 }
 
 void
-QGaimTabWidget::setCurrentIndex(int index)
+QQuailTabWidget::setCurrentIndex(int index)
 {
-	((QGaimTabBar *)tabBar())->setCurrentIndex(index);
+	((QQuailTabBar *)tabBar())->setCurrentIndex(index);
 }
 
 int
-QGaimTabWidget::getCurrentIndex() const
+QQuailTabWidget::getCurrentIndex() const
 {
-	return ((QGaimTabBar *)tabBar())->getCurrentIndex();
+	return ((QQuailTabBar *)tabBar())->getCurrentIndex();
 }
 
 void
-QGaimTabWidget::setTabColor(int index, const QColor &color)
+QQuailTabWidget::setTabColor(int index, const QColor &color)
 {
-	((QGaimTabBar *)tabBar())->setTabColor(index, color);
+	((QQuailTabBar *)tabBar())->setTabColor(index, color);
 }
 
 int
-QGaimTabWidget::getLastId() const
+QQuailTabWidget::getLastId() const
 {
-	return ((QGaimTabBar *)tabBar())->getLastId();
+	return ((QQuailTabBar *)tabBar())->getLastId();
 }

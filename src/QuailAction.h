@@ -1,5 +1,5 @@
 /**
- * @file QGaimAction.h QAction subclass
+ * @file QQuailAction.h QAction subclass
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -23,17 +23,17 @@
 
 #include <qaction.h>
 
-class QGaimAction : public QAction
+class QQuailAction : public QAction
 {
 	Q_OBJECT
 
 	public:
-		QGaimAction(QObject *parent = NULL, const char *name = NULL,
+		QQuailAction(QObject *parent = NULL, const char *name = NULL,
 					bool toggle = false, void *data = NULL)
 			: QAction(parent, name, toggle), userData(data)
 		{ setupSignals(); }
 
-		QGaimAction(const QString &text, const QIconSet &icon,
+		QQuailAction(const QString &text, const QIconSet &icon,
 					const QString &menuText, int accel, QObject *parent,
 					const char *name = NULL, bool toggle = false,
 					void *data = NULL)
@@ -41,7 +41,7 @@ class QGaimAction : public QAction
 			  userData(data)
 		{ setupSignals(); }
 
-		QGaimAction(const QString &text, const QString &menuText, int accel,
+		QQuailAction(const QString &text, const QString &menuText, int accel,
 					QObject *parent, const char *name = NULL,
 					bool toggle = false, void *data = NULL)
 			: QAction(text, menuText, accel, parent, name, toggle),

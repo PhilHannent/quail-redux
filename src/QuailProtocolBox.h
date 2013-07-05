@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimProtocolBox.h Protocol drop-down menu
+ * @file QQuailProtocolBox.h Protocol drop-down menu
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -26,13 +26,13 @@
 
 #include <libpurple/prpl.h>
 
-class QGaimProtocolBox : public QComboBox
+class QQuailProtocolBox : public QComboBox
 {
 	Q_OBJECT
 
 	public:
-		QGaimProtocolBox(QWidget *parent = NULL, const char *name = NULL);
-		QGaimProtocolBox(QString protocolId, QWidget *parent = NULL,
+		QQuailProtocolBox(QWidget *parent = NULL, const char *name = NULL);
+		QQuailProtocolBox(QString protocolId, QWidget *parent = NULL,
 						 const char *name = NULL);
 
 		void setCurrentProtocol(QString protocolId);

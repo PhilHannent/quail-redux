@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimMainWindow.h Main gaim window
+ * @file QQuailMainWindow.h Main gaim window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -28,11 +28,11 @@
 
 #include "QuailBListWindow.h"
 
-class QGaimAccountsWindow;
-class QGaimConnectionMeters;
-class QGaimConvWindow;
+class QQuailAccountsWindow;
+class QQuailConnectionMeters;
+class QQuailConvWindow;
 
-class QGaimMainWindow : public QMainWindow
+class QQuailMainWindow : public QMainWindow
 {
 	Q_OBJECT
 
@@ -40,21 +40,21 @@ class QGaimMainWindow : public QMainWindow
 		static QString appName() { return QString::fromLatin1("gaim"); }
 
 	public:
-		QGaimMainWindow(QWidget *parent = 0, const char *name = 0,
+		QQuailMainWindow(QWidget *parent = 0, const char *name = 0,
 						WFlags fl = 0);
-		~QGaimMainWindow();
+		~QQuailMainWindow();
 
-		void addConversationWindow(QGaimConvWindow *win);
-		void removeConversationWindow(QGaimConvWindow *win);
+		void addConversationWindow(QQuailConvWindow *win);
+		void removeConversationWindow(QQuailConvWindow *win);
 
-		QGaimBListWindow *getBlistWindow() const;
-		QGaimAccountsWindow *getAccountsWindow() const;
+		QQuailBListWindow *getBlistWindow() const;
+		QQuailAccountsWindow *getAccountsWindow() const;
 
 		void setLastActiveConvWindow(GaimConvWindow *win);
 		GaimConvWindow *getLastActiveConvWindow() const;
 
 		QWidgetStack *getWidgetStack() const;
-		QGaimConnectionMeters *getMeters() const;
+		QQuailConnectionMeters *getMeters() const;
 
 	public slots:
 		void showBlistWindow();
@@ -68,15 +68,15 @@ class QGaimMainWindow : public QMainWindow
 
 	private:
 		QWidgetStack *widgetStack;
-		QGaimAccountsWindow *accountsWin;
-		QGaimBListWindow *blistWin;
-		QGaimConnectionMeters *meters;
+		QQuailAccountsWindow *accountsWin;
+		QQuailBListWindow *blistWin;
+		QQuailConnectionMeters *meters;
 
 		GaimConvWindow *lastConvWin;
 
 		int nextConvWinId;
 };
 
-QGaimMainWindow *qQuailGetMainWindow();
+QQuailMainWindow *qQuailGetMainWindow();
 
 #endif /* _QGAIM_MAIN_WINDOW_H_ */

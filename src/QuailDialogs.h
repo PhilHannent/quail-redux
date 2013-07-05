@@ -1,5 +1,5 @@
 /**
- * @file QGaimDialogs.h Small dialogs that don't belong in their own files
+ * @file QQuailDialogs.h Small dialogs that don't belong in their own files
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -28,17 +28,17 @@
 
 class QComboBox;
 class QFrame;
-class QGaimAccountBox;
+class QQuailAccountBox;
 class QGridLayout;
 class QLabel;
 class QLineEdit;
 
-class QGaimAddBuddyDialog : public QDialog
+class QQuailAddBuddyDialog : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QGaimAddBuddyDialog(QWidget *parent = NULL, const char *name = NULL,
+		QQuailAddBuddyDialog(QWidget *parent = NULL, const char *name = NULL,
 							WFlags fl = 0);
 
 		void setScreenName(const QString &screenName);
@@ -57,15 +57,15 @@ class QGaimAddBuddyDialog : public QDialog
 		QLineEdit *screenNameEntry;
 		QLineEdit *aliasEntry;
 		QComboBox *groupCombo;
-		QGaimAccountBox *accountCombo;
+		QQuailAccountBox *accountCombo;
 };
 
-class QGaimAddChatDialog : public QDialog
+class QQuailAddChatDialog : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QGaimAddChatDialog(QWidget *parent = NULL, const char *name = NULL,
+		QQuailAddChatDialog(QWidget *parent = NULL, const char *name = NULL,
 						   WFlags fl = 0);
 
 		void setAlias(const QString &alias);
@@ -86,19 +86,19 @@ class QGaimAddChatDialog : public QDialog
 		QLabel *groupLabel;
 		QLineEdit *aliasEntry;
 		QComboBox *groupCombo;
-		QGaimAccountBox *accountCombo;
+		QQuailAccountBox *accountCombo;
 		QGridLayout *grid;
 		QFrame *widgetsFrame;
 		QList<QWidget> labels;
 		QList<QWidget> widgets;
 };
 
-class QGaimNewImDialog : public QDialog
+class QQuailNewImDialog : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QGaimNewImDialog(QWidget *parent = NULL, const char *name = NULL,
+		QQuailNewImDialog(QWidget *parent = NULL, const char *name = NULL,
 						 WFlags fl = 0);
 
 		void setScreenName(const QString &screenName);
@@ -112,15 +112,15 @@ class QGaimNewImDialog : public QDialog
 
 	private:
 		QLineEdit *screenNameEntry;
-		QGaimAccountBox *accountCombo;
+		QQuailAccountBox *accountCombo;
 };
 
-class QGaimJoinChatDialog : public QDialog
+class QQuailJoinChatDialog : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QGaimJoinChatDialog(QWidget *parent = NULL, const char *name = NULL,
+		QQuailJoinChatDialog(QWidget *parent = NULL, const char *name = NULL,
 							WFlags fl = 0);
 
 		void setAccount(GaimAccount *account);
@@ -134,7 +134,7 @@ class QGaimJoinChatDialog : public QDialog
 		void accept();
 
 	private:
-		QGaimAccountBox *accountCombo;
+		QQuailAccountBox *accountCombo;
 		QGridLayout *grid;
 		QFrame *widgetsFrame;
 		QList<QWidget> labels;

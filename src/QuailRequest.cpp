@@ -1,5 +1,5 @@
 /**
- * @file QGaimRequest.cpp Request UI
+ * @file QQuailRequest.cpp Request UI
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -39,7 +39,7 @@ qQuailRequestInput(const char *title, const char *primary,
 {
 	QString message;
 	QString newTitle;
-	QGaimInputDialog *dialog;
+	QQuailInputDialog *dialog;
 
 	message = "";
 
@@ -62,7 +62,7 @@ qQuailRequestInput(const char *title, const char *primary,
 	else
 		newTitle = title;
 
-	dialog = new QGaimInputDialog(multiline, qQuailGetMainWindow(),
+	dialog = new QQuailInputDialog(multiline, qQuailGetMainWindow(),
 								  "input request", true);
 	dialog->setCaption(newTitle);
 	dialog->setInfoText(message);
@@ -172,7 +172,7 @@ qQuailRequestAction(const char *title, const char *primary,
 	}
 
 	int result = msgbox->exec();
-	gaim_debug(GAIM_DEBUG_MISC, "QGaimRequest", "result = %d\n", result);
+	gaim_debug(GAIM_DEBUG_MISC, "QQuailRequest", "result = %d\n", result);
 
 	result = actionCount - result - 1;
 

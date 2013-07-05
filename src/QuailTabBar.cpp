@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimTabBar.cpp Tab bar with colored label support
+ * @file QQuailTabBar.cpp Tab bar with colored label support
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -23,15 +23,15 @@
 #include <libpurple/debug.h>
 
 /**************************************************************************
- * QGaimTabBar
+ * QQuailTabBar
  **************************************************************************/
-QGaimTabBar::QGaimTabBar(QWidget *parent, const char *name)
+QQuailTabBar::QQuailTabBar(QWidget *parent, const char *name)
 	: QTabBar(parent, name), lastId(0)
 {
 }
 
 void
-QGaimTabBar::setTabColor(int id, const QColor &color)
+QQuailTabBar::setTabColor(int id, const QColor &color)
 {
 	QTab *t = tab(id);
 
@@ -44,7 +44,7 @@ QGaimTabBar::setTabColor(int id, const QColor &color)
 }
 
 const QColor &
-QGaimTabBar::getTabColor(int id) const
+QQuailTabBar::getTabColor(int id) const
 {
 	if (colors.contains(id))
 		return colors[id];
@@ -53,25 +53,25 @@ QGaimTabBar::getTabColor(int id) const
 }
 
 void
-QGaimTabBar::setCurrentIndex(int index)
+QQuailTabBar::setCurrentIndex(int index)
 {
 	setCurrentTab(tabList()->at(index));
 }
 
 int
-QGaimTabBar::getCurrentIndex()
+QQuailTabBar::getCurrentIndex()
 {
 	return tabList()->find(tab(currentTab()));
 }
 
 int
-QGaimTabBar::getLastId() const
+QQuailTabBar::getLastId() const
 {
 	return lastId;
 }
 
 void
-QGaimTabBar::paintLabel(QPainter *p, const QRect &rect,
+QQuailTabBar::paintLabel(QPainter *p, const QRect &rect,
 						QTab *tab, bool hasFocus) const
 {
 	QRect r = rect;
@@ -101,7 +101,7 @@ QGaimTabBar::paintLabel(QPainter *p, const QRect &rect,
 }
 
 int
-QGaimTabBar::insertTab(QTab *tab, int index)
+QQuailTabBar::insertTab(QTab *tab, int index)
 {
 	int id = QTabBar::insertTab(tab, index);
 

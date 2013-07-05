@@ -1,5 +1,5 @@
 /**
- * @file QGaimAccountEditor.cpp Account editor dialog
+ * @file QQuailAccountEditor.cpp Account editor dialog
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -39,7 +39,7 @@
 #include <qtabwidget.h>
 #include <qvbox.h>
 
-QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account, QWidget *parent,
+QQuailAccountEditor::QQuailAccountEditor(GaimAccount *account, QWidget *parent,
 									   const char *name, WFlags fl)
 	: QDialog(parent, name, fl), account(account), plugin(NULL),
 	  prplInfo(NULL), accountsWin(NULL), userSplitEntries(NULL),
@@ -67,7 +67,7 @@ QGaimAccountEditor::QGaimAccountEditor(GaimAccount *account, QWidget *parent,
 	buildInterface();
 }
 
-QGaimAccountEditor::~QGaimAccountEditor()
+QQuailAccountEditor::~QQuailAccountEditor()
 {
 	if (userSplitEntries != NULL)
 		g_list_free(userSplitEntries);
@@ -77,13 +77,13 @@ QGaimAccountEditor::~QGaimAccountEditor()
 }
 
 void
-QGaimAccountEditor::setAccountsWindow(QGaimAccountsWindow *accountsWin)
+QQuailAccountEditor::setAccountsWindow(QQuailAccountsWindow *accountsWin)
 {
 	this->accountsWin = accountsWin;
 }
 
 void
-QGaimAccountEditor::buildInterface()
+QQuailAccountEditor::buildInterface()
 {
 	if (account == NULL)
 		setCaption(tr("Add Account"));
@@ -93,14 +93,14 @@ QGaimAccountEditor::buildInterface()
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);
 
-	tabs = new QGaimTabWidget(this);
+	tabs = new QQuailTabWidget(this);
 	tabs->setMargin(6);
 
 	buildTabs();
 }
 
 void
-QGaimAccountEditor::buildTabs()
+QQuailAccountEditor::buildTabs()
 {
 	QWidget *widget;
 
@@ -115,7 +115,7 @@ QGaimAccountEditor::buildTabs()
 		widget = buildProtocolTab();
 
 		tabs->addTab(widget,
-			QGaimProtocolUtils::getProtocolIcon(plugin, QGAIM_PIXMAP_MENU),
+			QQuailProtocolUtils::getProtocolIcon(plugin, QGAIM_PIXMAP_MENU),
 			plugin->info->name);
 
 		tabList.append(widget);
@@ -132,7 +132,7 @@ QGaimAccountEditor::buildTabs()
 }
 
 QWidget *
-QGaimAccountEditor::buildAccountTab()
+QQuailAccountEditor::buildAccountTab()
 {
 	/* QFrame *sep; */
 	QVBox *vbox;
@@ -201,7 +201,7 @@ QGaimAccountEditor::buildAccountTab()
 }
 
 QWidget *
-QGaimAccountEditor::buildProtocolTab()
+QQuailAccountEditor::buildProtocolTab()
 {
 	QVBox *vbox;
 	QFrame *frame;
@@ -327,7 +327,7 @@ QGaimAccountEditor::buildProtocolTab()
 }
 
 QWidget *
-QGaimAccountEditor::buildProxyTab()
+QQuailAccountEditor::buildProxyTab()
 {
 	QVBox *vbox;
 	QWidget *spacer;
@@ -421,7 +421,7 @@ QGaimAccountEditor::buildProxyTab()
 }
 
 void
-QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
+QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 								   int &row)
 {
 	QLineEdit *entry;
@@ -430,7 +430,7 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	/* Protocol */
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
-	protocolList = new QGaimProtocolBox(parent, "protocol combo");
+	protocolList = new QQuailProtocolBox(parent, "protocol combo");
 	protocolList->setCurrentProtocol(protocolId);
 
 	grid->addWidget(protocolList, row++, 1);
@@ -559,7 +559,7 @@ QGaimAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 }
 
 void
-QGaimAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
+QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 								  int &row)
 {
 	/* New mail notifications */
@@ -578,7 +578,7 @@ QGaimAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 }
 
 void
-QGaimAccountEditor::proxyTypeChanged(int index)
+QQuailAccountEditor::proxyTypeChanged(int index)
 {
 	newProxyType = (GaimProxyType)(index - 1);
 
@@ -600,7 +600,7 @@ QGaimAccountEditor::proxyTypeChanged(int index)
 }
 
 void
-QGaimAccountEditor::protocolChanged(int index)
+QQuailAccountEditor::protocolChanged(int index)
 {
 	GList *l;
 
@@ -608,7 +608,7 @@ QGaimAccountEditor::protocolChanged(int index)
 
 	if (l == NULL)
 	{
-		gaim_debug(GAIM_DEBUG_FATAL, "QGaimAccountEditor",
+		gaim_debug(GAIM_DEBUG_FATAL, "QQuailAccountEditor",
 				   "Protocol switched to is not in list!\n");
 		abort();
 	}
@@ -632,7 +632,7 @@ QGaimAccountEditor::protocolChanged(int index)
 }
 
 void
-QGaimAccountEditor::registerClicked()
+QQuailAccountEditor::registerClicked()
 {
 	gaim_account_register(account);
 
@@ -640,7 +640,7 @@ QGaimAccountEditor::registerClicked()
 }
 
 void
-QGaimAccountEditor::accept()
+QQuailAccountEditor::accept()
 {
 	QString str, username;
 	GList *l, *l2;

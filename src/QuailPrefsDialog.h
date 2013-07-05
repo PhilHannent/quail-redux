@@ -1,5 +1,5 @@
 /**
- * @file QGaimPrefsWindow.h Preferences window
+ * @file QQuailPrefsWindow.h Preferences window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -26,12 +26,12 @@
 class OTabWidget;
 class QCheckBox;
 
-class QGaimPrefPage : public QWidget
+class QQuailPrefPage : public QWidget
 {
 	Q_OBJECT
 
 	public:
-		QGaimPrefPage(QWidget *parent = 0, const char *name = 0)
+		QQuailPrefPage(QWidget *parent = 0, const char *name = 0)
 			: QWidget(parent, name), dirty(false) { }
 
 		void setDirty(bool dirty) { this->dirty = dirty; }
@@ -43,12 +43,12 @@ class QGaimPrefPage : public QWidget
 		bool dirty;
 };
 
-class QGaimBlistPrefPage : public QGaimPrefPage
+class QQuailBlistPrefPage : public QQuailPrefPage
 {
 	Q_OBJECT
 
 	public:
-		QGaimBlistPrefPage(QWidget *parent = 0, const char *name = 0);
+		QQuailBlistPrefPage(QWidget *parent = 0, const char *name = 0);
 
 		void accept();
 
@@ -63,12 +63,12 @@ class QGaimBlistPrefPage : public QGaimPrefPage
 		QCheckBox *largeIcons;
 };
 
-class QGaimConvPrefPage : public QGaimPrefPage
+class QQuailConvPrefPage : public QQuailPrefPage
 {
 	Q_OBJECT
 
 	public:
-		QGaimConvPrefPage(QWidget *parent = 0, const char *name = 0);
+		QQuailConvPrefPage(QWidget *parent = 0, const char *name = 0);
 
 		void accept();
 
@@ -76,12 +76,12 @@ class QGaimConvPrefPage : public QGaimPrefPage
 		void buildInterface();
 };
 
-class QGaimNotifyPrefPage : public QGaimPrefPage
+class QQuailNotifyPrefPage : public QQuailPrefPage
 {
 	Q_OBJECT
 
 	public:
-		QGaimNotifyPrefPage(QWidget *parent = 0, const char *name = 0);
+		QQuailNotifyPrefPage(QWidget *parent = 0, const char *name = 0);
 
 		void accept();
 
@@ -95,12 +95,12 @@ class QGaimNotifyPrefPage : public QGaimPrefPage
 		QCheckBox *useLed;
 };
 
-class QGaimAwayPrefPage : public QGaimPrefPage
+class QQuailAwayPrefPage : public QQuailPrefPage
 {
 	Q_OBJECT
 
 	public:
-		QGaimAwayPrefPage(QWidget *parent = 0, const char *name = 0);
+		QQuailAwayPrefPage(QWidget *parent = 0, const char *name = 0);
 
 		void accept();
 
@@ -108,12 +108,12 @@ class QGaimAwayPrefPage : public QGaimPrefPage
 		void buildInterface();
 };
 
-class QGaimProxyPrefPage : public QGaimPrefPage
+class QQuailProxyPrefPage : public QQuailPrefPage
 {
 	Q_OBJECT
 
 	public:
-		QGaimProxyPrefPage(QWidget *parent = 0, const char *name = 0);
+		QQuailProxyPrefPage(QWidget *parent = 0, const char *name = 0);
 
 		void accept();
 
@@ -121,12 +121,12 @@ class QGaimProxyPrefPage : public QGaimPrefPage
 		void buildInterface();
 };
 
-class QGaimPluginPrefPage : public QGaimPrefPage
+class QQuailPluginPrefPage : public QQuailPrefPage
 {
 	Q_OBJECT
 
 	public:
-		QGaimPluginPrefPage(QWidget *parent = 0, const char *name = 0);
+		QQuailPluginPrefPage(QWidget *parent = 0, const char *name = 0);
 
 		void accept();
 
@@ -134,14 +134,14 @@ class QGaimPluginPrefPage : public QGaimPrefPage
 		void buildInterface();
 };
 
-class QGaimPrefsDialog : public QDialog
+class QQuailPrefsDialog : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QGaimPrefsDialog(QWidget *parent = NULL, const char *name = NULL,
+		QQuailPrefsDialog(QWidget *parent = NULL, const char *name = NULL,
 						 WFlags fl = 0);
-		~QGaimPrefsDialog();
+		~QQuailPrefsDialog();
 
 		virtual void accept();
 		virtual void done(int r);
@@ -152,12 +152,12 @@ class QGaimPrefsDialog : public QDialog
 	private:
 		OTabWidget *tabs;
 
-		QGaimPrefPage *blistPage;
-		QGaimPrefPage *convPage;
-		QGaimPrefPage *notifyPage;
-		QGaimPrefPage *awayIdlePage;
-		QGaimPrefPage *proxyPage;
-		QGaimPrefPage *pluginPage;
+		QQuailPrefPage *blistPage;
+		QQuailPrefPage *convPage;
+		QQuailPrefPage *notifyPage;
+		QQuailPrefPage *awayIdlePage;
+		QQuailPrefPage *proxyPage;
+		QQuailPrefPage *pluginPage;
 };
 
 #endif /* _QGAIM_PREFS_DIALOG_H_ */

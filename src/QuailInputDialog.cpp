@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimInputDialog.cpp Input dialog
+ * @file QQuailInputDialog.cpp Input dialog
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -28,7 +28,7 @@
 #include <qsignalmapper.h>
 #include <QHBoxLayout>
 
-QGaimInputDialog::QGaimInputDialog(bool multiline, QWidget *parent,
+QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent,
 								   const char *name, bool modal, WFlags fl)
 	: QDialog(parent, name, modal, fl), multiline(multiline), masked(false)
 {
@@ -63,13 +63,13 @@ QGaimInputDialog::QGaimInputDialog(bool multiline, QWidget *parent,
 }
 
 void
-QGaimInputDialog::setInfoText(const QString &text)
+QQuailInputDialog::setInfoText(const QString &text)
 {
 	label->setText(text);
 }
 
 void
-QGaimInputDialog::setMasked(bool masked)
+QQuailInputDialog::setMasked(bool masked)
 {
 	this->masked = masked;
 
@@ -92,13 +92,13 @@ QGaimInputDialog::setMasked(bool masked)
 }
 
 bool
-QGaimInputDialog::isMasked() const
+QQuailInputDialog::isMasked() const
 {
 	return masked;
 }
 
 void
-QGaimInputDialog::setDefaultValue(const QString &text)
+QQuailInputDialog::setDefaultValue(const QString &text)
 {
 	if (multiline)
 	{
@@ -115,7 +115,7 @@ QGaimInputDialog::setDefaultValue(const QString &text)
 }
 
 QString
-QGaimInputDialog::getText() const
+QQuailInputDialog::getText() const
 {
 	if (multiline)
 	{
@@ -132,14 +132,14 @@ QGaimInputDialog::getText() const
 }
 
 void
-QGaimInputDialog::addButtons(const QString &cancel, const QString &ok)
+QQuailInputDialog::addButtons(const QString &cancel, const QString &ok)
 {
 	addButton(ok, 1);
 	addButton(cancel, 0);
 }
 
 void
-QGaimInputDialog::addButton(const QString &text, int result)
+QQuailInputDialog::addButton(const QString &text, int result)
 {
 	QPushButton *button = new QPushButton(text, hbox);
 

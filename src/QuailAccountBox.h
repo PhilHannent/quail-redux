@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimAccountBox.h Account drop-down menu
+ * @file QQuailAccountBox.h Account drop-down menu
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -25,14 +25,14 @@
 
 #include <libpurple/account.h>
 
-class QGaimAccountBox : public QComboBox
+class QQuailAccountBox : public QComboBox
 {
 	Q_OBJECT
 
 	public:
-		QGaimAccountBox(bool showAll = false, QWidget *parent = NULL,
+		QQuailAccountBox(bool showAll = false, QWidget *parent = NULL,
 						const char *name = NULL);
-		QGaimAccountBox(GaimAccount *account, bool showAll = false,
+		QQuailAccountBox(GaimAccount *account, bool showAll = false,
 						QWidget *parent = NULL, const char *name = NULL);
 
 		void setCurrentAccount(GaimAccount *account);

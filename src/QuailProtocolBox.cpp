@@ -1,5 +1,5 @@
 /**
- * @file QGaimProtocolBox.cpp Protocol drop-down menu
+ * @file QQuailProtocolBox.cpp Protocol drop-down menu
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -25,7 +25,7 @@
 
 #include <qpixmap.h>
 
-QGaimProtocolBox::QGaimProtocolBox(QWidget *parent, const char *name)
+QQuailProtocolBox::QQuailProtocolBox(QWidget *parent, const char *name)
 	: QComboBox(parent, name)
 {
 	GList *protocols;
@@ -41,7 +41,7 @@ QGaimProtocolBox::QGaimProtocolBox(QWidget *parent, const char *name)
 	}
 }
 
-QGaimProtocolBox::QGaimProtocolBox(QString protocolId, QWidget *parent,
+QQuailProtocolBox::QQuailProtocolBox(QString protocolId, QWidget *parent,
 								   const char *name)
 	: QComboBox(parent, name)
 {
@@ -49,7 +49,7 @@ QGaimProtocolBox::QGaimProtocolBox(QString protocolId, QWidget *parent,
 }
 
 void
-QGaimProtocolBox::setCurrentProtocol(QString protocolId)
+QQuailProtocolBox::setCurrentProtocol(QString protocolId)
 {
 	GaimPlugin *plugin;
 	GList *p;
@@ -70,7 +70,7 @@ QGaimProtocolBox::setCurrentProtocol(QString protocolId)
 }
 
 void
-QGaimProtocolBox::buildMenu(QString protocolId)
+QQuailProtocolBox::buildMenu(QString protocolId)
 {
 	GList *p;
 	int count;
@@ -84,7 +84,7 @@ QGaimProtocolBox::buildMenu(QString protocolId)
 		plugin = (GaimPlugin *)p->data;
 
 		insertItem(
-			QGaimProtocolUtils::getProtocolIcon(plugin, QGAIM_PIXMAP_MENU),
+			QQuailProtocolUtils::getProtocolIcon(plugin, QGAIM_PIXMAP_MENU),
 			plugin->info->name);
 
 		if (protocolId != NULL && protocolId == plugin->info->id)

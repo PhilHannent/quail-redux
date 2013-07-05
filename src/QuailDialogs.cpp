@@ -1,5 +1,5 @@
 /**
- * @file QGaimDialogs.cpp Small dialogs that don't belong in their own files
+ * @file QQuailDialogs.cpp Small dialogs that don't belong in their own files
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -37,9 +37,9 @@
 #include <qvbox.h>
 
 /**************************************************************************
- * QGaimAddBuddyDialog
+ * QQuailAddBuddyDialog
  **************************************************************************/
-QGaimAddBuddyDialog::QGaimAddBuddyDialog(QWidget *parent, const char *name,
+QQuailAddBuddyDialog::QQuailAddBuddyDialog(QWidget *parent, const char *name,
 										 WFlags fl)
 	: QDialog(parent, name, fl)
 {
@@ -47,31 +47,31 @@ QGaimAddBuddyDialog::QGaimAddBuddyDialog(QWidget *parent, const char *name,
 }
 
 void
-QGaimAddBuddyDialog::setScreenName(const QString &screenName)
+QQuailAddBuddyDialog::setScreenName(const QString &screenName)
 {
 	screenNameEntry->setText(screenName);
 }
 
 void
-QGaimAddBuddyDialog::setAlias(const QString &alias)
+QQuailAddBuddyDialog::setAlias(const QString &alias)
 {
 	aliasEntry->setText(alias);
 }
 
 void
-QGaimAddBuddyDialog::setGroup(const QString &group)
+QQuailAddBuddyDialog::setGroup(const QString &group)
 {
 	groupCombo->lineEdit()->setText(group);
 }
 
 void
-QGaimAddBuddyDialog::setAccount(GaimAccount *account)
+QQuailAddBuddyDialog::setAccount(GaimAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
 
 void
-QGaimAddBuddyDialog::buildInterface()
+QQuailAddBuddyDialog::buildInterface()
 {
 	QFrame *frame;
 	QGridLayout *grid;
@@ -119,7 +119,7 @@ QGaimAddBuddyDialog::buildInterface()
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Account:"), frame), 3, 0);
-	accountCombo = new QGaimAccountBox(false, frame, "account");
+	accountCombo = new QQuailAccountBox(false, frame, "account");
 	grid->addWidget(accountCombo, 3, 1);
 
 	/* Add a spacer. */
@@ -128,7 +128,7 @@ QGaimAddBuddyDialog::buildInterface()
 }
 
 void
-QGaimAddBuddyDialog::populateGroupCombo()
+QQuailAddBuddyDialog::populateGroupCombo()
 {
 	GaimBlistNode *node = gaim_get_blist()->root;
 
@@ -149,7 +149,7 @@ QGaimAddBuddyDialog::populateGroupCombo()
 }
 
 void
-QGaimAddBuddyDialog::accept()
+QQuailAddBuddyDialog::accept()
 {
 	GaimConversation *conv;
 	QString screenname = screenNameEntry->text();
@@ -192,9 +192,9 @@ QGaimAddBuddyDialog::accept()
 
 
 /**************************************************************************
- * QGaimAddChatDialog
+ * QQuailAddChatDialog
  **************************************************************************/
-QGaimAddChatDialog::QGaimAddChatDialog(QWidget *parent, const char *name,
+QQuailAddChatDialog::QQuailAddChatDialog(QWidget *parent, const char *name,
 									   WFlags fl)
 	: QDialog(parent, name, fl)
 {
@@ -202,25 +202,25 @@ QGaimAddChatDialog::QGaimAddChatDialog(QWidget *parent, const char *name,
 }
 
 void
-QGaimAddChatDialog::setAlias(const QString &alias)
+QQuailAddChatDialog::setAlias(const QString &alias)
 {
 	aliasEntry->setText(alias);
 }
 
 void
-QGaimAddChatDialog::setGroup(const QString &group)
+QQuailAddChatDialog::setGroup(const QString &group)
 {
 	groupCombo->lineEdit()->setText(group);
 }
 
 void
-QGaimAddChatDialog::setAccount(GaimAccount *account)
+QQuailAddChatDialog::setAccount(GaimAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
 
 void
-QGaimAddChatDialog::buildInterface()
+QQuailAddChatDialog::buildInterface()
 {
 	QLabel *label;
 	QLabel *spacer;
@@ -250,7 +250,7 @@ QGaimAddChatDialog::buildInterface()
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Account:"), widgetsFrame), 0, 0);
-	accountCombo = new QGaimAccountBox(false, widgetsFrame, "account");
+	accountCombo = new QQuailAccountBox(false, widgetsFrame, "account");
 	grid->addWidget(accountCombo, 0, 1);
 
 	/* Connect the signal */
@@ -279,7 +279,7 @@ QGaimAddChatDialog::buildInterface()
 }
 
 void
-QGaimAddChatDialog::populateGroupCombo()
+QQuailAddChatDialog::populateGroupCombo()
 {
 	GaimBlistNode *node = gaim_get_blist()->root;
 
@@ -300,7 +300,7 @@ QGaimAddChatDialog::populateGroupCombo()
 }
 
 void
-QGaimAddChatDialog::rebuildWidgetsFrame()
+QQuailAddChatDialog::rebuildWidgetsFrame()
 {
 	GList *chatInfoList, *l;
 	QLabel *label;
@@ -361,13 +361,13 @@ QGaimAddChatDialog::rebuildWidgetsFrame()
 }
 
 void
-QGaimAddChatDialog::accountChanged(int)
+QQuailAddChatDialog::accountChanged(int)
 {
 	rebuildWidgetsFrame();
 }
 
 void
-QGaimAddChatDialog::accept()
+QQuailAddChatDialog::accept()
 {
 	GaimConnection *gc;
 	GaimChat *chat;
@@ -435,9 +435,9 @@ QGaimAddChatDialog::accept()
 
 
 /**************************************************************************
- * QGaimNewImDialog
+ * QQuailNewImDialog
  **************************************************************************/
-QGaimNewImDialog::QGaimNewImDialog(QWidget *parent, const char *name,
+QQuailNewImDialog::QQuailNewImDialog(QWidget *parent, const char *name,
 								   WFlags fl)
 	: QDialog(parent, name, fl)
 {
@@ -445,19 +445,19 @@ QGaimNewImDialog::QGaimNewImDialog(QWidget *parent, const char *name,
 }
 
 void
-QGaimNewImDialog::setScreenName(const QString &screenName)
+QQuailNewImDialog::setScreenName(const QString &screenName)
 {
 	screenNameEntry->setText(screenName);
 }
 
 void
-QGaimNewImDialog::setAccount(GaimAccount *account)
+QQuailNewImDialog::setAccount(GaimAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
 
 void
-QGaimNewImDialog::buildInterface()
+QQuailNewImDialog::buildInterface()
 {
 	QFrame *frame;
 	QGridLayout *grid;
@@ -490,7 +490,7 @@ QGaimNewImDialog::buildInterface()
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Account:"), frame), 3, 0);
-	accountCombo = new QGaimAccountBox(false, frame, "account");
+	accountCombo = new QQuailAccountBox(false, frame, "account");
 	grid->addWidget(accountCombo, 3, 1);
 
 	/* Add a spacer. */
@@ -499,7 +499,7 @@ QGaimNewImDialog::buildInterface()
 }
 
 void
-QGaimNewImDialog::accept()
+QQuailNewImDialog::accept()
 {
 	QString screenname = screenNameEntry->text();
 	GaimAccount *account;
@@ -526,9 +526,9 @@ QGaimNewImDialog::accept()
 }
 
 /**************************************************************************
- * QGaimJoinChatDialog
+ * QQuailJoinChatDialog
  **************************************************************************/
-QGaimJoinChatDialog::QGaimJoinChatDialog(QWidget *parent, const char *name,
+QQuailJoinChatDialog::QQuailJoinChatDialog(QWidget *parent, const char *name,
 										 WFlags fl)
 	: QDialog(parent, name, fl)
 {
@@ -536,13 +536,13 @@ QGaimJoinChatDialog::QGaimJoinChatDialog(QWidget *parent, const char *name,
 }
 
 void
-QGaimJoinChatDialog::setAccount(GaimAccount *account)
+QQuailJoinChatDialog::setAccount(GaimAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
 
 void
-QGaimJoinChatDialog::buildInterface()
+QQuailJoinChatDialog::buildInterface()
 {
 	QLabel *spacer;
 	QVBox *vbox;
@@ -566,7 +566,7 @@ QGaimJoinChatDialog::buildInterface()
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Join Chat As:"), widgetsFrame), 0, 0);
-	accountCombo = new QGaimAccountBox(false, widgetsFrame, "account");
+	accountCombo = new QQuailAccountBox(false, widgetsFrame, "account");
 	grid->addWidget(accountCombo, 0, 1);
 
 	/* Connect the signal */
@@ -581,7 +581,7 @@ QGaimJoinChatDialog::buildInterface()
 }
 
 void
-QGaimJoinChatDialog::rebuildWidgetsFrame()
+QQuailJoinChatDialog::rebuildWidgetsFrame()
 {
 	GList *chatInfoList, *l;
 	QLabel *label;
@@ -635,13 +635,13 @@ QGaimJoinChatDialog::rebuildWidgetsFrame()
 }
 
 void
-QGaimJoinChatDialog::accountChanged(int)
+QQuailJoinChatDialog::accountChanged(int)
 {
 	rebuildWidgetsFrame();
 }
 
 void
-QGaimJoinChatDialog::accept()
+QQuailJoinChatDialog::accept()
 {
 	GaimConnection *gc;
 	GHashTable *components;

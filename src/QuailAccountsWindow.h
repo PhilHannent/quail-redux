@@ -1,5 +1,5 @@
 ﻿/**
- * @file QGaimAccountsWindow.h Accounts window
+ * @file QQuailAccountsWindow.h Accounts window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
  *
@@ -35,13 +35,13 @@ class QToolBar;
 class QToolButton;
 class QVBox;
 
-class QGaimAccountListItem : public QObject, public QListViewItem
+class QQuailAccountListItem : public QObject, public QListViewItem
 {
 	Q_OBJECT
 
 	public:
-		QGaimAccountListItem(QListView *parent, int index);
-		~QGaimAccountListItem();
+		QQuailAccountListItem(QListView *parent, int index);
+		~QQuailAccountListItem();
 
 		void startPulse(QPixmap onlinePixmap);
 		void stopPulse();
@@ -63,13 +63,13 @@ class QGaimAccountListItem : public QObject, public QListViewItem
 		QPixmap *pulseOrigPixmap;
 };
 
-class QGaimAccountsWindow : public QMainWindow
+class QQuailAccountsWindow : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-		QGaimAccountsWindow(QMainWindow *parent);
-		~QGaimAccountsWindow();
+		QQuailAccountsWindow(QMainWindow *parent);
+		~QQuailAccountsWindow();
 
 		void updateAccounts();
 
@@ -97,7 +97,7 @@ class QGaimAccountsWindow : public QMainWindow
 		void resizeEvent(QResizeEvent *event);
 
 	protected:
-		QGaimAccountListItem *getItemFromAccount(GaimAccount *account);
+		QQuailAccountListItem *getItemFromAccount(GaimAccount *account);
 
 	private:
 		QMainWindow *parentMainWindow;
