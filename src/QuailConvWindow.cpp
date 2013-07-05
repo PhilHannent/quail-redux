@@ -30,8 +30,8 @@
 #include "QuailMainWindow.h"
 #include "base.h"
 
-#include <libgaim/debug.h>
-#include <libgaim/prefs.h>
+#include <libpurple/debug.h>
+#include <libpurple/prefs.h>
 
 #include <qpe/resource.h>
 #include <qpe/qpeapplication.h>

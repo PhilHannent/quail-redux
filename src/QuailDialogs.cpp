@@ -21,11 +21,11 @@
 #include "QuailDialogs.h"
 #include "QuailAccountBox.h"
 
-#include <libgaim/blist.h>
-#include <libgaim/conversation.h>
-#include <libgaim/multi.h>
-#include <libgaim/notify.h>
-#include <libgaim/prpl.h>
+#include <libpurple/blist.h>
+#include <libpurple/conversation.h>
+#include <libpurple/multi.h>
+#include <libpurple/notify.h>
+#include <libpurple/prpl.h>
 
 #include <qcombobox.h>
 #include <qframe.h>

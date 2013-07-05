@@ -23,11 +23,11 @@
 #include "QuailProtocolUtils.h"
 #include "QuailImageUtils.h"
 
-#include <libgaim/debug.h>
-#include <libgaim/multi.h>
-#include <libgaim/prefs.h>
-#include <libgaim/request.h>
-#include <libgaim/server.h>
+#include <libpurple/debug.h>
+#include <libpurple/multi.h>
+#include <libpurple/prefs.h>
+#include <libpurple/request.h>
+#include <libpurple/server.h>
 
 #include <qpe/qpeapplication.h>
 #include <qpe/resource.h>

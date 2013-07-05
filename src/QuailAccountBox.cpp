@@ -21,7 +21,7 @@
 #include "QuailAccountBox.h"
 #include "QuailProtocolUtils.h"
 
-#include <libgaim/debug.h>
+#include <libpurple/debug.h>
 
 #include <qpixmap.h>
 

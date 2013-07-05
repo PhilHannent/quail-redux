@@ -27,8 +27,8 @@
 #include "QuailMainWindow.h"
 #include "base.h"
 
-#include <libgaim/prpl.h>
-#include <libgaim/signals.h>
+#include <libpurple/prpl.h>
+#include <libpurple/signals.h>
 
 #include <qpe/resource.h>
 #include <qaction.h>

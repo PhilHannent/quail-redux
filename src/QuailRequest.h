@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimRequest.h Request UI
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,7 +21,7 @@
 #ifndef _QGAIM_REQUEST_H_
 #define _QGAIM_REQUEST_H_
 
-#include <libgaim/request.h>
+#include <libpurple/request.h>
 
 GaimRequestUiOps *qGaimGetRequestUiOps();
 

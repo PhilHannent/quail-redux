@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimProtocolUtils.h Protocol utility functions
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -23,9 +23,9 @@
 
 #include <qvariant.h>
 
-#include <libgaim/account.h>
-#include <libgaim/plugin.h>
-#include <libgaim/prpl.h>
+#include <libpurple/account.h>
+#include <libpurple/plugin.h>
+#include <libpurple/prpl.h>
 
 #include "QuailImageUtils.h"
 

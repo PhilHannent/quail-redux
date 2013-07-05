@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimNotify.h Notification UI
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,7 +21,7 @@
 #ifndef _QGAIM_NOTIFY_H_
 #define _QGAIM_NOTIFY_H_
 
-#include <libgaim/notify.h>
+#include <libpurple/notify.h>
 
 GaimNotifyUiOps *qGaimGetNotifyUiOps();
 

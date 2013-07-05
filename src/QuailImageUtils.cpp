@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimImageUtils.h Image utility functions
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -20,7 +20,7 @@
  */
 #include "QuailImageUtils.h"
 
-#include <libgaim/debug.h>
+#include <libpurple/debug.h>
 
 #include <glib.h>
 

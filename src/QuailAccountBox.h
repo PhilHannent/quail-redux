@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimAccountBox.h Account drop-down menu
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -23,7 +23,7 @@
 
 #include <qcombobox.h>
 
-#include <libgaim/account.h>
+#include <libpurple/account.h>
 
 class QGaimAccountBox : public QComboBox
 {

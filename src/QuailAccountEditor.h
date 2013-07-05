@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimAccountEditor.h Account editor dialog
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,9 +21,9 @@
 #ifndef _QGAIM_ACCOUNT_EDITOR_H_
 #define _QGAIM_ACCOUNT_EDITOR_H_
 
-#include <libgaim/account.h>
-#include <libgaim/plugin.h>
-#include <libgaim/prpl.h>
+#include <libpurple/account.h>
+#include <libpurple/plugin.h>
+#include <libpurple/prpl.h>
 
 #include <qdialog.h>
 #include <qlist.h>

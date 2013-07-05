@@ -24,8 +24,8 @@
 #include "QuailMainWindow.h"
 #include "base.h"
 
-#include <libgaim/debug.h>
-#include <libgaim/signals.h>
+#include <libpurple/debug.h>
+#include <libpurple/signals.h>
 
 #include <qpe/resource.h>
 #include <qpopupmenu.h>

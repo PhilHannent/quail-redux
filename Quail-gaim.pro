@@ -158,10 +158,19 @@ DISTFILES = \
 	mkipk.sh \
 	mktarball.sh
 
+unix {
 INCLUDEPATH += \
         ../pidgin-main/libpurple \
 	/usr/include/glib-2.0 \
 	/usr/lib/glib-2.0/include
+}
+win32 {
+    INCLUDEPATH += /cygdrive/c/dev/pidgin-main/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
+        /cygdrive/c/dev/pidgin-main/win32-dev/gtk_2_0-2.14/include/glib-2.0/include \
+        /cygdrive/c/dev/pidgin-main \
+        c:/dev/pidgin-main
+}
+
 
 #DEPENDPATH  += $(QPEDIR)/include
 LIBS        += \

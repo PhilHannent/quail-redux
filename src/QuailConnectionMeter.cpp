@@ -21,7 +21,7 @@
 #include "QuailConnectionMeter.h"
 #include "QuailProtocolUtils.h"
 
-#include <libgaim/debug.h>
+#include <libpurple/debug.h>
 
 #include <qpushbutton.h>
 #include <qlabel.h>

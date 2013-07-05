@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimTabBar.cpp Tab bar with colored label support
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -20,7 +20,7 @@
  */
 #include "QuailTabBar.h"
 
-#include <libgaim/debug.h>
+#include <libpurple/debug.h>
 
 /**************************************************************************
  * QGaimTabBar

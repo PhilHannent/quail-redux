@@ -22,7 +22,7 @@
 #include "QuailInputDialog.h"
 #include "QuailMainWindow.h"
 
-#include <libgaim/debug.h>
+#include <libpurple/debug.h>
 
 #include <qmessagebox.h>
 

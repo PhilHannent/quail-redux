@@ -26,11 +26,11 @@
 #include "QuailMainWindow.h"
 #include "base.h"
 
-#include <libgaim/debug.h>
-#include <libgaim/multi.h>
-#include <libgaim/prefs.h>
-#include <libgaim/request.h>
-#include <libgaim/signals.h>
+#include <libpurple/debug.h>
+#include <libpurple/multi.h>
+#include <libpurple/prefs.h>
+#include <libpurple/request.h>
+#include <libpurple/signals.h>
 
 #include <qpe/resource.h>
 

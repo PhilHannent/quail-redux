@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimDebugWindow.h Debug window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,7 +21,7 @@
 #ifndef _QGAIM_DEBUG_WIN_H_
 #define _QGAIM_DEBUG_WIN_H_
 
-#include <libgaim/debug.h>
+#include <libpurple/debug.h>
 
 GaimDebugUiOps *qGaimGetDebugUiOps(void);
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimConvButton.h Conversation menu button
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -25,7 +25,7 @@
 #include <qwidget.h>
 #include <qtoolbutton.h>
 
-#include <libgaim/conversation.h>
+#include <libpurple/conversation.h>
 
 class QPopupMenu;
 

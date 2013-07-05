@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimMultiLineEdit.h Multi-line edit widget with history
  *                            functionality
  *
@@ -22,9 +22,9 @@
 #ifndef _QGAIM_MULTI_LINE_EDIT_H_
 #define _QGAIM_MULTI_LINE_EDIT_H_
 
-#include <qmultilineedit.h>
+#include <QTextEdit>
 
-class QGaimMultiLineEdit : public QMultiLineEdit
+class QGaimMultiLineEdit : public QTextEdit
 {
 	Q_OBJECT
 

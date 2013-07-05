@@ -25,7 +25,7 @@
 #include <qwidget.h>
 #include <qmainwindow.h>
 
-#include <libgaim/conversation.h>
+#include <libpurple/conversation.h>
 
 class QAction;
 class QGaimMultiLineEdit;

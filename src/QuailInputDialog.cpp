@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimInputDialog.cpp Input dialog
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -20,13 +20,13 @@
  */
 #include "QuailInputDialog.h"
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qmultilineedit.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <QLayout>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QPushButton>
 #include <qsignalmapper.h>
-#include <qhbox.h>
+#include <QHBoxLayout>
 
 QGaimInputDialog::QGaimInputDialog(bool multiline, QWidget *parent,
 								   const char *name, bool modal, WFlags fl)

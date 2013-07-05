@@ -21,8 +21,8 @@
 #include "QuailPrefsDialog.h"
 #include "QuailMainWindow.h"
 
-#include <libgaim/debug.h>
-#include <libgaim/prefs.h>
+#include <libpurple/debug.h>
+#include <libpurple/prefs.h>
 
 #include <qcheckbox.h>
 #include <qlabel.h>

@@ -20,7 +20,7 @@
  */
 #include "QuailDebugWindow.h"
 
-#include <libgaim/debug.h>
+#include <libpurple/debug.h>
 
 #include <glib.h>
 #include <stdio.h>

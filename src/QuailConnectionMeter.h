@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimConnectionMeter.h Connection meters
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,14 +21,14 @@
 #ifndef _QGAIM_CONNECTION_METER_H_
 #define _QGAIM_CONNECTION_METER_H_
 
-#include <qhbox.h>
+#include <QHBoxLayout>
 #include <qlist.h>
 #include <qprogressbar.h>
 #include <qwidget.h>
 #include <qvariant.h>
-#include <qvbox.h>
+#include <QVBoxLayout>
 
-#include <libgaim/connection.h>
+#include <libpurple/connection.h>
 
 class QProgressBar;
 class QVBox;

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimBuddyList.h Buddy list widget
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,8 +21,8 @@
 #ifndef _QGAIM_BUDDY_LIST_H_
 #define _QGAIM_BUDDY_LIST_H_
 
-#include <libgaim/account.h>
-#include <libgaim/blist.h>
+#include <libpurple/account.h>
+#include <libpurple/blist.h>
 
 #include <qlistview.h>
 

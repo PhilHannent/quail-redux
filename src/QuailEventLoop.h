@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimMenuLoop.h Gaim Qt Event Loop implementation
  *
  * @Copyright (C) 2004 Christian Hammond.
@@ -21,7 +21,7 @@
 #ifndef _QGAIM_EVENT_LOOP_H_
 #define _QGAIM_EVENT_LOOP_H_
 
-#include <libgaim/eventloop.h>
+#include <libpurple/eventloop.h>
 
 #include <qtimer.h>
 #include <qsocketnotifier.h>

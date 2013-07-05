@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimAccountsWindow.h Accounts window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,7 +21,7 @@
 #ifndef _QGAIM_ACCOUNTS_WINDOW_H_
 #define _QGAIM_ACCOUNTS_WINDOW_H_
 
-#include <libgaim/prpl.h>
+#include <libpurple/prpl.h>
 
 #include <qvariant.h>
 #include <qwidget.h>

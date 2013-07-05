@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimMainWindow.h Main gaim window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,10 +21,10 @@
 #ifndef _QGAIM_MAIN_WINDOW_H_
 #define _QGAIM_MAIN_WINDOW_H_
 
-#include <qmainwindow.h>
-#include <qwidgetstack.h>
+#include <QMainWindow>
+#include <QStackedWidget>
 
-#include <libgaim/conversation.h>
+#include <libpurple/conversation.h>
 
 #include "QuailBListWindow.h"
 

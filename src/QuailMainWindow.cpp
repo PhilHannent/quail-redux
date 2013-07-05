@@ -25,13 +25,13 @@
 #include <qvbox.h>
 #include <qpe/qpeapplication.h>
 
-#include <libgaim/prefs.h>
-#include <libgaim/conversation.h>
-#include <libgaim/core.h>
-#include <libgaim/proxy.h>
-#include <libgaim/sound.h>
-#include <libgaim/pounce.h>
-#include <libgaim/plugin.h>
+#include <libpurple/prefs.h>
+#include <libpurple/conversation.h>
+#include <libpurple/core.h>
+#include <libpurple/proxy.h>
+#include <libpurple/sound.h>
+#include <libpurple/pounce.h>
+#include <libpurple/plugin.h>
 
 #include "QuailConnectionMeter.h"
 #include "QuailConvWindow.h"

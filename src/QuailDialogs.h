@@ -21,7 +21,7 @@
 #ifndef _QGAIM_DIALOGS_H_
 #define _QGAIM_DIALOGS_H_
 
-#include <libgaim/account.h>
+#include <libpurple/account.h>
 
 #include <qdialog.h>
 #include <qlist.h>

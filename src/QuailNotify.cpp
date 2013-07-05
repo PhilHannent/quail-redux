@@ -20,7 +20,7 @@
  */
 #include "QuailNotify.h"
 
-#include <libgaim/prefs.h>
+#include <libpurple/prefs.h>
 
 #include <qdialog.h>
 #include <qlabel.h>

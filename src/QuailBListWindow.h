@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimBListWindow.h Buddy list window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,7 +21,7 @@
 #ifndef _QGAIM_BLIST_WIN_H_
 #define _QGAIM_BLIST_WIN_H_
 
-#include <libgaim/blist.h>
+#include <libpurple/blist.h>
 
 #include <qiconset.h>
 #include <qmainwindow.h>

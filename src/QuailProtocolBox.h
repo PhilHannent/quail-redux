@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QGaimProtocolBox.h Protocol drop-down menu
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -24,7 +24,7 @@
 #include <qvariant.h>
 #include <qcombobox.h>
 
-#include <libgaim/prpl.h>
+#include <libpurple/prpl.h>
 
 class QGaimProtocolBox : public QComboBox
 {

@@ -25,8 +25,8 @@
 #include "QuailTabWidget.h"
 #include "base.h"
 
-#include <libgaim/accountopt.h>
-#include <libgaim/debug.h>
+#include <libpurple/accountopt.h>
+#include <libpurple/debug.h>
 
 #include <qcheckbox.h>
 #include <qcombobox.h>
