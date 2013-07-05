@@ -32,14 +32,14 @@ class QQuailAccountBox : public QComboBox
 	public:
 		QQuailAccountBox(bool showAll = false, QWidget *parent = NULL,
 						const char *name = NULL);
-		QQuailAccountBox(GaimAccount *account, bool showAll = false,
+		QQuailAccountBox(PurpleAccount *account, bool showAll = false,
 						QWidget *parent = NULL, const char *name = NULL);
 
-		void setCurrentAccount(GaimAccount *account);
-		GaimAccount *getCurrentAccount() const;
+		void setCurrentAccount(PurpleAccount *account);
+		PurpleAccount *getCurrentAccount() const;
 
 	protected:
-		void buildMenu(GaimAccount *account);
+		void buildMenu(PurpleAccount *account);
 
 	protected slots:
 		void resizeEvent(QResizeEvent *event);

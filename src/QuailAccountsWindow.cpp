@@ -85,12 +85,12 @@ QQuailAccountListItem::stopPulse()
 }
 
 void
-QQuailAccountListItem::setAccount(GaimAccount *account)
+QQuailAccountListItem::setAccount(PurpleAccount *account)
 {
 	this->account = account;
 }
 
-GaimAccount *
+PurpleAccount *
 QQuailAccountListItem::getAccount() const
 {
 	return account;
@@ -168,7 +168,7 @@ QQuailAccountsWindow::updateAccounts()
 }
 
 void
-QQuailAccountsWindow::accountSignedOn(GaimAccount *account)
+QQuailAccountsWindow::accountSignedOn(PurpleAccount *account)
 {
 	QQuailAccountListItem *item;
 
@@ -191,7 +191,7 @@ QQuailAccountsWindow::accountSignedOn(GaimAccount *account)
 }
 
 void
-QQuailAccountsWindow::accountSignedOff(GaimAccount *account)
+QQuailAccountsWindow::accountSignedOff(PurpleAccount *account)
 {
 	QQuailAccountListItem *item;
 
@@ -355,7 +355,7 @@ QQuailAccountsWindow::loadAccounts()
 	{
 		QPixmap protocolIcon;
 		QQuailAccountListItem *item;
-		GaimAccount *account = (GaimAccount *)l->data;
+		PurpleAccount *account = (PurpleAccount *)l->data;
 		QString protocolId = gaim_account_get_protocol_id(account);
 
 		protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
@@ -454,7 +454,7 @@ void
 QQuailAccountsWindow::accountSelected(QListViewItem *item)
 {
 	QQuailAccountListItem *accountItem = (QQuailAccountListItem *)item;
-	GaimAccount *account;
+	PurpleAccount *account;
 	const char *protocolId;
 
 	account    = accountItem->getAccount();
@@ -484,7 +484,7 @@ QQuailAccountsWindow::resizeEvent(QResizeEvent *)
 }
 
 QQuailAccountListItem *
-QQuailAccountsWindow::getItemFromAccount(GaimAccount *account)
+QQuailAccountsWindow::getItemFromAccount(PurpleAccount *account)
 {
 	QListViewItem *item;
 	QQuailAccountListItem *gitem;

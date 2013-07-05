@@ -46,8 +46,8 @@ class QQuailAccountListItem : public QObject, public QListViewItem
 		void startPulse(QPixmap onlinePixmap);
 		void stopPulse();
 
-		void setAccount(GaimAccount *account);
-		GaimAccount *getAccount() const;
+		void setAccount(PurpleAccount *account);
+		PurpleAccount *getAccount() const;
 
 		virtual QString key(int column, bool ascending) const;
 
@@ -55,7 +55,7 @@ class QQuailAccountListItem : public QObject, public QListViewItem
 		void updatePulse();
 
 	private:
-		GaimAccount *account;
+		PurpleAccount *account;
 		int index;
 		QTimer *pulseTimer;
 		bool pulseGrey;
@@ -73,8 +73,8 @@ class QQuailAccountsWindow : public QMainWindow
 
 		void updateAccounts();
 
-		void accountSignedOn(GaimAccount *account);
-		void accountSignedOff(GaimAccount *account);
+		void accountSignedOn(PurpleAccount *account);
+		void accountSignedOff(PurpleAccount *account);
 
 	private:
 		void buildInterface();
@@ -97,7 +97,7 @@ class QQuailAccountsWindow : public QMainWindow
 		void resizeEvent(QResizeEvent *event);
 
 	protected:
-		QQuailAccountListItem *getItemFromAccount(GaimAccount *account);
+		QQuailAccountListItem *getItemFromAccount(PurpleAccount *account);
 
 	private:
 		QMainWindow *parentMainWindow;

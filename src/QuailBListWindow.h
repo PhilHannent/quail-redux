@@ -47,8 +47,8 @@ class QQuailBListWindow : public QMainWindow
 		void setGaimBlist(GaimBuddyList *list);
 		GaimBuddyList *getGaimBlist() const;
 
-		void accountSignedOn(GaimAccount *acocunt);
-		void accountSignedOff(GaimAccount *acocunt);
+		void accountSignedOn(PurpleAccount *acocunt);
+		void accountSignedOff(PurpleAccount *acocunt);
 
 		void updateNode(GaimBlistNode *node);
 

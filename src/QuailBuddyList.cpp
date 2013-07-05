@@ -440,7 +440,7 @@ QQuailBuddyList::getBuddyStatusIcon(GaimBlistNode *node, QQuailPixmapSize size)
 	const char *protoName = NULL;
 	PurplePlugin *prpl = NULL;
 	PurplePluginProtocolInfo *prplInfo = NULL;
-	GaimAccount *account;
+	PurpleAccount *account;
 	char *se = NULL, *sw = NULL, *nw = NULL, *ne = NULL;
 
 	if (node == NULL)

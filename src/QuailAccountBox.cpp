@@ -30,7 +30,7 @@ QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
 	: QComboBox(parent, name), showAll(showAll)
 {
 	if (showAll)
-		buildMenu((GaimAccount *)gaim_accounts_get_all()->data);
+		buildMenu((PurpleAccount *)gaim_accounts_get_all()->data);
 	else
 	{
 		GaimConnection *gc;
@@ -41,7 +41,7 @@ QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
 	}
 }
 
-QQuailAccountBox::QQuailAccountBox(GaimAccount *account, bool showAll,
+QQuailAccountBox::QQuailAccountBox(PurpleAccount *account, bool showAll,
 								 QWidget *parent, const char *name)
 	: QComboBox(parent, name), showAll(showAll)
 {
@@ -49,9 +49,9 @@ QQuailAccountBox::QQuailAccountBox(GaimAccount *account, bool showAll,
 }
 
 void
-QQuailAccountBox::setCurrentAccount(GaimAccount *account)
+QQuailAccountBox::setCurrentAccount(PurpleAccount *account)
 {
-	GaimAccount *tempAccount;
+	PurpleAccount *tempAccount;
 	GList *l, *list;
 	int i;
 
@@ -63,7 +63,7 @@ QQuailAccountBox::setCurrentAccount(GaimAccount *account)
 	for (l = list, i = 0; l != NULL; l = l->next, i++)
 	{
 		if (showAll)
-			tempAccount = (GaimAccount *)l->data;
+			tempAccount = (PurpleAccount *)l->data;
 		else
 		{
 			GaimConnection *gc = (GaimConnection *)l->data;
@@ -79,7 +79,7 @@ QQuailAccountBox::setCurrentAccount(GaimAccount *account)
 	}
 }
 
-GaimAccount *
+PurpleAccount *
 QQuailAccountBox::getCurrentAccount() const
 {
 	int index = currentItem();
@@ -92,7 +92,7 @@ QQuailAccountBox::getCurrentAccount() const
 		if (l == NULL)
 			return NULL;
 
-		return (GaimAccount *)l->data;
+		return (PurpleAccount *)l->data;
 	}
 	else
 	{
@@ -110,7 +110,7 @@ QQuailAccountBox::getCurrentAccount() const
 }
 
 void
-QQuailAccountBox::buildMenu(GaimAccount *account)
+QQuailAccountBox::buildMenu(PurpleAccount *account)
 {
 	GList *l, *list;
 	int count;
@@ -124,11 +124,11 @@ QQuailAccountBox::buildMenu(GaimAccount *account)
 
 	for (l = list, count = 0; l != NULL; l = l->next, count++)
 	{
-		GaimAccount *tempAccount;
+		PurpleAccount *tempAccount;
 		QPixmap pixmap;
 
 		if (showAll)
-			tempAccount = (GaimAccount *)l->data;
+			tempAccount = (PurpleAccount *)l->data;
 		else
 		{
 			GaimConnection *gc = (GaimConnection *)l->data;

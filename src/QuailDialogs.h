@@ -44,7 +44,7 @@ class QQuailAddBuddyDialog : public QDialog
 		void setScreenName(const QString &screenName);
 		void setAlias(const QString &alias);
 		void setGroup(const QString &group);
-		void setAccount(GaimAccount *account);
+		void setAccount(PurpleAccount *account);
 
 	protected:
 		void buildInterface();
@@ -70,7 +70,7 @@ class QQuailAddChatDialog : public QDialog
 
 		void setAlias(const QString &alias);
 		void setGroup(const QString &group);
-		void setAccount(GaimAccount *account);
+		void setAccount(PurpleAccount *account);
 
 	protected:
 		void buildInterface();
@@ -102,7 +102,7 @@ class QQuailNewImDialog : public QDialog
 						 WFlags fl = 0);
 
 		void setScreenName(const QString &screenName);
-		void setAccount(GaimAccount *account);
+		void setAccount(PurpleAccount *account);
 
 	protected:
 		void buildInterface();
@@ -123,7 +123,7 @@ class QQuailJoinChatDialog : public QDialog
 		QQuailJoinChatDialog(QWidget *parent = NULL, const char *name = NULL,
 							WFlags fl = 0);
 
-		void setAccount(GaimAccount *account);
+		void setAccount(PurpleAccount *account);
 
 	protected:
 		void buildInterface();

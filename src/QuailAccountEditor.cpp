@@ -39,7 +39,7 @@
 #include <qtabwidget.h>
 #include <qvbox.h>
 
-QQuailAccountEditor::QQuailAccountEditor(GaimAccount *account, QWidget *parent,
+QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account, QWidget *parent,
 									   const char *name, WFlags fl)
 	: QDialog(parent, name, fl), account(account), plugin(NULL),
 	  prplInfo(NULL), accountsWin(NULL), userSplitEntries(NULL),
@@ -234,7 +234,7 @@ QQuailAccountEditor::buildProtocolTab()
 	{
 		for (l = prplInfo->protocol_options; l != NULL; l = l->next)
 		{
-			GaimAccountOption *option = (GaimAccountOption *)l->data;
+			PurpleAccountOption *option = (PurpleAccountOption *)l->data;
 
 			switch (gaim_account_option_get_type(option))
 			{
@@ -459,7 +459,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	for (l = userSplits; l != NULL; l = l->next)
 	{
-		GaimAccountUserSplit *split = (GaimAccountUserSplit *)l->data;
+		PurpleAccountUserSplit *split = (PurpleAccountUserSplit *)l->data;
 		QString buf;
 
 		buf  = gaim_account_user_split_get_text(split);
@@ -477,11 +477,11 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 		 l != NULL && l2 != NULL;
 		 l = l->prev, l2 = l2->prev)
 	{
-		GaimAccountUserSplit *split;
+		PurpleAccountUserSplit *split;
 		QString value;
 
 		entry = (QLineEdit *)l->data;
-		split = (GaimAccountUserSplit *)l2->data;
+		split = (PurpleAccountUserSplit *)l2->data;
 
 		if (account != NULL)
 		{
@@ -701,7 +701,7 @@ QQuailAccountEditor::accept()
 		 l != NULL && l2 != NULL;
 		 l = l->next, l2 = l2->next)
 	{
-		GaimAccountUserSplit *split = (GaimAccountUserSplit *)l->data;
+		PurpleAccountUserSplit *split = (PurpleAccountUserSplit *)l->data;
 		QLineEdit *entry = (QLineEdit *)l2->data;
 		char sep[2] = " ";
 		char *tmp;
@@ -728,7 +728,7 @@ QQuailAccountEditor::accept()
 		 l = l->next, l2 = l2->next)
 	{
 		GaimPrefType type;
-		GaimAccountOption *option = (GaimAccountOption *)l->data;
+		PurpleAccountOption *option = (PurpleAccountOption *)l->data;
 		QWidget *widget = (QWidget *)l2->data;
 		QLineEdit *entry;
 		QCheckBox *checkbox;

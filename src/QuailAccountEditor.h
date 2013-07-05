@@ -48,7 +48,7 @@ class QQuailAccountEditor : public QDialog
 	Q_OBJECT
 
 	public:
-		QQuailAccountEditor(GaimAccount *account = NULL,
+		QQuailAccountEditor(PurpleAccount *account = NULL,
 						   QWidget *parent = NULL, const char *name = NULL,
 						   WFlags fl = 0);
 		~QQuailAccountEditor();
@@ -75,7 +75,7 @@ class QQuailAccountEditor : public QDialog
 		void accept();
 
 	private:
-		GaimAccount *account;
+		PurpleAccount *account;
 		PurplePlugin *plugin;
 		PurplePluginProtocolInfo *prplInfo;
 

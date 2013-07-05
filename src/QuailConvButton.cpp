@@ -112,7 +112,7 @@ QQuailConvButton::generateMenu()
 
 	for (l = gaim_get_conversations(), i = 0; l != NULL; l = l->next, i++)
 	{
-		GaimAccount *account;
+		PurpleAccount *account;
 		GaimBuddy *buddy;
 
 		conv = (GaimConversation *)l->data;

@@ -65,7 +65,7 @@ QQuailAddBuddyDialog::setGroup(const QString &group)
 }
 
 void
-QQuailAddBuddyDialog::setAccount(GaimAccount *account)
+QQuailAddBuddyDialog::setAccount(PurpleAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
@@ -155,7 +155,7 @@ QQuailAddBuddyDialog::accept()
 	QString screenname = screenNameEntry->text();
 	QString alias = aliasEntry->text();
 	QString group = groupCombo->currentText();
-	GaimAccount *account;
+	PurpleAccount *account;
 	GaimBuddy *b;
 	GaimGroup *g;
 
@@ -214,7 +214,7 @@ QQuailAddChatDialog::setGroup(const QString &group)
 }
 
 void
-QQuailAddChatDialog::setAccount(GaimAccount *account)
+QQuailAddChatDialog::setAccount(PurpleAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
@@ -451,7 +451,7 @@ QQuailNewImDialog::setScreenName(const QString &screenName)
 }
 
 void
-QQuailNewImDialog::setAccount(GaimAccount *account)
+QQuailNewImDialog::setAccount(PurpleAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
@@ -502,7 +502,7 @@ void
 QQuailNewImDialog::accept()
 {
 	QString screenname = screenNameEntry->text();
-	GaimAccount *account;
+	PurpleAccount *account;
 	GaimConversation *conv;
 
 	if (screenname.isEmpty())
@@ -536,7 +536,7 @@ QQuailJoinChatDialog::QQuailJoinChatDialog(QWidget *parent, const char *name,
 }
 
 void
-QQuailJoinChatDialog::setAccount(GaimAccount *account)
+QQuailJoinChatDialog::setAccount(PurpleAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }

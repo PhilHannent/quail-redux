@@ -54,7 +54,7 @@ QQuailConnectionMeter::QQuailConnectionMeter(GaimConnection *gc,
 	: QHBox(parent, name, fl), gc(gc)
 {
 	QLabel *label, *icon;
-	GaimAccount *account;
+	PurpleAccount *account;
 
 	setSpacing(2);
 	setMargin(2);

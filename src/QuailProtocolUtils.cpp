@@ -58,7 +58,7 @@ QQuailProtocolUtils::getProtocolIcon(const PurplePlugin *prpl,
 }
 
 QPixmap
-QQuailProtocolUtils::getProtocolIcon(GaimAccount *account,
+QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account,
 									QQuailPixmapSize size)
 {
 	PurplePluginProtocolInfo *prplInfo = NULL;

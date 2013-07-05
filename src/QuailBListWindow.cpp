@@ -282,7 +282,7 @@ QQuailBListWindow::getGaimBlist() const
 }
 
 void
-QQuailBListWindow::accountSignedOn(GaimAccount *account)
+QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 {
 	GaimBlistNode *gnode, *cnode;
 
@@ -318,7 +318,7 @@ QQuailBListWindow::accountSignedOn(GaimAccount *account)
 }
 
 void
-QQuailBListWindow::accountSignedOff(GaimAccount *)
+QQuailBListWindow::accountSignedOff(PurpleAccount *)
 {
 	if (gaim_connections_get_all() == NULL)
 	{

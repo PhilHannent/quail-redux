@@ -35,7 +35,7 @@ class QQuailProtocolUtils
 {
 	public:
 		static QString getProtocolName(QString protocolId);
-		static QPixmap getProtocolIcon(GaimAccount *account,
+		static QPixmap getProtocolIcon(PurpleAccount *account,
 				QQuailPixmapSize size = QGAIM_PIXMAP_SMALL);
 		static QPixmap getProtocolIcon(const PurplePlugin *plugin,
 				QQuailPixmapSize size = QGAIM_PIXMAP_SMALL);
