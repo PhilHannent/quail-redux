@@ -1,6 +1,6 @@
 TEMPLATE = app
-TARGET   = gaim
-VERSION  = 0.4
+TARGET   = Quail
+VERSION  = 0.9
 CONFIG   = qt warn_on debug
 
 HEADERS = \
@@ -159,17 +159,13 @@ DISTFILES = \
 	mktarball.sh
 
 INCLUDEPATH += \
-	$(QPEDIR)/include \
+        ../pidgin-main/libpurple \
 	/usr/include/glib-2.0 \
 	/usr/lib/glib-2.0/include
 
-DEPENDPATH  += $(QPEDIR)/include
+#DEPENDPATH  += $(QPEDIR)/include
 LIBS        += \
-	-lqpe \
-	-lopie \
-	-ljpeg \
-	-lpng12 \
-	-lgaim \
+        -llibpurple \
 	-lglib-2.0 \
 	-lgmodule-2.0
 

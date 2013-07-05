@@ -1,0 +1,20 @@
+# use glob syntax.
+syntax: glob
+
+obj
+moc
+*.user
+Quail.exe
+
+.xvpics
+*.bak
+*.ipk
+*.gz
+.*.swp
+.todo.*
+Makefile
+gaim
+temp*
+moc_*
+object_script.Quail
+*.pdb
