@@ -87,20 +87,20 @@ class QQuailBuddyList : public QListView
 
 	signals:
 		void openIm(GaimBuddy *buddy);
-		void addBuddy(GaimGroup *group);
-		void addChat(GaimGroup *group);
+		void addBuddy(PurpleGroup *group);
+		void addChat(PurpleGroup *group);
 		void joinChat(GaimChat *chat);
 		void removeBuddy(GaimBuddy *buddy);
 		void removeContact(GaimContact *contact);
 		void removeChat(GaimChat *chat);
-		void removeGroup(GaimGroup *group);
+		void removeGroup(PurpleGroup *group);
 
 	protected:
 		void populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 							   bool asContact);
 		void populateContactMenu(GaimContact *contact, QPopupMenu *menu);
 		void populateChatMenu(GaimChat *chat, QPopupMenu *menu);
-		void populateGroupMenu(GaimGroup *group, QPopupMenu *menu);
+		void populateGroupMenu(PurpleGroup *group, QPopupMenu *menu);
 
 	protected slots:
 		void resizeEvent(QResizeEvent *event);

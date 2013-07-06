@@ -140,7 +140,7 @@ QQuailAddBuddyDialog::populateGroupCombo()
 		{
 			if (GAIM_BLIST_NODE_IS_GROUP(node))
 			{
-				GaimGroup *g = (GaimGroup *)node;
+				PurpleGroup *g = (PurpleGroup *)node;
 
 				groupCombo->insertItem(g->name);
 			}
@@ -157,7 +157,7 @@ QQuailAddBuddyDialog::accept()
 	QString group = groupCombo->currentText();
 	PurpleAccount *account;
 	GaimBuddy *b;
-	GaimGroup *g;
+	PurpleGroup *g;
 
 	if (screenname.isEmpty())
 	{
@@ -291,7 +291,7 @@ QQuailAddChatDialog::populateGroupCombo()
 		{
 			if (GAIM_BLIST_NODE_IS_GROUP(node))
 			{
-				GaimGroup *g = (GaimGroup *)node;
+				PurpleGroup *g = (PurpleGroup *)node;
 
 				groupCombo->insertItem(g->name);
 			}
@@ -371,7 +371,7 @@ QQuailAddChatDialog::accept()
 {
 	GaimConnection *gc;
 	GaimChat *chat;
-	GaimGroup *group;
+	PurpleGroup *group;
 	GList *chatInfoList, *l;
 	GHashTable *components;
 	QString alias = aliasEntry->text();

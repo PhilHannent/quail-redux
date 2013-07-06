@@ -91,10 +91,10 @@ QQuailBListWindow::buildInterface()
 	connect(buddylist, SIGNAL(openIm(GaimBuddy *)),
 			this, SLOT(openImSlot(GaimBuddy *)));
 
-	connect(buddylist, SIGNAL(addBuddy(GaimGroup *)),
-			this, SLOT(showAddBuddy(GaimGroup *)));
-	connect(buddylist, SIGNAL(addChat(GaimGroup *)),
-			this, SLOT(showAddChat(GaimGroup *)));
+	connect(buddylist, SIGNAL(addBuddy(PurpleGroup *)),
+			this, SLOT(showAddBuddy(PurpleGroup *)));
+	connect(buddylist, SIGNAL(addChat(PurpleGroup *)),
+			this, SLOT(showAddChat(PurpleGroup *)));
 
 	connect(buddylist, SIGNAL(joinChat(GaimChat *)),
 			this, SLOT(openChatSlot(GaimChat *)));
@@ -103,8 +103,8 @@ QQuailBListWindow::buildInterface()
 			this, SLOT(showConfirmRemoveBuddy(GaimBuddy *)));
 	connect(buddylist, SIGNAL(removeContact(GaimContact *)),
 			this, SLOT(showConfirmRemoveContact(GaimContact *)));
-	connect(buddylist, SIGNAL(removeGroup(GaimGroup *)),
-			this, SLOT(showConfirmRemoveGroup(GaimGroup *)));
+	connect(buddylist, SIGNAL(removeGroup(PurpleGroup *)),
+			this, SLOT(showConfirmRemoveGroup(PurpleGroup *)));
 	connect(buddylist, SIGNAL(removeChat(GaimChat *)),
 			this, SLOT(showConfirmRemoveChat(GaimChat *)));
 
@@ -400,7 +400,7 @@ QQuailBListWindow::doubleClickList(QListViewItem *_item)
 }
 
 void
-QQuailBListWindow::showAddBuddy(GaimGroup *group)
+QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 {
 	QQuailAddBuddyDialog *dialog;
 	QQuailBListItem *item;
@@ -416,12 +416,12 @@ QQuailBListWindow::showAddBuddy(GaimGroup *group)
 
 			if (GAIM_BLIST_NODE_IS_GROUP(node))
 			{
-				group = (GaimGroup *)node;
+				group = (PurpleGroup *)node;
 			}
 			else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
 					 GAIM_BLIST_NODE_IS_CHAT(node))
 			{
-				group = ((GaimGroup *)node->parent);
+				group = ((PurpleGroup *)node->parent);
 			}
 		}
 	}
@@ -441,7 +441,7 @@ QQuailBListWindow::showAddBuddy()
 }
 
 void
-QQuailBListWindow::showAddChat(GaimGroup *group)
+QQuailBListWindow::showAddChat(PurpleGroup *group)
 {
 	QQuailAddChatDialog *dialog;
 	QQuailBListItem *item;
@@ -457,12 +457,12 @@ QQuailBListWindow::showAddChat(GaimGroup *group)
 
 			if (GAIM_BLIST_NODE_IS_GROUP(node))
 			{
-				group = (GaimGroup *)node;
+				group = (PurpleGroup *)node;
 			}
 			else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
 					 GAIM_BLIST_NODE_IS_CHAT(node))
 			{
-				group = ((GaimGroup *)node->parent);
+				group = ((PurpleGroup *)node->parent);
 			}
 		}
 	}
@@ -483,7 +483,7 @@ QQuailBListWindow::showAddChat()
 static void
 addGroupCb(void *, const char *groupName)
 {
-	GaimGroup *group;
+	PurpleGroup *group;
 
 	group = gaim_group_new(groupName);
 	gaim_blist_add_group(group, NULL);
@@ -504,7 +504,7 @@ QQuailBListWindow::showAddGroup()
 static void
 removeBuddyCb(GaimBuddy *buddy)
 {
-	GaimGroup *group;
+	PurpleGroup *group;
 	GaimConversation *conv;
 	QString name;
 
@@ -529,13 +529,13 @@ static void
 removeContactCb(GaimContact *contact)
 {
 	GaimBlistNode *bnode, *cnode;
-	GaimGroup *group;
+	PurpleGroup *group;
 
 	if (contact == NULL)
 		return;
 
 	cnode = (GaimBlistNode *)contact;
-	group = (GaimGroup *)cnode->parent;
+	group = (PurpleGroup *)cnode->parent;
 
 	for (bnode = cnode->child; bnode != NULL; bnode = bnode->next)
 	{
@@ -559,7 +559,7 @@ removeChatCb(GaimChat *chat)
 }
 
 static void
-removeGroupCb(GaimGroup *group)
+removeGroupCb(PurpleGroup *group)
 {
 	GaimBlistNode *node, *child;
 
@@ -629,7 +629,7 @@ QQuailBListWindow::showRemoveBuddy()
 	}
 	else if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
-		showConfirmRemoveGroup((GaimGroup *)node);
+		showConfirmRemoveGroup((PurpleGroup *)node);
 	}
 }
 
@@ -696,7 +696,7 @@ QQuailBListWindow::showConfirmRemoveChat(GaimChat *chat)
 }
 
 void
-QQuailBListWindow::showConfirmRemoveGroup(GaimGroup *group)
+QQuailBListWindow::showConfirmRemoveGroup(PurpleGroup *group)
 {
 	QString name = group->name;
 

@@ -398,7 +398,7 @@ QQuailBListItem::paintGroupInfo(QPainter *p, const QColorGroup &, int column,
 	if (column > 0)
 		return;
 
-	GaimGroup *group = (GaimGroup *)getBlistNode();
+	PurpleGroup *group = (PurpleGroup *)getBlistNode();
 	QString groupName, detail;
 	QFont f = p->font();
 
@@ -894,7 +894,7 @@ QQuailBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
 }
 
 void
-QQuailBuddyList::populateGroupMenu(GaimGroup *, QPopupMenu *menu)
+QQuailBuddyList::populateGroupMenu(PurpleGroup *, QPopupMenu *menu)
 {
 	QAction *a;
 
@@ -1091,7 +1091,7 @@ QQuailBuddyList::showContextMenuSlot(QListViewItem *_item,
 	}
 	else if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
-		populateGroupMenu((GaimGroup *)node, menu);
+		populateGroupMenu((PurpleGroup *)node, menu);
 	}
 	else
 	{
@@ -1117,7 +1117,7 @@ QQuailBuddyList::addBuddySlot()
 	if (!GAIM_BLIST_NODE_IS_GROUP(node))
 		return;
 
-	emit addBuddy((GaimGroup *)node);
+	emit addBuddy((PurpleGroup *)node);
 }
 
 void
@@ -1134,7 +1134,7 @@ QQuailBuddyList::addChatSlot()
 	if (!GAIM_BLIST_NODE_IS_GROUP(node))
 		return;
 
-	emit addChat((GaimGroup *)node);
+	emit addChat((PurpleGroup *)node);
 }
 
 void
@@ -1151,11 +1151,11 @@ QQuailBuddyList::removeGroupSlot()
 	if (!GAIM_BLIST_NODE_IS_GROUP(node))
 		return;
 
-	emit removeGroup((GaimGroup *)node);
+	emit removeGroup((PurpleGroup *)node);
 }
 
 static void
-renameGroupCb(GaimGroup *group, const char *newName)
+renameGroupCb(PurpleGroup *group, const char *newName)
 {
 	gaim_blist_rename_group(group, newName);
 	gaim_blist_save();
@@ -1166,7 +1166,7 @@ QQuailBuddyList::renameGroupSlot()
 {
 	GaimBlistNode *node;
 	QQuailBListItem *item;
-	GaimGroup *group;
+	PurpleGroup *group;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
 		return;
@@ -1176,7 +1176,7 @@ QQuailBuddyList::renameGroupSlot()
 	if (!GAIM_BLIST_NODE_IS_GROUP(node))
 		return;
 
-	group = (GaimGroup *)node;
+	group = (PurpleGroup *)node;
 
 	gaim_request_input(NULL, tr("Rename Group"),
 					   tr("Rename Group"),
@@ -1349,13 +1349,13 @@ QQuailBuddyList::addGroup(GaimBlistNode *node)
 void
 QQuailBuddyList::updateGroup(GaimBlistNode *node)
 {
-	GaimGroup *group;
+	PurpleGroup *group;
 	QQuailBListItem *item;
 
 	g_return_if_fail(GAIM_BLIST_NODE_IS_GROUP(node));
 
 	item = (QQuailBListItem *)node->ui_data;
-	group = (GaimGroup *)node;
+	group = (PurpleGroup *)node;
 
 	if (gaim_prefs_get_bool("/gaim/qpe/blist/show_empty_groups")    ||
 		gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies") ||

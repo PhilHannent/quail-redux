@@ -59,9 +59,9 @@ class QQuailBListWindow : public QMainWindow
 
 		void doubleClickList(QListViewItem *item);
 
-		void showAddBuddy(GaimGroup *group);
+		void showAddBuddy(PurpleGroup *group);
 		void showAddBuddy();
-		void showAddChat(GaimGroup *group);
+		void showAddChat(PurpleGroup *group);
 		void showAddChat();
 		void showAddGroup();
 
@@ -69,7 +69,7 @@ class QQuailBListWindow : public QMainWindow
 		void showConfirmRemoveBuddy(GaimBuddy *buddy);
 		void showConfirmRemoveContact(GaimContact *contact);
 		void showConfirmRemoveChat(GaimChat *chat);
-		void showConfirmRemoveGroup(GaimGroup *group);
+		void showConfirmRemoveGroup(PurpleGroup *group);
 
 		void showOfflineBuddies(bool on);
 		void showPreferencesSlot();

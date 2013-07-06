@@ -950,7 +950,7 @@ QQuailConvWindow::closeConv()
 static void
 removeBuddyCb(GaimBuddy *buddy)
 {
-	GaimGroup *group;
+	PurpleGroup *group;
 	GaimConversation *conv;
 	QString name;
 
