@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailProtocolUtils.cpp Protocol utility functions
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,14 +21,14 @@
 #include "QuailProtocolUtils.h"
 #include "base.h"
 
-#include <qpe/resource.h>
-#include <qdict.h>
-#include <qobject.h>
-#include <qpixmap.h>
+//#include <qpe/resource.h>
+#include <QMap>
+#include <QObject>
+#include <QPixmap>
 
-static QDict<QPixmap> largePixmaps;
-static QDict<QPixmap> smallPixmaps;
-static QDict<QPixmap> menuPixmaps;
+static QMap<QPixmap> largePixmaps;
+static QMap<QPixmap> smallPixmaps;
+static QMap<QPixmap> menuPixmaps;
 
 QString
 QQuailProtocolUtils::getProtocolName(QString protocolId)

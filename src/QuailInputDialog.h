@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailInputDialog.h Input dialog
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,9 +21,9 @@
 #ifndef _QGAIM_INPUT_DIALOG_H_
 #define _QGAIM_INPUT_DIALOG_H_
 
-#include <qdialog.h>
+#include <QDialog>
 
-class QHBox;
+class QHBoxLayout;
 class QLabel;
 class QSignalMapper;
 
@@ -52,7 +52,7 @@ class QQuailInputDialog : public QDialog
 		bool multiline;
 		bool masked;
 		QSignalMapper *mapper;
-		QHBox *hbox;
+        QHBoxLayout *hbox;
 		QLabel *label;
 		QWidget *entry;
 };

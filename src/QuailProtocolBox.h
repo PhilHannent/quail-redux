@@ -21,8 +21,8 @@
 #ifndef _QGAIM_PROTOCOL_BOX_H_
 #define _QGAIM_PROTOCOL_BOX_H_
 
-#include <qvariant.h>
-#include <qcombobox.h>
+#include <QVariant>
+#include <QComboBox>
 
 #include <libpurple/prpl.h>
 

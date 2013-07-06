@@ -25,7 +25,7 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QPushButton>
-#include <qsignalmapper.h>
+#include <QSignalMapper>
 #include <QHBoxLayout>
 
 QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent,

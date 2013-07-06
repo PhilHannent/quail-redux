@@ -23,7 +23,7 @@
 
 #include <libpurple/debug.h>
 
-#include <qpixmap.h>
+#include <QPixmap>
 
 QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
 								 const char *name)

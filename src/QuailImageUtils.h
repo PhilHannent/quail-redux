@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailImageUtils.h Image utility functions
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -23,8 +23,8 @@
 #ifndef _QGAIM_IMAGE_UTILS_H_
 #define _QGAIM_IMAGE_UTILS_H_
 
-#include <qpixmap.h>
-#include <qimage.h>
+#include <QPixmap>
+#include <QImage>
 
 typedef enum
 {

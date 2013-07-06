@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailConvWindow.cpp Conversation windows
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -33,23 +33,23 @@
 #include <libpurple/debug.h>
 #include <libpurple/prefs.h>
 
-#include <qpe/resource.h>
-#include <qpe/qpeapplication.h>
+//#include <qpe/resource.h>
+//#include <qpe/qpeapplication.h>
 
-#include <qaction.h>
-#include <qbutton.h>
-#include <qheader.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlistview.h>
-#include <qmessagebox.h>
-#include <qpopupmenu.h>
-#include <qsplitter.h>
-#include <qtabwidget.h>
-#include <qtextview.h>
-#include <qtoolbar.h>
-#include <qtoolbutton.h>
-#include <qvbox.h>
+#include <QAction>
+#include <QButton>
+//#include <qheader.h>
+#include <QLabel>
+#include <QLayout>
+#include <QListView>
+#include <QMessageBox>
+#include <QMenu>
+#include <QSplitter>
+#include <QTabWidget>
+#include <QTextEdit>
+#include <QToolBar>
+#include <QToolButton>
+#include <QVBoxLayout>
 
 #include <stdio.h>
 

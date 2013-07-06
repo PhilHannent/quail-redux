@@ -32,7 +32,7 @@
 //#include <qpe/qpeapplication.h>
 //#include <qpe/resource.h>
 
-#include <qaction.h>
+#include <QAction>
 //#include <qheader.h>
 #include <QMenu>
 #include <QTimer>

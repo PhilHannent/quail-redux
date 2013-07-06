@@ -23,8 +23,8 @@
 
 #include <libpurple/eventloop.h>
 
-#include <qtimer.h>
-#include <qsocketnotifier.h>
+#include <QTimer>
+#include <QSocketNotifier>
 
 class QQuailTimer : public QTimer
 {

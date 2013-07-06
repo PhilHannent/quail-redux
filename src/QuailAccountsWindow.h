@@ -23,9 +23,9 @@
 
 #include <libpurple/prpl.h>
 
-#include <qvariant.h>
-#include <qwidget.h>
-#include <qmainwindow.h>
+#include <QVariant>
+#include <QWidget>
+#include <QMainWindow>
 #include <QListWidget>
 
 class QAction;

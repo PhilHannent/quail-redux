@@ -21,7 +21,7 @@
 #ifndef _QGAIM_PROTOCOL_UTILS_H_
 #define _QGAIM_PROTOCOL_UTILS_H_
 
-#include <qvariant.h>
+#include <QVariant>
 
 #include <libpurple/account.h>
 #include <libpurple/plugin.h>

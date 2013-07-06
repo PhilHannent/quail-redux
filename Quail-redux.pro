@@ -3,6 +3,26 @@ TARGET   = Quail
 VERSION  = 0.9
 CONFIG   = qt warn_on debug
 
+DEFINES += APP_NAME=\\\"Quail\\\"
+DEFINES += QUAIL_PREFS_ROOT=\\\"/quail\\\"
+
+# Check that we have the repository folder
+exists(.hg):DEFINES += BUILDREVISION=\\\"$$system( hg parent --template \"{node}\")\\\"
+else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
+
+#win32-g++ {
+#    DEFINES += BUILDTIME=\\\"$$system('time/T')\\\"
+#    DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
+#}
+#else {
+#    DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M.%s')\\\"
+#    DEFINES += BUILDDATE=\\\"$$system(date '+%d/%m/%y')\\\"
+#}
+
+QT       += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+
 HEADERS = \
         src/QuailAccountBox.h \
         src/QuailAccountEditor.h \
@@ -159,12 +179,14 @@ DISTFILES = \
 	mktarball.sh
 
 unix {
+    message("Using unix")
 INCLUDEPATH += \
         ../pidgin-main/libpurple \
 	/usr/include/glib-2.0 \
 	/usr/lib/glib-2.0/include
 }
-win32 {
+win32-g++ {
+    message("Using win32")
     INCLUDEPATH += /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
         /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0/include \
         /cygdrive/c/dev/pidgin-main \
@@ -173,8 +195,6 @@ win32 {
         C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
 }
 
-
-#DEPENDPATH  += $(QPEDIR)/include
 LIBS        += \
         -llibpurple \
 	-lglib-2.0 \
@@ -182,15 +202,3 @@ LIBS        += \
 
 OBJECTS_DIR = obj
 MOC_DIR     = moc
-
-exists(.hg):DEFINES += BUILDREVISION=\\\"$$system(hg log -r tip --template \'{node}\')\\\"
-else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
-
-win32 {
-    DEFINES += BUILDTIME=\\\"$$system('time/T')\\\"
-    DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
-}
-else {
-    DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M.%s')\\\"
-    DEFINES += BUILDDATE=\\\"$$system(date '+%d/%m/%y')\\\"
-}

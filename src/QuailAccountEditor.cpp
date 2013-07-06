@@ -28,15 +28,15 @@
 #include <libpurple/accountopt.h>
 #include <libpurple/debug.h>
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlayout.h>
-#include <qgroupbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpixmap.h>
-#include <qpushbutton.h>
-#include <qtabwidget.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLayout>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPixmap>
+#include <QPushButton>
+#include <QTabWidget>
 #include <QVBoxLayout>
 
 QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account, QWidget *parent,

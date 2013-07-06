@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailTabWidget.h Tab widget with colored label support.
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,7 +21,7 @@
 #ifndef _QGAIM_TAB_WIDGET_H_
 #define _QGAIM_TAB_WIDGET_H_
 
-#include <qtabwidget.h>
+#include <QTabWidget>
 
 class QQuailTabWidget : public QTabWidget
 {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailMainWindow.cpp Main gaim window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -20,10 +20,10 @@
  */
 #include "QuailMainWindow.h"
 
-#include <qtimer.h>
-#include <qvariant.h>
-#include <qvbox.h>
-#include <qpe/qpeapplication.h>
+#include <QTimer>
+#include <QVariant>
+#include <QVBoxLayout>
+//#include <qpe/qpeapplication.h>
 
 #include <libpurple/prefs.h>
 #include <libpurple/conversation.h>

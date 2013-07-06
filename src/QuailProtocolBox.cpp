@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailProtocolBox.cpp Protocol drop-down menu
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -23,7 +23,7 @@
 
 #include <libpurple/debug.h>
 
-#include <qpixmap.h>
+#include <QPixmap>
 
 QQuailProtocolBox::QQuailProtocolBox(QWidget *parent, const char *name)
 	: QComboBox(parent, name)

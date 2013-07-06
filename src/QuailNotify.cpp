@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailNotify.cpp Notification UI
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -22,15 +22,15 @@
 
 #include <libpurple/prefs.h>
 
-#include <qdialog.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qmessagebox.h>
-#include <qtextview.h>
+#include <QDialog>
+#include <QLabel>
+#include <QLayout>
+#include <QMessageBox>
+#include <QTextEdit>
 
-#include <opie/odevice.h>
+//#include <opie/odevice.h>
 
-using namespace Opie;
+//using namespace Opie;
 
 static int notifyActiveCount = 0;
 
@@ -111,24 +111,24 @@ qQuailNotifyEmails(size_t count, gboolean, const char **subjects,
 {
 	QString str, title;
 
-	title = QObject::tr("You have new mail!");
+    title = tr("You have new mail!");
 
 	str = "<p>";
 
 	if (count == 1)
-		str += QObject::tr("%1 has 1 new e-mail.").arg(*tos);
+        str += tr("%1 has 1 new e-mail.").arg(*tos);
 	else
-		str += QObject::tr("%1 has %2 new e-mails.").arg(*tos, count);
+        str += tr("%1 has %2 new e-mails.").arg(*tos, count);
 
 	str += "</p>";
 
 	if (count == 1)
 	{
 		if (froms != NULL)
-			str += QObject::tr("<p>From: %1</p>").arg(*froms);
+            str += tr("<p>From: %1</p>").arg(*froms);
 
 		if (subjects != NULL)
-			str += QObject::tr("<p>Subject: %1</p>").arg(*subjects);
+            str += tr("<p>Subject: %1</p>").arg(*subjects);
 	}
 
 	QMessageBox::information(NULL, title, str);

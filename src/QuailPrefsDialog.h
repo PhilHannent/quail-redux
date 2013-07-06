@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailPrefsWindow.h Preferences window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,7 +21,7 @@
 #ifndef _QGAIM_PREFS_DIALOG_H_
 #define _QGAIM_PREFS_DIALOG_H_
 
-#include <qdialog.h>
+#include <QDialog>
 
 class OTabWidget;
 class QCheckBox;

@@ -21,9 +21,9 @@
 #ifndef _QGAIM_CONV_BUTTON_H_
 #define _QGAIM_CONV_BUTTON_H_
 
-#include <qvariant.h>
-#include <qwidget.h>
-#include <qtoolbutton.h>
+#include <QVariant>
+#include <QWidget>
+#include <QToolButton>
 
 #include <libpurple/conversation.h>
 
@@ -44,7 +44,7 @@ class QQuailConvButton : public QToolButton
 
 	private:
 		QPopupMenu *menu;
-		GaimConversation **convs;
+        PurpleConversation **convs;
 };
 
 #endif /* _QGAIM_CONV_BUTTON_H_ */

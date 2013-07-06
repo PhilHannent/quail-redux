@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailConnectionMeter.cpp Connection meters
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -23,8 +23,8 @@
 
 #include <libpurple/debug.h>
 
-#include <qpushbutton.h>
-#include <qlabel.h>
+#include <QPushButton>
+#include <QLabel>
 
 /**************************************************************************
  * QQuailConnectionProgressBar

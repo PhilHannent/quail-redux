@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailPrefsWindow.cpp Preferences window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -24,16 +24,16 @@
 #include <libpurple/debug.h>
 #include <libpurple/prefs.h>
 
-#include <qcheckbox.h>
-#include <qlabel.h>
+#include <QCheckBox>
+#include <QLabel>
 #include <qlayout.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <QVBoxLayout>
+#include <QGroupBox>
 
-#include <opie/otabwidget.h>
-#include <opie/owait.h>
+//#include <opie/otabwidget.h>
+//#include <opie/owait.h>
 
-#include <qpe/resource.h>
+//#include <qpe/resource.h>
 
 /**************************************************************************
  * QQuailBlistPrefPage

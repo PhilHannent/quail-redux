@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailRequest.cpp Request UI
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -24,7 +24,7 @@
 
 #include <libpurple/debug.h>
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 /**************************************************************************
  * UI operations

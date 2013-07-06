@@ -32,15 +32,15 @@
 
 //TODO: Add back the resource file
 //#include <qpe/resource.h>
-#include <qaction.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlistview.h>
-#include <qmenubar.h>
-#include <qpushbutton.h>
-#include <qtimer.h>
-#include <qtoolbar.h>
-#include <qtoolbutton.h>
+#include <QAction>
+#include <QLabel>
+#include <QLayout>
+#include <QListView>
+#include <QMenuBar>
+#include <QPushButton>
+#include <QTimer>
+#include <QToolbar>
+#include <QToolButton>
 
 /**************************************************************************
  * QQuailAccountListItem

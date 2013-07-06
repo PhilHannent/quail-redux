@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailConvWindow.h Conversation windows
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,9 +21,9 @@
 #ifndef _QGAIM_CONV_WIN_H_
 #define _QGAIM_CONV_WIN_H_
 
-#include <qvariant.h>
-#include <qwidget.h>
-#include <qmainwindow.h>
+#include <QVariant>
+#include <QWidget>
+#include <QMainWindow>
 
 #include <libpurple/conversation.h>
 

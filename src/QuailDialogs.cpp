@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailDialogs.cpp Small dialogs that don't belong in their own files
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -23,18 +23,18 @@
 
 #include <libpurple/blist.h>
 #include <libpurple/conversation.h>
-#include <libpurple/multi.h>
+//#include <libpurple/multi.h>
 #include <libpurple/notify.h>
 #include <libpurple/prpl.h>
 
-#include <qcombobox.h>
-#include <qframe.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
-#include <qvbox.h>
+#include <QComboBox>
+#include <QFrame>
+#include <QLabel>
+#include <QLayout>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
+#include <QVBoxLayout>
 
 /**************************************************************************
  * QQuailAddBuddyDialog

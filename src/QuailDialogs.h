@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailDialogs.h Small dialogs that don't belong in their own files
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -23,8 +23,8 @@
 
 #include <libpurple/account.h>
 
-#include <qdialog.h>
-#include <qlist.h>
+#include <QDialog>
+#include <QList>
 
 class QComboBox;
 class QFrame;

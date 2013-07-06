@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailConvButton.cpp Conversation menu button
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -27,8 +27,8 @@
 #include <libpurple/debug.h>
 #include <libpurple/signals.h>
 
-#include <qpe/resource.h>
-#include <qpopupmenu.h>
+//#include <qpe/resource.h>
+#include <QMenu>
 
 static void
 newConvCb(char *, QQuailConvButton *button)

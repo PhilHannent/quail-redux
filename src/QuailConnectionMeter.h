@@ -22,16 +22,13 @@
 #define _QGAIM_CONNECTION_METER_H_
 
 #include <QHBoxLayout>
-#include <qlist.h>
-#include <qprogressbar.h>
-#include <qwidget.h>
-#include <qvariant.h>
+#include <QList>
+#include <QProgressBar>
+#include <QWidget>
+#include <QVariant>
 #include <QVBoxLayout>
 
 #include <libpurple/connection.h>
-
-class QProgressBar;
-class QVBox;
 
 class QQuailConnectionProgressBar : public QProgressBar
 {
@@ -39,18 +36,18 @@ class QQuailConnectionProgressBar : public QProgressBar
 
 	public:
 		QQuailConnectionProgressBar(QWidget *parent = NULL,
-								   const char *name = NULL, WFlags fl = 0);
+                                   const char *name = NULL, Qt::WindowFlags fl = 0);
 
 		bool setIndicator(QString &str, int progress, int totalSteps);
 };
 
-class QQuailConnectionMeter : public QHBox
+class QQuailConnectionMeter : public QHBoxLayout
 {
 	Q_OBJECT
 
 	public:
 		QQuailConnectionMeter(PurpleConnection *gc, QWidget *parent = NULL,
-							 const char *name = NULL, WFlags fl = 0);
+                             const char *name = NULL, Qt::WindowFlags fl = 0);
 		virtual ~QQuailConnectionMeter();
 
 		void update(QString str, int totalSteps, int progress);
@@ -62,13 +59,13 @@ class QQuailConnectionMeter : public QHBox
 		PurpleConnection *gc;
 };
 
-class QQuailConnectionMeters : public QVBox
+class QQuailConnectionMeters : public QVBoxLayout
 {
 	Q_OBJECT
 
 	public:
 		QQuailConnectionMeters(QWidget *parent = NULL,
-							  const char *name = NULL, WFlags fl = 0);
+                              const char *name = NULL, Qt::WindowFlags fl = 0);
 		virtual ~QQuailConnectionMeters();
 
 		void addMeter(QQuailConnectionMeter *meter);

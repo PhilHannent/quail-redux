@@ -24,7 +24,7 @@
 #include <libpurple/blist.h>
 
 #include <QIcon>
-#include <qmainwindow.h>
+#include <QMainWindow>
 
 #include "QuailAccountsWindow.h"
 #include "QuailBuddyList.h"

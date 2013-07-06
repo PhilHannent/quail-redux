@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailTabBar.h Tab bar with colored label support
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,10 +21,10 @@
 #ifndef _QGAIM_TAB_BAR_H_
 #define _QGAIM_TAB_BAR_H_
 
-#include <qcolor.h>
-#include <qlist.h>
-#include <qmap.h>
-#include <qtabbar.h>
+#include <QColor>
+#include <QList>
+#include <QMap>
+#include <QTabBar>
 
 class QQuailTabBar : public QTabBar
 {
