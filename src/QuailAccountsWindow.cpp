@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailAccountsWindow.cpp Accounts window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -30,7 +30,8 @@
 #include <libpurple/prpl.h>
 #include <libpurple/signals.h>
 
-#include <qpe/resource.h>
+//TODO: Add back the resource file
+//#include <qpe/resource.h>
 #include <qaction.h>
 #include <qlabel.h>
 #include <qlayout.h>

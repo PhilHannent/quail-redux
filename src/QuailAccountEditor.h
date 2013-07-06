@@ -25,10 +25,10 @@
 #include <libpurple/plugin.h>
 #include <libpurple/prpl.h>
 
-#include <qdialog.h>
-#include <qlist.h>
-#include <qvariant.h>
-#include <qwidget.h>
+#include <QDialog>
+#include <QList>
+#include <QVariant>
+#include <QWidget>
 
 class QCheckBox;
 class QComboBox;
@@ -41,7 +41,7 @@ class QLineEdit;
 class QPixmap;
 class QPushButton;
 class QTabWidget;
-class QVBox;
+class QVBoxLayout;
 
 class QQuailAccountEditor : public QDialog
 {
@@ -50,7 +50,7 @@ class QQuailAccountEditor : public QDialog
 	public:
 		QQuailAccountEditor(PurpleAccount *account = NULL,
 						   QWidget *parent = NULL, const char *name = NULL,
-						   WFlags fl = 0);
+                           Qt::WindowFlags fl = 0);
 		~QQuailAccountEditor();
 
 		void setAccountsWindow(QQuailAccountsWindow *accountsWin);
@@ -86,14 +86,14 @@ class QQuailAccountEditor : public QDialog
 		GList *userSplitEntries;
 		GList *protocolOptEntries;
 
-		GaimProxyType newProxyType;
+        PurpleProxyType newProxyType;
 
 		QQuailTabWidget *tabs;
 
 		QList<QWidget> tabList;
 
 		/* Account tab */
-		QVBox *accountBox;
+        QVBoxLayout *accountBox;
 		QQuailProtocolBox *protocolList;
 		QLineEdit *screenNameEntry;
 		QLabel *passwordLabel;
@@ -105,10 +105,10 @@ class QQuailAccountEditor : public QDialog
 		QPushButton *registerButton;
 
 		/* Protocol tab */
-		QVBox *protocolBox;
+        QVBoxLayout *protocolBox;
 
 		/* Proxy tab */
-		QVBox *proxyBox;
+        QVBoxLayout *proxyBox;
 		QComboBox *proxyDropDown;
 		QLineEdit *proxyHost;
 		QLineEdit *proxyPort;

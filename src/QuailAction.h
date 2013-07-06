@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailAction.h QAction subclass
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -21,7 +21,7 @@
 #ifndef _QGAIM_ACTION_H_
 #define _QGAIM_ACTION_H_
 
-#include <qaction.h>
+#include <QAction>
 
 class QQuailAction : public QAction
 {
@@ -30,21 +30,21 @@ class QQuailAction : public QAction
 	public:
 		QQuailAction(QObject *parent = NULL, const char *name = NULL,
 					bool toggle = false, void *data = NULL)
-			: QAction(parent, name, toggle), userData(data)
-		{ setupSignals(); }
+            : QAction(parent), userData(data)
+        { setupSignals();}
 
-		QQuailAction(const QString &text, const QIconSet &icon,
+        QQuailAction(const QString &text, const QIcon &icon,
 					const QString &menuText, int accel, QObject *parent,
 					const char *name = NULL, bool toggle = false,
 					void *data = NULL)
-			: QAction(text, icon, menuText, accel, parent, name, toggle),
+            : QAction(icon, text, parent),
 			  userData(data)
 		{ setupSignals(); }
 
 		QQuailAction(const QString &text, const QString &menuText, int accel,
 					QObject *parent, const char *name = NULL,
 					bool toggle = false, void *data = NULL)
-			: QAction(text, menuText, accel, parent, name, toggle),
+            : QAction(text, parent),
 			  userData(data)
 		{ setupSignals(); }
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file main.cpp Main file
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -20,7 +20,6 @@
  */
 #include "QuailMainWindow.h"
 
-#include <qpe/qpeapplication.h>
-#include <opie/oapplicationfactory.h>
+#include <QApplication>
 
-OPIE_EXPORT_APP(OApplicationFactory<QQuailMainWindow>)
+//OPIE_EXPORT_APP(OApplicationFactory<QQuailMainWindow>)

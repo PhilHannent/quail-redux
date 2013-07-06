@@ -18,12 +18,12 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_BLIST_WIN_H_
-#define _QGAIM_BLIST_WIN_H_
+#ifndef _QUAIL_BLIST_WIN_H_
+#define _QUAIL_BLIST_WIN_H_
 
 #include <libpurple/blist.h>
 
-#include <qiconset.h>
+#include <QIcon>
 #include <qmainwindow.h>
 
 #include "QuailAccountsWindow.h"
@@ -44,8 +44,8 @@ class QQuailBListWindow : public QMainWindow
 		~QQuailBListWindow();
 
 		/* Functions our blist UI must access. */
-		void setGaimBlist(PurpleBuddyList *list);
-		PurpleBuddyList *getGaimBlist() const;
+        void setBlist(PurpleBuddyList *list);
+        PurpleBuddyList *getBlist() const;
 
 		void accountSignedOn(PurpleAccount *acocunt);
 		void accountSignedOff(PurpleAccount *acocunt);
@@ -55,9 +55,9 @@ class QQuailBListWindow : public QMainWindow
 		void reloadList();
 
 	protected slots:
-		void nodeChanged(QListViewItem *item);
+        void nodeChanged(QListWidgetItem *item);
 
-		void doubleClickList(QListViewItem *item);
+        void doubleClickList(QListWidgetItem *item);
 
 		void showAddBuddy(PurpleGroup *group);
 		void showAddBuddy();
@@ -92,10 +92,10 @@ class QQuailBListWindow : public QMainWindow
 
 		QToolButton *addButton;
 
-		QIconSet openChatIconSet;
-		QIconSet newChatIconSet;
-		QIconSet sendImIconSet;
-		QIconSet newImIconSet;
+        QIcon openChatIconSet;
+        QIcon newChatIconSet;
+        QIcon sendImIconSet;
+        QIcon newImIconSet;
 
 		QAction *imButton;
 		QAction *chatButton;
@@ -111,13 +111,13 @@ class QQuailBListWindow : public QMainWindow
 
 		QAction *blistButton;
 
-		QPopupMenu *addMenu;
-		QPopupMenu *settingsMenu;
-		QPopupMenu *convsMenu;
+        QMenu *addMenu;
+        QMenu *settingsMenu;
+        QMenu *convsMenu;
 
 		QToolBar *toolbar;
 };
 
-GaimBlistUiOps *qQuailGetBlistUiOps();
+PurpleBlistUiOps *qQuailGetBlistUiOps();
 
-#endif /* _QGAIM_BLIST_WIN_H_ */
+#endif /* _QUAIL_BLIST_WIN_H_ */

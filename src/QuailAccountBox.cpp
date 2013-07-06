@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailAccountBox.cpp Account drop-down menu
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -27,8 +27,11 @@
 
 QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
 								 const char *name)
-	: QComboBox(parent, name), showAll(showAll)
+    : QComboBox(parent), showAll(showAll)
 {
+    //TODO: Find out if name is required
+    Q_UNUSED(name)
+
 	if (showAll)
 		buildMenu((PurpleAccount *)purple_accounts_get_all()->data);
 	else
@@ -43,8 +46,10 @@ QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
 
 QQuailAccountBox::QQuailAccountBox(PurpleAccount *account, bool showAll,
 								 QWidget *parent, const char *name)
-	: QComboBox(parent, name), showAll(showAll)
+    : QComboBox(parent), showAll(showAll)
 {
+    //TODO: Find out if the name is required
+    Q_UNUSED(name)
 	buildMenu(account);
 }
 
@@ -73,7 +78,7 @@ QQuailAccountBox::setCurrentAccount(PurpleAccount *account)
 
 		if (tempAccount == account)
 		{
-			setCurrentItem(i);
+            setCurrentIndex(i);
 			break;
 		}
 	}
@@ -82,7 +87,7 @@ QQuailAccountBox::setCurrentAccount(PurpleAccount *account)
 PurpleAccount *
 QQuailAccountBox::getCurrentAccount() const
 {
-	int index = currentItem();
+    int index = currentIndex();
 	GList *l;
 
 	if (showAll)
@@ -164,10 +169,10 @@ QQuailAccountBox::buildMenu(PurpleAccount *account)
 			str = tempText + "...";
 		}
 
-		insertItem(pixmap, str);
+        addItem(QIcon(pixmap), str);
 
 		if (tempAccount == account)
-			setCurrentItem(count);
+            setCurrentIndex(count);
 	}
 }
 

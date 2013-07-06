@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailAccountEditor.cpp Account editor dialog
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -37,10 +37,10 @@
 #include <qpixmap.h>
 #include <qpushbutton.h>
 #include <qtabwidget.h>
-#include <qvbox.h>
+#include <QVBoxLayout>
 
 QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account, QWidget *parent,
-									   const char *name, WFlags fl)
+                                       const char *name, Qt::WindowFlags fl)
 	: QDialog(parent, name, fl), account(account), plugin(NULL),
 	  prplInfo(NULL), accountsWin(NULL), userSplitEntries(NULL),
 	  protocolOptEntries(NULL), newProxyType(GAIM_PROXY_USE_GLOBAL)

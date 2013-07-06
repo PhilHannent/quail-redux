@@ -21,7 +21,7 @@
 #ifndef _QGAIM_ACCOUNT_BOX_H_
 #define _QGAIM_ACCOUNT_BOX_H_
 
-#include <qcombobox.h>
+#include <QComboBox>
 
 #include <libpurple/account.h>
 

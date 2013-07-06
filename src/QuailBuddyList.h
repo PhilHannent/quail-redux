@@ -24,26 +24,26 @@
 #include <libpurple/account.h>
 #include <libpurple/blist.h>
 
-#include <qlistview.h>
+#include <QListWidget>
 
 #include "QuailImageUtils.h"
 
-class QQuailBListItem : public QListViewItem
+class QQuailBListItem : public QListWidgetItem
 {
 	public:
-		QQuailBListItem(QListView *parent, PurpleBlistNode *node);
-		QQuailBListItem(QListViewItem *parent, PurpleBlistNode *node);
+        QQuailBListItem(QListWidget *parent, PurpleBlistNode *node);
+//        QQuailBListItem(QListWidgetItem *parent, PurpleBlistNode *node);
 		~QQuailBListItem();
 
 		PurpleBlistNode *getBlistNode() const;
 
 		void updateInfo();
 
-		void paintCell(QPainter *p, const QColorGroup &cg, int column,
+        void paintCell(QPainter *p, const QPalette &cg, int column,
 					   int width, int align);
 
-		void paintBranches(QPainter *p, const QColorGroup &cg,
-						   int width, int y, int height, GUIStyle s);
+        void paintBranches(QPainter *p, const QPalette &cg,
+                           int width, int y, int height);
 
 		void setExpanded(bool expanded);
 		bool isExpanded() const;
@@ -51,9 +51,9 @@ class QQuailBListItem : public QListViewItem
 	protected:
 		void init();
 
-		void paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
+        void paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 							int width, int align, int lmarg, int itMarg);
-		void paintGroupInfo(QPainter *p, const QColorGroup &cg, int column,
+        void paintGroupInfo(QPainter *p, const QPalette &cg, int column,
 							int width, int align, int lmarg, int itMarg);
 
 	private:
@@ -76,8 +76,8 @@ class QQuailBuddyList : public QListView
 		QQuailBuddyList(QWidget *parent = NULL, const char *name = NULL);
 		virtual ~QQuailBuddyList();
 
-		void setGaimBlist(PurpleBuddyList *list);
-		PurpleBuddyList *getGaimBlist() const;
+        void setBlist(PurpleBuddyList *list);
+        PurpleBuddyList *getBlist() const;
 
 		void updateNode(PurpleBlistNode *node);
 
@@ -96,24 +96,24 @@ class QQuailBuddyList : public QListView
 		void removeGroup(PurpleGroup *group);
 
 	protected:
-		void populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
+        void populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 							   bool asContact);
-		void populateContactMenu(PurpleContact *contact, QPopupMenu *menu);
-		void populateChatMenu(PurpleChat *chat, QPopupMenu *menu);
-		void populateGroupMenu(PurpleGroup *group, QPopupMenu *menu);
+        void populateContactMenu(PurpleContact *contact, QMenu *menu);
+        void populateChatMenu(PurpleChat *chat, QMenu *menu);
+        void populateGroupMenu(PurpleGroup *group, QMenu *menu);
 
 	protected slots:
 		void resizeEvent(QResizeEvent *event);
 
-		void nodeExpandedSlot(QListViewItem *item);
-		void nodeCollapsedSlot(QListViewItem *item);
+        void nodeExpandedSlot(QListWidgetItem *item);
+        void nodeCollapsedSlot(QListWidgetItem *item);
 		void collapseContactSlot();
 		void collapseContactSlot(QQuailBListItem *item);
 		void expandContactSlot();
 		void expandContactSlot(QQuailBListItem *item);
 		void saveBlistSlot();
 
-		void showContextMenuSlot(QListViewItem *item, const QPoint &point,
+        void showContextMenuSlot(QListWidgetItem *item, const QPoint &point,
 								 int col);
 
 		/* Group menu slots */
@@ -147,7 +147,7 @@ class QQuailBuddyList : public QListView
 		void updateChat(PurpleBlistNode *node);
 
 	private:
-		PurpleBuddyList *gaimBlist;
+        PurpleBuddyList *quailBlist;
 
 		QTimer *saveTimer;
 };

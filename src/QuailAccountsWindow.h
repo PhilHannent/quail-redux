@@ -26,16 +26,16 @@
 #include <qvariant.h>
 #include <qwidget.h>
 #include <qmainwindow.h>
-#include <qlistview.h>
+#include <QListWidget>
 
 class QAction;
 class QPixmap;
 class QTimer;
 class QToolBar;
 class QToolButton;
-class QVBox;
+class QVBoxLayout;
 
-class QQuailAccountListItem : public QObject, public QListViewItem
+class QQuailAccountListItem : public QObject, public QListWidgetItem
 {
 	Q_OBJECT
 
@@ -92,7 +92,7 @@ class QQuailAccountsWindow : public QMainWindow
 		void showBlist();
 
 		void accountsToggled(bool state);
-		void accountSelected(QListViewItem *item);
+        void accountSelected(QListWidgetItem *item);
 
 		void resizeEvent(QResizeEvent *event);
 
@@ -103,7 +103,7 @@ class QQuailAccountsWindow : public QMainWindow
 		QMainWindow *parentMainWindow;
 
 		QToolBar *toolbar;
-		QPopupMenu *accountMenu;
+        QMenu *accountMenu;
 		QAction *accountsButton;
 
 		QAction *editButton;

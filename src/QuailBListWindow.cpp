@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailBListWindow.cpp Buddy list window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -27,23 +27,24 @@
 #include "base.h"
 
 #include <libpurple/debug.h>
-#include <libpurple/multi.h>
+//TODO: Find the replacement for multi.h
+//#include <libpurple/multi.h>
 #include <libpurple/prefs.h>
 #include <libpurple/request.h>
 #include <libpurple/signals.h>
 
-#include <qpe/resource.h>
+//#include <qpe/resource.h>
 
-#include <qaction.h>
-#include <qheader.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlistview.h>
-#include <qmessagebox.h>
-#include <qpopupmenu.h>
-#include <qpushbutton.h>
-#include <qtoolbar.h>
-#include <qtoolbutton.h>
+#include <QAction>
+//#include <qheader.h>
+#include <QLabel>
+#include <QLayout>
+#include <QListView>
+#include <QMessageBox>
+#include <QMenu>
+#include <QPushButton>
+#include <QToolbar>
+#include <QToolButton>
 
 
 /**************************************************************************
@@ -84,10 +85,10 @@ QQuailBListWindow::buildInterface()
 	/* Setup the buddy list */
 	buddylist = new QQuailBuddyList(this, "BuddyList");
 
-	connect(buddylist, SIGNAL(currentChanged(QListViewItem *)),
-			this, SLOT(nodeChanged(QListViewItem *)));
-	connect(buddylist, SIGNAL(doubleClicked(QListViewItem *)),
-			this, SLOT(doubleClickList(QListViewItem *)));
+    connect(buddylist, SIGNAL(currentChanged(QListWidgetItem *)),
+            this, SLOT(nodeChanged(QListWidgetItem *)));
+    connect(buddylist, SIGNAL(doubleClicked(QListWidgetItem *)),
+            this, SLOT(doubleClickList(QListWidgetItem *)));
 	connect(buddylist, SIGNAL(openIm(PurpleBuddy *)),
 			this, SLOT(openImSlot(PurpleBuddy *)));
 
@@ -270,15 +271,15 @@ QQuailBListWindow::buildToolBar()
 }
 
 void
-QQuailBListWindow::setGaimBlist(PurpleBuddyList *list)
+QQuailBListWindow::setBlist(PurpleBuddyList *list)
 {
-	buddylist->setGaimBlist(list);
+    buddylist->setBlist(list);
 }
 
 PurpleBuddyList *
-QQuailBListWindow::getGaimBlist() const
+QQuailBListWindow::getBlist() const
 {
-	return buddylist->getGaimBlist();
+    return buddylist->getBlist();
 }
 
 void
@@ -293,14 +294,14 @@ QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 
 	for (gnode = purple_get_blist()->root; gnode != NULL; gnode = gnode->next)
 	{
-		if (!GAIM_BLIST_NODE_IS_GROUP(gnode))
+        if (!PURPLE_BLIST_NODE_IS_GROUP(gnode))
 			continue;
 
 		for (cnode = gnode->child; cnode != NULL; cnode = cnode->next)
 		{
 			PurpleChat *chat;
 
-			if (!GAIM_BLIST_NODE_IS_CHAT(cnode))
+            if (!PURPLE_BLIST_NODE_IS_CHAT(cnode))
 				continue;
 
 			chat = (PurpleChat *)cnode;
@@ -345,7 +346,7 @@ QQuailBListWindow::reloadList()
  * Slots
  **************************************************************************/
 void
-QQuailBListWindow::nodeChanged(QListViewItem *_item)
+QQuailBListWindow::nodeChanged(QListWidgetItem *_item)
 {
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
@@ -364,12 +365,12 @@ QQuailBListWindow::nodeChanged(QListViewItem *_item)
 		imButton->setEnabled(true);
 		chatButton->setEnabled(true);
 
-		if (GAIM_BLIST_NODE_IS_BUDDY(node) || GAIM_BLIST_NODE_IS_CONTACT(node))
+        if (PURPLE_BLIST_NODE_IS_BUDDY(node) || PURPLE_BLIST_NODE_IS_CONTACT(node))
 		{
 			imButton->setIconSet(sendImIconSet);
 			chatButton->setIconSet(newChatIconSet);
 		}
-		else if (GAIM_BLIST_NODE_IS_CHAT(node))
+        else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 		{
 			imButton->setIconSet(newImIconSet);
 			chatButton->setIconSet(openChatIconSet);
@@ -385,7 +386,7 @@ QQuailBListWindow::nodeChanged(QListViewItem *_item)
 }
 
 void
-QQuailBListWindow::doubleClickList(QListViewItem *_item)
+QQuailBListWindow::doubleClickList(QListWidgetItem *_item)
 {
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
@@ -393,9 +394,9 @@ QQuailBListWindow::doubleClickList(QListViewItem *_item)
 	item = (QQuailBListItem *)_item;
 	node = item->getBlistNode();
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node) || GAIM_BLIST_NODE_IS_CONTACT(node))
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node) || PURPLE_BLIST_NODE_IS_CONTACT(node))
 		openImSlot();
-	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+    else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 		openChatSlot();
 }
 
@@ -414,12 +415,12 @@ QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 		{
 			node = item->getBlistNode();
 
-			if (GAIM_BLIST_NODE_IS_GROUP(node))
+            if (PURPLE_BLIST_NODE_IS_GROUP(node))
 			{
 				group = (PurpleGroup *)node;
 			}
-			else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
-					 GAIM_BLIST_NODE_IS_CHAT(node))
+            else if (PURPLE_BLIST_NODE_IS_BUDDY(node) ||
+                     PURPLE_BLIST_NODE_IS_CHAT(node))
 			{
 				group = ((PurpleGroup *)node->parent);
 			}
@@ -455,12 +456,12 @@ QQuailBListWindow::showAddChat(PurpleGroup *group)
 		{
 			node = item->getBlistNode();
 
-			if (GAIM_BLIST_NODE_IS_GROUP(node))
+            if (PURPLE_BLIST_NODE_IS_GROUP(node))
 			{
 				group = (PurpleGroup *)node;
 			}
-			else if (GAIM_BLIST_NODE_IS_BUDDY(node) ||
-					 GAIM_BLIST_NODE_IS_CHAT(node))
+            else if (PURPLE_BLIST_NODE_IS_BUDDY(node) ||
+                     PURPLE_BLIST_NODE_IS_CHAT(node))
 			{
 				group = ((PurpleGroup *)node->parent);
 			}
@@ -522,7 +523,7 @@ removeBuddyCb(PurpleBuddy *buddy)
 	conv = purple_find_conversation(name);
 
 	if (conv != NULL)
-		purple_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
+        purple_conversation_update(conv, PURPLE_CONV_UPDATE_REMOVE);
 }
 
 static void
@@ -567,11 +568,11 @@ removeGroupCb(PurpleGroup *group)
 		 node != NULL;
 		 node = node->next)
 	{
-		if (GAIM_BLIST_NODE_IS_CONTACT(node))
+        if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 		{
 			for (child = node->child; child != NULL; child = child->next)
 			{
-				if (GAIM_BLIST_NODE_IS_BUDDY(child))
+                if (PURPLE_BLIST_NODE_IS_BUDDY(child))
 				{
 					PurpleBuddy *buddy = (PurpleBuddy *)child;
 					GaimConversation *conv;
@@ -587,13 +588,13 @@ removeGroupCb(PurpleGroup *group)
 						if (conv != NULL)
 						{
 							purple_conversation_update(conv,
-								GAIM_CONV_UPDATE_REMOVE);
+                                PURPLE_CONV_UPDATE_REMOVE);
 						}
 					}
 				}
 			}
 		}
-		else if (GAIM_BLIST_NODE_IS_CHAT(node))
+        else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 		{
 			PurpleChat *chat = (PurpleChat *)node;
 
@@ -615,19 +616,19 @@ QQuailBListWindow::showRemoveBuddy()
 	item = (QQuailBListItem *)buddylist->selectedItem();
 	node = item->getBlistNode();
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 	{
 		showConfirmRemoveBuddy((PurpleBuddy *)node);
 	}
-	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+    else if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 	{
 		showConfirmRemoveContact((PurpleContact *)node);
 	}
-	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+    else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 	{
 		showConfirmRemoveChat((PurpleChat *)node);
 	}
-	else if (GAIM_BLIST_NODE_IS_GROUP(node))
+    else if (PURPLE_BLIST_NODE_IS_GROUP(node))
 	{
 		showConfirmRemoveGroup((PurpleGroup *)node);
 	}
@@ -751,7 +752,7 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 		GaimConversation *conv;
 		GaimConvWindow *win;
 
-		conv = purple_conversation_new(GAIM_CONV_IM, buddy->account,
+        conv = purple_conversation_new(PURPLE_CONV_IM, buddy->account,
 									 buddy->name);
 
 		win = purple_conversation_get_window(conv);
@@ -790,7 +791,7 @@ QQuailBListWindow::openChatSlot(PurpleChat *chat)
 		{
 			node = item->getBlistNode();
 
-			if (GAIM_BLIST_NODE_IS_CHAT(node))
+            if (PURPLE_BLIST_NODE_IS_CHAT(node))
 				chat = (PurpleChat *)node;
 		}
 	}
@@ -847,9 +848,9 @@ qQuailBlistNewList(PurpleBuddyList *blist)
 
 	/* Setup some signal handlers */
 	purple_signal_connect(purple_connections_get_handle(), "signed-on",
-						blist->ui_data, GAIM_CALLBACK(signedOnCb), blist);
+                        blist->ui_data, PURPLE_CALLBACK(signedOnCb), blist);
 	purple_signal_connect(purple_connections_get_handle(), "signed-off",
-						blist->ui_data, GAIM_CALLBACK(signedOffCb), blist);
+                        blist->ui_data, PURPLE_CALLBACK(signedOffCb), blist);
 }
 
 static void

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailMenuLoop.cpp Gaim Qt Event Loop implementation
  *
  * @Copyright (C) 2004 Christian Hammond.
@@ -19,7 +19,7 @@
  * MA  02111-1307  USA
  */
 #include "QuailEventLoop.h"
-#include <qintdict.h>
+#include <QMap>
 
 typedef struct
 {
@@ -36,7 +36,7 @@ typedef struct
 static void qQuailSourceRemove(guint handle);
 
 static guint nextSourceId = 0;
-static QIntDict<QQuailSourceInfo> sources;
+static QMap<QQuailSourceInfo> sources;
 
 QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
 	: QTimer(), sourceId(sourceId), func(func), userData(data)

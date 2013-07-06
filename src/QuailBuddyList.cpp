@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailBuddyList.cpp Buddy list widget
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -24,34 +24,34 @@
 #include "QuailImageUtils.h"
 
 #include <libpurple/debug.h>
-#include <libpurple/multi.h>
+//#include <libpurple/multi.h>
 #include <libpurple/prefs.h>
 #include <libpurple/request.h>
 #include <libpurple/server.h>
 
-#include <qpe/qpeapplication.h>
-#include <qpe/resource.h>
+//#include <qpe/qpeapplication.h>
+//#include <qpe/resource.h>
 
 #include <qaction.h>
-#include <qheader.h>
-#include <qpopupmenu.h>
-#include <qtimer.h>
+//#include <qheader.h>
+#include <QMenu>
+#include <QTimer>
 
 
 /**************************************************************************
  * QQuailBListItem
  **************************************************************************/
-QQuailBListItem::QQuailBListItem(QListView *parent, PurpleBlistNode *node)
-	: QListViewItem(parent), node(node), expanded(false), dirty(true)
+QQuailBListItem::QQuailBListItem(QListWidget *parent, PurpleBlistNode *node)
+    : QListWidgetItem(parent), node(node), expanded(false), dirty(true)
 {
 	init();
 }
 
-QQuailBListItem::QQuailBListItem(QListViewItem *parent, PurpleBlistNode *node)
-	: QListViewItem(parent), node(node), expanded(false), dirty(true)
-{
-	init();
-}
+//QQuailBListItem::QQuailBListItem(QListWidgetItem *parent, PurpleBlistNode *node)
+//    : QListWidgetItem(parent), node(node), expanded(false), dirty(true)
+//{
+//	init();
+//}
 
 QQuailBListItem::~QQuailBListItem()
 {
@@ -77,7 +77,7 @@ QQuailBListItem::updateInfo()
 
 	dirty = true;
 
-	if (GAIM_BLIST_NODE_IS_CONTACT(node))
+    if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 	{
 		PurpleContact *contact = (PurpleContact *)node;
 		PurpleBuddy *buddy = purple_contact_get_priority_buddy(contact);
@@ -87,14 +87,7 @@ QQuailBListItem::updateInfo()
 
 		if (isExpanded())
 		{
-			QImage image = Resource::loadPixmap("gaim").convertToImage();
-			QPixmap pixmap;
-
-			pixmap.convertFromImage(pixmapSize == QGAIM_PIXMAP_SMALL
-									? image.smoothScale(16, 16)
-									: image.smoothScale(32, 32));
-
-			setPixmap(0, pixmap);
+            setIcon(QPixmap(":/quail.png"));
 		}
 		else
 		{
@@ -180,7 +173,7 @@ QQuailBListItem::updateInfo()
 }
 
 void
-QQuailBListItem::paintCell(QPainter *p, const QColorGroup &cg, int column,
+QQuailBListItem::paintCell(QPainter *p, const QPalette &cg, int column,
 						  int width, int align)
 {
 	QListView *lv = listView();
@@ -216,15 +209,15 @@ QQuailBListItem::paintCell(QPainter *p, const QColorGroup &cg, int column,
 }
 
 void
-QQuailBListItem::paintBranches(QPainter *p, const QColorGroup &cg,
-							  int width, int x, int height, GUIStyle style)
+QQuailBListItem::paintBranches(QPainter *p, const QPalette &cg,
+                              int width, int x, int height)
 {
 	if (GAIM_BLIST_NODE_IS_CHAT(node) || GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
 		p->fillRect(0, 0, width, height, QBrush(cg.base()));
 	}
 	else
-		return QListViewItem::paintBranches(p, cg, width, x, height, style);
+        return QListWidgetItem::paintBranches(p, cg, width, x, height);
 }
 
 void
@@ -246,13 +239,13 @@ QQuailBListItem::init()
 }
 
 void
-QQuailBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
+QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 							   int width, int align, int lmarg, int itMarg)
 {
 	PurpleBuddy *buddy;
 	PurpleContact *contact = NULL;
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 		buddy = (PurpleBuddy *)node;
 	else
 	{
@@ -280,7 +273,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
 					purple_account_get_protocol_id(buddy->account));
 
 				if (prpl != NULL)
-					prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+                    prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 				if (prpl != NULL && prplInfo->status_text != NULL &&
 					purple_account_get_connection(buddy->account) != NULL)
@@ -322,7 +315,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
 					warning = QObject::tr("Warned (%1%) ").arg(buddy->evil);
 				}
 
-				if (!GAIM_BUDDY_IS_ONLINE(buddy) && statusText.isEmpty())
+                if (!PURPLE_BUDDY_IS_ONLINE(buddy) && statusText.isEmpty())
 					statusText = QObject::tr("Offline ");
 
 				if (contact != NULL && !isExpanded() && contact->alias != NULL)
@@ -366,12 +359,12 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
 		}
 		else
 		{
-			QColorGroup _cg(cg);
+            QPalette _cg(cg);
 
 			if (buddy->idle > 0 &&
 				purple_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
 			{
-				_cg.setColor(QColorGroup::Text, cg.dark());
+                _cg.setColor(QPalette::Text, cg.dark());
 			}
 
 			QListViewItem::paintCell(p, _cg, column, width, align);
@@ -379,12 +372,12 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
 	}
 	else
 	{
-		QColorGroup _cg(cg);
+        QPalette _cg(cg);
 
 		if (buddy->idle > 0 &&
 			purple_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
 		{
-			_cg.setColor(QColorGroup::Text, cg.dark());
+            _cg.setColor(QPalette::Text, cg.dark());
 		}
 
 		QListViewItem::paintCell(p, _cg, column, width, align);
@@ -392,7 +385,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
 }
 
 void
-QQuailBListItem::paintGroupInfo(QPainter *p, const QColorGroup &, int column,
+QQuailBListItem::paintGroupInfo(QPainter *p, const QPalette &, int column,
 							   int width, int align, int lmarg, int itMarg)
 {
 	if (column > 0)
@@ -583,15 +576,15 @@ QQuailBuddyList::~QQuailBuddyList()
 }
 
 void
-QQuailBuddyList::setGaimBlist(PurpleBuddyList *list)
+QQuailBuddyList::setBlist(PurpleBuddyList *list)
 {
-	gaimBlist = list;
+    quailBlist = list;
 }
 
 PurpleBuddyList *
-QQuailBuddyList::getGaimBlist() const
+QQuailBuddyList::getBlist() const
 {
-	return gaimBlist;
+    return quailBlist;
 }
 
 void
@@ -599,10 +592,10 @@ QQuailBuddyList::updateNode(PurpleBlistNode *node)
 {
 	switch (node->type)
 	{
-		case GAIM_BLIST_GROUP_NODE:   updateGroup(node);   break;
-		case GAIM_BLIST_CONTACT_NODE: updateContact(node); break;
-		case GAIM_BLIST_BUDDY_NODE:   updateBuddy(node);   break;
-		case GAIM_BLIST_CHAT_NODE:    updateChat(node);    break;
+        case PURPLE_BLIST_GROUP_NODE:   updateGroup(node);   break;
+        case PURPLE_BLIST_CONTACT_NODE: updateContact(node); break;
+        case PURPLE_BLIST_BUDDY_NODE:   updateBuddy(node);   break;
+        case PURPLE_BLIST_CHAT_NODE:    updateChat(node);    break;
 		default:
 			return;
 	}
@@ -616,9 +609,9 @@ QQuailBuddyList::reload(bool remove)
 	if (remove)
 		clear();
 
-	for (group = gaimBlist->root; group != NULL; group = group->next)
+    for (group = quailBlist->root; group != NULL; group = group->next)
 	{
-		if (!GAIM_BLIST_NODE_IS_GROUP(group))
+        if (!PURPLE_BLIST_NODE_IS_GROUP(group))
 			continue;
 
 		group->ui_data = NULL;
@@ -627,7 +620,7 @@ QQuailBuddyList::reload(bool remove)
 
 		for (cnode = group->child; cnode != NULL; cnode = cnode->next)
 		{
-			if (GAIM_BLIST_NODE_IS_CONTACT(cnode))
+            if (PURPLE_BLIST_NODE_IS_CONTACT(cnode))
 			{
 				cnode->ui_data = NULL;
 
@@ -640,7 +633,7 @@ QQuailBuddyList::reload(bool remove)
 					updateNode(child);
 				}
 			}
-			else if (GAIM_BLIST_NODE_IS_CHAT(cnode))
+            else if (PURPLE_BLIST_NODE_IS_CHAT(cnode))
 			{
 				cnode->ui_data = NULL;
 
