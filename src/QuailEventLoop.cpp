@@ -52,8 +52,8 @@ QQuailTimer::update()
 		qQuailSourceRemove(sourceId);
 }
 
-QQuailInputNotifier::QQuailInputNotifier(int fd, GaimInputCondition cond,
-									   GaimInputFunction func,
+QQuailInputNotifier::QQuailInputNotifier(int fd, PurpleInputCondition cond,
+									   PurpleInputFunction func,
 									   gpointer userData)
 	: QObject(), func(func), userData(userData), readNotifier(NULL),
 	  writeNotifier(NULL)
@@ -95,7 +95,7 @@ QQuailInputNotifier::ioInvoke(int fd)
 	if (writeNotifier != NULL)
 		cond |= GAIM_INPUT_WRITE;
 
-	func(userData, fd, (GaimInputCondition)cond);
+	func(userData, fd, (PurpleInputCondition)cond);
 }
 
 
@@ -123,7 +123,7 @@ qQuailTimeoutRemove(guint handle)
 }
 
 static guint
-qQuailInputAdd(int fd, GaimInputCondition cond, GaimInputFunction func,
+qQuailInputAdd(int fd, PurpleInputCondition cond, PurpleInputFunction func,
 			  gpointer userData)
 {
 	QQuailSourceInfo *info = new QQuailSourceInfo;

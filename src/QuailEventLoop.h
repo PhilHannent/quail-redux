@@ -47,16 +47,16 @@ class QQuailInputNotifier : public QObject
 	Q_OBJECT
 
 	public:
-		QQuailInputNotifier(int fd, GaimInputCondition cond,
-						   GaimInputFunction func, gpointer userData);
+		QQuailInputNotifier(int fd, PurpleInputCondition cond,
+						   PurpleInputFunction func, gpointer userData);
 		~QQuailInputNotifier();
 
 	private slots:
 		void ioInvoke(int fd);
 
 	private:
-		GaimInputCondition cond;
-		GaimInputFunction func;
+		PurpleInputCondition cond;
+		PurpleInputFunction func;
 		gpointer userData;
 		QSocketNotifier *readNotifier, *writeNotifier;
 };
