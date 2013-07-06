@@ -69,14 +69,14 @@ QQuailBListWindow::~QQuailBListWindow()
 void
 QQuailBListWindow::buildInterface()
 {
-	newChatIconSet = QIconSet(Resource::loadPixmap("gaim/16x16/new-chat"),
+    newChatIconSet = QIcon(Resource::loadPixmap("gaim/16x16/new-chat"),
 							  Resource::loadPixmap("gaim/32x32/new-chat.png"));
 
-	openChatIconSet = QIconSet(Resource::loadPixmap("gaim/16x16/chat"),
+    openChatIconSet = QIcon(Resource::loadPixmap("gaim/16x16/chat"),
 							   Resource::loadPixmap("gaim/32x32/chat"));
-	newImIconSet = QIconSet(Resource::loadPixmap("gaim/16x16/new-im"),
+    newImIconSet = QIcon(Resource::loadPixmap("gaim/16x16/new-im"),
 							Resource::loadPixmap("gaim/32x32/new-im"));
-	sendImIconSet = QIconSet(Resource::loadPixmap("gaim/16x16/send-im"),
+    sendImIconSet = QIcon(Resource::loadPixmap("gaim/16x16/send-im"),
 							 Resource::loadPixmap("gaim/32x32/send-im"));
 
 	/* Setup the toolbar */
@@ -126,11 +126,11 @@ QQuailBListWindow::buildToolBar()
 
 	/* IM */
 	a = new QAction(tr("Send IM"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/new-im"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/new-im"),
 							 Resource::loadPixmap("gaim/32x32/new-im")),
 					QString::null, 0, this, 0);
 	imButton = a;
-	a->addTo(toolbar);
+    toolbar->addAction(a);
 	a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
@@ -140,8 +140,8 @@ QQuailBListWindow::buildToolBar()
 	a = new QAction(tr("Open Chat"), newChatIconSet,
 					QString::null, 0, this, 0);
 	chatButton = a;
-	a->addTo(toolbar);
-	a->setEnabled(false);
+    toolbar->addAction(a);
+    a->setEnabled(false);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(openChatSlot()));
@@ -151,22 +151,22 @@ QQuailBListWindow::buildToolBar()
 	/* Add */
 	button = new QToolButton(toolbar, "add");
 	button->setAutoRaise(true);
-	button->setIconSet(QIconSet(Resource::loadPixmap("gaim/16x16/add"),
+    button->setIcon(QIcon(Resource::loadPixmap("gaim/16x16/add"),
 								Resource::loadPixmap("gaim/32x32/add")));
 	button->setEnabled(false);
 	addButton = button;
 
-	addMenu = new QPopupMenu(button);
-	button->setPopup(addMenu);
-	button->setPopupDelay(0);
+    addMenu = new QMenu(button);
+    button->setMenu(addMenu);
+    //button->setPopupDelay(0);
 
 	/* Add Buddy */
 	a = new QAction(tr("Add Buddy"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/user"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/user"),
 							 Resource::loadPixmap("gaim/32x32/user")),
 					QString::null, 0, this, 0);
 	addBuddyButton = a;
-	a->addTo(addMenu);
+    addMenu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(showAddBuddy()));
@@ -182,7 +182,7 @@ QQuailBListWindow::buildToolBar()
 
 	/* Add Group */
 	a = new QAction(tr("Add Group"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/new-group"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/new-group"),
 							 Resource::loadPixmap("gaim/32x32/new-group")),
 					QString::null, 0, this, 0);
 	addGroupButton = a;
@@ -193,7 +193,7 @@ QQuailBListWindow::buildToolBar()
 
 	/* Remove */
 	a = new QAction(tr("Remove"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/remove"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/remove"),
 							 Resource::loadPixmap("gaim/32x32/remove")),
 					QString::null, 0, this, 0);
 	removeButton = a;
@@ -208,7 +208,7 @@ QQuailBListWindow::buildToolBar()
 	/* Settings menu */
 	button = new QToolButton(toolbar, "settings");
 	button->setAutoRaise(true);
-	button->setIconSet(QIconSet(Resource::loadPixmap("gaim/16x16/settings"),
+    button->setIconSet(QIcon(Resource::loadPixmap("gaim/16x16/settings"),
 								Resource::loadPixmap("gaim/32x32/settings")));
 
 	settingsMenu = new QPopupMenu(button);
@@ -217,7 +217,7 @@ QQuailBListWindow::buildToolBar()
 
 	/* Show Offline Buddies */
 	a = new QAction(tr("Show Offline Buddies"),
-		QIconSet(Resource::loadPixmap("gaim/16x16/offline_buddies"),
+        QIcon(Resource::loadPixmap("gaim/16x16/offline_buddies"),
 		Resource::loadPixmap("gaim/32x32/offline_buddies")),
 		QString::null, 0, this, 0, true);
 	a->setOn(purple_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"));
@@ -247,7 +247,7 @@ QQuailBListWindow::buildToolBar()
 
 	/* Buddy List */
 	blistButton = new QAction(tr("Buddy List"),
-		QIconSet(Resource::loadPixmap("gaim/16x16/blist"),
+        QIcon(Resource::loadPixmap("gaim/16x16/blist"),
 				 Resource::loadPixmap("gaim/32x32/blist")),
 		QString::null, 0, this, 0, true);
 	blistButton->setOn(true);
@@ -258,7 +258,7 @@ QQuailBListWindow::buildToolBar()
 
 	/* Accounts */
 	a = new QAction(tr("Accounts"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/accounts"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/accounts"),
 							 Resource::loadPixmap("gaim/32x32/accounts")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);

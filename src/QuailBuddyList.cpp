@@ -682,7 +682,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 	if (prplInfo != NULL && prplInfo->get_info != NULL)
 	{
 		a = new QQuailAction(tr("Get Information"),
-							QIconSet(Resource::loadPixmap("gaim/16x16/info"),
+                            QIcon(Resource::loadPixmap("gaim/16x16/info"),
 									 Resource::loadPixmap("gaim/32x32/info")),
 							QString::null, 0, this, 0, false, buddy);
 		a->addTo(menu);
@@ -693,7 +693,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 
 	/* IM */
 	a = new QQuailAction(tr("IM"),
-						QIconSet(Resource::loadPixmap("gaim/16x16/send-im"),
+                        QIcon(Resource::loadPixmap("gaim/16x16/send-im"),
 								 Resource::loadPixmap("gaim/32x32/send-im")),
 						QString::null, 0, this, 0, false, buddy);
 	a->addTo(menu);
@@ -730,7 +730,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 
 	/* Alias */
 	a = new QQuailAction(tr("Alias"),
-						QIconSet(Resource::loadPixmap("gaim/16x16/alias"),
+                        QIcon(Resource::loadPixmap("gaim/16x16/alias"),
 								 Resource::loadPixmap("gaim/32x32/alias")),
 						QString::null, 0, this, 0, false, buddy);
 	a->addTo(menu);
@@ -740,7 +740,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 
 	/* Remove */
 	a = new QQuailAction(tr("Remove"),
-						QIconSet(Resource::loadPixmap("gaim/16x16/remove"),
+                        QIcon(Resource::loadPixmap("gaim/16x16/remove"),
 								 Resource::loadPixmap("gaim/32x32/remove")),
 						QString::null, 0, this, 0, false, buddy);
 	a->addTo(menu);
@@ -757,7 +757,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 
 		/* Expand */
 		a = new QQuailAction(tr("Expand"),
-							QIconSet(Resource::loadPixmap("gaim/16x16/expand"),
+                            QIcon(Resource::loadPixmap("gaim/16x16/expand"),
 									 Resource::loadPixmap("gaim/32x32/expand")),
 							QString::null, 0, this, 0);
 		a->addTo(menu);
@@ -812,7 +812,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QPopupMenu *menu)
 
 	/* Collapse */
 	a = new QAction(tr("Collapse"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/collapse"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/collapse"),
 							 Resource::loadPixmap("gaim/32x32/collapse")),
 					QString::null, 0, this, 0);
 	a->addTo(menu);
@@ -822,7 +822,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QPopupMenu *menu)
 
 	/* Remove */
 	a = new QAction(tr("Remove"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/remove"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/remove"),
 							 Resource::loadPixmap("gaim/32x32/remove")),
 					QString::null, 0, this, 0);
 	a->addTo(menu);
@@ -846,7 +846,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QPopupMenu *menu)
 
 	/* Join Chat */
 	a = new QAction(tr("Join Chat"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/join_chat"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/join_chat"),
 							 Resource::loadPixmap("gaim/32x32/join_chat")),
 					QString::null, 0, this, 0);
 	a->addTo(menu);
@@ -867,7 +867,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QPopupMenu *menu)
 
 	/* Alias */
 	a = new QAction(tr("Alias"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/alias"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/alias"),
 							 Resource::loadPixmap("gaim/32x32/alias")),
 					QString::null, 0, this, 0);
 	a->addTo(menu);
@@ -877,7 +877,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QPopupMenu *menu)
 
 	/* Remove */
 	a = new QAction(tr("Remove Chat"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/remove"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/remove"),
 							 Resource::loadPixmap("gaim/32x32/remove")),
 					QString::null, 0, this, 0);
 	a->addTo(menu);
@@ -893,7 +893,7 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QPopupMenu *menu)
 
 	/* Add a Buddy */
 	a = new QAction(tr("Add a Buddy"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/add"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/add"),
 							 Resource::loadPixmap("gaim/32x32/add")),
 					QString::null, 0, this, 0);
 	a->addTo(menu);
@@ -903,7 +903,7 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QPopupMenu *menu)
 
 	/* Add a Chat */
 	a = new QAction(tr("Add a Chat"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/new-chat"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/new-chat"),
 							 Resource::loadPixmap("gaim/32x32/new-chat")),
 					QString::null, 0, this, 0);
 	a->addTo(menu);
@@ -913,7 +913,7 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QPopupMenu *menu)
 
 	/* Delete Group */
 	a = new QAction(tr("Remove Group"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/remove"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/remove"),
 							 Resource::loadPixmap("gaim/32x32/remove")),
 					QString::null, 0, this, 0);
 	a->addTo(menu);

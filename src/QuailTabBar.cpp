@@ -78,13 +78,13 @@ QQuailTabBar::paintLabel(QPainter *p, const QRect &rect,
 
 	if (tab->iconSet())
 	{
-		QIconSet::Mode mode = ((tab->isEnabled() && isEnabled())
-							   ? QIconSet::Normal : QIconSet::Disabled);
+        QIcon::Mode mode = ((tab->isEnabled() && isEnabled())
+                               ? QIcon::Normal : QIcon::Disabled);
 
-		if (mode == QIconSet::Normal && hasFocus)
-			mode = QIconSet::Active;
+        if (mode == QIcon::Normal && hasFocus)
+            mode = QIcon::Active;
 
-		QPixmap pixmap = tab->iconSet()->pixmap(QIconSet::Small, mode);
+        QPixmap pixmap = tab->iconSet()->pixmap(QIcon::Small, mode);
 
 		int pixw = pixmap.width();
 		int pixh = pixmap.height();

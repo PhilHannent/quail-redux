@@ -31,7 +31,6 @@ class QAction;
 class QQuailMultiLineEdit;
 class QQuailTabWidget;
 class QListView;
-class QPopupMenu;
 class QTabWidget;
 class QTextView;
 
@@ -138,7 +137,7 @@ class QQuailConvIm : public QQuailConversation
 		virtual void updateTyping();
 
 	protected:
-		GaimConvIm *im;
+        PurpleConvIm *im;
 };
 
 class QQuailConvWindow : public QMainWindow
@@ -146,7 +145,7 @@ class QQuailConvWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-		QQuailConvWindow(GaimConvWindow *win, QMainWindow *parent);
+        QQuailConvWindow(QQuailConvWindow *win, QMainWindow *parent);
 		~QQuailConvWindow();
 
         void setConvWindow(QQuailConvWindow *win);

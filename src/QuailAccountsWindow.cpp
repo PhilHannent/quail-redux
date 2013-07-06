@@ -248,7 +248,7 @@ QQuailAccountsWindow::setupToolbar()
 
 	/* New */
 	a = new QAction(tr("New Account"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/new"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/new"),
 							 Resource::loadPixmap("gaim/32x32/new")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
@@ -258,7 +258,7 @@ QQuailAccountsWindow::setupToolbar()
 
 	/* Edit */
 	a = new QAction(tr("Edit Account"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/edit"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/edit"),
 							 Resource::loadPixmap("gaim/32x32/edit")),
 					QString::null, 0, this, 0);
 	editButton = a;
@@ -270,7 +270,7 @@ QQuailAccountsWindow::setupToolbar()
 
 	/* Delete */
 	a = new QAction(tr("Delete"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/delete"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/delete"),
 							 Resource::loadPixmap("gaim/32x32/delete")),
 					QString::null, 0, this, 0);
 	deleteButton = a;
@@ -285,7 +285,7 @@ QQuailAccountsWindow::setupToolbar()
 
 	/* Connect */
 	a = new QAction(tr("Connect"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/connect"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/connect"),
 							 Resource::loadPixmap("gaim/32x32/connect")),
 					QString::null, 0, this, 0);
 	connectButton = a;
@@ -297,7 +297,7 @@ QQuailAccountsWindow::setupToolbar()
 
 	/* Disconnect */
 	a = new QAction(tr("Connect"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/disconnect"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/disconnect"),
 							 Resource::loadPixmap("gaim/32x32/disconnect")),
 					QString::null, 0, this, 0);
 	disconnectButton = a;
@@ -318,7 +318,7 @@ QQuailAccountsWindow::setupToolbar()
 
 	/* Buddy List */
 	a = new QAction(tr("Buddy List"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/blist"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/blist"),
 							 Resource::loadPixmap("gaim/32x32/blist")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
@@ -328,7 +328,7 @@ QQuailAccountsWindow::setupToolbar()
 
 	/* Accounts */
 	a = new QAction(tr("Accounts"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/accounts"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/accounts"),
 							 Resource::loadPixmap("gaim/32x32/accounts")),
 					QString::null, 0, this, 0, true);
 	a->setOn(true);

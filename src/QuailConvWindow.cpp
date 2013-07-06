@@ -831,14 +831,14 @@ QQuailConvWindow::updateAddRemoveButton()
 	{
 		addRemoveButton->setText(tr("Add"));
 		addRemoveButton->setIconSet(
-			QIconSet(Resource::loadPixmap("gaim/16x16/add"),
+            QIcon(Resource::loadPixmap("gaim/16x16/add"),
 					 Resource::loadPixmap("gaim/32x32/add")));
 	}
 	else
 	{
 		addRemoveButton->setText(tr("Remove"));
 		addRemoveButton->setIconSet(
-			QIconSet(Resource::loadPixmap("gaim/16x16/remove"),
+            QIcon(Resource::loadPixmap("gaim/16x16/remove"),
 					 Resource::loadPixmap("gaim/32x32/remove")));
 	}
 }
@@ -909,14 +909,14 @@ QQuailConvWindow::tabChanged(QWidget *widget)
 		{
 			addRemoveButton->setText(tr("Add"));
 			addRemoveButton->setIconSet(
-				QIconSet(Resource::loadPixmap("gaim/16x16/add"),
+                QIcon(Resource::loadPixmap("gaim/16x16/add"),
 						 Resource::loadPixmap("gaim/32x32/add")));
 		}
 		else
 		{
 			addRemoveButton->setText(tr("Remove"));
 			addRemoveButton->setIconSet(
-				QIconSet(Resource::loadPixmap("gaim/16x16/remove"),
+                QIcon(Resource::loadPixmap("gaim/16x16/remove"),
 						 Resource::loadPixmap("gaim/32x32/remove")));
 		}
 	}
@@ -1083,7 +1083,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* Close Conversation */
 	a = new QAction(tr("Close"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/close_conv"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/close_conv"),
 							 Resource::loadPixmap("gaim/32x32/close_conv")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
@@ -1098,7 +1098,7 @@ QQuailConvWindow::setupToolbar()
 	button = new QToolButton(toolbar, "blist");
 	userMenuButton = button;
 	button->setAutoRaise(true);
-	button->setIconSet(QIconSet(Resource::loadPixmap("gaim/16x16/user"),
+    button->setIconSet(QIcon(Resource::loadPixmap("gaim/16x16/user"),
 								Resource::loadPixmap("gaim/32x32/user")));
 	button->setEnabled(false);
 
@@ -1108,7 +1108,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* Warn */
 	a = new QAction(tr("Warn"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/warn"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/warn"),
 							 Resource::loadPixmap("gaim/32x32/warn")),
 					QString::null, 0, this, 0);
 	warnButton = a;
@@ -1117,7 +1117,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* Block */
 	a = new QAction(tr("Block"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/block"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/block"),
 							 Resource::loadPixmap("gaim/32x32/block")),
 					QString::null, 0, this, 0);
 	blockButton = a;
@@ -1126,7 +1126,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* Add */
 	a = new QAction(tr("Add"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/add"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/add"),
 							 Resource::loadPixmap("gaim/32x32/add")),
 					QString::null, 0, this, 0);
 	addRemoveButton = a;
@@ -1137,7 +1137,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* Info */
 	a = new QAction(tr("Get Information"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/info"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/info"),
 							 Resource::loadPixmap("gaim/32x32/info")),
 					QString::null, 0, this, 0);
 	infoButton = a;
@@ -1149,7 +1149,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* Formatting */
 	a = new QAction(tr("Formatting"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/formatting"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/formatting"),
 							 Resource::loadPixmap("gaim/32x32/formatting")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
@@ -1160,7 +1160,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* Send */
 	a = new QAction(tr("Send"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/send-im"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/send-im"),
 							 Resource::loadPixmap("gaim/32x32/send-im")),
 					QString::null, 0, this, 0);
 	sendButton = a;
@@ -1175,7 +1175,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* User List toggle */
 	userListToggle = new QAction(tr("Show User List"),
-		QIconSet(Resource::loadPixmap("gaim/16x16/userlist"),
+        QIcon(Resource::loadPixmap("gaim/16x16/userlist"),
 				 Resource::loadPixmap("gaim/32x32/userlist")),
 		QString::null, 0, this, 0, true);
 	userListToggle->addTo(toolbar);
@@ -1194,7 +1194,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* Buddy List */
 	a = new QAction(tr("Buddy List"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/blist"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/blist"),
 							 Resource::loadPixmap("gaim/32x32/blist")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
@@ -1204,7 +1204,7 @@ QQuailConvWindow::setupToolbar()
 
 	/* Accounts */
 	a = new QAction(tr("Accounts"),
-					QIconSet(Resource::loadPixmap("gaim/16x16/accounts"),
+                    QIcon(Resource::loadPixmap("gaim/16x16/accounts"),
 							 Resource::loadPixmap("gaim/32x32/accounts")),
 					QString::null, 0, this, 0);
 	a->addTo(toolbar);
