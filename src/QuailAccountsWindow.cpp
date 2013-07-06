@@ -127,13 +127,13 @@ QQuailAccountListItem::updatePulse()
 static void
 signedOnCb(PurpleConnection *gc, QQuailAccountsWindow *win)
 {
-	win->accountSignedOn(gaim_connection_get_account(gc));
+	win->accountSignedOn(purple_connection_get_account(gc));
 }
 
 static void
 signedOffCb(PurpleConnection *gc, QQuailAccountsWindow *win)
 {
-	win->accountSignedOff(gaim_connection_get_account(gc));
+	win->accountSignedOff(purple_connection_get_account(gc));
 }
 
 /**************************************************************************
@@ -148,9 +148,9 @@ QQuailAccountsWindow::QQuailAccountsWindow(QMainWindow *parent)
 
 	buildInterface();
 
-	gaim_signal_connect(gaim_connections_get_handle(), "signed-on",
+	purple_signal_connect(purple_connections_get_handle(), "signed-on",
 						this, GAIM_CALLBACK(signedOnCb), this);
-	gaim_signal_connect(gaim_connections_get_handle(), "signed-off",
+	purple_signal_connect(purple_connections_get_handle(), "signed-off",
 						this, GAIM_CALLBACK(signedOffCb), this);
 
 	loadAccounts();
@@ -349,23 +349,23 @@ QQuailAccountsWindow::loadAccounts()
 
 	accountsView->clear();
 
-	for (l = gaim_accounts_get_all(), index = 0;
+	for (l = purple_accounts_get_all(), index = 0;
 		 l != NULL;
 		 l = l->next, index++)
 	{
 		QPixmap protocolIcon;
 		QQuailAccountListItem *item;
 		PurpleAccount *account = (PurpleAccount *)l->data;
-		QString protocolId = gaim_account_get_protocol_id(account);
+		QString protocolId = purple_account_get_protocol_id(account);
 
 		protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
 
 		item = new QQuailAccountListItem(accountsView, index);
-		item->setText(0, gaim_account_get_username(account));
+		item->setText(0, purple_account_get_username(account));
 		item->setText(1, QQuailProtocolUtils::getProtocolName(protocolId));
 		item->setAccount(account);
 
-		if (gaim_account_is_connected(account))
+		if (purple_account_is_connected(account))
 			item->setPixmap(0, protocolIcon);
 		else
 			item->setPixmap(0, QQuailImageUtils::greyPixmap(protocolIcon));
@@ -404,7 +404,7 @@ QQuailAccountsWindow::deleteAccount()
 
 	item = (QQuailAccountListItem *)accountsView->selectedItem();
 
-	gaim_accounts_remove(item->getAccount());
+	purple_accounts_remove(item->getAccount());
 
 	delete item;
 
@@ -425,7 +425,7 @@ QQuailAccountsWindow::connectToAccount()
 
 	item->startPulse(QQuailProtocolUtils::getProtocolIcon(item->getAccount()));
 
-	gaim_account_connect(item->getAccount());
+	purple_account_connect(item->getAccount());
 }
 
 void
@@ -435,7 +435,7 @@ QQuailAccountsWindow::disconnectFromAccount()
 
 	item = (QQuailAccountListItem *)accountsView->selectedItem();
 
-	gaim_account_disconnect(item->getAccount());
+	purple_account_disconnect(item->getAccount());
 }
 
 void
@@ -458,17 +458,17 @@ QQuailAccountsWindow::accountSelected(QListViewItem *item)
 	const char *protocolId;
 
 	account    = accountItem->getAccount();
-	protocolId = gaim_account_get_protocol_id(account);
+	protocolId = purple_account_get_protocol_id(account);
 
-	if (gaim_plugins_find_with_id(protocolId) == NULL)
+	if (purple_plugins_find_with_id(protocolId) == NULL)
 	{
 		connectButton->setEnabled(false);
 		disconnectButton->setEnabled(false);
 	}
 	else
 	{
-		connectButton->setEnabled(!gaim_account_is_connected(account));
-		disconnectButton->setEnabled(gaim_account_is_connected(account));
+		connectButton->setEnabled(!purple_account_is_connected(account));
+		disconnectButton->setEnabled(purple_account_is_connected(account));
 	}
 
 	editButton->setEnabled(true);

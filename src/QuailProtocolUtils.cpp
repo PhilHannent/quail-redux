@@ -33,7 +33,7 @@ static QDict<QPixmap> menuPixmaps;
 QString
 QQuailProtocolUtils::getProtocolName(QString protocolId)
 {
-	PurplePlugin *p = gaim_plugins_find_with_id(protocolId);
+	PurplePlugin *p = purple_plugins_find_with_id(protocolId);
 
 	return ((p != NULL && p->info->name != NULL)
 			? QObject::tr(p->info->name)
@@ -67,7 +67,7 @@ QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account,
 	if (account == NULL)
 		return NULL;
 
-	prpl = gaim_plugins_find_with_id(gaim_account_get_protocol_id(account));
+	prpl = purple_plugins_find_with_id(purple_account_get_protocol_id(account));
 
 	if (prpl == NULL)
 		return NULL;

@@ -59,12 +59,12 @@ QQuailConnectionMeter::QQuailConnectionMeter(PurpleConnection *gc,
 	setSpacing(2);
 	setMargin(2);
 
-	account = gaim_connection_get_account(gc);
+	account = purple_connection_get_account(gc);
 
 	icon = new QLabel(this);
 	icon->setPixmap(QQuailProtocolUtils::getProtocolIcon(account));
 
-	label = new QLabel(gaim_account_get_username(account), this);
+	label = new QLabel(purple_account_get_username(account), this);
 
 	progressBar = new QQuailConnectionProgressBar(this);
 }

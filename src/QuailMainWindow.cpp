@@ -49,17 +49,17 @@ static QQuailMainWindow *mainWin = NULL;
 static void
 qQuailPrefsInit(void)
 {
-	gaim_prefs_add_none("/gaim");
-	gaim_prefs_add_none("/gaim/qpe");
-	gaim_prefs_add_none("/gaim/qpe/blist");
-	gaim_prefs_add_bool("/gaim/qpe/blist/show_offline_buddies", false);
-	gaim_prefs_add_bool("/gaim/qpe/blist/show_empty_groups",    false);
-	gaim_prefs_add_bool("/gaim/qpe/blist/show_idle_times",      true);
-	gaim_prefs_add_bool("/gaim/qpe/blist/show_warning_levels",  true);
-	gaim_prefs_add_bool("/gaim/qpe/blist/show_group_count",     true);
-	gaim_prefs_add_bool("/gaim/qpe/blist/show_large_icons",
+	purple_prefs_add_none("/gaim");
+	purple_prefs_add_none("/gaim/qpe");
+	purple_prefs_add_none("/gaim/qpe/blist");
+	purple_prefs_add_bool("/gaim/qpe/blist/show_offline_buddies", false);
+	purple_prefs_add_bool("/gaim/qpe/blist/show_empty_groups",    false);
+	purple_prefs_add_bool("/gaim/qpe/blist/show_idle_times",      true);
+	purple_prefs_add_bool("/gaim/qpe/blist/show_warning_levels",  true);
+	purple_prefs_add_bool("/gaim/qpe/blist/show_group_count",     true);
+	purple_prefs_add_bool("/gaim/qpe/blist/show_large_icons",
 						(QPEApplication::desktop()->width() >= 600));
-	gaim_prefs_add_bool("/gaim/qpe/blist/dim_idle_buddies",     true);
+	purple_prefs_add_bool("/gaim/qpe/blist/dim_idle_buddies",     true);
 
 	qQuailNotifyInit();
 }
@@ -67,17 +67,17 @@ qQuailPrefsInit(void)
 static void
 qQuailCoreDebugInit(void)
 {
-	gaim_debug_set_ui_ops(qQuailGetDebugUiOps());
+	purple_debug_set_ui_ops(qQuailGetDebugUiOps());
 }
 
 static void
 qQuailCoreUiInit(void)
 {
-	gaim_blist_set_ui_ops(qQuailGetBlistUiOps());
-	gaim_connections_set_ui_ops(qQuailGetConnectionUiOps());
-	gaim_conversations_set_win_ui_ops(qQuailGetConvWindowUiOps());
-	gaim_notify_set_ui_ops(qQuailGetNotifyUiOps());
-	gaim_request_set_ui_ops(qQuailGetRequestUiOps());
+	purple_blist_set_ui_ops(qQuailGetBlistUiOps());
+	purple_connections_set_ui_ops(qQuailGetConnectionUiOps());
+	purple_conversations_set_win_ui_ops(qQuailGetConvWindowUiOps());
+	purple_notify_set_ui_ops(qQuailGetNotifyUiOps());
+	purple_request_set_ui_ops(qQuailGetRequestUiOps());
 }
 
 static void
@@ -117,15 +117,15 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent, const char *name, WFlags fl)
 	/* We have to do these separately. Ugh. */
 	showBlistWindow();
 
-	gaim_set_blist(gaim_blist_new());
-	gaim_blist_load();
+	purple_set_blist(purple_blist_new());
+	purple_blist_load();
 
-	gaim_accounts_auto_login("qpe-gaim");
+	purple_accounts_auto_login("qpe-gaim");
 }
 
 QQuailMainWindow::~QQuailMainWindow()
 {
-	gaim_core_quit();
+	purple_core_quit();
 }
 
 void
@@ -147,10 +147,10 @@ QQuailMainWindow::initCore()
 {
 	char *plugin_search_paths[1];
 
-	gaim_core_set_ui_ops(qQuailGetCoreUiOps());
-	gaim_eventloop_set_ui_ops(qQuailGetEventLoopUiOps());
+	purple_core_set_ui_ops(qQuailGetCoreUiOps());
+	purple_eventloop_set_ui_ops(qQuailGetEventLoopUiOps());
 
-	if (!gaim_core_init("qpe-gaim")) {
+	if (!purple_core_init("qpe-gaim")) {
 		qFatal(tr("Initialization of the Gaim core failed.\n"
 				  "Please report this!\n"));
 	}
@@ -161,16 +161,16 @@ QQuailMainWindow::initCore()
 	plugin_search_paths[0] = "/usr/lib/gaim";
 #endif
 
-	gaim_plugins_set_search_paths(sizeof(plugin_search_paths) /
+	purple_plugins_set_search_paths(sizeof(plugin_search_paths) /
 								  sizeof(*plugin_search_paths),
 								  plugin_search_paths);
 
-	gaim_plugins_probe(NULL);
+	purple_plugins_probe(NULL);
 
-	gaim_prefs_load();
+	purple_prefs_load();
 
-	gaim_accounts_load();
-	gaim_pounces_load();
+	purple_accounts_load();
+	purple_pounces_load();
 }
 
 void
@@ -186,7 +186,7 @@ QQuailMainWindow::closeEvent(QCloseEvent *event)
 
 		QQuailConvWindow *qwin = (QQuailConvWindow *)visibleWidget;
 
-		gaim_conv_window_destroy(qwin->getGaimConvWindow());
+		purple_conv_window_destroy(qwin->getGaimConvWindow());
 
 		event->ignore();
 	}
@@ -206,7 +206,7 @@ QQuailMainWindow::removeConversationWindow(QQuailConvWindow *win)
 	GList *l;
 	GaimConvWindow *newWin = NULL;
 
-	l = g_list_find(gaim_get_windows(), win->getGaimConvWindow());
+	l = g_list_find(purple_get_windows(), win->getGaimConvWindow());
 
 	getWidgetStack()->removeWidget(win);
 

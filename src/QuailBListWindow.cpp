@@ -219,7 +219,7 @@ QQuailBListWindow::buildToolBar()
 		QIconSet(Resource::loadPixmap("gaim/16x16/offline_buddies"),
 		Resource::loadPixmap("gaim/32x32/offline_buddies")),
 		QString::null, 0, this, 0, true);
-	a->setOn(gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"));
+	a->setOn(purple_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"));
 	showOfflineButton = a;
 	a->addTo(settingsMenu);
 
@@ -291,7 +291,7 @@ QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 	addBuddyButton->setEnabled(true);
 	addGroupButton->setEnabled(true);
 
-	for (gnode = gaim_get_blist()->root; gnode != NULL; gnode = gnode->next)
+	for (gnode = purple_get_blist()->root; gnode != NULL; gnode = gnode->next)
 	{
 		if (!GAIM_BLIST_NODE_IS_GROUP(gnode))
 			continue;
@@ -308,9 +308,9 @@ QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 			if (chat->account != account)
 				continue;
 
-			if (gaim_blist_node_get_bool(cnode, "qpe-autojoin"))
+			if (purple_blist_node_get_bool(cnode, "qpe-autojoin"))
 			{
-				serv_join_chat(gaim_account_get_connection(account),
+				serv_join_chat(purple_account_get_connection(account),
 							   chat->components);
 			}
 		}
@@ -320,7 +320,7 @@ QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 void
 QQuailBListWindow::accountSignedOff(PurpleAccount *)
 {
-	if (gaim_connections_get_all() == NULL)
+	if (purple_connections_get_all() == NULL)
 	{
 		imButton->setEnabled(false);
 		chatButton->setEnabled(false);
@@ -485,15 +485,15 @@ addGroupCb(void *, const char *groupName)
 {
 	PurpleGroup *group;
 
-	group = gaim_group_new(groupName);
-	gaim_blist_add_group(group, NULL);
-	gaim_blist_save();
+	group = purple_group_new(groupName);
+	purple_blist_add_group(group, NULL);
+	purple_blist_save();
 }
 
 void
 QQuailBListWindow::showAddGroup()
 {
-	gaim_request_input(this, tr("Add Group"),
+	purple_request_input(this, tr("Add Group"),
 					   tr("Please enter the name of the group to be added."),
 					   NULL,
 					   NULL, FALSE, FALSE,
@@ -511,18 +511,18 @@ removeBuddyCb(PurpleBuddy *buddy)
 	if (buddy == NULL)
 		return;
 
-	group = gaim_find_buddys_group(buddy);
+	group = purple_find_buddys_group(buddy);
 	name = buddy->name;
 
-	serv_remove_buddy(gaim_account_get_connection(buddy->account), name,
+	serv_remove_buddy(purple_account_get_connection(buddy->account), name,
 					  group->name);
-	gaim_blist_remove_buddy(buddy);
-	gaim_blist_save();
+	purple_blist_remove_buddy(buddy);
+	purple_blist_save();
 
-	conv = gaim_find_conversation(name);
+	conv = purple_find_conversation(name);
 
 	if (conv != NULL)
-		gaim_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
+		purple_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
 }
 
 static void
@@ -541,21 +541,21 @@ removeContactCb(PurpleContact *contact)
 	{
 		PurpleBuddy *buddy = (PurpleBuddy *)bnode;
 
-		if (gaim_account_get_connection(buddy->account) != NULL)
+		if (purple_account_get_connection(buddy->account) != NULL)
 		{
-			serv_remove_buddy(gaim_account_get_connection(buddy->account),
+			serv_remove_buddy(purple_account_get_connection(buddy->account),
 							  buddy->name, group->name);
 		}
 	}
 
-	gaim_blist_remove_contact(contact);
+	purple_blist_remove_contact(contact);
 }
 
 static void
 removeChatCb(PurpleChat *chat)
 {
-	gaim_blist_remove_chat(chat);
-	gaim_blist_save();
+	purple_blist_remove_chat(chat);
+	purple_blist_save();
 }
 
 static void
@@ -576,17 +576,17 @@ removeGroupCb(PurpleGroup *group)
 					PurpleBuddy *buddy = (PurpleBuddy *)child;
 					GaimConversation *conv;
 
-					conv = gaim_find_conversation(buddy->name);
+					conv = purple_find_conversation(buddy->name);
 
-					if (gaim_account_is_connected(buddy->account))
+					if (purple_account_is_connected(buddy->account))
 					{
-						serv_remove_buddy(gaim_account_get_connection(
+						serv_remove_buddy(purple_account_get_connection(
 							buddy->account), buddy->name, group->name);
-						gaim_blist_remove_buddy(buddy);
+						purple_blist_remove_buddy(buddy);
 
 						if (conv != NULL)
 						{
-							gaim_conversation_update(conv,
+							purple_conversation_update(conv,
 								GAIM_CONV_UPDATE_REMOVE);
 						}
 					}
@@ -597,13 +597,13 @@ removeGroupCb(PurpleGroup *group)
 		{
 			PurpleChat *chat = (PurpleChat *)node;
 
-			if (gaim_account_is_connected(chat->account))
-				gaim_blist_remove_chat(chat);
+			if (purple_account_is_connected(chat->account))
+				purple_blist_remove_chat(chat);
 		}
 	}
 
-	gaim_blist_remove_group(group);
-	gaim_blist_save();
+	purple_blist_remove_group(group);
+	purple_blist_save();
 }
 
 void
@@ -652,7 +652,7 @@ QQuailBListWindow::showConfirmRemoveBuddy(PurpleBuddy *buddy)
 void
 QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
 {
-	PurpleBuddy *buddy = gaim_contact_get_priority_buddy(contact);
+	PurpleBuddy *buddy = purple_contact_get_priority_buddy(contact);
 
 	if (buddy == NULL)
 		return;
@@ -681,7 +681,7 @@ QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
 void
 QQuailBListWindow::showConfirmRemoveChat(PurpleChat *chat)
 {
-	QString name = gaim_chat_get_display_name(chat);
+	QString name = purple_chat_get_display_name(chat);
 
 	int result = QMessageBox::information(this,
 			tr("Remove Chat"),
@@ -715,7 +715,7 @@ QQuailBListWindow::showConfirmRemoveGroup(PurpleGroup *group)
 void
 QQuailBListWindow::showOfflineBuddies(bool on)
 {
-	gaim_prefs_set_bool("/gaim/qpe/blist/show_offline_buddies", on);
+	purple_prefs_set_bool("/gaim/qpe/blist/show_offline_buddies", on);
 
 	buddylist->reload(true);
 }
@@ -751,14 +751,14 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 		GaimConversation *conv;
 		GaimConvWindow *win;
 
-		conv = gaim_conversation_new(GAIM_CONV_IM, buddy->account,
+		conv = purple_conversation_new(GAIM_CONV_IM, buddy->account,
 									 buddy->name);
 
-		win = gaim_conversation_get_window(conv);
-		gaim_conv_window_raise(win);
+		win = purple_conversation_get_window(conv);
+		purple_conv_window_raise(win);
 
-		gaim_conv_window_switch_conversation(win,
-				gaim_conversation_get_index(conv));
+		purple_conv_window_switch_conversation(win,
+				purple_conversation_get_index(conv));
 	}
 	else
 	{
@@ -797,7 +797,7 @@ QQuailBListWindow::openChatSlot(PurpleChat *chat)
 
 	if (chat != NULL)
 	{
-		serv_join_chat(gaim_account_get_connection(chat->account),
+		serv_join_chat(purple_account_get_connection(chat->account),
 					   chat->components);
 	}
 	else
@@ -824,7 +824,7 @@ signedOnCb(PurpleConnection *gc, PurpleBuddyList *blist)
 {
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
-	qblist->accountSignedOn(gaim_connection_get_account(gc));
+	qblist->accountSignedOn(purple_connection_get_account(gc));
 }
 
 static void
@@ -832,7 +832,7 @@ signedOffCb(PurpleConnection *gc, PurpleBuddyList *blist)
 {
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
-	qblist->accountSignedOff(gaim_connection_get_account(gc));
+	qblist->accountSignedOff(purple_connection_get_account(gc));
 }
 
 /**************************************************************************
@@ -846,9 +846,9 @@ qQuailBlistNewList(PurpleBuddyList *blist)
 	win->setGaimBlist(blist);
 
 	/* Setup some signal handlers */
-	gaim_signal_connect(gaim_connections_get_handle(), "signed-on",
+	purple_signal_connect(purple_connections_get_handle(), "signed-on",
 						blist->ui_data, GAIM_CALLBACK(signedOnCb), blist);
-	gaim_signal_connect(gaim_connections_get_handle(), "signed-off",
+	purple_signal_connect(purple_connections_get_handle(), "signed-off",
 						blist->ui_data, GAIM_CALLBACK(signedOffCb), blist);
 }
 

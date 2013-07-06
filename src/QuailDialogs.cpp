@@ -130,7 +130,7 @@ QQuailAddBuddyDialog::buildInterface()
 void
 QQuailAddBuddyDialog::populateGroupCombo()
 {
-	PurpleBlistNode *node = gaim_get_blist()->root;
+	PurpleBlistNode *node = purple_get_blist()->root;
 
 	if (node == NULL)
 		groupCombo->insertItem(tr("Buddies"));
@@ -161,31 +161,31 @@ QQuailAddBuddyDialog::accept()
 
 	if (screenname.isEmpty())
 	{
-		gaim_notify_error(this, tr("Add Buddy"),
+		purple_notify_error(this, tr("Add Buddy"),
 						  tr("You must specify a screen name to add."), NULL);
 		return;
 	}
 
-	conv = gaim_find_conversation(screenname);
+	conv = purple_find_conversation(screenname);
 
-	if ((g = gaim_find_group(group)) == NULL)
+	if ((g = purple_find_group(group)) == NULL)
 	{
-		g = gaim_group_new(group);
-		gaim_blist_add_group(g, NULL);
+		g = purple_group_new(group);
+		purple_blist_add_group(g, NULL);
 	}
 
 	account = accountCombo->getCurrentAccount();
 
-	b = gaim_buddy_new(account, screenname,
+	b = purple_buddy_new(account, screenname,
 					   (alias.isEmpty() ? NULL : (const char *)alias));
 
-	gaim_blist_add_buddy(b, NULL, g, NULL);
-	serv_add_buddy(gaim_account_get_connection(account), screenname, g);
+	purple_blist_add_buddy(b, NULL, g, NULL);
+	serv_add_buddy(purple_account_get_connection(account), screenname, g);
 
 	if (conv != NULL)
-		gaim_conversation_update(conv, GAIM_CONV_UPDATE_ADD);
+		purple_conversation_update(conv, GAIM_CONV_UPDATE_ADD);
 
-	gaim_blist_save();
+	purple_blist_save();
 
 	QDialog::accept();
 }
@@ -281,7 +281,7 @@ QQuailAddChatDialog::buildInterface()
 void
 QQuailAddChatDialog::populateGroupCombo()
 {
-	PurpleBlistNode *node = gaim_get_blist()->root;
+	PurpleBlistNode *node = purple_get_blist()->root;
 
 	if (node == NULL)
 		groupCombo->insertItem(tr("Buddies"));
@@ -308,7 +308,7 @@ QQuailAddChatDialog::rebuildWidgetsFrame()
 	struct proto_chat_entry *pce;
 	int row;
 
-	gc = gaim_account_get_connection(accountCombo->getCurrentAccount());
+	gc = purple_account_get_connection(accountCombo->getCurrentAccount());
 
 	labels.clear();
 	widgets.clear();
@@ -379,7 +379,7 @@ QQuailAddChatDialog::accept()
 	QWidget *widget;
 	struct proto_chat_entry *pce;
 
-	gc = gaim_account_get_connection(accountCombo->getCurrentAccount());
+	gc = purple_account_get_connection(accountCombo->getCurrentAccount());
 
 	components = g_hash_table_new_full(g_str_hash, g_str_equal,
 									   g_free, g_free);
@@ -414,20 +414,20 @@ QQuailAddChatDialog::accept()
 
 	g_list_free(chatInfoList);
 
-	chat = gaim_chat_new(accountCombo->getCurrentAccount(),
+	chat = purple_chat_new(accountCombo->getCurrentAccount(),
 							   (alias.isEmpty() ? NULL : (const char *)alias),
 							   components);
 
-	if ((group = gaim_find_group(groupName)) == NULL)
+	if ((group = purple_find_group(groupName)) == NULL)
 	{
-		group = gaim_group_new(groupName);
-		gaim_blist_add_group(group, NULL);
+		group = purple_group_new(groupName);
+		purple_blist_add_group(group, NULL);
 	}
 
 	if (chat != NULL)
 	{
-		gaim_blist_add_chat(chat, group, NULL);
-		gaim_blist_save();
+		purple_blist_add_chat(chat, group, NULL);
+		purple_blist_save();
 	}
 
 	QDialog::accept();
@@ -510,16 +510,16 @@ QQuailNewImDialog::accept()
 
 	account = accountCombo->getCurrentAccount();
 
-	conv = gaim_find_conversation(screenname);
+	conv = purple_find_conversation(screenname);
 
 	if (conv == NULL)
-		conv = gaim_conversation_new(GAIM_CONV_IM, account, screenname);
+		conv = purple_conversation_new(GAIM_CONV_IM, account, screenname);
 	else
 	{
-		gaim_conv_window_raise(gaim_conversation_get_window(conv));
+		purple_conv_window_raise(purple_conversation_get_window(conv));
 
 		if (account)
-			gaim_conversation_set_account(conv, account);
+			purple_conversation_set_account(conv, account);
 	}
 
 	QDialog::accept();
@@ -589,7 +589,7 @@ QQuailJoinChatDialog::rebuildWidgetsFrame()
 	struct proto_chat_entry *pce;
 	int row;
 
-	gc = gaim_account_get_connection(accountCombo->getCurrentAccount());
+	gc = purple_account_get_connection(accountCombo->getCurrentAccount());
 
 	labels.clear();
 	widgets.clear();
@@ -649,7 +649,7 @@ QQuailJoinChatDialog::accept()
 	GList *chatInfoList, *l;
 	struct proto_chat_entry *pce;
 
-	gc = gaim_account_get_connection(accountCombo->getCurrentAccount());
+	gc = purple_account_get_connection(accountCombo->getCurrentAccount());
 
 	components = g_hash_table_new_full(g_str_hash, g_str_equal,
 									   g_free, g_free);

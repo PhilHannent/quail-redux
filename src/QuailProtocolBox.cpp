@@ -31,7 +31,7 @@ QQuailProtocolBox::QQuailProtocolBox(QWidget *parent, const char *name)
 	GList *protocols;
 	PurplePlugin *prpl;
 
-	protocols = gaim_plugins_get_protocols();
+	protocols = purple_plugins_get_protocols();
 
 	if (protocols != NULL)
 	{
@@ -55,7 +55,7 @@ QQuailProtocolBox::setCurrentProtocol(QString protocolId)
 	GList *p;
 	int i;
 
-	for (p = gaim_plugins_get_protocols(), i = 0;
+	for (p = purple_plugins_get_protocols(), i = 0;
 		 p != NULL;
 		 p = p->next, i++)
 	{
@@ -75,7 +75,7 @@ QQuailProtocolBox::buildMenu(QString protocolId)
 	GList *p;
 	int count;
 
-	for (p = gaim_plugins_get_protocols(), count = 0;
+	for (p = purple_plugins_get_protocols(), count = 0;
 		 p != NULL;
 		 p = p->next, count++)
 	{

@@ -39,7 +39,7 @@ newConvCb(char *, QQuailConvButton *button)
 static void
 delConvCb(char *, QQuailConvButton *button)
 {
-	if (gaim_get_conversations()->next == NULL)
+	if (purple_get_conversations()->next == NULL)
 		button->setEnabled(false);
 }
 
@@ -64,14 +64,14 @@ QQuailConvButton::QQuailConvButton(QWidget *parent, const char *name)
 	connect(this, SIGNAL(clicked()),
 			this, SLOT(buttonClicked()));
 
-	gaim_signal_connect(gaim_conversations_get_handle(),
+	purple_signal_connect(purple_conversations_get_handle(),
 						"conversation-created",
 						this, GAIM_CALLBACK(newConvCb), this);
-	gaim_signal_connect(gaim_conversations_get_handle(),
+	purple_signal_connect(purple_conversations_get_handle(),
 						"deleting-conversation",
 						this, GAIM_CALLBACK(delConvCb), this);
 
-	if (gaim_get_conversations() == NULL)
+	if (purple_get_conversations() == NULL)
 		setEnabled(false);
 }
 
@@ -82,10 +82,10 @@ QQuailConvButton::~QQuailConvButton()
 	if (convs != NULL)
 		delete convs;
 
-	gaim_signal_disconnect(gaim_conversations_get_handle(),
+	purple_signal_disconnect(purple_conversations_get_handle(),
 						   "conversation-created",
 						   this, GAIM_CALLBACK(newConvCb));
-	gaim_signal_disconnect(gaim_conversations_get_handle(),
+	purple_signal_disconnect(purple_conversations_get_handle(),
 						   "deleting-conversation",
 						   this, GAIM_CALLBACK(delConvCb));
 }
@@ -103,36 +103,36 @@ QQuailConvButton::generateMenu()
 	if (convs != NULL)
 		delete convs;
 
-	if (gaim_get_conversations() == NULL)
+	if (purple_get_conversations() == NULL)
 		return;
 
-	size = g_list_length(gaim_get_conversations());
+	size = g_list_length(purple_get_conversations());
 
 	convs = new GaimConversation*[size];
 
-	for (l = gaim_get_conversations(), i = 0; l != NULL; l = l->next, i++)
+	for (l = purple_get_conversations(), i = 0; l != NULL; l = l->next, i++)
 	{
 		PurpleAccount *account;
 		PurpleBuddy *buddy;
 
 		conv = (GaimConversation *)l->data;
-		account = gaim_conversation_get_account(conv);
+		account = purple_conversation_get_account(conv);
 
-		buddy = gaim_find_buddy(account, gaim_conversation_get_name(conv));
+		buddy = purple_find_buddy(account, purple_conversation_get_name(conv));
 
 		if (buddy == NULL)
 		{
 			menu->insertItem(
 				QQuailProtocolUtils::getProtocolIcon(account,
 													QGAIM_PIXMAP_MENU),
-				gaim_conversation_get_title(conv), i);
+				purple_conversation_get_title(conv), i);
 		}
 		else
 		{
 			menu->insertItem(
 				QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy,
 												   QGAIM_PIXMAP_MENU),
-				gaim_conversation_get_title(conv), i);
+				purple_conversation_get_title(conv), i);
 		}
 
 		convs[i] = conv;
@@ -147,7 +147,7 @@ QQuailConvButton::convActivated(int id)
 
 	conv = convs[id];
 
-	if (g_list_find(gaim_get_conversations(), conv) == NULL)
+	if (g_list_find(purple_get_conversations(), conv) == NULL)
 	{
 		/*
 		 * The conversation was somehow removed since this menu was
@@ -157,10 +157,10 @@ QQuailConvButton::convActivated(int id)
 
 	}
 
-	win = gaim_conversation_get_window(conv);
+	win = purple_conversation_get_window(conv);
 
-	gaim_conv_window_switch_conversation(win, gaim_conversation_get_index(conv));
-	gaim_conv_window_raise(win);
+	purple_conv_window_switch_conversation(win, purple_conversation_get_index(conv));
+	purple_conv_window_raise(win);
 }
 
 void
@@ -169,5 +169,5 @@ QQuailConvButton::buttonClicked()
 	GaimConvWindow *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
 
 	if (lastWin != NULL)
-		gaim_conv_window_raise(lastWin);
+		purple_conv_window_raise(lastWin);
 }

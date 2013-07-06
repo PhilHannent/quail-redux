@@ -172,20 +172,20 @@ QQuailConversation::write(const char *who, const char *message,
 		GaimConversation *activeConv;
 		GaimConvWindow *win;
 
-		win = gaim_conversation_get_window(conv);
-		activeConv = gaim_conv_window_get_active_conversation(win);
+		win = purple_conversation_get_window(conv);
+		activeConv = purple_conv_window_get_active_conversation(win);
 
 		if (conv != activeConv ||
 			win != qQuailGetMainWindow()->getLastActiveConvWindow())
 		{
 			const char *prefName;
 
-			if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
+			if (purple_conversation_get_type(conv) == GAIM_CONV_CHAT)
 				prefName = "/gaim/qpe/notify/incoming_chat";
 			else
 				prefName = "/gaim/qpe/notify/incoming_im";
 
-			if (gaim_prefs_get_bool(prefName))
+			if (purple_prefs_get_bool(prefName))
 			{
 				if (notifying)
 					qQuailNotifyUserStop();
@@ -208,9 +208,9 @@ QQuailConversation::updated(GaimConvUpdateType type)
 {
 	if (type == GAIM_CONV_UPDATE_ACCOUNT)
 	{
-		gaim_conversation_autoset_title(conv);
+		purple_conversation_autoset_title(conv);
 
-		if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
+		if (purple_conversation_get_type(conv) == GAIM_CONV_IM)
 			; /* Update buddy icon. */
 
 		updateTabIcon();
@@ -227,7 +227,7 @@ QQuailConversation::updated(GaimConvUpdateType type)
 	else if (type == GAIM_CONV_UPDATE_ADD ||
 			 type == GAIM_CONV_UPDATE_REMOVE)
 	{
-		GaimConvWindow *win = gaim_conversation_get_window(conv);
+		GaimConvWindow *win = purple_conversation_get_window(conv);
 		QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
 		qwin->updateAddRemoveButton();
@@ -302,23 +302,23 @@ QQuailConversation::updateTabIcon()
 	PurpleAccount *account;
 	PurpleBuddy *b;
 
-	win = gaim_conversation_get_window(conv);
+	win = purple_conversation_get_window(conv);
 	qwin = (QQuailConvWindow *)win->ui_data;
-	account = gaim_conversation_get_account(conv);
+	account = purple_conversation_get_account(conv);
 
-	b = gaim_find_buddy(account, gaim_conversation_get_name(conv));
+	b = purple_find_buddy(account, purple_conversation_get_name(conv));
 
 	if (b == NULL)
 	{
 		qwin->getTabs()->changeTab(this,
 			QQuailProtocolUtils::getProtocolIcon(account, QGAIM_PIXMAP_MENU),
-			gaim_conversation_get_title(conv));
+			purple_conversation_get_title(conv));
 	}
 	else
 	{
 		qwin->getTabs()->changeTab(this,
 				QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)b),
-				gaim_conversation_get_title(conv));
+				purple_conversation_get_title(conv));
 	}
 }
 
@@ -340,7 +340,7 @@ void
 QQuailConvChat::write(const char *who, const char *message,
 					 GaimMessageFlags flags, time_t mtime)
 {
-	gaim_conversation_write(conv, who, message, flags, mtime);
+	purple_conversation_write(conv, who, message, flags, mtime);
 }
 
 void
@@ -348,7 +348,7 @@ QQuailConvChat::addUser(const char *user)
 {
 	QListViewItem *item = new QListViewItem(userList);
 
-	if (gaim_conv_chat_is_user_ignored(chat, user))
+	if (purple_conv_chat_is_user_ignored(chat, user))
 		item->setText(0, "X"); /* XXX */
 	else
 		item->setText(0, " ");
@@ -473,7 +473,7 @@ QQuailConvChat::send()
 	if (text[text.length() - 1] == '\n')
 		text.remove(text.length() - 1, 1);
 
-	gaim_conv_chat_send(GAIM_CONV_CHAT(conv), text);
+	purple_conv_chat_send(GAIM_CONV_CHAT(conv), text);
 
 	entry->setText("");
 }
@@ -487,7 +487,7 @@ QQuailConvChat::returnPressed()
 void
 QQuailConvChat::updateTyping()
 {
-	GaimConvWindow *win = gaim_conversation_get_window(conv);
+	GaimConvWindow *win = purple_conversation_get_window(conv);
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
 	qwin->setSendEnabled(entry->text().length() > 1);
@@ -504,22 +504,22 @@ QQuailConvChat::updated(GaimConvUpdateType type)
 
 		color = black;
 
-		win = gaim_conversation_get_window(conv);
+		win = purple_conversation_get_window(conv);
 		qwin = (QQuailConvWindow *)win->ui_data;
 
-		if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_NICK)
+		if (purple_conversation_get_unseen(conv) == GAIM_UNSEEN_NICK)
 		{
 			color.setRgb(0x31, 0x4E, 0x6C);
 		}
-		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_EVENT)
+		else if (purple_conversation_get_unseen(conv) == GAIM_UNSEEN_EVENT)
 		{
 			color.setRgb(0x86, 0x82, 0x72);
 		}
-		else if (gaim_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
+		else if (purple_conversation_get_unseen(conv) == GAIM_UNSEEN_TEXT)
 		{
 			color.setRgb(0xDF, 0x42, 0x1E);
 
-			if (gaim_prefs_get_bool("/gaim/qpe/notify/incoming_chat"))
+			if (purple_prefs_get_bool("/gaim/qpe/notify/incoming_chat"))
 			{
 				qQuailNotifyUser();
 				notifying = true;
@@ -558,7 +558,7 @@ void
 QQuailConvIm::write(const char *who, const char *message,
 			   GaimMessageFlags flags, time_t mtime)
 {
-	gaim_conversation_write(conv, who, message, flags, mtime);
+	purple_conversation_write(conv, who, message, flags, mtime);
 }
 
 void
@@ -575,8 +575,8 @@ QQuailConvIm::updated(GaimConvUpdateType type)
 		GaimUnseenState unseenState;
 
 		color = black;
-		typingState = gaim_conv_im_get_typing_state(GAIM_CONV_IM(conv));
-		unseenState = gaim_conversation_get_unseen(conv);
+		typingState = purple_conv_im_get_typing_state(GAIM_CONV_IM(conv));
+		unseenState = purple_conversation_get_unseen(conv);
 
 		if (typingState == GAIM_TYPING)
 		{
@@ -604,7 +604,7 @@ QQuailConvIm::updated(GaimConvUpdateType type)
 			notifying = false;
 		}
 
-		win = gaim_conversation_get_window(conv);
+		win = purple_conversation_get_window(conv);
 		qwin = (QQuailConvWindow *)win->ui_data;
 
 		qwin->getTabs()->setTabColor(getTabId(), color);
@@ -650,7 +650,7 @@ QQuailConvIm::send()
 	if (text[text.length() - 1] == '\n')
 		text.remove(text.length() - 1, 1);
 
-	gaim_conv_im_send(GAIM_CONV_IM(conv), text);
+	purple_conv_im_send(GAIM_CONV_IM(conv), text);
 
 	entry->setText("");
 
@@ -666,41 +666,41 @@ QQuailConvIm::returnPressed()
 void
 QQuailConvIm::updateTyping()
 {
-	GaimConvWindow *win = gaim_conversation_get_window(conv);
+	GaimConvWindow *win = purple_conversation_get_window(conv);
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 	size_t length = entry->text().length();
 
 	qwin->setSendEnabled(length > 0);
 
-	if (!gaim_prefs_get_bool("/core/conversations/im/send_typing"))
+	if (!purple_prefs_get_bool("/core/conversations/im/send_typing"))
 		return;
 
-	if (gaim_conv_im_get_type_again_timeout(im))
-		gaim_conv_im_stop_type_again_timeout(im);
+	if (purple_conv_im_get_type_again_timeout(im))
+		purple_conv_im_stop_type_again_timeout(im);
 
 	if (length == 0)
 	{
 		/* We deleted all of it, so we'll keep typing off. */
-		serv_send_typing(gaim_conversation_get_gc(conv),
-						 gaim_conversation_get_name(conv),
+		serv_send_typing(purple_conversation_get_gc(conv),
+						 purple_conversation_get_name(conv),
 						 GAIM_NOT_TYPING);
 	}
 	else
 	{
-		gaim_conv_im_start_type_again_timeout(im);
+		purple_conv_im_start_type_again_timeout(im);
 
 		if (length == 1 ||
-			 (gaim_conv_im_get_type_again(im) != 0 &&
-			  time(NULL) > gaim_conv_im_get_type_again(im)))
+			 (purple_conv_im_get_type_again(im) != 0 &&
+			  time(NULL) > purple_conv_im_get_type_again(im)))
 		{
-			int timeout = serv_send_typing(gaim_conversation_get_gc(conv),
-										   gaim_conversation_get_name(conv),
+			int timeout = serv_send_typing(purple_conversation_get_gc(conv),
+										   purple_conversation_get_name(conv),
 										   GAIM_TYPING);
 
 			if (timeout)
-				gaim_conv_im_set_type_again(im, time(NULL) + timeout);
+				purple_conv_im_set_type_again(im, time(NULL) + timeout);
 			else
-				gaim_conv_im_set_type_again(im, 0);
+				purple_conv_im_set_type_again(im, 0);
 		}
 	}
 }
@@ -751,37 +751,37 @@ QQuailConvWindow::addConversation(GaimConversation *conv)
 	PurpleAccount *account;
 	PurpleBuddy *b;
 
-	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
+	if (purple_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QQuailConvIm(conv, tabs);
-	else if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
+	else if (purple_conversation_get_type(conv) == GAIM_CONV_CHAT)
 		qconv = new QQuailConvChat(conv);
 	else
 		return;
 
 	conv->ui_data = qconv;
 
-	account = gaim_conversation_get_account(conv);
+	account = purple_conversation_get_account(conv);
 
-	b = gaim_find_buddy(account, gaim_conversation_get_name(conv));
+	b = purple_find_buddy(account, purple_conversation_get_name(conv));
 
 	if (b == NULL)
 	{
 		tabs->addTab(qconv,
 			QQuailProtocolUtils::getProtocolIcon(account, QGAIM_PIXMAP_MENU),
-			gaim_conversation_get_title(conv));
+			purple_conversation_get_title(conv));
 	}
 	else
 	{
 		tabs->addTab(qconv,
 			QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)b),
-			gaim_conversation_get_title(conv));
+			purple_conversation_get_title(conv));
 	}
 
 	qconv->setTabId(tabs->getLastId());
 
-	if (gaim_conv_window_get_conversation_count(win) == 1)
+	if (purple_conv_window_get_conversation_count(win) == 1)
 	{
-		qQuailGetMainWindow()->setCaption(gaim_conversation_get_title(conv));
+		qQuailGetMainWindow()->setCaption(purple_conversation_get_title(conv));
 		tabs->setCurrentPage(0);
 	}
 }
@@ -809,13 +809,13 @@ QQuailConvWindow::getActiveIndex() const
 	int currentIndex = -1;
 	GList *l;
 
-	for (l = gaim_conv_window_get_conversations(win); l != NULL; l = l->next)
+	for (l = purple_conv_window_get_conversations(win); l != NULL; l = l->next)
 	{
 		GaimConversation *conv   = (GaimConversation *)l->data;
 		QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
 
 		if (qconv->getTabId() == currentId)
-			return gaim_conversation_get_index(conv);
+			return purple_conversation_get_index(conv);
 	}
 
 	return currentIndex;
@@ -824,10 +824,10 @@ QQuailConvWindow::getActiveIndex() const
 void
 QQuailConvWindow::updateAddRemoveButton()
 {
-	GaimConversation *conv = gaim_conv_window_get_active_conversation(win);
+	GaimConversation *conv = purple_conv_window_get_active_conversation(win);
 
-	if (gaim_find_buddy(gaim_conversation_get_account(conv),
-						gaim_conversation_get_name(conv)) == NULL)
+	if (purple_find_buddy(purple_conversation_get_account(conv),
+						purple_conversation_get_name(conv)) == NULL)
 	{
 		addRemoveButton->setText(tr("Add"));
 		addRemoveButton->setIconSet(
@@ -872,21 +872,21 @@ QQuailConvWindow::tabChanged(QWidget *widget)
 {
 	QQuailConversation *qconv = (QQuailConversation *)widget;
 	GaimConversation *conv = qconv->getGaimConversation();
-	PurpleAccount *account = gaim_conversation_get_account(conv);
+	PurpleAccount *account = purple_conversation_get_account(conv);
 	PurplePlugin *prpl;
 	PurplePluginProtocolInfo *prplInfo = NULL;
 
-	gaim_conversation_set_unseen(conv, GAIM_UNSEEN_NONE);
+	purple_conversation_set_unseen(conv, GAIM_UNSEEN_NONE);
 
 	if (conv != NULL)
-		qQuailGetMainWindow()->setCaption(gaim_conversation_get_title(conv));
+		qQuailGetMainWindow()->setCaption(purple_conversation_get_title(conv));
 
-	prpl = gaim_plugins_find_with_id(gaim_account_get_protocol_id(account));
+	prpl = purple_plugins_find_with_id(purple_account_get_protocol_id(account));
 
 	if (prpl != NULL)
 		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
 
-	if (gaim_conversation_get_type(conv) == GAIM_CONV_CHAT)
+	if (purple_conversation_get_type(conv) == GAIM_CONV_CHAT)
 	{
 		QQuailConvChat *qchat = (QQuailConvChat *)qconv;
 
@@ -905,7 +905,7 @@ QQuailConvWindow::tabChanged(QWidget *widget)
 		else
 			infoButton->setEnabled(false);
 
-		if (gaim_find_buddy(account, gaim_conversation_get_name(conv)) == NULL)
+		if (purple_find_buddy(account, purple_conversation_get_name(conv)) == NULL)
 		{
 			addRemoveButton->setText(tr("Add"));
 			addRemoveButton->setIconSet(
@@ -927,7 +927,7 @@ QQuailConvWindow::tabChanged(QWidget *widget)
 void
 QQuailConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 {
-	gaim_conv_window_destroy(win);
+	purple_conv_window_destroy(win);
 
 	QMainWindow::destroy(destroyWindow, destroySubWindows);
 
@@ -938,13 +938,13 @@ QQuailConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 void
 QQuailConvWindow::closeEvent(QCloseEvent *)
 {
-	gaim_conv_window_destroy(win);
+	purple_conv_window_destroy(win);
 }
 
 void
 QQuailConvWindow::closeConv()
 {
-	gaim_conversation_destroy(gaim_conv_window_get_active_conversation(win));
+	purple_conversation_destroy(purple_conv_window_get_active_conversation(win));
 }
 
 static void
@@ -957,35 +957,35 @@ removeBuddyCb(PurpleBuddy *buddy)
 	if (buddy == NULL)
 		return;
 
-	group = gaim_find_buddys_group(buddy);
+	group = purple_find_buddys_group(buddy);
 	name = buddy->name;
 
-	serv_remove_buddy(gaim_account_get_connection(buddy->account), name,
+	serv_remove_buddy(purple_account_get_connection(buddy->account), name,
 					  group->name);
-	gaim_blist_remove_buddy(buddy);
-	gaim_blist_save();
+	purple_blist_remove_buddy(buddy);
+	purple_blist_save();
 
-	conv = gaim_find_conversation(name);
+	conv = purple_find_conversation(name);
 
 	if (conv != NULL)
-		gaim_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
+		purple_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
 }
 
 void
 QQuailConvWindow::addRemoveBuddySlot()
 {
-	GaimConversation *conv = gaim_conv_window_get_active_conversation(win);
-	PurpleAccount *account = gaim_conversation_get_account(conv);
-	const char *name = gaim_conversation_get_name(conv);
+	GaimConversation *conv = purple_conv_window_get_active_conversation(win);
+	PurpleAccount *account = purple_conversation_get_account(conv);
+	const char *name = purple_conversation_get_name(conv);
 	PurpleBuddy *buddy;
 
-	if ((buddy = gaim_find_buddy(account, name)) == NULL)
+	if ((buddy = purple_find_buddy(account, name)) == NULL)
 	{
 		QQuailAddBuddyDialog *dialog;
 
 		dialog = new QQuailAddBuddyDialog(this, "", true);
-		dialog->setScreenName(gaim_conversation_get_name(conv));
-		dialog->setAccount(gaim_conversation_get_account(conv));
+		dialog->setScreenName(purple_conversation_get_name(conv));
+		dialog->setAccount(purple_conversation_get_account(conv));
 
 		dialog->showMaximized();
 	}
@@ -1008,11 +1008,11 @@ QQuailConvWindow::addRemoveBuddySlot()
 void
 QQuailConvWindow::userInfoSlot()
 {
-	GaimConversation *conv = gaim_conv_window_get_active_conversation(win);
-	PurpleAccount *account = gaim_conversation_get_account(conv);
+	GaimConversation *conv = purple_conv_window_get_active_conversation(win);
+	PurpleAccount *account = purple_conversation_get_account(conv);
 
-	serv_get_info(gaim_account_get_connection(account),
-				  gaim_conversation_get_name(conv));
+	serv_get_info(purple_account_get_connection(account),
+				  purple_conversation_get_name(conv));
 }
 
 void
@@ -1021,7 +1021,7 @@ QQuailConvWindow::send()
 	GaimConversation *conv;
 	QQuailConversation *qconv;
 
-	conv = gaim_conv_window_get_active_conversation(win);
+	conv = purple_conv_window_get_active_conversation(win);
 
 	qconv = (QQuailConversation *)conv->ui_data;
 
@@ -1041,9 +1041,9 @@ QQuailConvWindow::userListToggled(bool on)
 	GaimConversation *conv;
 	QQuailConvChat *qchat;
 
-	conv = gaim_conv_window_get_active_conversation(win);
+	conv = purple_conv_window_get_active_conversation(win);
 
-	if (gaim_conversation_get_type(conv) != GAIM_CONV_CHAT)
+	if (purple_conversation_get_type(conv) != GAIM_CONV_CHAT)
 		return;
 
 	qchat = (QQuailConvChat *)conv->ui_data;

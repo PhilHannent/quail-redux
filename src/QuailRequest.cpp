@@ -78,7 +78,7 @@ qQuailRequestInput(const char *title, const char *primary,
 	/* Execute the dialog. */
 	int result = dialog->exec();
 
-	gaim_debug(GAIM_DEBUG_MISC, "requestInput",
+	purple_debug(GAIM_DEBUG_MISC, "requestInput",
 			   "result = %d, '%s'\n", result,
 			   (const char *)dialog->getText());
 
@@ -172,7 +172,7 @@ qQuailRequestAction(const char *title, const char *primary,
 	}
 
 	int result = msgbox->exec();
-	gaim_debug(GAIM_DEBUG_MISC, "QQuailRequest", "result = %d\n", result);
+	purple_debug(GAIM_DEBUG_MISC, "QQuailRequest", "result = %d\n", result);
 
 	result = actionCount - result - 1;
 

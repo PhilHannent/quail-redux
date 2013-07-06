@@ -47,9 +47,9 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account, QWidget *parent
 {
 	if (account == NULL)
 	{
-		if (gaim_plugins_get_protocols() != NULL)
+		if (purple_plugins_get_protocols() != NULL)
 		{
-			plugin = (PurplePlugin *)gaim_plugins_get_protocols()->data;
+			plugin = (PurplePlugin *)purple_plugins_get_protocols()->data;
 
 			prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 
@@ -58,9 +58,9 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account, QWidget *parent
 	}
 	else
 	{
-		protocolId = gaim_account_get_protocol_id(account);
+		protocolId = purple_account_get_protocol_id(account);
 
-		if ((plugin = gaim_plugins_find_with_id(protocolId)) != NULL)
+		if ((plugin = purple_plugins_find_with_id(protocolId)) != NULL)
 			prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
 	}
 
@@ -236,21 +236,21 @@ QQuailAccountEditor::buildProtocolTab()
 		{
 			PurpleAccountOption *option = (PurpleAccountOption *)l->data;
 
-			switch (gaim_account_option_get_type(option))
+			switch (purple_account_option_get_type(option))
 			{
 				case GAIM_PREF_BOOLEAN:
 					if (account == NULL ||
-						protocolId != gaim_account_get_protocol_id(account))
+						protocolId != purple_account_get_protocol_id(account))
 					{
 						boolValue =
-							gaim_account_option_get_default_bool(option);
+							purple_account_option_get_default_bool(option);
 					}
 					else
-						boolValue = gaim_account_get_bool(account,
-								gaim_account_option_get_setting(option),
-								gaim_account_option_get_default_bool(option));
+						boolValue = purple_account_get_bool(account,
+								purple_account_option_get_setting(option),
+								purple_account_option_get_default_bool(option));
 
-					check = new QCheckBox(gaim_account_option_get_text(option),
+					check = new QCheckBox(purple_account_option_get_text(option),
 										  vbox);
 					grid->addMultiCellWidget(check, row, row, 1, 2);
 					row++;
@@ -262,18 +262,18 @@ QQuailAccountEditor::buildProtocolTab()
 
 				case GAIM_PREF_INT:
 					if (account == NULL ||
-						protocolId != gaim_account_get_protocol_id(account))
+						protocolId != purple_account_get_protocol_id(account))
 					{
-						intValue = gaim_account_option_get_default_int(option);
+						intValue = purple_account_option_get_default_int(option);
 					}
 					else
 					{
-						intValue = gaim_account_get_int(account,
-								gaim_account_option_get_setting(option),
-								gaim_account_option_get_default_int(option));
+						intValue = purple_account_get_int(account,
+								purple_account_option_get_setting(option),
+								purple_account_option_get_default_int(option));
 					}
 
-					buf  = gaim_account_option_get_text(option);
+					buf  = purple_account_option_get_text(option);
 					buf += ":";
 
 					grid->addWidget(new QLabel(buf, frame), row, 0);
@@ -288,19 +288,19 @@ QQuailAccountEditor::buildProtocolTab()
 
 				case GAIM_PREF_STRING:
 					if (account == NULL ||
-						protocolId != gaim_account_get_protocol_id(account))
+						protocolId != purple_account_get_protocol_id(account))
 					{
 						strValue =
-							gaim_account_option_get_default_string(option);
+							purple_account_option_get_default_string(option);
 					}
 					else
 					{
-						strValue = gaim_account_get_string(account,
-								gaim_account_option_get_setting(option),
-								gaim_account_option_get_default_string(option));
+						strValue = purple_account_get_string(account,
+								purple_account_option_get_setting(option),
+								purple_account_option_get_default_string(option));
 					}
 
-					buf  = gaim_account_option_get_text(option);
+					buf  = purple_account_option_get_text(option);
 					buf += ":";
 
 					grid->addWidget(new QLabel(buf, frame), row, 0);
@@ -387,9 +387,9 @@ QQuailAccountEditor::buildProxyTab()
 
 	/* Set the values for everything. */
 	if (account != NULL &&
-		(proxyInfo = gaim_account_get_proxy_info(account)) != NULL)
+		(proxyInfo = purple_account_get_proxy_info(account)) != NULL)
 	{
-		GaimProxyType type = gaim_proxy_info_get_type(proxyInfo);
+		GaimProxyType type = purple_proxy_info_get_type(proxyInfo);
 
 		proxyDropDown->setCurrentItem((int)type + 1);
 
@@ -402,11 +402,11 @@ QQuailAccountEditor::buildProxyTab()
 		}
 		else
 		{
-			proxyHost->setText(gaim_proxy_info_get_host(proxyInfo));
+			proxyHost->setText(purple_proxy_info_get_host(proxyInfo));
 			proxyPort->setText(
-				QString::number(gaim_proxy_info_get_port(proxyInfo)));
-			proxyUsername->setText(gaim_proxy_info_get_username(proxyInfo));
-			proxyPassword->setText(gaim_proxy_info_get_password(proxyInfo));
+				QString::number(purple_proxy_info_get_port(proxyInfo)));
+			proxyUsername->setText(purple_proxy_info_get_username(proxyInfo));
+			proxyPassword->setText(purple_proxy_info_get_password(proxyInfo));
 		}
 	}
 	else
@@ -449,7 +449,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 		userSplits = prplInfo->user_splits;
 
 	if (account != NULL)
-		username = gaim_account_get_username(account);
+		username = purple_account_get_username(account);
 
 	if (userSplitEntries != NULL)
 	{
@@ -462,7 +462,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 		PurpleAccountUserSplit *split = (PurpleAccountUserSplit *)l->data;
 		QString buf;
 
-		buf  = gaim_account_user_split_get_text(split);
+		buf  = purple_account_user_split_get_text(split);
 		buf += ":";
 
 		grid->addWidget(new QLabel(buf, parent), row, 0);
@@ -487,7 +487,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 		{
 			int i;
 
-			i = username.find(gaim_account_user_split_get_separator(split));
+			i = username.find(purple_account_user_split_get_separator(split));
 
 			if (i != -1)
 			{
@@ -497,7 +497,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 		}
 
 		if (value.isEmpty())
-			value = gaim_account_user_split_get_default_value(split);
+			value = purple_account_user_split_get_default_value(split);
 
 		if (!value.isEmpty())
 			entry->setText(value);
@@ -515,7 +515,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	grid->addWidget(passwordEntry, row++, 1);
 
 	if (account != NULL)
-		passwordEntry->setText(gaim_account_get_password(account));
+		passwordEntry->setText(purple_account_get_password(account));
 
 	/* Alias */
 	grid->addWidget(new QLabel(tr("Alias:"), parent), row, 0);
@@ -523,7 +523,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	grid->addWidget(aliasEntry, row++, 1);
 
 	if (account != NULL)
-		aliasEntry->setText(gaim_account_get_alias(account));
+		aliasEntry->setText(purple_account_get_alias(account));
 
 	/* Remember Password */
 	rememberPassCheck = new QCheckBox(tr("Remember Password"), parent);
@@ -532,7 +532,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	if (account != NULL)
 		rememberPassCheck->setChecked(
-				gaim_account_get_remember_password(account));
+				purple_account_get_remember_password(account));
 	else
 		rememberPassCheck->setChecked(true);
 
@@ -543,7 +543,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	if (account != NULL)
 		autoLoginCheck->setChecked(
-				gaim_account_get_auto_login(account, "qpe-gaim"));
+				purple_account_get_auto_login(account, "qpe-gaim"));
 
 	/*
 	 * We want to hide a couple of things if the protocol doesn't want
@@ -571,7 +571,7 @@ QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 
 	if (account != NULL)
 		mailNotificationCheck->setChecked(
-				gaim_account_get_check_mail(account));
+				purple_account_get_check_mail(account));
 
 	if (prplInfo != NULL && !(prplInfo->options & OPT_PROTO_MAIL_CHECK))
 		mailNotificationCheck->hide();
@@ -604,11 +604,11 @@ QQuailAccountEditor::protocolChanged(int index)
 {
 	GList *l;
 
-	l = g_list_nth(gaim_plugins_get_protocols(), index);
+	l = g_list_nth(purple_plugins_get_protocols(), index);
 
 	if (l == NULL)
 	{
-		gaim_debug(GAIM_DEBUG_FATAL, "QQuailAccountEditor",
+		purple_debug(GAIM_DEBUG_FATAL, "QQuailAccountEditor",
 				   "Protocol switched to is not in list!\n");
 		abort();
 	}
@@ -634,7 +634,7 @@ QQuailAccountEditor::protocolChanged(int index)
 void
 QQuailAccountEditor::registerClicked()
 {
-	gaim_account_register(account);
+	purple_account_register(account);
 
 	registerButton->setEnabled(false);
 }
@@ -651,48 +651,48 @@ QQuailAccountEditor::accept()
 		/* New Account */
 		username = screenNameEntry->text();
 
-		account = gaim_account_new(username, protocolId);
+		account = purple_account_new(username, protocolId);
 	}
 	else
 	{
 		/* Protocol */
-		gaim_account_set_protocol_id(account, protocolId);
+		purple_account_set_protocol_id(account, protocolId);
 	}
 
 	/* Clear the existing settings. */
-	gaim_account_clear_settings(account);
+	purple_account_clear_settings(account);
 
 	/* Alias */
 	str = aliasEntry->text();
 
 	if (!str.isEmpty())
-		gaim_account_set_alias(account, str);
+		purple_account_set_alias(account, str);
 	else
-		gaim_account_set_alias(account, NULL);
+		purple_account_set_alias(account, NULL);
 
 	/* Buddy Icon */
 	/* TODO */
 
 	/* Remember Password */
-	gaim_account_set_remember_password(account,
+	purple_account_set_remember_password(account,
 									   rememberPassCheck->isChecked());
 
 	/* Check Mail */
 	if (prplInfo->options & OPT_PROTO_MAIL_CHECK)
-		gaim_account_set_check_mail(account,
+		purple_account_set_check_mail(account,
 									mailNotificationCheck->isChecked());
 
 	/* Auto-Login */
-	gaim_account_set_auto_login(account, "qpe-gaim",
+	purple_account_set_auto_login(account, "qpe-gaim",
 								autoLoginCheck->isChecked());
 
 	/* Password */
 	str = passwordEntry->text();
 
 	if (!str.isEmpty())
-		gaim_account_set_password(account, str);
+		purple_account_set_password(account, str);
 	else
-		gaim_account_set_password(account, NULL);
+		purple_account_set_password(account, NULL);
 
 	/* Build the username string. */
 	username = screenNameEntry->text();
@@ -708,11 +708,11 @@ QQuailAccountEditor::accept()
 
 		str = entry->text();
 
-		*sep = gaim_account_user_split_get_separator(split);
+		*sep = purple_account_user_split_get_separator(split);
 
 		tmp = g_strconcat(username, sep,
 						  (!str.isEmpty() ? str.latin1() :
-						   gaim_account_user_split_get_default_value(split)),
+						   purple_account_user_split_get_default_value(split)),
 						  NULL);
 
 		username = tmp;
@@ -720,7 +720,7 @@ QQuailAccountEditor::accept()
 		g_free(tmp);
 	}
 
-	gaim_account_set_username(account, username);
+	purple_account_set_username(account, username);
 
 	/* Add the protocol settings */
 	for (l = prplInfo->protocol_options, l2 = protocolOptEntries;
@@ -736,15 +736,15 @@ QQuailAccountEditor::accept()
 		QString value;
 		int intValue;
 
-		type    = gaim_account_option_get_type(option);
-		setting = gaim_account_option_get_setting(option);
+		type    = purple_account_option_get_type(option);
+		setting = purple_account_option_get_setting(option);
 
 		switch (type)
 		{
 			case GAIM_PREF_STRING:
 				entry = (QLineEdit *)widget;
 				value = entry->text();
-				gaim_account_set_string(account, setting, value);
+				purple_account_set_string(account, setting, value);
 				break;
 
 			case GAIM_PREF_INT:
@@ -754,15 +754,15 @@ QQuailAccountEditor::accept()
 				intValue = entry->text().toInt(&ok);
 
 				if (ok)
-					gaim_account_set_int(account, setting, intValue);
+					purple_account_set_int(account, setting, intValue);
 				else
-					gaim_account_set_int(account, setting, 0);
+					purple_account_set_int(account, setting, 0);
 
 				break;
 
 			case GAIM_PREF_BOOLEAN:
 				checkbox = (QCheckBox *)widget;
-				gaim_account_set_bool(account, setting,
+				purple_account_set_bool(account, setting,
 									  checkbox->isChecked());
 				break;
 
@@ -773,30 +773,30 @@ QQuailAccountEditor::accept()
 
 	/* Set the proxy information */
 	if (newProxyType == GAIM_PROXY_NONE)
-		gaim_account_set_proxy_info(account, NULL);
+		purple_account_set_proxy_info(account, NULL);
 	else
 	{
 		GaimProxyInfo *proxyInfo;
 
-		proxyInfo = gaim_account_get_proxy_info(account);
+		proxyInfo = purple_account_get_proxy_info(account);
 
 		/* Create the proxy info if it doesn't exist. */
 		if (proxyInfo == NULL)
 		{
-			proxyInfo = gaim_proxy_info_new();
-			gaim_account_set_proxy_info(account, proxyInfo);
+			proxyInfo = purple_proxy_info_new();
+			purple_account_set_proxy_info(account, proxyInfo);
 		}
 
 		/* Type */
-		gaim_proxy_info_set_type(proxyInfo, newProxyType);
+		purple_proxy_info_set_type(proxyInfo, newProxyType);
 
 		/* Host */
 		str = proxyHost->text();
 
 		if (!str.isEmpty())
-			gaim_proxy_info_set_host(proxyInfo, str);
+			purple_proxy_info_set_host(proxyInfo, str);
 		else
-			gaim_proxy_info_set_host(proxyInfo, NULL);
+			purple_proxy_info_set_host(proxyInfo, NULL);
 
 		/* Port */
 		str = proxyPort->text();
@@ -809,32 +809,32 @@ QQuailAccountEditor::accept()
 			intVal = str.toInt(&ok);
 
 			if (ok)
-				gaim_proxy_info_set_port(proxyInfo, intVal);
+				purple_proxy_info_set_port(proxyInfo, intVal);
 			else
-				gaim_proxy_info_set_port(proxyInfo, 0);
+				purple_proxy_info_set_port(proxyInfo, 0);
 		}
 		else
-			gaim_proxy_info_set_port(proxyInfo, 0);
+			purple_proxy_info_set_port(proxyInfo, 0);
 
 		/* Username */
 		str = proxyUsername->text();
 
 		if (!str.isEmpty())
-			gaim_proxy_info_set_username(proxyInfo, str);
+			purple_proxy_info_set_username(proxyInfo, str);
 		else
-			gaim_proxy_info_set_username(proxyInfo, NULL);
+			purple_proxy_info_set_username(proxyInfo, NULL);
 
 		/* Password */
 		str = proxyPassword->text();
 
 		if (!str.isEmpty())
-			gaim_proxy_info_set_password(proxyInfo, str);
+			purple_proxy_info_set_password(proxyInfo, str);
 		else
-			gaim_proxy_info_set_password(proxyInfo, NULL);
+			purple_proxy_info_set_password(proxyInfo, NULL);
 	}
 
 	if (newAccount)
-		gaim_accounts_add(account);
+		purple_accounts_add(account);
 
 	QDialog::accept();
 

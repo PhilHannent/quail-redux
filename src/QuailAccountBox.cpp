@@ -30,14 +30,14 @@ QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
 	: QComboBox(parent, name), showAll(showAll)
 {
 	if (showAll)
-		buildMenu((PurpleAccount *)gaim_accounts_get_all()->data);
+		buildMenu((PurpleAccount *)purple_accounts_get_all()->data);
 	else
 	{
 		PurpleConnection *gc;
 
-		gc = (PurpleConnection *)gaim_connections_get_all()->data;
+		gc = (PurpleConnection *)purple_connections_get_all()->data;
 
-		buildMenu(gaim_connection_get_account(gc));
+		buildMenu(purple_connection_get_account(gc));
 	}
 }
 
@@ -56,9 +56,9 @@ QQuailAccountBox::setCurrentAccount(PurpleAccount *account)
 	int i;
 
 	if (showAll)
-		list = gaim_accounts_get_all();
+		list = purple_accounts_get_all();
 	else
-		list = gaim_connections_get_all();
+		list = purple_connections_get_all();
 
 	for (l = list, i = 0; l != NULL; l = l->next, i++)
 	{
@@ -68,7 +68,7 @@ QQuailAccountBox::setCurrentAccount(PurpleAccount *account)
 		{
 			PurpleConnection *gc = (PurpleConnection *)l->data;
 
-			tempAccount = gaim_connection_get_account(gc);
+			tempAccount = purple_connection_get_account(gc);
 		}
 
 		if (tempAccount == account)
@@ -87,7 +87,7 @@ QQuailAccountBox::getCurrentAccount() const
 
 	if (showAll)
 	{
-		l = g_list_nth(gaim_accounts_get_all(), index);
+		l = g_list_nth(purple_accounts_get_all(), index);
 
 		if (l == NULL)
 			return NULL;
@@ -98,14 +98,14 @@ QQuailAccountBox::getCurrentAccount() const
 	{
 		PurpleConnection *gc;
 
-		l = g_list_nth(gaim_connections_get_all(), index);
+		l = g_list_nth(purple_connections_get_all(), index);
 
 		if (l == NULL)
 			return NULL;
 
 		gc = (PurpleConnection *)l->data;
 
-		return gaim_connection_get_account(gc);
+		return purple_connection_get_account(gc);
 	}
 }
 
@@ -118,9 +118,9 @@ QQuailAccountBox::buildMenu(PurpleAccount *account)
 	clear();
 
 	if (showAll)
-		list = gaim_accounts_get_all();
+		list = purple_accounts_get_all();
 	else
-		list = gaim_connections_get_all();
+		list = purple_connections_get_all();
 
 	for (l = list, count = 0; l != NULL; l = l->next, count++)
 	{
@@ -133,13 +133,13 @@ QQuailAccountBox::buildMenu(PurpleAccount *account)
 		{
 			PurpleConnection *gc = (PurpleConnection *)l->data;
 
-			tempAccount = gaim_connection_get_account(gc);
+			tempAccount = purple_connection_get_account(gc);
 		}
 
 		QString str;
 		QFontMetrics fm(fontMetrics());
 
-		str = gaim_account_get_username(tempAccount);
+		str = purple_account_get_username(tempAccount);
 
 		pixmap = QQuailProtocolUtils::getProtocolIcon(tempAccount);
 
