@@ -171,7 +171,7 @@ QQuailBListItem::updateInfo()
 	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
-		GaimChat *chat = (GaimChat *)node;
+		PurpleChat *chat = (PurpleChat *)node;
 
 		setPixmap(0, QQuailProtocolUtils::getProtocolIcon(chat->account,
 														 pixmapSize));
@@ -449,7 +449,7 @@ QQuailBuddyList::getBuddyStatusIcon(GaimBlistNode *node, QQuailPixmapSize size)
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 		account = ((GaimBuddy *)node)->account;
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
-		account = ((GaimChat *)node)->account;
+		account = ((PurpleChat *)node)->account;
 	else
 		return QPixmap();
 
@@ -839,7 +839,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QPopupMenu *menu)
 }
 
 void
-QQuailBuddyList::populateChatMenu(GaimChat *chat, QPopupMenu *menu)
+QQuailBuddyList::populateChatMenu(PurpleChat *chat, QPopupMenu *menu)
 {
 	PurplePlugin *prpl = NULL;
 	PurplePluginProtocolInfo *prplInfo = NULL;
@@ -1087,7 +1087,7 @@ QQuailBuddyList::showContextMenuSlot(QListViewItem *_item,
 	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
-		populateChatMenu((GaimChat *)node, menu);
+		populateChatMenu((PurpleChat *)node, menu);
 	}
 	else if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
@@ -1267,7 +1267,7 @@ QQuailBuddyList::joinChatSlot()
 	if (!GAIM_BLIST_NODE_IS_CHAT(node))
 		return;
 
-	emit joinChat((GaimChat *)node);
+	emit joinChat((PurpleChat *)node);
 }
 
 void
@@ -1302,11 +1302,11 @@ QQuailBuddyList::removeChatSlot()
 	if (!GAIM_BLIST_NODE_IS_CHAT(node))
 		return;
 
-	emit removeChat((GaimChat *)node);
+	emit removeChat((PurpleChat *)node);
 }
 
 static void
-aliasChatCb(GaimChat *chat, const char *newAlias)
+aliasChatCb(PurpleChat *chat, const char *newAlias)
 {
 	gaim_blist_alias_chat(chat, newAlias);
 	gaim_blist_save();
@@ -1317,7 +1317,7 @@ QQuailBuddyList::aliasChatSlot()
 {
 	GaimBlistNode *node;
 	QQuailBListItem *item;
-	GaimChat *chat;
+	PurpleChat *chat;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
 		return;
@@ -1327,7 +1327,7 @@ QQuailBuddyList::aliasChatSlot()
 	if (!GAIM_BLIST_NODE_IS_CHAT(node))
 		return;
 
-	chat = (GaimChat *)node;
+	chat = (PurpleChat *)node;
 
 	gaim_request_input(NULL, tr("Alias Chat"),
 					   tr("Please enter an aliased name for this chat."),
@@ -1450,14 +1450,14 @@ QQuailBuddyList::updateBuddy(GaimBlistNode *node)
 void
 QQuailBuddyList::updateChat(GaimBlistNode *node)
 {
-	GaimChat *chat;
+	PurpleChat *chat;
 	QQuailBListItem *item;
 
 	g_return_if_fail(GAIM_BLIST_NODE_IS_CHAT(node));
 
 	updateGroup(node->parent);
 
-	chat = (GaimChat *)node;
+	chat = (PurpleChat *)node;
 	item = (QQuailBListItem *)node->ui_data;
 
 	if (gaim_account_is_connected(chat->account))

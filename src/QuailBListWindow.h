@@ -68,7 +68,7 @@ class QQuailBListWindow : public QMainWindow
 		void showRemoveBuddy();
 		void showConfirmRemoveBuddy(GaimBuddy *buddy);
 		void showConfirmRemoveContact(PurpleContact *contact);
-		void showConfirmRemoveChat(GaimChat *chat);
+		void showConfirmRemoveChat(PurpleChat *chat);
 		void showConfirmRemoveGroup(PurpleGroup *group);
 
 		void showOfflineBuddies(bool on);
@@ -78,7 +78,7 @@ class QQuailBListWindow : public QMainWindow
 		void blistToggled(bool state);
 		void openImSlot(GaimBuddy *buddy);
 		void openImSlot();
-		void openChatSlot(GaimChat *chat);
+		void openChatSlot(PurpleChat *chat);
 		void openChatSlot();
 
 	private:

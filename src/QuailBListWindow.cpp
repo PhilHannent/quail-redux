@@ -96,8 +96,8 @@ QQuailBListWindow::buildInterface()
 	connect(buddylist, SIGNAL(addChat(PurpleGroup *)),
 			this, SLOT(showAddChat(PurpleGroup *)));
 
-	connect(buddylist, SIGNAL(joinChat(GaimChat *)),
-			this, SLOT(openChatSlot(GaimChat *)));
+	connect(buddylist, SIGNAL(joinChat(PurpleChat *)),
+			this, SLOT(openChatSlot(PurpleChat *)));
 
 	connect(buddylist, SIGNAL(removeBuddy(GaimBuddy *)),
 			this, SLOT(showConfirmRemoveBuddy(GaimBuddy *)));
@@ -105,8 +105,8 @@ QQuailBListWindow::buildInterface()
 			this, SLOT(showConfirmRemoveContact(PurpleContact *)));
 	connect(buddylist, SIGNAL(removeGroup(PurpleGroup *)),
 			this, SLOT(showConfirmRemoveGroup(PurpleGroup *)));
-	connect(buddylist, SIGNAL(removeChat(GaimChat *)),
-			this, SLOT(showConfirmRemoveChat(GaimChat *)));
+	connect(buddylist, SIGNAL(removeChat(PurpleChat *)),
+			this, SLOT(showConfirmRemoveChat(PurpleChat *)));
 
 	setCentralWidget(buddylist);
 }
@@ -298,12 +298,12 @@ QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 
 		for (cnode = gnode->child; cnode != NULL; cnode = cnode->next)
 		{
-			GaimChat *chat;
+			PurpleChat *chat;
 
 			if (!GAIM_BLIST_NODE_IS_CHAT(cnode))
 				continue;
 
-			chat = (GaimChat *)cnode;
+			chat = (PurpleChat *)cnode;
 
 			if (chat->account != account)
 				continue;
@@ -552,7 +552,7 @@ removeContactCb(PurpleContact *contact)
 }
 
 static void
-removeChatCb(GaimChat *chat)
+removeChatCb(PurpleChat *chat)
 {
 	gaim_blist_remove_chat(chat);
 	gaim_blist_save();
@@ -595,7 +595,7 @@ removeGroupCb(PurpleGroup *group)
 		}
 		else if (GAIM_BLIST_NODE_IS_CHAT(node))
 		{
-			GaimChat *chat = (GaimChat *)node;
+			PurpleChat *chat = (PurpleChat *)node;
 
 			if (gaim_account_is_connected(chat->account))
 				gaim_blist_remove_chat(chat);
@@ -625,7 +625,7 @@ QQuailBListWindow::showRemoveBuddy()
 	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
-		showConfirmRemoveChat((GaimChat *)node);
+		showConfirmRemoveChat((PurpleChat *)node);
 	}
 	else if (GAIM_BLIST_NODE_IS_GROUP(node))
 	{
@@ -679,7 +679,7 @@ QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
 }
 
 void
-QQuailBListWindow::showConfirmRemoveChat(GaimChat *chat)
+QQuailBListWindow::showConfirmRemoveChat(PurpleChat *chat)
 {
 	QString name = gaim_chat_get_display_name(chat);
 
@@ -777,7 +777,7 @@ QQuailBListWindow::openImSlot()
 }
 
 void
-QQuailBListWindow::openChatSlot(GaimChat *chat)
+QQuailBListWindow::openChatSlot(PurpleChat *chat)
 {
 	QQuailBListItem *item;
 	GaimBlistNode *node = NULL;
@@ -791,7 +791,7 @@ QQuailBListWindow::openChatSlot(GaimChat *chat)
 			node = item->getBlistNode();
 
 			if (GAIM_BLIST_NODE_IS_CHAT(node))
-				chat = (GaimChat *)node;
+				chat = (PurpleChat *)node;
 		}
 	}
 

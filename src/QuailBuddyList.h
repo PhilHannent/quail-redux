@@ -89,17 +89,17 @@ class QQuailBuddyList : public QListView
 		void openIm(GaimBuddy *buddy);
 		void addBuddy(PurpleGroup *group);
 		void addChat(PurpleGroup *group);
-		void joinChat(GaimChat *chat);
+		void joinChat(PurpleChat *chat);
 		void removeBuddy(GaimBuddy *buddy);
 		void removeContact(PurpleContact *contact);
-		void removeChat(GaimChat *chat);
+		void removeChat(PurpleChat *chat);
 		void removeGroup(PurpleGroup *group);
 
 	protected:
 		void populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 							   bool asContact);
 		void populateContactMenu(PurpleContact *contact, QPopupMenu *menu);
-		void populateChatMenu(GaimChat *chat, QPopupMenu *menu);
+		void populateChatMenu(PurpleChat *chat, QPopupMenu *menu);
 		void populateGroupMenu(PurpleGroup *group, QPopupMenu *menu);
 
 	protected slots:

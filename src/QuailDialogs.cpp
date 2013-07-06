@@ -304,7 +304,7 @@ QQuailAddChatDialog::rebuildWidgetsFrame()
 {
 	GList *chatInfoList, *l;
 	QLabel *label;
-	GaimConnection *gc;
+	PurpleConnection *gc;
 	struct proto_chat_entry *pce;
 	int row;
 
@@ -369,8 +369,8 @@ QQuailAddChatDialog::accountChanged(int)
 void
 QQuailAddChatDialog::accept()
 {
-	GaimConnection *gc;
-	GaimChat *chat;
+	PurpleConnection *gc;
+	PurpleChat *chat;
 	PurpleGroup *group;
 	GList *chatInfoList, *l;
 	GHashTable *components;
@@ -585,7 +585,7 @@ QQuailJoinChatDialog::rebuildWidgetsFrame()
 {
 	GList *chatInfoList, *l;
 	QLabel *label;
-	GaimConnection *gc;
+	PurpleConnection *gc;
 	struct proto_chat_entry *pce;
 	int row;
 
@@ -643,7 +643,7 @@ QQuailJoinChatDialog::accountChanged(int)
 void
 QQuailJoinChatDialog::accept()
 {
-	GaimConnection *gc;
+	PurpleConnection *gc;
 	GHashTable *components;
 	QWidget *widget;
 	GList *chatInfoList, *l;
