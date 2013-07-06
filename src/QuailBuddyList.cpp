@@ -41,13 +41,13 @@
 /**************************************************************************
  * QQuailBListItem
  **************************************************************************/
-QQuailBListItem::QQuailBListItem(QListView *parent, GaimBlistNode *node)
+QQuailBListItem::QQuailBListItem(QListView *parent, PurpleBlistNode *node)
 	: QListViewItem(parent), node(node), expanded(false), dirty(true)
 {
 	init();
 }
 
-QQuailBListItem::QQuailBListItem(QListViewItem *parent, GaimBlistNode *node)
+QQuailBListItem::QQuailBListItem(QListViewItem *parent, PurpleBlistNode *node)
 	: QListViewItem(parent), node(node), expanded(false), dirty(true)
 {
 	init();
@@ -59,7 +59,7 @@ QQuailBListItem::~QQuailBListItem()
 		node->ui_data = NULL;
 }
 
-GaimBlistNode *
+PurpleBlistNode *
 QQuailBListItem::getBlistNode() const
 {
 	return node;
@@ -127,7 +127,7 @@ QQuailBListItem::updateInfo()
 			}
 
 			setPixmap(0,
-				QQuailBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy,
+				QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy,
 												   pixmapSize));
 			setText(1, text);
 		}
@@ -432,7 +432,7 @@ QQuailBListItem::paintGroupInfo(QPainter *p, const QColorGroup &, int column,
  * QQuailBuddyList static utility functions
  **************************************************************************/
 QPixmap
-QQuailBuddyList::getBuddyStatusIcon(GaimBlistNode *node, QQuailPixmapSize size)
+QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node, QQuailPixmapSize size)
 {
 	QImage statusImage;
 	QImage emblemImage;
@@ -595,7 +595,7 @@ QQuailBuddyList::getGaimBlist() const
 }
 
 void
-QQuailBuddyList::updateNode(GaimBlistNode *node)
+QQuailBuddyList::updateNode(PurpleBlistNode *node)
 {
 	switch (node->type)
 	{
@@ -611,7 +611,7 @@ QQuailBuddyList::updateNode(GaimBlistNode *node)
 void
 QQuailBuddyList::reload(bool remove)
 {
-	GaimBlistNode *group, *cnode, *child;
+	PurpleBlistNode *group, *cnode, *child;
 
 	if (remove)
 		clear();
@@ -654,7 +654,7 @@ PurpleBuddy *
 QQuailBuddyList::getSelectedBuddy() const
 {
 	QQuailBListItem *item;
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	PurpleBuddy *buddy = NULL;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
@@ -757,7 +757,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 
 	if (asContact)
 	{
-		GaimBlistNode *cnode = ((GaimBlistNode *)buddy)->parent;
+		PurpleBlistNode *cnode = ((PurpleBlistNode *)buddy)->parent;
 
 		/* Separator */
 		menu->insertSeparator();
@@ -774,7 +774,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 
 		if (cnode->child->next != NULL)
 		{
-			GaimBlistNode *bnode;
+			PurpleBlistNode *bnode;
 			bool showOffline =
 				gaim_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies");
 
@@ -864,7 +864,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QPopupMenu *menu)
 	/* Auto-Join */
 	a = new QAction(tr("Auto-Join"), QString::null, 0, this, 0, true);
 
-	if (gaim_blist_node_get_bool((GaimBlistNode *)chat, "qpe-autojoin"))
+	if (gaim_blist_node_get_bool((PurpleBlistNode *)chat, "qpe-autojoin"))
 		a->setOn(true);
 
 	a->addTo(menu);
@@ -951,7 +951,7 @@ void
 QQuailBuddyList::nodeExpandedSlot(QListViewItem *_item)
 {
 	QQuailBListItem *item = (QQuailBListItem *)_item;
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 
 	node = item->getBlistNode();
 
@@ -972,7 +972,7 @@ void
 QQuailBuddyList::nodeCollapsedSlot(QListViewItem *_item)
 {
 	QQuailBListItem *item = (QQuailBListItem *)_item;
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 
 	node = item->getBlistNode();
 
@@ -998,7 +998,7 @@ QQuailBuddyList::collapseContactSlot()
 void
 QQuailBuddyList::collapseContactSlot(QQuailBListItem *item)
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 
 	g_return_if_fail(item != NULL);
 
@@ -1024,7 +1024,7 @@ QQuailBuddyList::expandContactSlot()
 void
 QQuailBuddyList::expandContactSlot(QQuailBListItem *item)
 {
-	GaimBlistNode *node, *child;
+	PurpleBlistNode *node, *child;
 
 	g_return_if_fail(item != NULL);
 
@@ -1058,7 +1058,7 @@ QQuailBuddyList::showContextMenuSlot(QListViewItem *_item,
 {
 	QQuailBListItem *item = (QQuailBListItem *)_item;
 	QPopupMenu *menu = NULL;
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 
 	if (item == NULL)
 		return;
@@ -1106,7 +1106,7 @@ QQuailBuddyList::showContextMenuSlot(QListViewItem *_item,
 void
 QQuailBuddyList::addBuddySlot()
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	QQuailBListItem *item;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
@@ -1123,7 +1123,7 @@ QQuailBuddyList::addBuddySlot()
 void
 QQuailBuddyList::addChatSlot()
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	QQuailBListItem *item;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
@@ -1140,7 +1140,7 @@ QQuailBuddyList::addChatSlot()
 void
 QQuailBuddyList::removeGroupSlot()
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	QQuailBListItem *item;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
@@ -1164,7 +1164,7 @@ renameGroupCb(PurpleGroup *group, const char *newName)
 void
 QQuailBuddyList::renameGroupSlot()
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	QQuailBListItem *item;
 	PurpleGroup *group;
 
@@ -1239,7 +1239,7 @@ QQuailBuddyList::removeBuddySlot(void *data)
 void
 QQuailBuddyList::removeContactSlot()
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	QQuailBListItem *item;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
@@ -1256,7 +1256,7 @@ QQuailBuddyList::removeContactSlot()
 void
 QQuailBuddyList::joinChatSlot()
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	QQuailBListItem *item;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
@@ -1273,7 +1273,7 @@ QQuailBuddyList::joinChatSlot()
 void
 QQuailBuddyList::autoJoinChatSlot(bool on)
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	QQuailBListItem *item;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
@@ -1291,7 +1291,7 @@ QQuailBuddyList::autoJoinChatSlot(bool on)
 void
 QQuailBuddyList::removeChatSlot()
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	QQuailBListItem *item;
 
 	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
@@ -1315,7 +1315,7 @@ aliasChatCb(PurpleChat *chat, const char *newAlias)
 void
 QQuailBuddyList::aliasChatSlot()
 {
-	GaimBlistNode *node;
+	PurpleBlistNode *node;
 	QQuailBListItem *item;
 	PurpleChat *chat;
 
@@ -1338,7 +1338,7 @@ QQuailBuddyList::aliasChatSlot()
 }
 
 void
-QQuailBuddyList::addGroup(GaimBlistNode *node)
+QQuailBuddyList::addGroup(PurpleBlistNode *node)
 {
 	QQuailBListItem *item = new QQuailBListItem(this, node);
 	node->ui_data = item;
@@ -1347,7 +1347,7 @@ QQuailBuddyList::addGroup(GaimBlistNode *node)
 }
 
 void
-QQuailBuddyList::updateGroup(GaimBlistNode *node)
+QQuailBuddyList::updateGroup(PurpleBlistNode *node)
 {
 	PurpleGroup *group;
 	QQuailBListItem *item;
@@ -1378,7 +1378,7 @@ QQuailBuddyList::updateGroup(GaimBlistNode *node)
 }
 
 void
-QQuailBuddyList::updateContact(GaimBlistNode *node)
+QQuailBuddyList::updateContact(PurpleBlistNode *node)
 {
 	PurpleContact *contact;
 	PurpleBuddy *buddy;
@@ -1410,7 +1410,7 @@ QQuailBuddyList::updateContact(GaimBlistNode *node)
 }
 
 void
-QQuailBuddyList::updateBuddy(GaimBlistNode *node)
+QQuailBuddyList::updateBuddy(PurpleBlistNode *node)
 {
 	PurpleContact *contact;
 	PurpleBuddy *buddy;
@@ -1448,7 +1448,7 @@ QQuailBuddyList::updateBuddy(GaimBlistNode *node)
 }
 
 void
-QQuailBuddyList::updateChat(GaimBlistNode *node)
+QQuailBuddyList::updateChat(PurpleBlistNode *node)
 {
 	PurpleChat *chat;
 	QQuailBListItem *item;

@@ -130,7 +130,7 @@ QQuailAddBuddyDialog::buildInterface()
 void
 QQuailAddBuddyDialog::populateGroupCombo()
 {
-	GaimBlistNode *node = gaim_get_blist()->root;
+	PurpleBlistNode *node = gaim_get_blist()->root;
 
 	if (node == NULL)
 		groupCombo->insertItem(tr("Buddies"));
@@ -281,7 +281,7 @@ QQuailAddChatDialog::buildInterface()
 void
 QQuailAddChatDialog::populateGroupCombo()
 {
-	GaimBlistNode *node = gaim_get_blist()->root;
+	PurpleBlistNode *node = gaim_get_blist()->root;
 
 	if (node == NULL)
 		groupCombo->insertItem(tr("Buddies"));

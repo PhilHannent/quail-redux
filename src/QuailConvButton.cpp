@@ -130,7 +130,7 @@ QQuailConvButton::generateMenu()
 		else
 		{
 			menu->insertItem(
-				QQuailBuddyList::getBuddyStatusIcon((GaimBlistNode *)buddy,
+				QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy,
 												   QGAIM_PIXMAP_MENU),
 				gaim_conversation_get_title(conv), i);
 		}

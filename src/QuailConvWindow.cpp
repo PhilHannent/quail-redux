@@ -317,7 +317,7 @@ QQuailConversation::updateTabIcon()
 	else
 	{
 		qwin->getTabs()->changeTab(this,
-				QQuailBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
+				QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)b),
 				gaim_conversation_get_title(conv));
 	}
 }
@@ -773,7 +773,7 @@ QQuailConvWindow::addConversation(GaimConversation *conv)
 	else
 	{
 		tabs->addTab(qconv,
-			QQuailBuddyList::getBuddyStatusIcon((GaimBlistNode *)b),
+			QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)b),
 			gaim_conversation_get_title(conv));
 	}
 

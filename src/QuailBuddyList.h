@@ -31,11 +31,11 @@
 class QQuailBListItem : public QListViewItem
 {
 	public:
-		QQuailBListItem(QListView *parent, GaimBlistNode *node);
-		QQuailBListItem(QListViewItem *parent, GaimBlistNode *node);
+		QQuailBListItem(QListView *parent, PurpleBlistNode *node);
+		QQuailBListItem(QListViewItem *parent, PurpleBlistNode *node);
 		~QQuailBListItem();
 
-		GaimBlistNode *getBlistNode() const;
+		PurpleBlistNode *getBlistNode() const;
 
 		void updateInfo();
 
@@ -57,7 +57,7 @@ class QQuailBListItem : public QListViewItem
 							int width, int align, int lmarg, int itMarg);
 
 	private:
-		GaimBlistNode *node;
+		PurpleBlistNode *node;
 		bool expanded;
 		bool dirty;
 		QString topText, bottomText;
@@ -69,7 +69,7 @@ class QQuailBuddyList : public QListView
 	Q_OBJECT
 
 	public:
-		static QPixmap getBuddyStatusIcon(GaimBlistNode *node,
+		static QPixmap getBuddyStatusIcon(PurpleBlistNode *node,
 			QQuailPixmapSize size = QGAIM_PIXMAP_SMALL);
 
 	public:
@@ -79,7 +79,7 @@ class QQuailBuddyList : public QListView
 		void setGaimBlist(PurpleBuddyList *list);
 		PurpleBuddyList *getGaimBlist() const;
 
-		void updateNode(GaimBlistNode *node);
+		void updateNode(PurpleBlistNode *node);
 
 		void reload(bool remove = false);
 
@@ -139,12 +139,12 @@ class QQuailBuddyList : public QListView
 		void aliasChatSlot();
 
 	private:
-		void addGroup(GaimBlistNode *node);
+		void addGroup(PurpleBlistNode *node);
 
-		void updateGroup(GaimBlistNode *node);
-		void updateContact(GaimBlistNode *node);
-		void updateBuddy(GaimBlistNode *node);
-		void updateChat(GaimBlistNode *node);
+		void updateGroup(PurpleBlistNode *node);
+		void updateContact(PurpleBlistNode *node);
+		void updateBuddy(PurpleBlistNode *node);
+		void updateChat(PurpleBlistNode *node);
 
 	private:
 		PurpleBuddyList *gaimBlist;

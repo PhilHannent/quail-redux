@@ -50,7 +50,7 @@ class QQuailBListWindow : public QMainWindow
 		void accountSignedOn(PurpleAccount *acocunt);
 		void accountSignedOff(PurpleAccount *acocunt);
 
-		void updateNode(GaimBlistNode *node);
+		void updateNode(PurpleBlistNode *node);
 
 		void reloadList();
 
