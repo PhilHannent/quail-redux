@@ -431,7 +431,7 @@ QQuailConvChat::buildInterface()
 
 	l->addWidget(text,  0, 0);
 	l->addWidget(userList,  0, 1);
-	l->addMultiCellWidget(entry, 1, 1, 0, 1);
+    l->addWidget(entry, 1, 1, 0, 1);
 
 	connect(entry, SIGNAL(returnPressed()),
 			this, SLOT(returnPressed()));
@@ -781,7 +781,7 @@ QQuailConvWindow::addConversation(PurpleConversation *conv)
 
 	if (purple_conv_window_get_conversation_count(win) == 1)
 	{
-		qQuailGetMainWindow()->setCaption(purple_conversation_get_title(conv));
+        qQuailGetMainWindow()->setWindowTitle(purple_conversation_get_title(conv));
 		tabs->setCurrentPage(0);
 	}
 }
@@ -879,7 +879,7 @@ QQuailConvWindow::tabChanged(QWidget *widget)
 	purple_conversation_set_unseen(conv, GAIM_UNSEEN_NONE);
 
 	if (conv != NULL)
-		qQuailGetMainWindow()->setCaption(purple_conversation_get_title(conv));
+        qQuailGetMainWindow()->setWindowTitle(purple_conversation_get_title(conv));
 
 	prpl = purple_plugins_find_with_id(purple_account_get_protocol_id(account));
 

@@ -80,7 +80,7 @@ QQuailAddBuddyDialog::buildInterface()
 	QVBox *vbox;
 	QVBoxLayout *layout;
 
-	setCaption(tr("Add Buddy"));
+    setWindowTitle(tr("Add Buddy"));
 
 	layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);
@@ -227,7 +227,7 @@ QQuailAddChatDialog::buildInterface()
 	QVBox *vbox;
 	QVBoxLayout *layout;
 
-	setCaption(tr("Add Chat"));
+    setWindowTitle(tr("Add Chat"));
 
 	layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);
@@ -466,7 +466,7 @@ QQuailNewImDialog::buildInterface()
 	QVBox *vbox;
 	QVBoxLayout *layout;
 
-	setCaption(tr("New Message"));
+    setWindowTitle(tr("New Message"));
 
 	layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);
@@ -548,7 +548,7 @@ QQuailJoinChatDialog::buildInterface()
     QVBoxLayout *vbox;
 	QVBoxLayout *layout;
 
-	setCaption(tr("Join Chat"));
+    setWindowTitle(tr("Join Chat"));
 
 	layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);

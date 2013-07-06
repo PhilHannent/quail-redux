@@ -39,7 +39,7 @@
 #include <QMenuBar>
 #include <QPushButton>
 #include <QTimer>
-#include <QToolbar>
+#include <QToolBar>
 #include <QToolButton>
 
 /**************************************************************************

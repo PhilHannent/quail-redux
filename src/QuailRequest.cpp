@@ -64,7 +64,7 @@ qQuailRequestInput(const char *title, const char *primary,
 
 	dialog = new QQuailInputDialog(multiline, qQuailGetMainWindow(),
 								  "input request", true);
-	dialog->setCaption(newTitle);
+    dialog->setWindowTitle(newTitle);
 	dialog->setInfoText(message);
 
 	if (defaultValue != NULL)
@@ -127,7 +127,7 @@ qQuailRequestAction(const char *title, const char *primary,
 		newTitle = title;
 
 	msgbox = new QMessageBox();
-	msgbox->setCaption(newTitle);
+    msgbox->setWindowTitle(newTitle);
 	msgbox->setText(message);
 
 	cbs = new GCallback[actionCount];

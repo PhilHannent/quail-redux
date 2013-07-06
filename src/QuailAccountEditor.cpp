@@ -39,12 +39,15 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account, QWidget *parent,
-                                       const char *name, Qt::WindowFlags fl)
-	: QDialog(parent, name, fl), account(account), plugin(NULL),
+QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
+                                         QWidget *parent,
+                                         const char *name,
+                                         Qt::WindowFlags fl)
+    : QDialog(parent, fl), account(account), plugin(NULL),
 	  prplInfo(NULL), accountsWin(NULL), userSplitEntries(NULL),
-	  protocolOptEntries(NULL), newProxyType(GAIM_PROXY_USE_GLOBAL)
+      protocolOptEntries(NULL), newProxyType(PURPLE_PROXY_USE_GLOBAL)
 {
+    setWindowTitle(name);
 	if (account == NULL)
 	{
 		if (purple_plugins_get_protocols() != NULL)
@@ -60,7 +63,7 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account, QWidget *parent
 	{
 		protocolId = purple_account_get_protocol_id(account);
 
-		if ((plugin = purple_plugins_find_with_id(protocolId)) != NULL)
+        if ((plugin = purple_plugins_find_with_id(protocolId.toLatin1())) != NULL)
             prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
 	}
 
@@ -86,16 +89,14 @@ void
 QQuailAccountEditor::buildInterface()
 {
 	if (account == NULL)
-		setCaption(tr("Add Account"));
+        setWindowTitle(tr("Add Account"));
 	else
-		setCaption(tr("Edit Account"));
+        setWindowTitle(tr("Edit Account"));
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setAutoAdd(true);
 
 	tabs = new QQuailTabWidget(this);
-	tabs->setMargin(6);
-
+    layout->addWidget(tabs);
 	buildTabs();
 }
 
@@ -108,7 +109,7 @@ QQuailAccountEditor::buildTabs()
 
 	widget = buildAccountTab();
 	tabs->addTab(widget, tr("Account"));
-	tabList.append(widget);
+    tabList.append(widget);
 
 	if (plugin != NULL)
 	{
@@ -126,29 +127,32 @@ QQuailAccountEditor::buildTabs()
 	tabList.append(widget);
 
 	/* Ensure that the Protocol tab is only enabled if it contains stuff. */
-	tabs->setTabEnabled(protocolBox, (protocolOptEntries != NULL));
+    tabs->setTabEnabled(tabs->indexOf(protocolWidget), (protocolOptEntries != NULL));
 
-	tabs->showPage(accountBox);
+    tabs->setCurrentWidget(accountWidget);
 }
 
 QWidget *
 QQuailAccountEditor::buildAccountTab()
 {
 	/* QFrame *sep; */
-	QVBox *vbox;
-	QHBox *hbox;
+    QVBoxLayout *vbox;
+    QHBoxLayout *hbox;
 	QWidget *spacer;
 	QGridLayout *grid;
 	QWidget *frame;
 	int row = 0;
-
+    accountWidget = new QWidget(this);
 	/* Create the main vbox. */
-	accountBox = vbox = new QVBox(this);
-	vbox->setSpacing(5);
+    accountBox = vbox = new QVBoxLayout(this);
+    accountWidget->setLayout(accountBox);
+    vbox->setSpacing(5);
 
-	frame = new QFrame(vbox);
-	grid = new QGridLayout(frame, 1, 1);
+    frame = new QFrame(accountWidget);
+    grid = new QGridLayout(this);
+    grid->addWidget(frame);
 	grid->setSpacing(5);
+    vbox->addLayout(grid);
 
 	buildLoginOpts(grid, frame, row);
 
@@ -156,27 +160,28 @@ QQuailAccountEditor::buildAccountTab()
 	/* Separator */
 	sep = new QFrame(frame);
 	sep->setFrameStyle(QFrame::HLine | QFrame::Sunken);
-	grid->addMultiCellWidget(sep, row, row, 0, 2);
+    grid->addWidget(sep, row, row, 0, 2);
 	row++;
 #endif
 
 	buildUserOpts(grid, frame, row);
 
 	/* Add a spacer. */
-	spacer = new QLabel("", vbox);
-	vbox->setStretchFactor(spacer, 1);
+    spacer = new QLabel("");
+    vbox->addWidget(spacer, 1);
 
 	/* Add the hbox */
-	hbox = new QHBox(vbox);
+    hbox = new QHBoxLayout(this);
+    hbox->addLayout(vbox);
 	hbox->setSpacing(5);
 
 	/* Add a spacer to the hbox. */
-	spacer = new QLabel("", hbox);
-	hbox->setStretchFactor(spacer, 1);
+    spacer = new QLabel("");
+    hbox->addWidget(spacer, 1);
 
 	/* Add the register button. */
-	registerButton = new QPushButton(tr("Register Account"), hbox);
-
+    registerButton = new QPushButton(tr("Register Account"));
+    hbox->addWidget(registerButton);
 	connect(registerButton, SIGNAL(clicked()),
 			this, SLOT(registerClicked()));
 
@@ -197,13 +202,13 @@ QQuailAccountEditor::buildAccountTab()
 			registerButton->hide();
 	}
 
-	return vbox;
+    return accountWidget;
 }
 
 QWidget *
 QQuailAccountEditor::buildProtocolTab()
 {
-	QVBox *vbox;
+    QVBoxLayout *vbox;
 	QFrame *frame;
 	QWidget *spacer;
 	QGridLayout *grid;
@@ -216,12 +221,15 @@ QQuailAccountEditor::buildProtocolTab()
 	int intValue;
 	bool boolValue;
 
+    protocolWidget = new QWidget(this);
 	/* Create the main vbox */
-	protocolBox = vbox = new QVBox(this);
+    protocolBox = vbox = new QVBoxLayout(this);
+    protocolWidget->setLayout(protocolBox);
 	vbox->setSpacing(5);
 
-	frame = new QFrame(vbox);
-	grid = new QGridLayout(frame, 1, 1);
+    frame = new QFrame(this);
+    vbox->addWidget(frame);
+    grid = new QGridLayout(frame);
 	grid->setSpacing(5);
 
 	if (protocolOptEntries != NULL)
@@ -238,7 +246,7 @@ QQuailAccountEditor::buildProtocolTab()
 
 			switch (purple_account_option_get_type(option))
 			{
-				case GAIM_PREF_BOOLEAN:
+                case PURPLE_PREF_BOOLEAN:
 					if (account == NULL ||
 						protocolId != purple_account_get_protocol_id(account))
 					{
@@ -250,9 +258,9 @@ QQuailAccountEditor::buildProtocolTab()
 								purple_account_option_get_setting(option),
 								purple_account_option_get_default_bool(option));
 
-					check = new QCheckBox(purple_account_option_get_text(option),
-										  vbox);
-					grid->addMultiCellWidget(check, row, row, 1, 2);
+                    check = new QCheckBox(this);
+                    check->setText(purple_account_option_get_text(option));
+                    grid->addWidget(check, row, row, 1, 2);
 					row++;
 
 					protocolOptEntries =
@@ -260,7 +268,7 @@ QQuailAccountEditor::buildProtocolTab()
 
 					break;
 
-				case GAIM_PREF_INT:
+                case PURPLE_PREF_INT:
 					if (account == NULL ||
 						protocolId != purple_account_get_protocol_id(account))
 					{
@@ -286,7 +294,7 @@ QQuailAccountEditor::buildProtocolTab()
 
 					break;
 
-				case GAIM_PREF_STRING:
+                case PURPLE_PREF_STRING:
 					if (account == NULL ||
 						protocolId != purple_account_get_protocol_id(account))
 					{
@@ -320,33 +328,35 @@ QQuailAccountEditor::buildProtocolTab()
 	}
 
 	/* Add a spacer. */
-	spacer = new QLabel("", vbox);
+    spacer = new QLabel("");
+    vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
 
-	return vbox;
+    return protocolWidget;
 }
 
 QWidget *
 QQuailAccountEditor::buildProxyTab()
 {
-	QVBox *vbox;
+    QVBoxLayout *vbox;
 	QWidget *spacer;
 	QGridLayout *grid;
 	QWidget *frame;
-	GaimProxyInfo *proxyInfo;
+    PurpleProxyInfo *proxyInfo;
 	int row = 0;
-
 	/* Create the main vbox */
-	proxyBox = vbox = new QVBox(this);
-	vbox->setSpacing(5);
+    proxyBox = vbox = new QVBoxLayout(this);
+    proxyWidget->setLayout(proxyBox);
+    vbox->setSpacing(5);
 
-	frame = new QFrame(vbox);
-	grid = new QGridLayout(frame, 1, 1);
+    frame = new QFrame(this);
+    vbox->addWidget(frame);
+    grid = new QGridLayout(frame);
 	grid->setSpacing(5);
 
 	/* Proxy Type */
 	grid->addWidget(new QLabel(tr("Proxy Type:"), frame), row, 0);
-	proxyDropDown = new QComboBox(frame, "proxy type");
+    proxyDropDown = new QComboBox(frame);
 	grid->addWidget(proxyDropDown, row++, 1);
 	row++;
 
@@ -355,11 +365,11 @@ QQuailAccountEditor::buildProxyTab()
 			this, SLOT(proxyTypeChanged(int)));
 
 	/* Fill it. */
-	proxyDropDown->insertItem(tr("Use Global Proxy Settings"));
-	proxyDropDown->insertItem(tr("No Proxy"));
-	proxyDropDown->insertItem(tr("HTTP"));
-	proxyDropDown->insertItem(tr("SOCKS 4"));
-	proxyDropDown->insertItem(tr("SOCKS 5"));
+    proxyDropDown->addItem(tr("Use Global Proxy Settings"));
+    proxyDropDown->addItem(tr("No Proxy"));
+    proxyDropDown->addItem(tr("HTTP"));
+    proxyDropDown->addItem(tr("SOCKS 4"));
+    proxyDropDown->addItem(tr("SOCKS 5"));
 
 	/* Host */
 	grid->addWidget(new QLabel(tr("Host:"), frame), row, 0);
@@ -382,18 +392,19 @@ QQuailAccountEditor::buildProxyTab()
 	grid->addWidget(proxyPassword, row++, 1);
 
 	/* Add a spacer. */
-	spacer = new QLabel("", vbox);
+    spacer = new QLabel("");
+    vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
 
 	/* Set the values for everything. */
 	if (account != NULL &&
 		(proxyInfo = purple_account_get_proxy_info(account)) != NULL)
 	{
-		GaimProxyType type = purple_proxy_info_get_type(proxyInfo);
+        PurpleProxyType type = purple_proxy_info_get_type(proxyInfo);
 
-		proxyDropDown->setCurrentItem((int)type + 1);
+        proxyDropDown->setCurrentIndex((int)type + 1);
 
-		if (type == GAIM_PROXY_NONE || type == GAIM_PROXY_USE_GLOBAL)
+        if (type == PURPLE_PROXY_NONE || type == PURPLE_PROXY_USE_GLOBAL)
 		{
 			proxyHost->setReadOnly(true);
 			proxyPort->setReadOnly(true);
@@ -417,7 +428,7 @@ QQuailAccountEditor::buildProxyTab()
 		proxyPassword->setReadOnly(true);
 	}
 
-	return vbox;
+    return proxyWidget;
 }
 
 void
@@ -487,7 +498,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 		{
 			int i;
 
-			i = username.find(purple_account_user_split_get_separator(split));
+            i = username.indexOf(purple_account_user_split_get_separator(split));
 
 			if (i != -1)
 			{
@@ -527,7 +538,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	/* Remember Password */
 	rememberPassCheck = new QCheckBox(tr("Remember Password"), parent);
-	grid->addMultiCellWidget(rememberPassCheck, row, row, 1, 2);
+    grid->addWidget(rememberPassCheck, row, row, 1, 2);
 	row++;
 
 	if (account != NULL)
@@ -538,12 +549,12 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	/* Auto-Login */
 	autoLoginCheck = new QCheckBox(tr("Auto-Login"), parent);
-	grid->addMultiCellWidget(autoLoginCheck, row, row, 1, 2);
+    grid->addWidget(autoLoginCheck, row, row, 1, 2);
 	row++;
 
 	if (account != NULL)
 		autoLoginCheck->setChecked(
-				purple_account_get_auto_login(account, "qpe-gaim"));
+                purple_account_get_enabled(account, UI_ID));
 
 	/*
 	 * We want to hide a couple of things if the protocol doesn't want
@@ -564,7 +575,7 @@ QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 {
 	/* New mail notifications */
 	mailNotificationCheck = new QCheckBox(tr("New Mail Notifications"), parent);
-	grid->addMultiCellWidget(mailNotificationCheck, row, row, 1, 2);
+    grid->addWidget(mailNotificationCheck, row, row, 1, 2);
 	row++;
 
 	/* TODO: Buddy Icon support */
@@ -580,10 +591,10 @@ QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 void
 QQuailAccountEditor::proxyTypeChanged(int index)
 {
-	newProxyType = (GaimProxyType)(index - 1);
+    newProxyType = (PurpleProxyType)(index - 1);
 
-	if (newProxyType == GAIM_PROXY_USE_GLOBAL ||
-		newProxyType == GAIM_PROXY_NONE)
+    if (newProxyType == PURPLE_PROXY_USE_GLOBAL ||
+        newProxyType == PURPLE_PROXY_NONE)
 	{
 		proxyHost->setReadOnly(true);
 		proxyPort->setReadOnly(true);
@@ -608,7 +619,7 @@ QQuailAccountEditor::protocolChanged(int index)
 
 	if (l == NULL)
 	{
-		purple_debug(GAIM_DEBUG_FATAL, "QQuailAccountEditor",
+        purple_debug(PURPLE_DEBUG_FATAL, "QQuailAccountEditor",
 				   "Protocol switched to is not in list!\n");
 		abort();
 	}
@@ -618,9 +629,9 @@ QQuailAccountEditor::protocolChanged(int index)
     prplInfo   = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
 	protocolId = plugin->info->id;
 
-	tabs->removePage(accountBox);
-	tabs->removePage(protocolBox);
-	tabs->removePage(proxyBox);
+    tabs->removeTab(tabs->indexOf(accountWidget));
+    tabs->removeTab(tabs->indexOf(protocolWidget));
+    tabs->removeTab(tabs->indexOf(proxyWidget));
 
 #if 0
 	delete accountBox;
@@ -651,12 +662,13 @@ QQuailAccountEditor::accept()
 		/* New Account */
 		username = screenNameEntry->text();
 
-		account = purple_account_new(username, protocolId);
+        account = purple_account_new(username.toStdString().c_str(),
+                                     protocolId.toStdString().c_str());
 	}
 	else
 	{
 		/* Protocol */
-		purple_account_set_protocol_id(account, protocolId);
+        purple_account_set_protocol_id(account, protocolId.toStdString().c_str());
 	}
 
 	/* Clear the existing settings. */
@@ -666,7 +678,7 @@ QQuailAccountEditor::accept()
 	str = aliasEntry->text();
 
 	if (!str.isEmpty())
-		purple_account_set_alias(account, str);
+        purple_account_set_alias(account, str.toStdString().c_str());
 	else
 		purple_account_set_alias(account, NULL);
 
@@ -683,14 +695,14 @@ QQuailAccountEditor::accept()
 									mailNotificationCheck->isChecked());
 
 	/* Auto-Login */
-	purple_account_set_auto_login(account, "qpe-gaim",
+    purple_account_set_enabled(account, UI_ID,
 								autoLoginCheck->isChecked());
 
 	/* Password */
 	str = passwordEntry->text();
 
 	if (!str.isEmpty())
-		purple_account_set_password(account, str);
+        purple_account_set_password(account, str.toStdString().c_str());
 	else
 		purple_account_set_password(account, NULL);
 
@@ -710,8 +722,8 @@ QQuailAccountEditor::accept()
 
 		*sep = purple_account_user_split_get_separator(split);
 
-		tmp = g_strconcat(username, sep,
-						  (!str.isEmpty() ? str.latin1() :
+        tmp = g_strconcat(username.toStdString().c_str(), sep,
+                          (!str.isEmpty() ? str.toStdString().c_str() :
 						   purple_account_user_split_get_default_value(split)),
 						  NULL);
 
@@ -720,14 +732,14 @@ QQuailAccountEditor::accept()
 		g_free(tmp);
 	}
 
-	purple_account_set_username(account, username);
+    purple_account_set_username(account, username.toStdString().c_str());
 
 	/* Add the protocol settings */
 	for (l = prplInfo->protocol_options, l2 = protocolOptEntries;
 		 l != NULL && l2 != NULL;
 		 l = l->next, l2 = l2->next)
 	{
-		GaimPrefType type;
+        PurplePrefType type;
 		PurpleAccountOption *option = (PurpleAccountOption *)l->data;
 		QWidget *widget = (QWidget *)l2->data;
 		QLineEdit *entry;
@@ -741,13 +753,15 @@ QQuailAccountEditor::accept()
 
 		switch (type)
 		{
-			case GAIM_PREF_STRING:
+            case PURPLE_PREF_STRING:
 				entry = (QLineEdit *)widget;
 				value = entry->text();
-				purple_account_set_string(account, setting, value);
+                purple_account_set_string(account,
+                                          setting,
+                                          value.toStdString().c_str());
 				break;
 
-			case GAIM_PREF_INT:
+            case PURPLE_PREF_INT:
 				bool ok;
 
 				entry = (QLineEdit *)widget;
@@ -760,7 +774,7 @@ QQuailAccountEditor::accept()
 
 				break;
 
-			case GAIM_PREF_BOOLEAN:
+            case PURPLE_PREF_BOOLEAN:
 				checkbox = (QCheckBox *)widget;
 				purple_account_set_bool(account, setting,
 									  checkbox->isChecked());
@@ -772,11 +786,11 @@ QQuailAccountEditor::accept()
 	}
 
 	/* Set the proxy information */
-	if (newProxyType == GAIM_PROXY_NONE)
+    if (newProxyType == PURPLE_PROXY_NONE)
 		purple_account_set_proxy_info(account, NULL);
 	else
 	{
-		GaimProxyInfo *proxyInfo;
+        PurpleProxyInfo *proxyInfo;
 
 		proxyInfo = purple_account_get_proxy_info(account);
 
@@ -794,7 +808,7 @@ QQuailAccountEditor::accept()
 		str = proxyHost->text();
 
 		if (!str.isEmpty())
-			purple_proxy_info_set_host(proxyInfo, str);
+            purple_proxy_info_set_host(proxyInfo, str.toStdString().c_str());
 		else
 			purple_proxy_info_set_host(proxyInfo, NULL);
 
@@ -820,7 +834,7 @@ QQuailAccountEditor::accept()
 		str = proxyUsername->text();
 
 		if (!str.isEmpty())
-			purple_proxy_info_set_username(proxyInfo, str);
+            purple_proxy_info_set_username(proxyInfo, str.toStdString().c_str());
 		else
 			purple_proxy_info_set_username(proxyInfo, NULL);
 
@@ -828,7 +842,7 @@ QQuailAccountEditor::accept()
 		str = proxyPassword->text();
 
 		if (!str.isEmpty())
-			purple_proxy_info_set_password(proxyInfo, str);
+            purple_proxy_info_set_password(proxyInfo, str.toStdString().c_str());
 		else
 			purple_proxy_info_set_password(proxyInfo, NULL);
 	}

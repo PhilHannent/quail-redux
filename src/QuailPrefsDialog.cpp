@@ -301,7 +301,7 @@ QQuailPrefsDialog::buildInterface()
 {
 	QVBoxLayout *layout;
 
-	setCaption(tr("Preferences"));
+    setWindowTitle(tr("Preferences"));
 
 	layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);

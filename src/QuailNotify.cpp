@@ -176,7 +176,7 @@ qQuailNotifyFormatted(const char *title, const char *primary,
 
 
 	dialog = new QDialog(NULL, "notify-formatted");
-	dialog->setCaption(newTitle);
+    dialog->setWindowTitle(newTitle);
 
 	layout = new QVBoxLayout(dialog, 8);
 

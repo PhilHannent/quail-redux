@@ -5,7 +5,7 @@ CONFIG   = qt warn_on debug
 
 DEFINES += APP_NAME=\\\"Quail\\\"
 DEFINES += QUAIL_PREFS_ROOT=\\\"/quail\\\"
-
+DEFINES += UI_ID=\\\"quail\\\"
 # Check that we have the repository folder
 exists(.hg):DEFINES += BUILDREVISION=\\\"$$system( hg parent --template \"{node}\")\\\"
 else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
@@ -178,12 +178,19 @@ DISTFILES = \
 	mkipk.sh \
 	mktarball.sh
 
-unix {
+linux-g++* {
     message("Using unix")
 INCLUDEPATH += \
         ../pidgin-main/libpurple \
 	/usr/include/glib-2.0 \
 	/usr/lib/glib-2.0/include
+
+	INCLUDEPATH += /usr/include/glib-2.0 \
+		/usr/lib/glib-2.0/include \
+		/usr/include/libpurple \
+		../pidgin-main/libpurple \
+		/usr/lib/x86_64-linux-gnu/glib-2.0/include
+
 }
 win32-g++ {
     message("Using win32")

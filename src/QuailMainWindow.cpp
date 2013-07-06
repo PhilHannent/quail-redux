@@ -275,7 +275,7 @@ QQuailMainWindow::showBlistWindow()
 		widgetStack->addWidget(blistWin, 0);
 	}
 
-	setCaption(tr("Gaim - Buddy List"));
+    setWindowTitle(tr("Gaim - Buddy List"));
 	widgetStack->raiseWidget(blistWin);
 }
 
@@ -288,7 +288,7 @@ QQuailMainWindow::showAccountsWindow()
 		widgetStack->addWidget(accountsWin, 1);
 	}
 
-	setCaption(tr("Gaim - Accounts"));
+    setWindowTitle(tr("Gaim - Accounts"));
 	widgetStack->raiseWidget(accountsWin);
 }
 

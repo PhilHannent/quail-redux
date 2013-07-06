@@ -49,8 +49,9 @@ class QQuailAccountEditor : public QDialog
 
 	public:
 		QQuailAccountEditor(PurpleAccount *account = NULL,
-						   QWidget *parent = NULL, const char *name = NULL,
-                           Qt::WindowFlags fl = 0);
+                            QWidget *parent = NULL,
+                            const char *name = NULL,
+                            Qt::WindowFlags fl = 0);
 		~QQuailAccountEditor();
 
 		void setAccountsWindow(QQuailAccountsWindow *accountsWin);
@@ -90,9 +91,10 @@ class QQuailAccountEditor : public QDialog
 
 		QQuailTabWidget *tabs;
 
-		QList<QWidget> tabList;
+        QList<QWidget*> tabList;
 
 		/* Account tab */
+        QWidget *accountWidget;
         QVBoxLayout *accountBox;
 		QQuailProtocolBox *protocolList;
 		QLineEdit *screenNameEntry;
@@ -105,9 +107,11 @@ class QQuailAccountEditor : public QDialog
 		QPushButton *registerButton;
 
 		/* Protocol tab */
+        QWidget *protocolWidget;
         QVBoxLayout *protocolBox;
 
 		/* Proxy tab */
+        QWidget *proxyWidget;
         QVBoxLayout *proxyBox;
 		QComboBox *proxyDropDown;
 		QLineEdit *proxyHost;
