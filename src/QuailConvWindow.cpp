@@ -204,13 +204,13 @@ QQuailConversation::setTitle(const char *title)
 }
 
 void
-QQuailConversation::updated(GaimConvUpdateType type)
+QQuailConversation::updated(PurpleConvUpdateType type)
 {
 	if (type == GAIM_CONV_UPDATE_ACCOUNT)
 	{
 		purple_conversation_autoset_title(conv);
 
-		if (purple_conversation_get_type(conv) == GAIM_CONV_IM)
+        if (purple_conversation_get_type(conv) == PURPLE_CONV_IM)
 			; /* Update buddy icon. */
 
 		updateTabIcon();
@@ -494,7 +494,7 @@ QQuailConvChat::updateTyping()
 }
 
 void
-QQuailConvChat::updated(GaimConvUpdateType type)
+QQuailConvChat::updated(PurpleConvUpdateType type)
 {
 	if (type == GAIM_CONV_UPDATE_UNSEEN)
 	{
@@ -545,7 +545,7 @@ QQuailConvChat::updated(GaimConvUpdateType type)
  **************************************************************************/
 QQuailConvIm::QQuailConvIm(PurpleConversation *conv, QWidget *parent,
                  const char *name, Qt::WindowFlags fl)
-	: QQuailConversation(conv, parent, name, fl), im(GAIM_CONV_IM(conv))
+    : QQuailConversation(conv, parent, name, fl), im(PURPLE_CONV_IM(conv))
 {
 	buildInterface();
 }
@@ -562,7 +562,7 @@ QQuailConvIm::write(const char *who, const char *message,
 }
 
 void
-QQuailConvIm::updated(GaimConvUpdateType type)
+QQuailConvIm::updated(PurpleConvUpdateType type)
 {
 	if (type == GAIM_CONV_UPDATE_TYPING ||
 		type == GAIM_CONV_UPDATE_UNSEEN)
@@ -575,7 +575,7 @@ QQuailConvIm::updated(GaimConvUpdateType type)
 		GaimUnseenState unseenState;
 
 		color = black;
-		typingState = purple_conv_im_get_typing_state(GAIM_CONV_IM(conv));
+        typingState = purple_conv_im_get_typing_state(PURPLE_CONV_IM(conv));
 		unseenState = purple_conversation_get_unseen(conv);
 
 		if (typingState == GAIM_TYPING)
@@ -650,7 +650,7 @@ QQuailConvIm::send()
 	if (text[text.length() - 1] == '\n')
 		text.remove(text.length() - 1, 1);
 
-	purple_conv_im_send(GAIM_CONV_IM(conv), text);
+    purple_conv_im_send(PURPLE_CONV_IM(conv), text);
 
 	entry->setText("");
 
@@ -708,7 +708,7 @@ QQuailConvIm::updateTyping()
 /**************************************************************************
  * QQuailConvWindow
  **************************************************************************/
-QQuailConvWindow::QQuailConvWindow(GaimConvWindow *win, QMainWindow *parent)
+QQuailConvWindow::QQuailConvWindow(QQuailConvWindow *win, QMainWindow *parent)
 	: QMainWindow(), parentMainWindow(parent), win(win), convWinId(0)
 {
 	connect(parent, SIGNAL(pixmapSizeChanged(bool)),
@@ -724,13 +724,13 @@ QQuailConvWindow::~QQuailConvWindow()
 }
 
 void
-QQuailConvWindow::setGaimConvWindow(GaimConvWindow *win)
+QQuailConvWindow::setConvWindow(QQuailConvWindow *win)
 {
 	this->win = win;
 }
 
-GaimConvWindow *
-QQuailConvWindow::getGaimConvWindow() const
+QQuailConvWindow *
+QQuailConvWindow::getConvWindow() const
 {
 	return win;
 }
@@ -751,7 +751,7 @@ QQuailConvWindow::addConversation(PurpleConversation *conv)
 	PurpleAccount *account;
 	PurpleBuddy *b;
 
-	if (purple_conversation_get_type(conv) == GAIM_CONV_IM)
+    if (purple_conversation_get_type(conv) == PURPLE_CONV_IM)
 		qconv = new QQuailConvIm(conv, tabs);
 	else if (purple_conversation_get_type(conv) == GAIM_CONV_CHAT)
 		qconv = new QQuailConvChat(conv);
@@ -884,7 +884,7 @@ QQuailConvWindow::tabChanged(QWidget *widget)
 	prpl = purple_plugins_find_with_id(purple_account_get_protocol_id(account));
 
 	if (prpl != NULL)
-		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+        prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	if (purple_conversation_get_type(conv) == GAIM_CONV_CHAT)
 	{
@@ -1302,7 +1302,7 @@ qQuailConvChatRemoveUsers(PurpleConversation *conv, GList *users)
 }
 
 static void
-qQuailConvUpdated(PurpleConversation *conv, GaimConvUpdateType type)
+qQuailConvUpdated(PurpleConversation *conv, PurpleConvUpdateType type)
 {
 	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
 

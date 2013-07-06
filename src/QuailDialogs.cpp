@@ -138,7 +138,7 @@ QQuailAddBuddyDialog::populateGroupCombo()
 	{
 		for (; node != NULL; node = node->next)
 		{
-			if (GAIM_BLIST_NODE_IS_GROUP(node))
+            if (PURPLE_BLIST_NODE_IS_GROUP(node))
 			{
 				PurpleGroup *g = (PurpleGroup *)node;
 
@@ -289,7 +289,7 @@ QQuailAddChatDialog::populateGroupCombo()
 	{
 		for (; node != NULL; node = node->next)
 		{
-			if (GAIM_BLIST_NODE_IS_GROUP(node))
+            if (PURPLE_BLIST_NODE_IS_GROUP(node))
 			{
 				PurpleGroup *g = (PurpleGroup *)node;
 
@@ -313,7 +313,7 @@ QQuailAddChatDialog::rebuildWidgetsFrame()
 	labels.clear();
 	widgets.clear();
 
-	chatInfoList = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
+    chatInfoList = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
 
 	for (l = chatInfoList, row = 1; l != NULL; l = l->next, row++)
 	{
@@ -384,7 +384,7 @@ QQuailAddChatDialog::accept()
 	components = g_hash_table_new_full(g_str_hash, g_str_equal,
 									   g_free, g_free);
 
-	chatInfoList = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
+    chatInfoList = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
 
 	for (widget = widgets.first(), l = chatInfoList;
 		 widget != NULL && l != NULL;
@@ -513,7 +513,7 @@ QQuailNewImDialog::accept()
 	conv = purple_find_conversation(screenname);
 
 	if (conv == NULL)
-		conv = purple_conversation_new(GAIM_CONV_IM, account, screenname);
+        conv = purple_conversation_new(PURPLE_CONV_IM, account, screenname);
 	else
 	{
 		purple_conv_window_raise(purple_conversation_get_window(conv));
@@ -545,7 +545,7 @@ void
 QQuailJoinChatDialog::buildInterface()
 {
 	QLabel *spacer;
-	QVBox *vbox;
+    QVBoxLayout *vbox;
 	QVBoxLayout *layout;
 
 	setCaption(tr("Join Chat"));
@@ -553,7 +553,7 @@ QQuailJoinChatDialog::buildInterface()
 	layout = new QVBoxLayout(this);
 	layout->setAutoAdd(true);
 
-	vbox = new QVBox(this);
+    vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
 	vbox->setMargin(6);
 
@@ -594,7 +594,7 @@ QQuailJoinChatDialog::rebuildWidgetsFrame()
 	labels.clear();
 	widgets.clear();
 
-	chatInfoList = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
+    chatInfoList = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
 
 	for (l = chatInfoList, row = 1; l != NULL; l = l->next, row++)
 	{
@@ -654,7 +654,7 @@ QQuailJoinChatDialog::accept()
 	components = g_hash_table_new_full(g_str_hash, g_str_equal,
 									   g_free, g_free);
 
-	chatInfoList = GAIM_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
+    chatInfoList = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
 
 	for (widget = widgets.first(), l = chatInfoList;
 		 widget != NULL && l != NULL;

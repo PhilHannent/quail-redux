@@ -162,7 +162,7 @@ QQuailBListItem::updateInfo()
 		setText(0, purple_get_buddy_alias(buddy));
 		setText(1, text);
 	}
-	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+    else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 	{
 		PurpleChat *chat = (PurpleChat *)node;
 
@@ -198,9 +198,9 @@ QQuailBListItem::paintCell(QPainter *p, const QPalette &cg, int column,
 		lmarg += icon->width() + itMarg;
 	}
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node) || GAIM_BLIST_NODE_IS_CONTACT(node))
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node) || PURPLE_BLIST_NODE_IS_CONTACT(node))
 		paintBuddyInfo(p, cg, column, width, align, lmarg, itMarg);
-	else if (GAIM_BLIST_NODE_IS_GROUP(node))
+    else if (PURPLE_BLIST_NODE_IS_GROUP(node))
 		paintGroupInfo(p, cg, column, width, align, lmarg, itMarg);
 	else
 		QListViewItem::paintCell(p, cg, column, width, align);
@@ -212,7 +212,7 @@ void
 QQuailBListItem::paintBranches(QPainter *p, const QPalette &cg,
                               int width, int x, int height)
 {
-	if (GAIM_BLIST_NODE_IS_CHAT(node) || GAIM_BLIST_NODE_IS_BUDDY(node))
+    if (PURPLE_BLIST_NODE_IS_CHAT(node) || PURPLE_BLIST_NODE_IS_BUDDY(node))
 	{
 		p->fillRect(0, 0, width, height, QBrush(cg.base()));
 	}
@@ -321,7 +321,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 				if (contact != NULL && !isExpanded() && contact->alias != NULL)
 					topText = contact->alias;
 				else
-					topText = purple_get_buddy_alias(buddy);
+                    topText = purple_contact_get_alias(contact);
 
 				bottomText = statusText + idleTime + warning;
 
@@ -439,9 +439,9 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node, QQuailPixmapSize size
 	if (node == NULL)
 		return QPixmap();
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 		account = ((PurpleBuddy *)node)->account;
-	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+    else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 		account = ((PurpleChat *)node)->account;
 	else
 		return QPixmap();
@@ -451,17 +451,17 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node, QQuailPixmapSize size
 	if (prpl == NULL)
 		return QPixmap();
 
-	prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+    prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	if (prplInfo->list_icon != NULL)
 	{
-		if (GAIM_BLIST_NODE_IS_BUDDY(node))
+        if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 			protoName = prplInfo->list_icon(account, (PurpleBuddy *)node);
-		else if (GAIM_BLIST_NODE_IS_CHAT(node))
+        else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 			protoName = prplInfo->list_icon(account, NULL);
 	}
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
 		((PurpleBuddy *)node)->present != GAIM_BUDDY_SIGNING_OFF &&
 		prplInfo->list_emblems != NULL)
 	{
@@ -477,12 +477,12 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node, QQuailPixmapSize size
 
 	sw = nw = ne = NULL; /* So that only the se icon will composite. */
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
 		((PurpleBuddy *)node)->present == GAIM_BUDDY_SIGNING_ON)
 	{
 		statusImage = Resource::loadImage("gaim/status/login");
 	}
-	else if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+    else if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
 			 ((PurpleBuddy *)node)->present == GAIM_BUDDY_SIGNING_OFF)
 	{
 		statusImage = Resource::loadImage("gaim/status/logout");
@@ -520,12 +520,12 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node, QQuailPixmapSize size
 	}
 
 	/* Grey idle buddies. */
-	if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
 		((PurpleBuddy *)node)->present == GAIM_BUDDY_OFFLINE)
 	{
 		QQuailImageUtils::greyImage(statusImage);
 	}
-	else if (GAIM_BLIST_NODE_IS_BUDDY(node) &&
+    else if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
 			 ((PurpleBuddy *)node)->idle)
 	{
 		QQuailImageUtils::saturate(statusImage, 0.25);
@@ -656,9 +656,9 @@ QQuailBuddyList::getSelectedBuddy() const
 	if ((node = item->getBlistNode()) == NULL)
 		return NULL;
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 		buddy = (PurpleBuddy *)node;
-	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+    else if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 		buddy = purple_contact_get_priority_buddy((PurpleContact *)node);
 
 	return buddy;
@@ -676,7 +676,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 		purple_account_get_protocol_id(buddy->account));
 
 	if (prpl != NULL)
-		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+        prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	/* Get User Info */
 	if (prplInfo != NULL && prplInfo->get_info != NULL)
@@ -808,7 +808,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QPopupMenu *menu)
 			purple_contact_get_priority_buddy(contact)->account));
 
 	if (prpl != NULL)
-		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+        prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	/* Collapse */
 	a = new QAction(tr("Collapse"),
@@ -842,7 +842,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QPopupMenu *menu)
 		purple_account_get_protocol_id(chat->account));
 
 	if (prpl != NULL)
-		prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+        prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	/* Join Chat */
 	a = new QAction(tr("Join Chat"),
@@ -948,14 +948,14 @@ QQuailBuddyList::nodeExpandedSlot(QListViewItem *_item)
 
 	node = item->getBlistNode();
 
-	if (GAIM_BLIST_NODE_IS_GROUP(node))
+    if (PURPLE_BLIST_NODE_IS_GROUP(node))
 	{
 		purple_blist_node_set_bool(node, "collapsed", FALSE);
 
 		if (!saveTimer->isActive())
 			saveTimer->start(2000, true);
 	}
-	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+    else if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 	{
 
 	}
@@ -969,14 +969,14 @@ QQuailBuddyList::nodeCollapsedSlot(QListViewItem *_item)
 
 	node = item->getBlistNode();
 
-	if (GAIM_BLIST_NODE_IS_GROUP(node))
+    if (PURPLE_BLIST_NODE_IS_GROUP(node))
 	{
 		purple_blist_node_set_bool(node, "collapsed", TRUE);
 
 		if (!saveTimer->isActive())
 			saveTimer->start(2000, true);
 	}
-	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+    else if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 	{
 		collapseContactSlot(item);
 	}
@@ -997,7 +997,7 @@ QQuailBuddyList::collapseContactSlot(QQuailBListItem *item)
 
 	node = item->getBlistNode();
 
-	g_return_if_fail(GAIM_BLIST_NODE_IS_CONTACT(node));
+    g_return_if_fail(PURPLE_BLIST_NODE_IS_CONTACT(node));
 
 	item->setExpanded(false);
 	item->setExpandable(false);
@@ -1023,7 +1023,7 @@ QQuailBuddyList::expandContactSlot(QQuailBListItem *item)
 
 	node = item->getBlistNode();
 
-	g_return_if_fail(GAIM_BLIST_NODE_IS_CONTACT(node));
+    g_return_if_fail(PURPLE_BLIST_NODE_IS_CONTACT(node));
 
 	item->setExpanded(true);
 	item->setExpandable(true);
@@ -1060,11 +1060,11 @@ QQuailBuddyList::showContextMenuSlot(QListViewItem *_item,
 
 	menu = new QPopupMenu(this);
 
-	if (GAIM_BLIST_NODE_IS_BUDDY(node))
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 	{
 		populateBuddyMenu((PurpleBuddy *)node, menu, false);
 	}
-	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
+    else if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 	{
 		PurpleContact *contact = (PurpleContact *)node;
 
@@ -1078,11 +1078,11 @@ QQuailBuddyList::showContextMenuSlot(QListViewItem *_item,
 							  true);
 		}
 	}
-	else if (GAIM_BLIST_NODE_IS_CHAT(node))
+    else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 	{
 		populateChatMenu((PurpleChat *)node, menu);
 	}
-	else if (GAIM_BLIST_NODE_IS_GROUP(node))
+    else if (PURPLE_BLIST_NODE_IS_GROUP(node))
 	{
 		populateGroupMenu((PurpleGroup *)node, menu);
 	}
@@ -1107,7 +1107,7 @@ QQuailBuddyList::addBuddySlot()
 
 	node = item->getBlistNode();
 
-	if (!GAIM_BLIST_NODE_IS_GROUP(node))
+    if (!PURPLE_BLIST_NODE_IS_GROUP(node))
 		return;
 
 	emit addBuddy((PurpleGroup *)node);
@@ -1124,7 +1124,7 @@ QQuailBuddyList::addChatSlot()
 
 	node = item->getBlistNode();
 
-	if (!GAIM_BLIST_NODE_IS_GROUP(node))
+    if (!PURPLE_BLIST_NODE_IS_GROUP(node))
 		return;
 
 	emit addChat((PurpleGroup *)node);
@@ -1141,7 +1141,7 @@ QQuailBuddyList::removeGroupSlot()
 
 	node = item->getBlistNode();
 
-	if (!GAIM_BLIST_NODE_IS_GROUP(node))
+    if (!PURPLE_BLIST_NODE_IS_GROUP(node))
 		return;
 
 	emit removeGroup((PurpleGroup *)node);
@@ -1166,7 +1166,7 @@ QQuailBuddyList::renameGroupSlot()
 
 	node = item->getBlistNode();
 
-	if (!GAIM_BLIST_NODE_IS_GROUP(node))
+    if (!PURPLE_BLIST_NODE_IS_GROUP(node))
 		return;
 
 	group = (PurpleGroup *)node;
@@ -1240,7 +1240,7 @@ QQuailBuddyList::removeContactSlot()
 
 	node = item->getBlistNode();
 
-	if (!GAIM_BLIST_NODE_IS_CONTACT(node))
+    if (!PURPLE_BLIST_NODE_IS_CONTACT(node))
 		return;
 
 	emit removeContact((PurpleContact *)node);
@@ -1257,7 +1257,7 @@ QQuailBuddyList::joinChatSlot()
 
 	node = item->getBlistNode();
 
-	if (!GAIM_BLIST_NODE_IS_CHAT(node))
+    if (!PURPLE_BLIST_NODE_IS_CHAT(node))
 		return;
 
 	emit joinChat((PurpleChat *)node);
@@ -1274,7 +1274,7 @@ QQuailBuddyList::autoJoinChatSlot(bool on)
 
 	node = item->getBlistNode();
 
-	if (!GAIM_BLIST_NODE_IS_CHAT(node))
+    if (!PURPLE_BLIST_NODE_IS_CHAT(node))
 		return;
 
 	purple_blist_node_set_bool(node, "qpe-autojoin", on);
@@ -1292,7 +1292,7 @@ QQuailBuddyList::removeChatSlot()
 
 	node = item->getBlistNode();
 
-	if (!GAIM_BLIST_NODE_IS_CHAT(node))
+    if (!PURPLE_BLIST_NODE_IS_CHAT(node))
 		return;
 
 	emit removeChat((PurpleChat *)node);
@@ -1317,7 +1317,7 @@ QQuailBuddyList::aliasChatSlot()
 
 	node = item->getBlistNode();
 
-	if (!GAIM_BLIST_NODE_IS_CHAT(node))
+    if (!PURPLE_BLIST_NODE_IS_CHAT(node))
 		return;
 
 	chat = (PurpleChat *)node;
@@ -1345,7 +1345,7 @@ QQuailBuddyList::updateGroup(PurpleBlistNode *node)
 	PurpleGroup *group;
 	QQuailBListItem *item;
 
-	g_return_if_fail(GAIM_BLIST_NODE_IS_GROUP(node));
+    g_return_if_fail(PURPLE_BLIST_NODE_IS_GROUP(node));
 
 	item = (QQuailBListItem *)node->ui_data;
 	group = (PurpleGroup *)node;
@@ -1377,7 +1377,7 @@ QQuailBuddyList::updateContact(PurpleBlistNode *node)
 	PurpleBuddy *buddy;
 	QQuailBListItem *item;
 
-	g_return_if_fail(GAIM_BLIST_NODE_IS_CONTACT(node));
+    g_return_if_fail(PURPLE_BLIST_NODE_IS_CONTACT(node));
 
 	updateGroup(node->parent);
 
@@ -1409,7 +1409,7 @@ QQuailBuddyList::updateBuddy(PurpleBlistNode *node)
 	PurpleBuddy *buddy;
 	QQuailBListItem *item;
 
-	g_return_if_fail(GAIM_BLIST_NODE_IS_BUDDY(node));
+    g_return_if_fail(PURPLE_BLIST_NODE_IS_BUDDY(node));
 
 	updateContact(node->parent);
 
@@ -1446,7 +1446,7 @@ QQuailBuddyList::updateChat(PurpleBlistNode *node)
 	PurpleChat *chat;
 	QQuailBListItem *item;
 
-	g_return_if_fail(GAIM_BLIST_NODE_IS_CHAT(node));
+    g_return_if_fail(PURPLE_BLIST_NODE_IS_CHAT(node));
 
 	updateGroup(node->parent);
 

@@ -66,10 +66,10 @@ QQuailConvButton::QQuailConvButton(QWidget *parent, const char *name)
 
 	purple_signal_connect(purple_conversations_get_handle(),
 						"conversation-created",
-						this, GAIM_CALLBACK(newConvCb), this);
+                        this, PURPLE_CALLBACK(newConvCb), this);
 	purple_signal_connect(purple_conversations_get_handle(),
 						"deleting-conversation",
-						this, GAIM_CALLBACK(delConvCb), this);
+                        this, PURPLE_CALLBACK(delConvCb), this);
 
 	if (purple_get_conversations() == NULL)
 		setEnabled(false);
@@ -84,10 +84,10 @@ QQuailConvButton::~QQuailConvButton()
 
 	purple_signal_disconnect(purple_conversations_get_handle(),
 						   "conversation-created",
-						   this, GAIM_CALLBACK(newConvCb));
+                           this, PURPLE_CALLBACK(newConvCb));
 	purple_signal_disconnect(purple_conversations_get_handle(),
 						   "deleting-conversation",
-						   this, GAIM_CALLBACK(delConvCb));
+                           this, PURPLE_CALLBACK(delConvCb));
 }
 
 void

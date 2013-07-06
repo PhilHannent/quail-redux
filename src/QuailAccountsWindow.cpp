@@ -150,9 +150,9 @@ QQuailAccountsWindow::QQuailAccountsWindow(QMainWindow *parent)
 	buildInterface();
 
 	purple_signal_connect(purple_connections_get_handle(), "signed-on",
-						this, GAIM_CALLBACK(signedOnCb), this);
+                        this, PURPLE_CALLBACK(signedOnCb), this);
 	purple_signal_connect(purple_connections_get_handle(), "signed-off",
-						this, GAIM_CALLBACK(signedOffCb), this);
+                        this, PURPLE_CALLBACK(signedOffCb), this);
 
 	loadAccounts();
 }

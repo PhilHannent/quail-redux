@@ -27,7 +27,7 @@
 
 #include <libpurple/conversation.h>
 
-class QPopupMenu;
+class QMenu;
 
 class QQuailConvButton : public QToolButton
 {
@@ -43,7 +43,7 @@ class QQuailConvButton : public QToolButton
 		void buttonClicked();
 
 	private:
-		QPopupMenu *menu;
+        QMenu *menu;
         PurpleConversation **convs;
 };
 

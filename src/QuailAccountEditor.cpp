@@ -51,7 +51,7 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account, QWidget *parent
 		{
 			plugin = (PurplePlugin *)purple_plugins_get_protocols()->data;
 
-			prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
+            prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
 
 			protocolId = plugin->info->id;
 		}
@@ -61,7 +61,7 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account, QWidget *parent
 		protocolId = purple_account_get_protocol_id(account);
 
 		if ((plugin = purple_plugins_find_with_id(protocolId)) != NULL)
-			prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
+            prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
 	}
 
 	buildInterface();
@@ -615,7 +615,7 @@ QQuailAccountEditor::protocolChanged(int index)
 
 	plugin = (PurplePlugin *)l->data;
 
-	prplInfo   = GAIM_PLUGIN_PROTOCOL_INFO(plugin);
+    prplInfo   = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
 	protocolId = plugin->info->id;
 
 	tabs->removePage(accountBox);

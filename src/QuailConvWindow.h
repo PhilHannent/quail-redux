@@ -52,7 +52,7 @@ class QQuailConversation : public QWidget
 
 		void setTitle(const char *title);
 
-		virtual void updated(GaimConvUpdateType type);
+        virtual void updated(PurpleConvUpdateType type);
 
 		virtual void send() = 0;
 
@@ -96,7 +96,7 @@ class QQuailConvChat : public QQuailConversation
 
 		void send();
 
-		virtual void updated(GaimConvUpdateType type);
+        virtual void updated(PurpleConvUpdateType type);
 
 	protected:
 		virtual void buildInterface();
@@ -108,7 +108,7 @@ class QQuailConvChat : public QQuailConversation
 		virtual void updateTyping();
 
 	protected:
-        GaimConvChat *chat;
+        QQuailConvChat *chat;
 		QListView *userList;
 };
 
@@ -126,7 +126,7 @@ class QQuailConvIm : public QQuailConversation
 
 		void send();
 
-		virtual void updated(GaimConvUpdateType type);
+        virtual void updated(PurpleConvUpdateType type);
 
 	protected:
 		virtual void buildInterface();
@@ -149,8 +149,8 @@ class QQuailConvWindow : public QMainWindow
 		QQuailConvWindow(GaimConvWindow *win, QMainWindow *parent);
 		~QQuailConvWindow();
 
-		void setGaimConvWindow(GaimConvWindow *win);
-		GaimConvWindow *getGaimConvWindow() const;
+        void setConvWindow(QQuailConvWindow *win);
+        QQuailConvWindow *getConvWindow() const;
 
 		void switchConversation(unsigned int index);
         void addConversation(PurpleConversation *conv);
