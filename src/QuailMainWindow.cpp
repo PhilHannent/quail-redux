@@ -104,7 +104,7 @@ qQuailGetCoreUiOps()
 /**************************************************************************
  * QQuailMainWindow
  **************************************************************************/
-QQuailMainWindow::QQuailMainWindow(QWidget *parent, const char *name, WFlags fl)
+QQuailMainWindow::QQuailMainWindow(QWidget *parent, const char *name, Qt::WindowFlags fl)
 	: QMainWindow(parent, name, fl),
 	  accountsWin(NULL), blistWin(NULL), nextConvWinId(0)
 {

@@ -58,7 +58,7 @@
  **************************************************************************/
 QQuailConversation::QQuailConversation(PurpleConversation *conv,
 									 QWidget *parent, const char *name,
-									 WFlags fl)
+                                     Qt::WindowFlags fl)
 	: QWidget(parent, name, fl), conv(conv), text(NULL), notifying(false)
 {
 }
@@ -68,20 +68,20 @@ QQuailConversation::~QQuailConversation()
 }
 
 void
-QQuailConversation::setPurpleConversation(PurpleConversation *conv)
+QQuailConversation::setConversation(PurpleConversation *conv)
 {
 	this->conv = conv;
 }
 
 PurpleConversation *
-QQuailConversation::getPurpleConversation() const
+QQuailConversation::getConversation() const
 {
 	return conv;
 }
 
 void
 QQuailConversation::write(const char *who, const char *message,
-						 GaimMessageFlags flags, time_t)
+                         PurpleMessageFlags flags, time_t)
 {
 	if (text == NULL)
 		return;
@@ -326,7 +326,7 @@ QQuailConversation::updateTabIcon()
  * QQuailConvChat
  **************************************************************************/
 QQuailConvChat::QQuailConvChat(PurpleConversation *conv, QWidget *parent,
-					 const char *name, WFlags fl)
+                     const char *name, Qt::WindowFlags fl)
 	: QQuailConversation(conv, parent, name, fl), chat(GAIM_CONV_CHAT(conv))
 {
 	buildInterface();
@@ -338,7 +338,7 @@ QQuailConvChat::~QQuailConvChat()
 
 void
 QQuailConvChat::write(const char *who, const char *message,
-					 GaimMessageFlags flags, time_t mtime)
+                     PurpleMessageFlags flags, time_t mtime)
 {
 	purple_conversation_write(conv, who, message, flags, mtime);
 }
@@ -544,7 +544,7 @@ QQuailConvChat::updated(GaimConvUpdateType type)
  * QQuailConvIm
  **************************************************************************/
 QQuailConvIm::QQuailConvIm(PurpleConversation *conv, QWidget *parent,
-				 const char *name, WFlags fl)
+                 const char *name, Qt::WindowFlags fl)
 	: QQuailConversation(conv, parent, name, fl), im(GAIM_CONV_IM(conv))
 {
 	buildInterface();
@@ -556,7 +556,7 @@ QQuailConvIm::~QQuailConvIm()
 
 void
 QQuailConvIm::write(const char *who, const char *message,
-			   GaimMessageFlags flags, time_t mtime)
+               PurpleMessageFlags flags, time_t mtime)
 {
 	purple_conversation_write(conv, who, message, flags, mtime);
 }
@@ -1235,7 +1235,7 @@ qQuailConvDestroy(PurpleConversation *conv)
 
 static void
 qQuailConvWriteChat(PurpleConversation *conv, const char *who,
-				   const char *message, GaimMessageFlags flags, time_t mtime)
+                   const char *message, PurpleMessageFlags flags, time_t mtime)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
 
@@ -1244,7 +1244,7 @@ qQuailConvWriteChat(PurpleConversation *conv, const char *who,
 
 static void
 qQuailConvWriteIm(PurpleConversation *conv, const char *who,
-				 const char *message, GaimMessageFlags flags, time_t mtime)
+                 const char *message, PurpleMessageFlags flags, time_t mtime)
 {
 	QQuailConvIm *qim = (QQuailConvIm *)conv->ui_data;
 
@@ -1253,7 +1253,7 @@ qQuailConvWriteIm(PurpleConversation *conv, const char *who,
 
 static void
 qQuailConvWriteConv(PurpleConversation *conv, const char *who,
-				   const char *message, GaimMessageFlags flags, time_t mtime)
+                   const char *message, PurpleMessageFlags flags, time_t mtime)
 {
 	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
 

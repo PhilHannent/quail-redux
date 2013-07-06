@@ -34,7 +34,7 @@ class QQuailInputDialog : public QDialog
 	public:
 		QQuailInputDialog(bool multiline = false, QWidget *parent = NULL,
 						 const char *name = NULL, bool modal = false,
-						 WFlags fl = 0);
+                         Qt::WindowFlags fl = 0);
 
 		void setInfoText(const QString &text);
 

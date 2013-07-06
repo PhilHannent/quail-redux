@@ -37,11 +37,11 @@ class QQuailMainWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-		static QString appName() { return QString::fromLatin1("gaim"); }
+        static QString appName() { return QString::fromLatin1(APP_NAME); }
 
 	public:
 		QQuailMainWindow(QWidget *parent = 0, const char *name = 0,
-						WFlags fl = 0);
+                        Qt::WindowFlags fl = 0);
 		~QQuailMainWindow();
 
 		void addConversationWindow(QQuailConvWindow *win);
@@ -50,10 +50,10 @@ class QQuailMainWindow : public QMainWindow
 		QQuailBListWindow *getBlistWindow() const;
 		QQuailAccountsWindow *getAccountsWindow() const;
 
-		void setLastActiveConvWindow(GaimConvWindow *win);
-		GaimConvWindow *getLastActiveConvWindow() const;
+        void setLastActiveConvWindow(QQuailConvWindow *win);
+        QQuailConvWindow *getLastActiveConvWindow() const;
 
-		QWidgetStack *getWidgetStack() const;
+        QStackedWidget *getWidgetStack() const;
 		QQuailConnectionMeters *getMeters() const;
 
 	public slots:
@@ -67,12 +67,12 @@ class QQuailMainWindow : public QMainWindow
 		void closeEvent(QCloseEvent *e);
 
 	private:
-		QWidgetStack *widgetStack;
+        QStackedWidget *widgetStack;
 		QQuailAccountsWindow *accountsWin;
 		QQuailBListWindow *blistWin;
 		QQuailConnectionMeters *meters;
 
-		GaimConvWindow *lastConvWin;
+        QQuailConvWindow *lastConvWin;
 
 		int nextConvWinId;
 };

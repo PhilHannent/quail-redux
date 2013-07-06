@@ -31,7 +31,7 @@
  **************************************************************************/
 QQuailConnectionProgressBar::QQuailConnectionProgressBar(QWidget *parent,
 													   const char *name,
-													   WFlags fl)
+                                                       Qt::WindowFlags fl)
 	: QProgressBar(parent, name, fl)
 {
 	setCenterIndicator(true);
@@ -50,7 +50,7 @@ QQuailConnectionProgressBar::setIndicator(QString &str, int progress,
  **************************************************************************/
 QQuailConnectionMeter::QQuailConnectionMeter(PurpleConnection *gc,
 										   QWidget *parent,
-										   const char *name, WFlags fl)
+                                           const char *name, Qt::WindowFlags fl)
 	: QHBox(parent, name, fl), gc(gc)
 {
 	QLabel *label, *icon;
@@ -95,7 +95,7 @@ QQuailConnectionMeter::getConnection() const
  * QQuailConnectionMeters
  **************************************************************************/
 QQuailConnectionMeters::QQuailConnectionMeters(QWidget *parent,
-											 const char *name, WFlags fl)
+                                             const char *name, Qt::WindowFlags fl)
 	: QVBox(parent, name, fl)
 {
 	meters.setAutoDelete(true);

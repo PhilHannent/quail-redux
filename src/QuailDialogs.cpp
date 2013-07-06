@@ -40,7 +40,7 @@
  * QQuailAddBuddyDialog
  **************************************************************************/
 QQuailAddBuddyDialog::QQuailAddBuddyDialog(QWidget *parent, const char *name,
-										 WFlags fl)
+                                         Qt::WindowFlags fl)
 	: QDialog(parent, name, fl)
 {
 	buildInterface();
@@ -195,7 +195,7 @@ QQuailAddBuddyDialog::accept()
  * QQuailAddChatDialog
  **************************************************************************/
 QQuailAddChatDialog::QQuailAddChatDialog(QWidget *parent, const char *name,
-									   WFlags fl)
+                                       Qt::WindowFlags fl)
 	: QDialog(parent, name, fl)
 {
 	buildInterface();
@@ -438,7 +438,7 @@ QQuailAddChatDialog::accept()
  * QQuailNewImDialog
  **************************************************************************/
 QQuailNewImDialog::QQuailNewImDialog(QWidget *parent, const char *name,
-								   WFlags fl)
+                                   Qt::WindowFlags fl)
 	: QDialog(parent, name, fl)
 {
 	buildInterface();
@@ -529,7 +529,7 @@ QQuailNewImDialog::accept()
  * QQuailJoinChatDialog
  **************************************************************************/
 QQuailJoinChatDialog::QQuailJoinChatDialog(QWidget *parent, const char *name,
-										 WFlags fl)
+                                         Qt::WindowFlags fl)
 	: QDialog(parent, name, fl)
 {
 	buildInterface();

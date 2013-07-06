@@ -286,7 +286,7 @@ QQuailPluginPrefPage::buildInterface()
  * QQuailPrefsDialog
  **************************************************************************/
 QQuailPrefsDialog::QQuailPrefsDialog(QWidget *parent, const char *name,
-								   WFlags fl)
+                                   Qt::WindowFlags fl)
 	: QDialog(parent, name, fl)
 {
 	buildInterface();

@@ -41,14 +41,14 @@ class QQuailConversation : public QWidget
 
 	public:
         QQuailConversation(PurpleConversation *conv, QWidget *parent = NULL,
-						  const char *name = NULL, WFlags fl = 0);
+                          const char *name = NULL, Qt::WindowFlags fl = 0);
 		virtual ~QQuailConversation();
 
-        void setPurpleConversation(PurpleConversation *conv);
-        PurpleConversation *getPurpleConversation() const;
+        void setConversation(PurpleConversation *conv);
+        PurpleConversation *getConversation() const;
 
 		void write(const char *who, const char *message,
-				   GaimMessageFlags flags, time_t mtime);
+                   PurpleMessageFlags flags, time_t mtime);
 
 		void setTitle(const char *title);
 
@@ -79,11 +79,11 @@ class QQuailConvChat : public QQuailConversation
 
 	public:
         QQuailConvChat(PurpleConversation *conv, QWidget *parent = NULL,
-				  const char *name = NULL, WFlags fl = 0);
+                  const char *name = NULL, Qt::WindowFlags fl = 0);
 		virtual ~QQuailConvChat();
 
 		void write(const char *who, const char *message,
-				   GaimMessageFlags flags, time_t mtime);
+                   PurpleMessageFlags flags, time_t mtime);
 
 		void addUser(const char *user);
 		void addUsers(GList *users);
@@ -108,7 +108,7 @@ class QQuailConvChat : public QQuailConversation
 		virtual void updateTyping();
 
 	protected:
-		GaimConvChat *chat;
+        GaimConvChat *chat;
 		QListView *userList;
 };
 
@@ -118,11 +118,11 @@ class QQuailConvIm : public QQuailConversation
 
 	public:
         QQuailConvIm(PurpleConversation *conv, QWidget *parent = NULL,
-				const char *name = NULL, WFlags fl = 0);
+                const char *name = NULL, Qt::WindowFlags fl = 0);
 		virtual ~QQuailConvIm();
 
 		void write(const char *who, const char *message,
-				   GaimMessageFlags flags, time_t mtime);
+                   PurpleMessageFlags flags, time_t mtime);
 
 		void send();
 

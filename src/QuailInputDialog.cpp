@@ -29,7 +29,7 @@
 #include <QHBoxLayout>
 
 QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent,
-								   const char *name, bool modal, WFlags fl)
+                                   const char *name, bool modal, Qt::WindowFlags fl)
 	: QDialog(parent, name, modal, fl), multiline(multiline), masked(false)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this, 8);

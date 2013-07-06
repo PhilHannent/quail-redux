@@ -91,7 +91,7 @@ QQuailBListItem::updateInfo()
 		}
 		else
 		{
-			QString text = "";
+            QString text("");
 
 			if (buddy->evil > 0)
 				text += QString("%1%").arg(buddy->evil);
@@ -127,7 +127,7 @@ QQuailBListItem::updateInfo()
 
 		setText(0, purple_get_buddy_alias(buddy));
 	}
-	else if (GAIM_BLIST_NODE_IS_BUDDY(node))
+    else if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 	{
 		PurpleBuddy *buddy = (PurpleBuddy *)node;
 		QString text = "";
@@ -176,7 +176,7 @@ void
 QQuailBListItem::paintCell(QPainter *p, const QPalette &cg, int column,
 						  int width, int align)
 {
-	QListView *lv = listView();
+    QListWidget *lv = this->listWidget();
 	const QPixmap *icon = pixmap(column);
 
 	p->fillRect(0, 0, width, height(), cg.base());

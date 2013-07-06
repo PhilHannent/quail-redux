@@ -140,7 +140,7 @@ class QQuailPrefsDialog : public QDialog
 
 	public:
 		QQuailPrefsDialog(QWidget *parent = NULL, const char *name = NULL,
-						 WFlags fl = 0);
+                         Qt::WindowFlags fl = 0);
 		~QQuailPrefsDialog();
 
 		virtual void accept();
