@@ -151,7 +151,7 @@ QQuailAddBuddyDialog::populateGroupCombo()
 void
 QQuailAddBuddyDialog::accept()
 {
-	GaimConversation *conv;
+    PurpleConversation *conv;
 	QString screenname = screenNameEntry->text();
 	QString alias = aliasEntry->text();
 	QString group = groupCombo->currentText();
@@ -503,7 +503,7 @@ QQuailNewImDialog::accept()
 {
 	QString screenname = screenNameEntry->text();
 	PurpleAccount *account;
-	GaimConversation *conv;
+    PurpleConversation *conv;
 
 	if (screenname.isEmpty())
 		return;

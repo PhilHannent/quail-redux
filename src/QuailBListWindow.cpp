@@ -506,7 +506,7 @@ static void
 removeBuddyCb(PurpleBuddy *buddy)
 {
 	PurpleGroup *group;
-	GaimConversation *conv;
+    PurpleConversation *conv;
 	QString name;
 
 	if (buddy == NULL)
@@ -575,7 +575,7 @@ removeGroupCb(PurpleGroup *group)
                 if (PURPLE_BLIST_NODE_IS_BUDDY(child))
 				{
 					PurpleBuddy *buddy = (PurpleBuddy *)child;
-					GaimConversation *conv;
+                    PurpleConversation *conv;
 
 					conv = purple_find_conversation(buddy->name);
 
@@ -749,7 +749,7 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 
 	if (buddy != NULL)
 	{
-		GaimConversation *conv;
+        PurpleConversation *conv;
 		GaimConvWindow *win;
 
         conv = purple_conversation_new(PURPLE_CONV_IM, buddy->account,

@@ -40,12 +40,12 @@ class QQuailConversation : public QWidget
 	Q_OBJECT
 
 	public:
-		QQuailConversation(GaimConversation *conv, QWidget *parent = NULL,
+        QQuailConversation(PurpleConversation *conv, QWidget *parent = NULL,
 						  const char *name = NULL, WFlags fl = 0);
 		virtual ~QQuailConversation();
 
-		void setGaimConversation(GaimConversation *conv);
-		GaimConversation *getGaimConversation() const;
+        void setPurpleConversation(PurpleConversation *conv);
+        PurpleConversation *getPurpleConversation() const;
 
 		void write(const char *who, const char *message,
 				   GaimMessageFlags flags, time_t mtime);
@@ -66,7 +66,7 @@ class QQuailConversation : public QWidget
 		void updateTabIcon();
 
 	protected:
-		GaimConversation *conv;
+        PurpleConversation *conv;
 		QTextView *text;
 		QQuailMultiLineEdit *entry;
 		int tabId;
@@ -78,7 +78,7 @@ class QQuailConvChat : public QQuailConversation
 	Q_OBJECT
 
 	public:
-		QQuailConvChat(GaimConversation *conv, QWidget *parent = NULL,
+        QQuailConvChat(PurpleConversation *conv, QWidget *parent = NULL,
 				  const char *name = NULL, WFlags fl = 0);
 		virtual ~QQuailConvChat();
 
@@ -117,7 +117,7 @@ class QQuailConvIm : public QQuailConversation
 	Q_OBJECT
 
 	public:
-		QQuailConvIm(GaimConversation *conv, QWidget *parent = NULL,
+        QQuailConvIm(PurpleConversation *conv, QWidget *parent = NULL,
 				const char *name = NULL, WFlags fl = 0);
 		virtual ~QQuailConvIm();
 
@@ -153,9 +153,9 @@ class QQuailConvWindow : public QMainWindow
 		GaimConvWindow *getGaimConvWindow() const;
 
 		void switchConversation(unsigned int index);
-		void addConversation(GaimConversation *conv);
-		void removeConversation(GaimConversation *conv);
-		void moveConversation(GaimConversation *conv, unsigned int newIndex);
+        void addConversation(PurpleConversation *conv);
+        void removeConversation(PurpleConversation *conv);
+        void moveConversation(PurpleConversation *conv, unsigned int newIndex);
 		int getActiveIndex() const;
 
 		void updateAddRemoveButton();

@@ -56,7 +56,7 @@
 /**************************************************************************
  * QQuailConversation
  **************************************************************************/
-QQuailConversation::QQuailConversation(GaimConversation *conv,
+QQuailConversation::QQuailConversation(PurpleConversation *conv,
 									 QWidget *parent, const char *name,
 									 WFlags fl)
 	: QWidget(parent, name, fl), conv(conv), text(NULL), notifying(false)
@@ -68,13 +68,13 @@ QQuailConversation::~QQuailConversation()
 }
 
 void
-QQuailConversation::setGaimConversation(GaimConversation *conv)
+QQuailConversation::setPurpleConversation(PurpleConversation *conv)
 {
 	this->conv = conv;
 }
 
-GaimConversation *
-QQuailConversation::getGaimConversation() const
+PurpleConversation *
+QQuailConversation::getPurpleConversation() const
 {
 	return conv;
 }
@@ -169,7 +169,7 @@ QQuailConversation::write(const char *who, const char *message,
 
 	if (flags & GAIM_MESSAGE_RECV)
 	{
-		GaimConversation *activeConv;
+        PurpleConversation *activeConv;
 		GaimConvWindow *win;
 
 		win = purple_conversation_get_window(conv);
@@ -325,7 +325,7 @@ QQuailConversation::updateTabIcon()
 /**************************************************************************
  * QQuailConvChat
  **************************************************************************/
-QQuailConvChat::QQuailConvChat(GaimConversation *conv, QWidget *parent,
+QQuailConvChat::QQuailConvChat(PurpleConversation *conv, QWidget *parent,
 					 const char *name, WFlags fl)
 	: QQuailConversation(conv, parent, name, fl), chat(GAIM_CONV_CHAT(conv))
 {
@@ -543,7 +543,7 @@ QQuailConvChat::updated(GaimConvUpdateType type)
 /**************************************************************************
  * QQuailConvIm
  **************************************************************************/
-QQuailConvIm::QQuailConvIm(GaimConversation *conv, QWidget *parent,
+QQuailConvIm::QQuailConvIm(PurpleConversation *conv, QWidget *parent,
 				 const char *name, WFlags fl)
 	: QQuailConversation(conv, parent, name, fl), im(GAIM_CONV_IM(conv))
 {
@@ -745,7 +745,7 @@ QQuailConvWindow::switchConversation(unsigned int index)
 }
 
 void
-QQuailConvWindow::addConversation(GaimConversation *conv)
+QQuailConvWindow::addConversation(PurpleConversation *conv)
 {
 	QQuailConversation *qconv = NULL;
 	PurpleAccount *account;
@@ -787,7 +787,7 @@ QQuailConvWindow::addConversation(GaimConversation *conv)
 }
 
 void
-QQuailConvWindow::removeConversation(GaimConversation *conv)
+QQuailConvWindow::removeConversation(PurpleConversation *conv)
 {
 	/* NOTE: This deletes conv->ui_data. Find out what to do here. */
 	tabs->removePage((QQuailConversation *)conv->ui_data);
@@ -796,7 +796,7 @@ QQuailConvWindow::removeConversation(GaimConversation *conv)
 }
 
 void
-QQuailConvWindow::moveConversation(GaimConversation *conv,
+QQuailConvWindow::moveConversation(PurpleConversation *conv,
 								  unsigned int newIndex)
 {
 	conv = NULL; newIndex = 0;
@@ -811,7 +811,7 @@ QQuailConvWindow::getActiveIndex() const
 
 	for (l = purple_conv_window_get_conversations(win); l != NULL; l = l->next)
 	{
-		GaimConversation *conv   = (GaimConversation *)l->data;
+        PurpleConversation *conv   = (PurpleConversation *)l->data;
 		QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
 
 		if (qconv->getTabId() == currentId)
@@ -824,7 +824,7 @@ QQuailConvWindow::getActiveIndex() const
 void
 QQuailConvWindow::updateAddRemoveButton()
 {
-	GaimConversation *conv = purple_conv_window_get_active_conversation(win);
+    PurpleConversation *conv = purple_conv_window_get_active_conversation(win);
 
 	if (purple_find_buddy(purple_conversation_get_account(conv),
 						purple_conversation_get_name(conv)) == NULL)
@@ -871,7 +871,7 @@ void
 QQuailConvWindow::tabChanged(QWidget *widget)
 {
 	QQuailConversation *qconv = (QQuailConversation *)widget;
-	GaimConversation *conv = qconv->getGaimConversation();
+    PurpleConversation *conv = qconv->getPurpleConversation();
 	PurpleAccount *account = purple_conversation_get_account(conv);
 	PurplePlugin *prpl;
 	PurplePluginProtocolInfo *prplInfo = NULL;
@@ -951,7 +951,7 @@ static void
 removeBuddyCb(PurpleBuddy *buddy)
 {
 	PurpleGroup *group;
-	GaimConversation *conv;
+    PurpleConversation *conv;
 	QString name;
 
 	if (buddy == NULL)
@@ -974,7 +974,7 @@ removeBuddyCb(PurpleBuddy *buddy)
 void
 QQuailConvWindow::addRemoveBuddySlot()
 {
-	GaimConversation *conv = purple_conv_window_get_active_conversation(win);
+    PurpleConversation *conv = purple_conv_window_get_active_conversation(win);
 	PurpleAccount *account = purple_conversation_get_account(conv);
 	const char *name = purple_conversation_get_name(conv);
 	PurpleBuddy *buddy;
@@ -1008,7 +1008,7 @@ QQuailConvWindow::addRemoveBuddySlot()
 void
 QQuailConvWindow::userInfoSlot()
 {
-	GaimConversation *conv = purple_conv_window_get_active_conversation(win);
+    PurpleConversation *conv = purple_conv_window_get_active_conversation(win);
 	PurpleAccount *account = purple_conversation_get_account(conv);
 
 	serv_get_info(purple_account_get_connection(account),
@@ -1018,7 +1018,7 @@ QQuailConvWindow::userInfoSlot()
 void
 QQuailConvWindow::send()
 {
-	GaimConversation *conv;
+    PurpleConversation *conv;
 	QQuailConversation *qconv;
 
 	conv = purple_conv_window_get_active_conversation(win);
@@ -1038,7 +1038,7 @@ void
 QQuailConvWindow::userListToggled(bool on)
 {
 	/* Make sure this is a chat. */
-	GaimConversation *conv;
+    PurpleConversation *conv;
 	QQuailConvChat *qchat;
 
 	conv = purple_conv_window_get_active_conversation(win);
@@ -1221,7 +1221,7 @@ QQuailConvWindow::setupToolbar()
  * Conversation UI ops
  **************************************************************************/
 static void
-qQuailConvDestroy(GaimConversation *conv)
+qQuailConvDestroy(PurpleConversation *conv)
 {
 	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
 
@@ -1234,7 +1234,7 @@ qQuailConvDestroy(GaimConversation *conv)
 }
 
 static void
-qQuailConvWriteChat(GaimConversation *conv, const char *who,
+qQuailConvWriteChat(PurpleConversation *conv, const char *who,
 				   const char *message, GaimMessageFlags flags, time_t mtime)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
@@ -1243,7 +1243,7 @@ qQuailConvWriteChat(GaimConversation *conv, const char *who,
 }
 
 static void
-qQuailConvWriteIm(GaimConversation *conv, const char *who,
+qQuailConvWriteIm(PurpleConversation *conv, const char *who,
 				 const char *message, GaimMessageFlags flags, time_t mtime)
 {
 	QQuailConvIm *qim = (QQuailConvIm *)conv->ui_data;
@@ -1252,7 +1252,7 @@ qQuailConvWriteIm(GaimConversation *conv, const char *who,
 }
 
 static void
-qQuailConvWriteConv(GaimConversation *conv, const char *who,
+qQuailConvWriteConv(PurpleConversation *conv, const char *who,
 				   const char *message, GaimMessageFlags flags, time_t mtime)
 {
 	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
@@ -1261,7 +1261,7 @@ qQuailConvWriteConv(GaimConversation *conv, const char *who,
 }
 
 static void
-qQuailConvChatAddUser(GaimConversation *conv, const char *user)
+qQuailConvChatAddUser(PurpleConversation *conv, const char *user)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
 
@@ -1269,7 +1269,7 @@ qQuailConvChatAddUser(GaimConversation *conv, const char *user)
 }
 
 static void
-qQuailConvChatAddUsers(GaimConversation *conv, GList *users)
+qQuailConvChatAddUsers(PurpleConversation *conv, GList *users)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
 
@@ -1277,7 +1277,7 @@ qQuailConvChatAddUsers(GaimConversation *conv, GList *users)
 }
 
 static void
-qQuailConvChatRenameUser(GaimConversation *conv, const char *oldName,
+qQuailConvChatRenameUser(PurpleConversation *conv, const char *oldName,
 						const char *newName)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
@@ -1286,7 +1286,7 @@ qQuailConvChatRenameUser(GaimConversation *conv, const char *oldName,
 }
 
 static void
-qQuailConvChatRemoveUser(GaimConversation *conv, const char *user)
+qQuailConvChatRemoveUser(PurpleConversation *conv, const char *user)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
 
@@ -1294,7 +1294,7 @@ qQuailConvChatRemoveUser(GaimConversation *conv, const char *user)
 }
 
 static void
-qQuailConvChatRemoveUsers(GaimConversation *conv, GList *users)
+qQuailConvChatRemoveUsers(PurpleConversation *conv, GList *users)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
 
@@ -1302,14 +1302,14 @@ qQuailConvChatRemoveUsers(GaimConversation *conv, GList *users)
 }
 
 static void
-qQuailConvUpdated(GaimConversation *conv, GaimConvUpdateType type)
+qQuailConvUpdated(PurpleConversation *conv, GaimConvUpdateType type)
 {
 	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
 
 	qconv->updated(type);
 }
 
-static GaimConversationUiOps convOps =
+static PurpleConversationUiOps convOps =
 {
 	qQuailConvDestroy,
 	qQuailConvWriteChat,
@@ -1324,7 +1324,7 @@ static GaimConversationUiOps convOps =
 	qQuailConvUpdated
 };
 
-static GaimConversationUiOps *
+static PurpleConversationUiOps *
 qQuailConvWindowGetConvUiOps()
 {
 	return &convOps;
@@ -1397,7 +1397,7 @@ qQuailConvWindowSwitchConv(GaimConvWindow *win, unsigned int index)
 }
 
 static void
-qQuailConvWindowAddConv(GaimConvWindow *win, GaimConversation *conv)
+qQuailConvWindowAddConv(GaimConvWindow *win, PurpleConversation *conv)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
@@ -1405,7 +1405,7 @@ qQuailConvWindowAddConv(GaimConvWindow *win, GaimConversation *conv)
 }
 
 static void
-qQuailConvWindowRemoveConv(GaimConvWindow *win, GaimConversation *conv)
+qQuailConvWindowRemoveConv(GaimConvWindow *win, PurpleConversation *conv)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
@@ -1413,7 +1413,7 @@ qQuailConvWindowRemoveConv(GaimConvWindow *win, GaimConversation *conv)
 }
 
 static void
-qQuailConvWindowMoveConv(GaimConvWindow *win, GaimConversation *conv,
+qQuailConvWindowMoveConv(GaimConvWindow *win, PurpleConversation *conv,
 					unsigned int newIndex)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;

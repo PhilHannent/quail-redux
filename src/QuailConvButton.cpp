@@ -93,7 +93,7 @@ QQuailConvButton::~QQuailConvButton()
 void
 QQuailConvButton::generateMenu()
 {
-	GaimConversation *conv;
+    PurpleConversation *conv;
 	GList *l;
 	size_t size;
 	int i;
@@ -108,14 +108,14 @@ QQuailConvButton::generateMenu()
 
 	size = g_list_length(purple_get_conversations());
 
-	convs = new GaimConversation*[size];
+    convs = new PurpleConversation*[size];
 
 	for (l = purple_get_conversations(), i = 0; l != NULL; l = l->next, i++)
 	{
 		PurpleAccount *account;
 		PurpleBuddy *buddy;
 
-		conv = (GaimConversation *)l->data;
+        conv = (PurpleConversation *)l->data;
 		account = purple_conversation_get_account(conv);
 
 		buddy = purple_find_buddy(account, purple_conversation_get_name(conv));
@@ -142,7 +142,7 @@ QQuailConvButton::generateMenu()
 void
 QQuailConvButton::convActivated(int id)
 {
-	GaimConversation *conv;
+    PurpleConversation *conv;
 	GaimConvWindow *win;
 
 	conv = convs[id];
