@@ -91,14 +91,14 @@ class QQuailBuddyList : public QListView
 		void addChat(PurpleGroup *group);
 		void joinChat(GaimChat *chat);
 		void removeBuddy(GaimBuddy *buddy);
-		void removeContact(GaimContact *contact);
+		void removeContact(PurpleContact *contact);
 		void removeChat(GaimChat *chat);
 		void removeGroup(PurpleGroup *group);
 
 	protected:
 		void populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 							   bool asContact);
-		void populateContactMenu(GaimContact *contact, QPopupMenu *menu);
+		void populateContactMenu(PurpleContact *contact, QPopupMenu *menu);
 		void populateChatMenu(GaimChat *chat, QPopupMenu *menu);
 		void populateGroupMenu(PurpleGroup *group, QPopupMenu *menu);
 

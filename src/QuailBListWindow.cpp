@@ -101,8 +101,8 @@ QQuailBListWindow::buildInterface()
 
 	connect(buddylist, SIGNAL(removeBuddy(GaimBuddy *)),
 			this, SLOT(showConfirmRemoveBuddy(GaimBuddy *)));
-	connect(buddylist, SIGNAL(removeContact(GaimContact *)),
-			this, SLOT(showConfirmRemoveContact(GaimContact *)));
+	connect(buddylist, SIGNAL(removeContact(PurpleContact *)),
+			this, SLOT(showConfirmRemoveContact(PurpleContact *)));
 	connect(buddylist, SIGNAL(removeGroup(PurpleGroup *)),
 			this, SLOT(showConfirmRemoveGroup(PurpleGroup *)));
 	connect(buddylist, SIGNAL(removeChat(GaimChat *)),
@@ -526,7 +526,7 @@ removeBuddyCb(GaimBuddy *buddy)
 }
 
 static void
-removeContactCb(GaimContact *contact)
+removeContactCb(PurpleContact *contact)
 {
 	GaimBlistNode *bnode, *cnode;
 	PurpleGroup *group;
@@ -621,7 +621,7 @@ QQuailBListWindow::showRemoveBuddy()
 	}
 	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
-		showConfirmRemoveContact((GaimContact *)node);
+		showConfirmRemoveContact((PurpleContact *)node);
 	}
 	else if (GAIM_BLIST_NODE_IS_CHAT(node))
 	{
@@ -650,7 +650,7 @@ QQuailBListWindow::showConfirmRemoveBuddy(GaimBuddy *buddy)
 }
 
 void
-QQuailBListWindow::showConfirmRemoveContact(GaimContact *contact)
+QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
 {
 	GaimBuddy *buddy = gaim_contact_get_priority_buddy(contact);
 

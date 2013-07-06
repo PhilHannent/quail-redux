@@ -79,7 +79,7 @@ QQuailBListItem::updateInfo()
 
 	if (GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
-		GaimContact *contact = (GaimContact *)node;
+		PurpleContact *contact = (PurpleContact *)node;
 		GaimBuddy *buddy = gaim_contact_get_priority_buddy(contact);
 
 		if (buddy == NULL)
@@ -250,13 +250,13 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QColorGroup &cg, int column,
 							   int width, int align, int lmarg, int itMarg)
 {
 	GaimBuddy *buddy;
-	GaimContact *contact = NULL;
+	PurpleContact *contact = NULL;
 
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 		buddy = (GaimBuddy *)node;
 	else
 	{
-		contact = (GaimContact *)node;
+		contact = (PurpleContact *)node;
 		buddy = gaim_contact_get_priority_buddy(contact);
 	}
 
@@ -666,7 +666,7 @@ QQuailBuddyList::getSelectedBuddy() const
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 		buddy = (GaimBuddy *)node;
 	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
-		buddy = gaim_contact_get_priority_buddy((GaimContact *)node);
+		buddy = gaim_contact_get_priority_buddy((PurpleContact *)node);
 
 	return buddy;
 }
@@ -712,7 +712,7 @@ QQuailBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 	if (prplInfo != NULL && prplInfo->buddy_menu != NULL)
 	{
 		GList *l;
-		GaimConnection *gc = gaim_account_get_connection(buddy->account);
+		PurpleConnection *gc = gaim_account_get_connection(buddy->account);
 
 		for (l = prplInfo->buddy_menu(gc, buddy->name);
 			 l != NULL;
@@ -805,7 +805,7 @@ QQuailBuddyList::populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
 }
 
 void
-QQuailBuddyList::populateContactMenu(GaimContact *contact, QPopupMenu *menu)
+QQuailBuddyList::populateContactMenu(PurpleContact *contact, QPopupMenu *menu)
 {
 	PurplePlugin *prpl = NULL;
 	PurplePluginProtocolInfo *prplInfo = NULL;
@@ -1073,7 +1073,7 @@ QQuailBuddyList::showContextMenuSlot(QListViewItem *_item,
 	}
 	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
-		GaimContact *contact = (GaimContact *)node;
+		PurpleContact *contact = (PurpleContact *)node;
 
 		if (item->isExpanded())
 		{
@@ -1250,7 +1250,7 @@ QQuailBuddyList::removeContactSlot()
 	if (!GAIM_BLIST_NODE_IS_CONTACT(node))
 		return;
 
-	emit removeContact((GaimContact *)node);
+	emit removeContact((PurpleContact *)node);
 }
 
 void
@@ -1380,7 +1380,7 @@ QQuailBuddyList::updateGroup(GaimBlistNode *node)
 void
 QQuailBuddyList::updateContact(GaimBlistNode *node)
 {
-	GaimContact *contact;
+	PurpleContact *contact;
 	GaimBuddy *buddy;
 	QQuailBListItem *item;
 
@@ -1389,7 +1389,7 @@ QQuailBuddyList::updateContact(GaimBlistNode *node)
 	updateGroup(node->parent);
 
 	item    = (QQuailBListItem *)node->ui_data;
-	contact = (GaimContact *)node;
+	contact = (PurpleContact *)node;
 	buddy   = gaim_contact_get_priority_buddy(contact);
 
 	if (buddy != NULL &&
@@ -1412,7 +1412,7 @@ QQuailBuddyList::updateContact(GaimBlistNode *node)
 void
 QQuailBuddyList::updateBuddy(GaimBlistNode *node)
 {
-	GaimContact *contact;
+	PurpleContact *contact;
 	GaimBuddy *buddy;
 	QQuailBListItem *item;
 
@@ -1428,7 +1428,7 @@ QQuailBuddyList::updateBuddy(GaimBlistNode *node)
 	}
 
 	buddy   = (GaimBuddy *)node;
-	contact = (GaimContact *)node->parent;
+	contact = (PurpleContact *)node->parent;
 	item    = (QQuailBListItem *)node->ui_data;
 
 	if (buddy->present != GAIM_BUDDY_OFFLINE ||

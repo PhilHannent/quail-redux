@@ -67,7 +67,7 @@ class QQuailBListWindow : public QMainWindow
 
 		void showRemoveBuddy();
 		void showConfirmRemoveBuddy(GaimBuddy *buddy);
-		void showConfirmRemoveContact(GaimContact *contact);
+		void showConfirmRemoveContact(PurpleContact *contact);
 		void showConfirmRemoveChat(GaimChat *chat);
 		void showConfirmRemoveGroup(PurpleGroup *group);
 
