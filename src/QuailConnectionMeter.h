@@ -49,17 +49,17 @@ class QQuailConnectionMeter : public QHBox
 	Q_OBJECT
 
 	public:
-		QQuailConnectionMeter(GaimConnection *gc, QWidget *parent = NULL,
+		QQuailConnectionMeter(PurpleConnection *gc, QWidget *parent = NULL,
 							 const char *name = NULL, WFlags fl = 0);
 		virtual ~QQuailConnectionMeter();
 
 		void update(QString str, int totalSteps, int progress);
 
-		GaimConnection *getConnection() const;
+		PurpleConnection *getConnection() const;
 
 	private:
 		QQuailConnectionProgressBar *progressBar;
-		GaimConnection *gc;
+		PurpleConnection *gc;
 };
 
 class QQuailConnectionMeters : public QVBox
@@ -74,9 +74,9 @@ class QQuailConnectionMeters : public QVBox
 		void addMeter(QQuailConnectionMeter *meter);
 		void removeMeter(QQuailConnectionMeter *meter);
 
-		QQuailConnectionMeter *addConnection(GaimConnection *gc);
+		QQuailConnectionMeter *addConnection(PurpleConnection *gc);
 
-		QQuailConnectionMeter *findMeter(GaimConnection *gc);
+		QQuailConnectionMeter *findMeter(PurpleConnection *gc);
 
 	public:
 		QList<QQuailConnectionMeter> meters;

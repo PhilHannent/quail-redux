@@ -48,7 +48,7 @@ QQuailConnectionProgressBar::setIndicator(QString &str, int progress,
 /**************************************************************************
  * QQuailConnectionMeter
  **************************************************************************/
-QQuailConnectionMeter::QQuailConnectionMeter(GaimConnection *gc,
+QQuailConnectionMeter::QQuailConnectionMeter(PurpleConnection *gc,
 										   QWidget *parent,
 										   const char *name, WFlags fl)
 	: QHBox(parent, name, fl), gc(gc)
@@ -84,7 +84,7 @@ QQuailConnectionMeter::update(QString, int progress, int totalSteps)
 //	progressBar->setIndicator(str, progress, totalSteps);
 }
 
-GaimConnection *
+PurpleConnection *
 QQuailConnectionMeter::getConnection() const
 {
 	return gc;
@@ -120,7 +120,7 @@ QQuailConnectionMeters::removeMeter(QQuailConnectionMeter *meter)
 }
 
 QQuailConnectionMeter *
-QQuailConnectionMeters::addConnection(GaimConnection *gc)
+QQuailConnectionMeters::addConnection(PurpleConnection *gc)
 {
 	QQuailConnectionMeter *meter;
 
@@ -132,7 +132,7 @@ QQuailConnectionMeters::addConnection(GaimConnection *gc)
 }
 
 QQuailConnectionMeter *
-QQuailConnectionMeters::findMeter(GaimConnection *gc)
+QQuailConnectionMeters::findMeter(PurpleConnection *gc)
 {
 	QQuailConnectionMeter *meter;
 

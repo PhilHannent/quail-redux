@@ -125,13 +125,13 @@ QQuailAccountListItem::updatePulse()
  * QQuailAccountsWindow gaim callbacks
  **************************************************************************/
 static void
-signedOnCb(GaimConnection *gc, QQuailAccountsWindow *win)
+signedOnCb(PurpleConnection *gc, QQuailAccountsWindow *win)
 {
 	win->accountSignedOn(gaim_connection_get_account(gc));
 }
 
 static void
-signedOffCb(GaimConnection *gc, QQuailAccountsWindow *win)
+signedOffCb(PurpleConnection *gc, QQuailAccountsWindow *win)
 {
 	win->accountSignedOff(gaim_connection_get_account(gc));
 }
@@ -506,7 +506,7 @@ QQuailAccountsWindow::getItemFromAccount(PurpleAccount *account)
 }
 
 static void
-qQuailConnConnectProgress(GaimConnection *gc, const char *text,
+qQuailConnConnectProgress(PurpleConnection *gc, const char *text,
 						 size_t step, size_t step_count)
 {
 	QQuailConnectionMeters *meters;
@@ -522,7 +522,7 @@ qQuailConnConnectProgress(GaimConnection *gc, const char *text,
 }
 
 static void
-qQuailConnConnected(GaimConnection *gc)
+qQuailConnConnected(PurpleConnection *gc)
 {
 	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QQuailConnectionMeter *meter;
@@ -534,7 +534,7 @@ qQuailConnConnected(GaimConnection *gc)
 }
 
 static void
-qQuailConnDisconnected(GaimConnection *gc)
+qQuailConnDisconnected(PurpleConnection *gc)
 {
 	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QQuailConnectionMeter *meter;
@@ -546,14 +546,14 @@ qQuailConnDisconnected(GaimConnection *gc)
 }
 
 static void
-qQuailConnNotice(GaimConnection *gc, const char *text)
+qQuailConnNotice(PurpleConnection *gc, const char *text)
 {
 	/* XXX */
 	gc = NULL;
 	text = NULL;
 }
 
-static GaimConnectionUiOps connUiOps =
+static PurpleConnectionUiOps connUiOps =
 {
 	qQuailConnConnectProgress,
 	qQuailConnConnected,
@@ -562,7 +562,7 @@ static GaimConnectionUiOps connUiOps =
 	NULL
 };
 
-GaimConnectionUiOps *
+PurpleConnectionUiOps *
 qQuailGetConnectionUiOps()
 {
 	return &connUiOps;

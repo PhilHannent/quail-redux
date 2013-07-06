@@ -33,9 +33,9 @@ QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
 		buildMenu((PurpleAccount *)gaim_accounts_get_all()->data);
 	else
 	{
-		GaimConnection *gc;
+		PurpleConnection *gc;
 
-		gc = (GaimConnection *)gaim_connections_get_all()->data;
+		gc = (PurpleConnection *)gaim_connections_get_all()->data;
 
 		buildMenu(gaim_connection_get_account(gc));
 	}
@@ -66,7 +66,7 @@ QQuailAccountBox::setCurrentAccount(PurpleAccount *account)
 			tempAccount = (PurpleAccount *)l->data;
 		else
 		{
-			GaimConnection *gc = (GaimConnection *)l->data;
+			PurpleConnection *gc = (PurpleConnection *)l->data;
 
 			tempAccount = gaim_connection_get_account(gc);
 		}
@@ -96,14 +96,14 @@ QQuailAccountBox::getCurrentAccount() const
 	}
 	else
 	{
-		GaimConnection *gc;
+		PurpleConnection *gc;
 
 		l = g_list_nth(gaim_connections_get_all(), index);
 
 		if (l == NULL)
 			return NULL;
 
-		gc = (GaimConnection *)l->data;
+		gc = (PurpleConnection *)l->data;
 
 		return gaim_connection_get_account(gc);
 	}
@@ -131,7 +131,7 @@ QQuailAccountBox::buildMenu(PurpleAccount *account)
 			tempAccount = (PurpleAccount *)l->data;
 		else
 		{
-			GaimConnection *gc = (GaimConnection *)l->data;
+			PurpleConnection *gc = (PurpleConnection *)l->data;
 
 			tempAccount = gaim_connection_get_account(gc);
 		}

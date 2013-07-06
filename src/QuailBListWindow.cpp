@@ -820,7 +820,7 @@ QQuailBListWindow::openChatSlot()
  * Gaim callbacks
  **************************************************************************/
 static void
-signedOnCb(GaimConnection *gc, GaimBuddyList *blist)
+signedOnCb(PurpleConnection *gc, GaimBuddyList *blist)
 {
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
@@ -828,7 +828,7 @@ signedOnCb(GaimConnection *gc, GaimBuddyList *blist)
 }
 
 static void
-signedOffCb(GaimConnection *gc, GaimBuddyList *blist)
+signedOffCb(PurpleConnection *gc, GaimBuddyList *blist)
 {
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 

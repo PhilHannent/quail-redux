@@ -114,6 +114,6 @@ class QQuailAccountsWindow : public QMainWindow
 		QListView *accountsView;
 };
 
-GaimConnectionUiOps *qQuailGetConnectionUiOps();
+PurpleConnectionUiOps *qQuailGetConnectionUiOps();
 
 #endif /* _QGAIM_ACCOUNTS_WINDOW_H_ */
