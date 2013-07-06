@@ -44,8 +44,8 @@ class QQuailBListWindow : public QMainWindow
 		~QQuailBListWindow();
 
 		/* Functions our blist UI must access. */
-		void setGaimBlist(GaimBuddyList *list);
-		GaimBuddyList *getGaimBlist() const;
+		void setGaimBlist(PurpleBuddyList *list);
+		PurpleBuddyList *getGaimBlist() const;
 
 		void accountSignedOn(PurpleAccount *acocunt);
 		void accountSignedOff(PurpleAccount *acocunt);
@@ -66,7 +66,7 @@ class QQuailBListWindow : public QMainWindow
 		void showAddGroup();
 
 		void showRemoveBuddy();
-		void showConfirmRemoveBuddy(GaimBuddy *buddy);
+		void showConfirmRemoveBuddy(PurpleBuddy *buddy);
 		void showConfirmRemoveContact(PurpleContact *contact);
 		void showConfirmRemoveChat(PurpleChat *chat);
 		void showConfirmRemoveGroup(PurpleGroup *group);
@@ -76,7 +76,7 @@ class QQuailBListWindow : public QMainWindow
 
 		void showAccountsWindow();
 		void blistToggled(bool state);
-		void openImSlot(GaimBuddy *buddy);
+		void openImSlot(PurpleBuddy *buddy);
 		void openImSlot();
 		void openChatSlot(PurpleChat *chat);
 		void openChatSlot();

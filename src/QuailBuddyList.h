@@ -76,27 +76,27 @@ class QQuailBuddyList : public QListView
 		QQuailBuddyList(QWidget *parent = NULL, const char *name = NULL);
 		virtual ~QQuailBuddyList();
 
-		void setGaimBlist(GaimBuddyList *list);
-		GaimBuddyList *getGaimBlist() const;
+		void setGaimBlist(PurpleBuddyList *list);
+		PurpleBuddyList *getGaimBlist() const;
 
 		void updateNode(GaimBlistNode *node);
 
 		void reload(bool remove = false);
 
-		GaimBuddy *getSelectedBuddy() const;
+		PurpleBuddy *getSelectedBuddy() const;
 
 	signals:
-		void openIm(GaimBuddy *buddy);
+		void openIm(PurpleBuddy *buddy);
 		void addBuddy(PurpleGroup *group);
 		void addChat(PurpleGroup *group);
 		void joinChat(PurpleChat *chat);
-		void removeBuddy(GaimBuddy *buddy);
+		void removeBuddy(PurpleBuddy *buddy);
 		void removeContact(PurpleContact *contact);
 		void removeChat(PurpleChat *chat);
 		void removeGroup(PurpleGroup *group);
 
 	protected:
-		void populateBuddyMenu(GaimBuddy *buddy, QPopupMenu *menu,
+		void populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 							   bool asContact);
 		void populateContactMenu(PurpleContact *contact, QPopupMenu *menu);
 		void populateChatMenu(PurpleChat *chat, QPopupMenu *menu);
@@ -147,7 +147,7 @@ class QQuailBuddyList : public QListView
 		void updateChat(GaimBlistNode *node);
 
 	private:
-		GaimBuddyList *gaimBlist;
+		PurpleBuddyList *gaimBlist;
 
 		QTimer *saveTimer;
 };

@@ -88,8 +88,8 @@ QQuailBListWindow::buildInterface()
 			this, SLOT(nodeChanged(QListViewItem *)));
 	connect(buddylist, SIGNAL(doubleClicked(QListViewItem *)),
 			this, SLOT(doubleClickList(QListViewItem *)));
-	connect(buddylist, SIGNAL(openIm(GaimBuddy *)),
-			this, SLOT(openImSlot(GaimBuddy *)));
+	connect(buddylist, SIGNAL(openIm(PurpleBuddy *)),
+			this, SLOT(openImSlot(PurpleBuddy *)));
 
 	connect(buddylist, SIGNAL(addBuddy(PurpleGroup *)),
 			this, SLOT(showAddBuddy(PurpleGroup *)));
@@ -99,8 +99,8 @@ QQuailBListWindow::buildInterface()
 	connect(buddylist, SIGNAL(joinChat(PurpleChat *)),
 			this, SLOT(openChatSlot(PurpleChat *)));
 
-	connect(buddylist, SIGNAL(removeBuddy(GaimBuddy *)),
-			this, SLOT(showConfirmRemoveBuddy(GaimBuddy *)));
+	connect(buddylist, SIGNAL(removeBuddy(PurpleBuddy *)),
+			this, SLOT(showConfirmRemoveBuddy(PurpleBuddy *)));
 	connect(buddylist, SIGNAL(removeContact(PurpleContact *)),
 			this, SLOT(showConfirmRemoveContact(PurpleContact *)));
 	connect(buddylist, SIGNAL(removeGroup(PurpleGroup *)),
@@ -270,12 +270,12 @@ QQuailBListWindow::buildToolBar()
 }
 
 void
-QQuailBListWindow::setGaimBlist(GaimBuddyList *list)
+QQuailBListWindow::setGaimBlist(PurpleBuddyList *list)
 {
 	buddylist->setGaimBlist(list);
 }
 
-GaimBuddyList *
+PurpleBuddyList *
 QQuailBListWindow::getGaimBlist() const
 {
 	return buddylist->getGaimBlist();
@@ -502,7 +502,7 @@ QQuailBListWindow::showAddGroup()
 }
 
 static void
-removeBuddyCb(GaimBuddy *buddy)
+removeBuddyCb(PurpleBuddy *buddy)
 {
 	PurpleGroup *group;
 	GaimConversation *conv;
@@ -539,7 +539,7 @@ removeContactCb(PurpleContact *contact)
 
 	for (bnode = cnode->child; bnode != NULL; bnode = bnode->next)
 	{
-		GaimBuddy *buddy = (GaimBuddy *)bnode;
+		PurpleBuddy *buddy = (PurpleBuddy *)bnode;
 
 		if (gaim_account_get_connection(buddy->account) != NULL)
 		{
@@ -573,7 +573,7 @@ removeGroupCb(PurpleGroup *group)
 			{
 				if (GAIM_BLIST_NODE_IS_BUDDY(child))
 				{
-					GaimBuddy *buddy = (GaimBuddy *)child;
+					PurpleBuddy *buddy = (PurpleBuddy *)child;
 					GaimConversation *conv;
 
 					conv = gaim_find_conversation(buddy->name);
@@ -617,7 +617,7 @@ QQuailBListWindow::showRemoveBuddy()
 
 	if (GAIM_BLIST_NODE_IS_BUDDY(node))
 	{
-		showConfirmRemoveBuddy((GaimBuddy *)node);
+		showConfirmRemoveBuddy((PurpleBuddy *)node);
 	}
 	else if (GAIM_BLIST_NODE_IS_CONTACT(node))
 	{
@@ -634,7 +634,7 @@ QQuailBListWindow::showRemoveBuddy()
 }
 
 void
-QQuailBListWindow::showConfirmRemoveBuddy(GaimBuddy *buddy)
+QQuailBListWindow::showConfirmRemoveBuddy(PurpleBuddy *buddy)
 {
 	QString name = buddy->name;
 
@@ -652,7 +652,7 @@ QQuailBListWindow::showConfirmRemoveBuddy(GaimBuddy *buddy)
 void
 QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
 {
-	GaimBuddy *buddy = gaim_contact_get_priority_buddy(contact);
+	PurpleBuddy *buddy = gaim_contact_get_priority_buddy(contact);
 
 	if (buddy == NULL)
 		return;
@@ -741,7 +741,7 @@ QQuailBListWindow::blistToggled(bool)
 }
 
 void
-QQuailBListWindow::openImSlot(GaimBuddy *buddy)
+QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 {
 	if (buddy == NULL)
 		buddy = buddylist->getSelectedBuddy();
@@ -820,7 +820,7 @@ QQuailBListWindow::openChatSlot()
  * Gaim callbacks
  **************************************************************************/
 static void
-signedOnCb(PurpleConnection *gc, GaimBuddyList *blist)
+signedOnCb(PurpleConnection *gc, PurpleBuddyList *blist)
 {
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
@@ -828,7 +828,7 @@ signedOnCb(PurpleConnection *gc, GaimBuddyList *blist)
 }
 
 static void
-signedOffCb(PurpleConnection *gc, GaimBuddyList *blist)
+signedOffCb(PurpleConnection *gc, PurpleBuddyList *blist)
 {
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
@@ -839,7 +839,7 @@ signedOffCb(PurpleConnection *gc, GaimBuddyList *blist)
  * blist UI
  **************************************************************************/
 static void
-qQuailBlistNewList(GaimBuddyList *blist)
+qQuailBlistNewList(PurpleBuddyList *blist)
 {
 	QQuailBListWindow *win = qQuailGetMainWindow()->getBlistWindow();
 	blist->ui_data = win;
@@ -858,7 +858,7 @@ qQuailBlistNewNode(GaimBlistNode *)
 }
 
 static void
-qQuailBlistShow(GaimBuddyList *blist)
+qQuailBlistShow(PurpleBuddyList *blist)
 {
 	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
 
@@ -866,14 +866,14 @@ qQuailBlistShow(GaimBuddyList *blist)
 }
 
 static void
-qQuailBlistUpdate(GaimBuddyList *blist, GaimBlistNode *node)
+qQuailBlistUpdate(PurpleBuddyList *blist, GaimBlistNode *node)
 {
 	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
 	blist_win->updateNode(node);
 }
 
 static void
-qQuailBlistRemove(GaimBuddyList *blist, GaimBlistNode *node)
+qQuailBlistRemove(PurpleBuddyList *blist, GaimBlistNode *node)
 {
 	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
 	QQuailBListItem *item = (QQuailBListItem *)node->ui_data;
@@ -893,7 +893,7 @@ qQuailBlistRemove(GaimBuddyList *blist, GaimBlistNode *node)
 }
 
 static void
-qQuailBlistDestroy(GaimBuddyList *blist)
+qQuailBlistDestroy(PurpleBuddyList *blist)
 {
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
@@ -903,7 +903,7 @@ qQuailBlistDestroy(GaimBuddyList *blist)
 }
 
 static void
-qQuailBlistSetVisible(GaimBuddyList *blist, gboolean show)
+qQuailBlistSetVisible(PurpleBuddyList *blist, gboolean show)
 {
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 

@@ -156,7 +156,7 @@ QQuailAddBuddyDialog::accept()
 	QString alias = aliasEntry->text();
 	QString group = groupCombo->currentText();
 	PurpleAccount *account;
-	GaimBuddy *b;
+	PurpleBuddy *b;
 	PurpleGroup *g;
 
 	if (screenname.isEmpty())

@@ -300,7 +300,7 @@ QQuailConversation::updateTabIcon()
 	QQuailConvWindow *qwin;
 	GaimConvWindow *win;
 	PurpleAccount *account;
-	GaimBuddy *b;
+	PurpleBuddy *b;
 
 	win = gaim_conversation_get_window(conv);
 	qwin = (QQuailConvWindow *)win->ui_data;
@@ -749,7 +749,7 @@ QQuailConvWindow::addConversation(GaimConversation *conv)
 {
 	QQuailConversation *qconv = NULL;
 	PurpleAccount *account;
-	GaimBuddy *b;
+	PurpleBuddy *b;
 
 	if (gaim_conversation_get_type(conv) == GAIM_CONV_IM)
 		qconv = new QQuailConvIm(conv, tabs);
@@ -948,7 +948,7 @@ QQuailConvWindow::closeConv()
 }
 
 static void
-removeBuddyCb(GaimBuddy *buddy)
+removeBuddyCb(PurpleBuddy *buddy)
 {
 	PurpleGroup *group;
 	GaimConversation *conv;
@@ -977,7 +977,7 @@ QQuailConvWindow::addRemoveBuddySlot()
 	GaimConversation *conv = gaim_conv_window_get_active_conversation(win);
 	PurpleAccount *account = gaim_conversation_get_account(conv);
 	const char *name = gaim_conversation_get_name(conv);
-	GaimBuddy *buddy;
+	PurpleBuddy *buddy;
 
 	if ((buddy = gaim_find_buddy(account, name)) == NULL)
 	{
