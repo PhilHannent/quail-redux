@@ -26,7 +26,7 @@
 #include <QVariant>
 #include <QWidget>
 #include <QMainWindow>
-#include <QListWidget>
+#include <QTableWidget>
 
 class QAction;
 class QPixmap;
@@ -35,13 +35,13 @@ class QToolBar;
 class QToolButton;
 class QVBoxLayout;
 
-class QQuailAccountListItem : public QObject, public QListWidgetItem
+class QQuailAccountItem : public QObject, public QTableWidgetItem
 {
 	Q_OBJECT
 
 	public:
-		QQuailAccountListItem(QListView *parent, int index);
-		~QQuailAccountListItem();
+        QQuailAccountItem(int index);
+        ~QQuailAccountItem();
 
 		void startPulse(QPixmap onlinePixmap);
 		void stopPulse();
@@ -92,12 +92,12 @@ class QQuailAccountsWindow : public QMainWindow
 		void showBlist();
 
 		void accountsToggled(bool state);
-        void accountSelected(QListWidgetItem *item);
+        void accountSelected(QTableWidgetItem *item);
 
 		void resizeEvent(QResizeEvent *event);
 
 	protected:
-		QQuailAccountListItem *getItemFromAccount(PurpleAccount *account);
+        QQuailAccountItem *getItemFromAccount(PurpleAccount *account);
 
 	private:
 		QMainWindow *parentMainWindow;
@@ -111,7 +111,7 @@ class QQuailAccountsWindow : public QMainWindow
 		QAction *connectButton;
 		QAction *disconnectButton;
 
-		QListView *accountsView;
+        QTableWidget *accountsWidget;
 };
 
 PurpleConnectionUiOps *qQuailGetConnectionUiOps();

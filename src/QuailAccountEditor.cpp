@@ -219,7 +219,7 @@ QQuailAccountEditor::buildProtocolTab()
 	int row = 0;
 	QString strValue;
 	int intValue;
-	bool boolValue;
+    bool boolValue = false;
 
     protocolWidget = new QWidget(this);
 	/* Create the main vbox */

@@ -346,14 +346,14 @@ QQuailConvChat::write(const char *who, const char *message,
 void
 QQuailConvChat::addUser(const char *user)
 {
-	QListViewItem *item = new QListViewItem(userList);
+    QListWidgetItem *item = new QListWidgetItem(userList);
 
 	if (purple_conv_chat_is_user_ignored(chat, user))
-		item->setText(0, "X"); /* XXX */
+        item->setText("X"); /* XXX */
 	else
-		item->setText(0, " ");
+        item->setText(" ");
 
-	item->setText(1, user);
+    item->setText(user);
 	userList->insertItem(item);
 }
 
@@ -367,7 +367,7 @@ QQuailConvChat::addUsers(GList *users)
 void
 QQuailConvChat::renameUser(const char *oldName, const char *newName)
 {
-	QListViewItem *item;
+    QListWidgetItem *item;
 
 	for (item = userList->firstChild();
 		 item != NULL;
@@ -384,7 +384,7 @@ QQuailConvChat::renameUser(const char *oldName, const char *newName)
 void
 QQuailConvChat::removeUser(const char *user)
 {
-	QListViewItem *item;
+    QListWidgetItem *item;
 
 	for (item = userList->firstChild();
 		 item != NULL;

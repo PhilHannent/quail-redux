@@ -203,7 +203,7 @@ QQuailBListItem::paintCell(QPainter *p, const QPalette &cg, int column,
     else if (PURPLE_BLIST_NODE_IS_GROUP(node))
 		paintGroupInfo(p, cg, column, width, align, lmarg, itMarg);
 	else
-		QListViewItem::paintCell(p, cg, column, width, align);
+        QListWidgetItem::paintCell(p, cg, column, width, align);
 
 	dirty = false;
 }
@@ -367,7 +367,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
                 _cg.setColor(QPalette::Text, cg.dark());
 			}
 
-			QListViewItem::paintCell(p, _cg, column, width, align);
+            QListWidgetItem::paintCell(p, _cg, column, width, align);
 		}
 	}
 	else
@@ -380,7 +380,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
             _cg.setColor(QPalette::Text, cg.dark());
 		}
 
-		QListViewItem::paintCell(p, _cg, column, width, align);
+        QListWidgetItem::paintCell(p, _cg, column, width, align);
 	}
 }
 
@@ -555,13 +555,13 @@ QQuailBuddyList::QQuailBuddyList(QWidget *parent, const char *name)
 	QPEApplication::setStylusOperation(viewport(),
 									   QPEApplication::RightOnHold);
 
-	connect(this, SIGNAL(expanded(QListViewItem *)),
-			this, SLOT(nodeExpandedSlot(QListViewItem *)));
-	connect(this, SIGNAL(collapsed(QListViewItem *)),
-			this, SLOT(nodeCollapsedSlot(QListViewItem *)));
-	connect(this, SIGNAL(rightButtonPressed(QListViewItem *,
+    connect(this, SIGNAL(expanded(QListWidgetItem *)),
+            this, SLOT(nodeExpandedSlot(QListWidgetItem *)));
+    connect(this, SIGNAL(collapsed(QListWidgetItem *)),
+            this, SLOT(nodeCollapsedSlot(QListWidgetItem *)));
+    connect(this, SIGNAL(rightButtonPressed(QListWidgetItem *,
 											const QPoint &, int)),
-			this, SLOT(showContextMenuSlot(QListViewItem *,
+            this, SLOT(showContextMenuSlot(QListWidgetItem *,
 										   const QPoint &, int)));
 
 	saveTimer = new QTimer(this);
@@ -941,7 +941,7 @@ QQuailBuddyList::resizeEvent(QResizeEvent *)
 }
 
 void
-QQuailBuddyList::nodeExpandedSlot(QListViewItem *_item)
+QQuailBuddyList::nodeExpandedSlot(QListWidgetItem *_item)
 {
 	QQuailBListItem *item = (QQuailBListItem *)_item;
 	PurpleBlistNode *node;
@@ -962,7 +962,7 @@ QQuailBuddyList::nodeExpandedSlot(QListViewItem *_item)
 }
 
 void
-QQuailBuddyList::nodeCollapsedSlot(QListViewItem *_item)
+QQuailBuddyList::nodeCollapsedSlot(QListWidgetItem *_item)
 {
 	QQuailBListItem *item = (QQuailBListItem *)_item;
 	PurpleBlistNode *node;
@@ -1046,7 +1046,7 @@ QQuailBuddyList::saveBlistSlot()
 }
 
 void
-QQuailBuddyList::showContextMenuSlot(QListViewItem *_item,
+QQuailBuddyList::showContextMenuSlot(QListWidgetItem *_item,
 									const QPoint &point, int)
 {
 	QQuailBListItem *item = (QQuailBListItem *)_item;
