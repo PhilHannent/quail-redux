@@ -830,13 +830,13 @@ QQuailConvWindow::updateAddRemoveButton()
 						purple_conversation_get_name(conv)) == NULL)
 	{
 		addRemoveButton->setText(tr("Add"));
-		addRemoveButton->setIconSet(
+        addRemoveButton->setIcon(
             QIcon(QPixmap(":/data/images/actions/add.png")));
 	}
 	else
 	{
 		addRemoveButton->setText(tr("Remove"));
-		addRemoveButton->setIconSet(
+        addRemoveButton->setIcon(
             QIcon(QPixmap(":/data/images/actions/remove.png")));
 	}
 }
@@ -906,13 +906,13 @@ QQuailConvWindow::tabChanged(QWidget *widget)
 		if (purple_find_buddy(account, purple_conversation_get_name(conv)) == NULL)
 		{
 			addRemoveButton->setText(tr("Add"));
-			addRemoveButton->setIconSet(
+            addRemoveButton->setIcon(
                 QIcon(QPixmap(":/data/images/actions/add.png")));
 		}
 		else
 		{
 			addRemoveButton->setText(tr("Remove"));
-			addRemoveButton->setIconSet(
+            addRemoveButton->setIcon(
                 QIcon(QPixmap(":/data/images/actions/remove.png")));
 		}
 	}
@@ -1093,10 +1093,10 @@ QQuailConvWindow::setupToolbar()
 	button = new QToolButton(toolbar, "blist");
 	userMenuButton = button;
 	button->setAutoRaise(true);
-    button->setIconSet(QIcon(QPixmap(":/data/images/actions/user.png")));
+    button->setIcon(QIcon(QPixmap(":/data/images/actions/user.png")));
 	button->setEnabled(false);
 
-	userMenu = new QPopupMenu(button);
+    userMenu = new QMenu(button);
 	button->setPopup(userMenu);
 	button->setPopupDelay(0);
 

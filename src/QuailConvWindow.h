@@ -205,8 +205,8 @@ class QQuailConvWindow : public QMainWindow
 		QAction *infoButton;
 		QAction *sendButton;
 
-		QPopupMenu *userMenu;
-		QPopupMenu *formatMenu;
+        QMenu *userMenu;
+        QMenu *formatMenu;
 
 		QAction *userListToggle;
 };

@@ -665,7 +665,7 @@ QQuailBuddyList::getSelectedBuddy() const
 }
 
 void
-QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
+QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 								  bool asContact)
 {
 	PurplePlugin *prpl = NULL;
@@ -779,7 +779,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 
 				if (!showOffline && GAIM_BUDDY_IS_ONLINE(buddy2))
 				{
-					QPopupMenu *submenu = new QPopupMenu(this);
+                    QMenu *submenu = new QMenu(this);
 
 					populateBuddyMenu(buddy2, submenu, false);
 
@@ -793,7 +793,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QPopupMenu *menu,
 }
 
 void
-QQuailBuddyList::populateContactMenu(PurpleContact *contact, QPopupMenu *menu)
+QQuailBuddyList::populateContactMenu(PurpleContact *contact, QMenu *menu)
 {
 	PurplePlugin *prpl = NULL;
 	PurplePluginProtocolInfo *prplInfo = NULL;
@@ -825,7 +825,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QPopupMenu *menu)
 }
 
 void
-QQuailBuddyList::populateChatMenu(PurpleChat *chat, QPopupMenu *menu)
+QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
 {
 	PurplePlugin *prpl = NULL;
 	PurplePluginProtocolInfo *prplInfo = NULL;
@@ -877,7 +877,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QPopupMenu *menu)
 }
 
 void
-QQuailBuddyList::populateGroupMenu(PurpleGroup *, QPopupMenu *menu)
+QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
 {
 	QAction *a;
 
@@ -1037,7 +1037,7 @@ QQuailBuddyList::showContextMenuSlot(QListWidgetItem *_item,
 									const QPoint &point, int)
 {
 	QQuailBListItem *item = (QQuailBListItem *)_item;
-	QPopupMenu *menu = NULL;
+    QMenu *menu = NULL;
 	PurpleBlistNode *node;
 
 	if (item == NULL)
@@ -1045,7 +1045,7 @@ QQuailBuddyList::showContextMenuSlot(QListWidgetItem *_item,
 
 	node = item->getBlistNode();
 
-	menu = new QPopupMenu(this);
+    menu = new QMenu(this);
 
     if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 	{

@@ -32,7 +32,7 @@ class QQuailPrefPage : public QWidget
 
 	public:
 		QQuailPrefPage(QWidget *parent = 0, const char *name = 0)
-			: QWidget(parent, name), dirty(false) { }
+            : QWidget(parent), dirty(false) { }
 
 		void setDirty(bool dirty) { this->dirty = dirty; }
 		bool isDirty() const { return dirty; }

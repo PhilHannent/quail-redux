@@ -55,7 +55,6 @@ QQuailBListWindow::QQuailBListWindow(QMainWindow *parent)
 {
 	connect(parent, SIGNAL(pixmapSizeChanged(bool)),
 			this, SLOT(setUsesBigPixmaps(bool)));
-	setUsesBigPixmaps(parent->usesBigPixmaps());
 
 	buildInterface();
 }
@@ -115,36 +114,30 @@ QQuailBListWindow::buildToolBar()
 	QLabel *label;
 	QToolButton *button;
 
-	setToolBarsMovable(false);
-
 	toolbar = new QToolBar(this);
-	toolbar->setHorizontalStretchable(TRUE);
-
+    toolbar->setMovable(false);
 	/* IM */
-	a = new QAction(tr("Send IM"),
-                    QIcon(QPixmap(":/data/images/actions/new-im.png")),
-					QString::null, 0, this, 0);
-	imButton = a;
-    toolbar->addAction(a);
-	a->setEnabled(false);
+    imButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-im.png")),
+                    tr("Send IM"),
+                    this);
+    toolbar->addAction(imButton);
+    imButton->setEnabled(false);
 
-	connect(a, SIGNAL(activated()),
+    connect(imButton, SIGNAL(activated()),
 			this, SLOT(openImSlot()));
 
 	/* Chat */
-	a = new QAction(tr("Open Chat"), newChatIconSet,
-					QString::null, 0, this, 0);
-	chatButton = a;
-    toolbar->addAction(a);
-    a->setEnabled(false);
+    chatButton = new QAction(newChatIconSet, tr("Open Chat"), this);
+    toolbar->addAction(chatButton);
+    chatButton->setEnabled(false);
 
-	connect(a, SIGNAL(activated()),
+    connect(chatButton, SIGNAL(activated()),
 			this, SLOT(openChatSlot()));
 
 	toolbar->addSeparator();
 
 	/* Add */
-	button = new QToolButton(toolbar, "add");
+    button = new QToolButton(toolbar);
 	button->setAutoRaise(true);
     button->setIcon(QIcon(QPixmap(":/data/images/actions/add.png")));
 	button->setEnabled(false);
@@ -155,101 +148,86 @@ QQuailBListWindow::buildToolBar()
     //button->setPopupDelay(0);
 
 	/* Add Buddy */
-	a = new QAction(tr("Add Buddy"),
-                    QIcon(QPixmap(":/data/images/actions/user.png")),
-					QString::null, 0, this, 0);
-	addBuddyButton = a;
-    addMenu->addAction(a);
-
-	connect(a, SIGNAL(activated()),
+    addBuddyButton = new QAction(QIcon(QPixmap(":/data/images/actions/user.png")),
+                                 tr("Add Buddy"),
+                                 this);
+    addMenu->addAction(addBuddyButton);
+    connect(addBuddyButton, SIGNAL(activated()),
 			this, SLOT(showAddBuddy()));
 
 	/* Add Chat */
-	a = new QAction(tr("Add Chat"), newChatIconSet,
-					QString::null, 0, this, 0);
-	addChatButton = a;
-	a->addTo(addMenu);
-
-	connect(a, SIGNAL(activated()),
+    addChatButton = new QAction(newChatIconSet, tr("Add Chat"), this);
+    addMenu->addAction(addChatButton);
+    connect(addChatButton, SIGNAL(activated()),
 			this, SLOT(showAddChat()));
 
 	/* Add Group */
-	a = new QAction(tr("Add Group"),
-                    QIcon(QPixmap(":/data/images/actions/new-group.png")),
-					QString::null, 0, this, 0);
-	addGroupButton = a;
-	a->addTo(addMenu);
-
-	connect(a, SIGNAL(activated()),
+    addGroupButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-group.png")),
+                                 tr("Add Group"),
+                                 this);
+    addMenu->addAction(addGroupButton);
+    connect(addGroupButton, SIGNAL(activated()),
 			this, SLOT(showAddGroup()));
 
 	/* Remove */
-	a = new QAction(tr("Remove"),
-                    QIcon(QPixmap(":/data/images/actions/remove.png")),
-					QString::null, 0, this, 0);
-	removeButton = a;
-	a->addTo(toolbar);
-	a->setEnabled(false);
-
-	connect(a, SIGNAL(activated()),
+    removeButton = new QAction(QIcon(QPixmap(":/data/images/actions/remove.png")),
+                               tr("Remove"),
+                               this);
+    toolbar->addAction(removeButton);
+    removeButton->setEnabled(false);
+    connect(removeButton, SIGNAL(activated()),
 			this, SLOT(showRemoveBuddy()));
 
 	toolbar->addSeparator();
 
 	/* Settings menu */
-	button = new QToolButton(toolbar, "settings");
+    button = new QToolButton(toolbar);
 	button->setAutoRaise(true);
-    button->setIconSet(QIcon(QPixmap(":/data/images/actions/settings.png")));
+    button->setIcon(QIcon(QPixmap(":/data/images/actions/settings.png")));
 
-	settingsMenu = new QPopupMenu(button);
+    settingsMenu = new QMenu(button);
 	button->setPopup(settingsMenu);
-	button->setPopupDelay(0);
 
 	/* Show Offline Buddies */
-	a = new QAction(tr("Show Offline Buddies"),
-        QIcon(QPixmap(":/data/images/actions/offline_buddies.png")),
-		QString::null, 0, this, 0, true);
-	a->setOn(purple_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"));
-	showOfflineButton = a;
-	a->addTo(settingsMenu);
-
-	connect(a, SIGNAL(toggled(bool)),
+    showOfflineButton = new QAction(QIcon(QPixmap(":/data/images/actions/offline_buddies.png")),
+                                    tr("Show Offline Buddies"),
+                                    this);
+    showOfflineButton->setChecked(purple_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"));
+    settingsMenu->addAction(showOfflineButton);
+    connect(showOfflineButton, SIGNAL(toggled(bool)),
 			this, SLOT(showOfflineBuddies(bool)));
 
 	/* Separator */
-	settingsMenu->insertSeparator();
+    settingsMenu->insertSeparator();
 
 	/* Preferences */
-	a = new QAction(tr("Preferences"), QString::null, 0, this, 0);
-	a->addTo(settingsMenu);
-
+    a = new QAction(tr("Preferences"), this);
+    settingsMenu->addAction(a);
 	connect(a, SIGNAL(activated()),
 			this, SLOT(showPreferencesSlot()));
 
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);
 	label->setText("");
-	toolbar->setStretchableWidget(label);
+    //toolbar->setStretchableWidget(label);
 
 	/* Now we're going to construct the toolbar on the right. */
 	toolbar->addSeparator();
 
 	/* Buddy List */
-	blistButton = new QAction(tr("Buddy List"),
-        QIcon(QPixmap(":/data/images/actions/blist.png")),
-		QString::null, 0, this, 0, true);
-	blistButton->setOn(true);
-	blistButton->addTo(toolbar);
-
+    blistButton = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
+                              tr("Buddy List"),
+                              this);
+    blistButton->setChecked(true);
+    toolbar->addAction(blistButton);
 	connect(blistButton, SIGNAL(toggled(bool)),
 			this, SLOT(blistToggled(bool)));
 
 	/* Accounts */
-	a = new QAction(tr("Accounts"),
-                    QIcon(QPixmap(":/data/images/actions/accounts.png")),
-					QString::null, 0, this, 0);
-	a->addTo(toolbar);
-
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
+                    tr("Accounts"),
+                    this);
+    toolbar->addAction(a);
 	connect(a, SIGNAL(activated()),
 			this, SLOT(showAccountsWindow()));
 
@@ -340,8 +318,8 @@ QQuailBListWindow::nodeChanged(QListWidgetItem *_item)
 
 	if (_item == NULL)
 	{
-		imButton->setIconSet(newImIconSet);
-		chatButton->setIconSet(newChatIconSet);
+        imButton->setIcon(newImIconSet);
+        chatButton->setIcon(newChatIconSet);
 		removeButton->setEnabled(false);
 	}
 	else
@@ -354,18 +332,18 @@ QQuailBListWindow::nodeChanged(QListWidgetItem *_item)
 
         if (PURPLE_BLIST_NODE_IS_BUDDY(node) || PURPLE_BLIST_NODE_IS_CONTACT(node))
 		{
-			imButton->setIconSet(sendImIconSet);
-			chatButton->setIconSet(newChatIconSet);
+            imButton->setIcon(sendImIconSet);
+            chatButton->setIcon(newChatIconSet);
 		}
         else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 		{
-			imButton->setIconSet(newImIconSet);
-			chatButton->setIconSet(openChatIconSet);
+            imButton->setIcon(newImIconSet);
+            chatButton->setIcon(openChatIconSet);
 		}
 		else
 		{
-			imButton->setIconSet(newImIconSet);
-			chatButton->setIconSet(newChatIconSet);
+            imButton->setIcon(newImIconSet);
+            chatButton->setIcon(newChatIconSet);
 		}
 
 		removeButton->setEnabled(true);
@@ -396,7 +374,7 @@ QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 
 	if (group == NULL)
 	{
-		item = (QQuailBListItem *)buddylist->selectedItem();
+        item = (QQuailBListItem *)buddylist->currentItem();
 
 		if (item != NULL)
 		{
@@ -414,7 +392,7 @@ QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 		}
 	}
 
-	dialog = new QQuailAddBuddyDialog(this, "", true);
+    dialog = new QQuailAddBuddyDialog(this, "");
 
 	if (group != NULL)
 		dialog->setGroup(group->name);
@@ -437,7 +415,7 @@ QQuailBListWindow::showAddChat(PurpleGroup *group)
 
 	if (group == NULL)
 	{
-		item = (QQuailBListItem *)buddylist->selectedItem();
+        item = (QQuailBListItem *)buddylist->currentItem();
 
 		if (item != NULL)
 		{
@@ -455,7 +433,7 @@ QQuailBListWindow::showAddChat(PurpleGroup *group)
 		}
 	}
 
-	dialog = new QQuailAddChatDialog(this, "", true);
+    dialog = new QQuailAddChatDialog(this, "");
 
 	if (group != NULL)
 		dialog->setGroup(group->name);
@@ -475,7 +453,8 @@ addGroupCb(void *, const char *groupName)
 
 	group = purple_group_new(groupName);
 	purple_blist_add_group(group, NULL);
-	purple_blist_save();
+    //TODO: See if this is required any more
+    //purple_blist_save();
 }
 
 void
@@ -543,7 +522,8 @@ static void
 removeChatCb(PurpleChat *chat)
 {
 	purple_blist_remove_chat(chat);
-	purple_blist_save();
+    //TODO: See if this is required any more
+    //purple_blist_save();
 }
 
 static void
@@ -591,7 +571,8 @@ removeGroupCb(PurpleGroup *group)
 	}
 
 	purple_blist_remove_group(group);
-	purple_blist_save();
+    //TODO: See if this is required any more
+    //purple_blist_save();
 }
 
 void
@@ -600,7 +581,7 @@ QQuailBListWindow::showRemoveBuddy()
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
 
-	item = (QQuailBListItem *)buddylist->selectedItem();
+    item = (QQuailBListItem *)buddylist->currentItem();
 	node = item->getBlistNode();
 
     if (PURPLE_BLIST_NODE_IS_BUDDY(node))
@@ -725,7 +706,8 @@ QQuailBListWindow::showAccountsWindow()
 void
 QQuailBListWindow::blistToggled(bool)
 {
-	blistButton->setOn(true);
+    //TODO: Check to see if this should toggle
+    blistButton->setChecked(true);
 }
 
 void
@@ -772,7 +754,7 @@ QQuailBListWindow::openChatSlot(PurpleChat *chat)
 
 	if (chat == NULL)
 	{
-		item = (QQuailBListItem *)buddylist->selectedItem();
+        item = (QQuailBListItem *)buddylist->currentItem();
 
 		if (item != NULL)
 		{
@@ -792,7 +774,7 @@ QQuailBListWindow::openChatSlot(PurpleChat *chat)
 	{
 		QQuailJoinChatDialog *dialog;
 
-		dialog = new QQuailJoinChatDialog(this, "", true);
+        dialog = new QQuailJoinChatDialog(this, "");
 
 		dialog->showMaximized();
 	}
@@ -831,7 +813,7 @@ qQuailBlistNewList(PurpleBuddyList *blist)
 {
 	QQuailBListWindow *win = qQuailGetMainWindow()->getBlistWindow();
 	blist->ui_data = win;
-	win->setGaimBlist(blist);
+    win->setBlist(blist);
 
 	/* Setup some signal handlers */
 	purple_signal_connect(purple_connections_get_handle(), "signed-on",

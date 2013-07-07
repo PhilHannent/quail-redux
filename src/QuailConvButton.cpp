@@ -51,7 +51,7 @@ QQuailConvButton::QQuailConvButton(QWidget *parent, const char *name)
 
 	setPopupDelay(250);
 
-	menu = new QPopupMenu();
+    menu = new QMenu();
 
 	setPopup(menu);
 
