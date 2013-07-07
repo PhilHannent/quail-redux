@@ -101,23 +101,8 @@ QQuailProtocolUtils::getProtocolIcon(const QString &protoName,
 
 	if (pixmap == NULL)
 	{
-		if (size == QGAIM_PIXMAP_LARGE)
-		{
-			pixmap = new QPixmap(Resource::loadPixmap("gaim/protocols/" +
-													  protoName));
-		}
-		else
-		{
-			QImage image = Resource::loadImage("gaim/protocols/" + protoName);
-
-			pixmap = new QPixmap();
-
-			if (size == QGAIM_PIXMAP_SMALL)
-				pixmap->convertFromImage(image.smoothScale(16, 16));
-			else if (size == QGAIM_PIXMAP_MENU)
-				pixmap->convertFromImage(image.smoothScale(14, 14));
-		}
-
+        pixmap = new QPixmap(":/data/images/protocols/" +
+                              protoName + ".png");
 		pixmaps->insert(protoName, pixmap);
 	}
 

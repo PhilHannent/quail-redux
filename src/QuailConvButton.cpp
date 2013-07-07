@@ -47,8 +47,7 @@ QQuailConvButton::QQuailConvButton(QWidget *parent, const char *name)
 	: QToolButton(parent, name), convs(NULL)
 {
 	setAutoRaise(true);
-    setIcon(QIcon(Resource::loadPixmap("gaim/16x16/conversations"),
-						Resource::loadPixmap("gaim/32x32/conversations")));
+    setIcon(QIcon(QPixmap(":/data/images/actions/conversations.png")));
 
 	setPopupDelay(250);
 

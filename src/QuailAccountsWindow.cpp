@@ -235,20 +235,17 @@ QQuailAccountsWindow::setupToolbar()
     toolbar->setMovable(false);
 
 	/* New */
-	a = new QAction(tr("New Account"),
-                    QIcon(Resource::loadPixmap("gaim/16x16/new"),
-							 Resource::loadPixmap("gaim/32x32/new")),
-					QString::null, 0, this, 0);
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/new.png")),
+                    tr("New Account"), this);
     toolbar->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(newAccount()));
 
 	/* Edit */
-	a = new QAction(tr("Edit Account"),
-                    QIcon(Resource::loadPixmap("gaim/16x16/edit"),
-							 Resource::loadPixmap("gaim/32x32/edit")),
-					QString::null, 0, this, 0);
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/edit.png")),
+                    tr("Edit Account"),
+                    this);
 	editButton = a;
     toolbar->addAction(a);
     a->setEnabled(false);
@@ -257,10 +254,9 @@ QQuailAccountsWindow::setupToolbar()
 			this, SLOT(editAccount()));
 
 	/* Delete */
-	a = new QAction(tr("Delete"),
-                    QIcon(Resource::loadPixmap("gaim/16x16/delete"),
-							 Resource::loadPixmap("gaim/32x32/delete")),
-					QString::null, 0, this, 0);
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/delete.png")),
+                    tr("Delete"),
+                    this);
 	deleteButton = a;
     toolbar->addAction(a);
     a->setEnabled(false);
@@ -272,10 +268,9 @@ QQuailAccountsWindow::setupToolbar()
 	toolbar->addSeparator();
 
 	/* Connect */
-	a = new QAction(tr("Connect"),
-                    QIcon(Resource::loadPixmap("gaim/16x16/connect"),
-							 Resource::loadPixmap("gaim/32x32/connect")),
-					QString::null, 0, this, 0);
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/connect.png")),
+                    tr("Connect"),
+                    this);
 	connectButton = a;
     toolbar->addAction(a);
 
@@ -284,10 +279,9 @@ QQuailAccountsWindow::setupToolbar()
 			this, SLOT(connectToAccount()));
 
 	/* Disconnect */
-	a = new QAction(tr("Connect"),
-                    QIcon(Resource::loadPixmap("gaim/16x16/disconnect"),
-							 Resource::loadPixmap("gaim/32x32/disconnect")),
-					QString::null, 0, this, 0);
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/disconnect.png")),
+                    tr("Connect"),
+                    this);
 	disconnectButton = a;
     toolbar->addAction(a);
 
@@ -299,26 +293,24 @@ QQuailAccountsWindow::setupToolbar()
 	/* Add some whitespace. */
 	label = new QLabel(toolbar);
 	label->setText("");
-	toolbar->setStretchableWidget(label);
+    //toolbar->setStretchableWidget(label);
 
 	/* Now we're going to construct the toolbar on the right. */
 	toolbar->addSeparator();
 
 	/* Buddy List */
-	a = new QAction(tr("Buddy List"),
-                    QIcon(Resource::loadPixmap("gaim/16x16/blist"),
-							 Resource::loadPixmap("gaim/32x32/blist")),
-					QString::null, 0, this, 0);
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
+                    tr("Buddy List"),
+                    this);
     toolbar->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(showBlist()));
 
 	/* Accounts */
-	a = new QAction(tr("Accounts"),
-                    QIcon(Resource::loadPixmap("gaim/16x16/accounts"),
-							 Resource::loadPixmap("gaim/32x32/accounts")),
-					QString::null, 0, this, 0, true);
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
+                    tr("Accounts"),
+                    this);
     a->setEnabled(true);
 	accountsButton = a;
     toolbar->addAction(a);
@@ -343,21 +335,27 @@ QQuailAccountsWindow::loadAccounts()
 		 l = l->next, index++)
 	{
 		QPixmap protocolIcon;
-        QQuailAccountItem *item;
 		PurpleAccount *account = (PurpleAccount *)l->data;
 		QString protocolId = purple_account_get_protocol_id(account);
 
-		protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
+        accountsWidget->insertRow(accountsWidget->rowCount());
 
-        item = new QQuailAccountItem(accountsWidget, index);
-        item->setText(purple_account_get_username(account));
-        item->setText(QQuailProtocolUtils::getProtocolName(protocolId));
-		item->setAccount(account);
+        QQuailAccountItem *itemUserName = new QQuailAccountItem(index);
+        itemUserName->setText(purple_account_get_username(account));
+        itemUserName->setAccount(account);
+        accountsWidget->setItem(accountsWidget->rowCount(), 0, itemUserName);
 
-		if (purple_account_is_connected(account))
-            item->setIcon(protocolIcon);
-		else
-            item->setIcon(QQuailImageUtils::greyPixmap(protocolIcon));
+        QQuailAccountItem *itemProtocol = new QQuailAccountItem(index);
+        itemProtocol->setText(QQuailProtocolUtils::getProtocolName(protocolId));
+        itemProtocol->setAccount(account);
+        protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
+        if (purple_account_is_connected(account))
+            itemProtocol->setIcon(protocolIcon);
+        else
+            itemProtocol->setIcon(QQuailImageUtils::greyPixmap(protocolIcon));
+
+        accountsWidget->setItem(accountsWidget->rowCount(), 1, itemProtocol);
+
 	}
 }
 
@@ -378,9 +376,9 @@ QQuailAccountsWindow::editAccount()
 	QQuailAccountEditor *editor;
     QQuailAccountItem *item;
 
-    item = (QQuailAccountItem *)accountsWidget->selectedItem();
+    item = (QQuailAccountItem *)accountsWidget->currentItem();
 
-	editor = new QQuailAccountEditor(item->getAccount(), this, "", true);
+    editor = new QQuailAccountEditor(item->getAccount(), this, "");
 	editor->setAccountsWindow(this);
 
 	editor->showMaximized();
@@ -391,7 +389,7 @@ QQuailAccountsWindow::deleteAccount()
 {
     QQuailAccountItem *item;
 
-    item = (QQuailAccountItem *)accountsWidget->selectedItem();
+    item = (QQuailAccountItem *)accountsWidget->currentItem();
 
 	purple_accounts_remove(item->getAccount());
 
@@ -472,17 +470,14 @@ QQuailAccountsWindow::resizeEvent(QResizeEvent *)
 QQuailAccountItem *
 QQuailAccountsWindow::getItemFromAccount(PurpleAccount *account)
 {
-    QTableWidgetItem *item;
     QQuailAccountItem *gitem;
 
 	if (account == NULL)
 		return NULL;
 
-    for (item = accountsWidget->firstChild();
-		 item != NULL;
-		 item = item->nextSibling())
+    for (int i=0; i<accountsWidget->rowCount(); ++i)
 	{
-        gitem = (QQuailAccountItem *)item;
+        gitem = (QQuailAccountItem *)accountsWidget->item(i,0);
 
 		if (gitem->getAccount() == account)
 			return gitem;
