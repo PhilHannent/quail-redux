@@ -92,7 +92,7 @@ class QQuailAccountsWindow : public QMainWindow
 		void showBlist();
 
 		void accountsToggled(bool state);
-        void accountSelected(QTableWidgetItem *item);
+        void accountSelected();
 
 		void resizeEvent(QResizeEvent *event);
 

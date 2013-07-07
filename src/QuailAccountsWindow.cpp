@@ -406,11 +406,9 @@ QQuailAccountsWindow::deleteAccount()
 void
 QQuailAccountsWindow::connectToAccount()
 {
-    QQuailAccountItem *item;
+    connectButton->setEnabled(false);
 
-	connectButton->setEnabled(false);
-
-    item = (QQuailAccountItem *)accountsWidget->selectedItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
 
 	item->startPulse(QQuailProtocolUtils::getProtocolIcon(item->getAccount()));
 
@@ -420,9 +418,7 @@ QQuailAccountsWindow::connectToAccount()
 void
 QQuailAccountsWindow::disconnectFromAccount()
 {
-    QQuailAccountItem *item;
-
-    item = (QQuailAccountItem *)accountsWidget->selectedItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
 
 	purple_account_disconnect(item->getAccount());
 }
@@ -442,7 +438,7 @@ QQuailAccountsWindow::accountsToggled(bool)
 void
 QQuailAccountsWindow::accountSelected()
 {
-    QTableWidgetItem *item;
+    QTableWidgetItem *item = accountsWidget->currentItem();
     QQuailAccountItem *accountItem = (QQuailAccountItem *)item;
 	PurpleAccount *account;
 	const char *protocolId;
