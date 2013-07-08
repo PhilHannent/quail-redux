@@ -170,7 +170,7 @@ QQuailConversation::write(const char *who, const char *message,
 	if (flags & GAIM_MESSAGE_RECV)
 	{
         PurpleConversation *activeConv;
-		GaimConvWindow *win;
+        QQuailConvWindow *win;
 
 		win = purple_conversation_get_window(conv);
 		activeConv = purple_conv_window_get_active_conversation(win);
@@ -227,7 +227,7 @@ QQuailConversation::updated(PurpleConvUpdateType type)
 	else if (type == GAIM_CONV_UPDATE_ADD ||
 			 type == GAIM_CONV_UPDATE_REMOVE)
 	{
-		GaimConvWindow *win = purple_conversation_get_window(conv);
+        QQuailConvWindow *win = purple_conversation_get_window(conv);
 		QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
 		qwin->updateAddRemoveButton();
@@ -298,7 +298,7 @@ void
 QQuailConversation::updateTabIcon()
 {
 	QQuailConvWindow *qwin;
-	GaimConvWindow *win;
+    QQuailConvWindow *win;
 	PurpleAccount *account;
 	PurpleBuddy *b;
 
@@ -487,7 +487,7 @@ QQuailConvChat::returnPressed()
 void
 QQuailConvChat::updateTyping()
 {
-	GaimConvWindow *win = purple_conversation_get_window(conv);
+    QQuailConvWindow *win = purple_conversation_get_window(conv);
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
 	qwin->setSendEnabled(entry->text().length() > 1);
@@ -499,7 +499,7 @@ QQuailConvChat::updated(PurpleConvUpdateType type)
 	if (type == GAIM_CONV_UPDATE_UNSEEN)
 	{
 		QQuailConvWindow *qwin;
-		GaimConvWindow *win;
+        QQuailConvWindow *win;
 		QColor color;
 
 		color = black;
@@ -568,7 +568,7 @@ QQuailConvIm::updated(PurpleConvUpdateType type)
 		type == GAIM_CONV_UPDATE_UNSEEN)
 	{
 		QQuailConvWindow *qwin;
-		GaimConvWindow *win;
+        QQuailConvWindow *win;
 		QColor color;
 		/* XXX GaimTypingState typingState; */
 		int typingState;
@@ -666,7 +666,7 @@ QQuailConvIm::returnPressed()
 void
 QQuailConvIm::updateTyping()
 {
-	GaimConvWindow *win = purple_conversation_get_window(conv);
+    QQuailConvWindow *win = purple_conversation_get_window(conv);
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 	size_t length = entry->text().length();
 
@@ -927,7 +927,7 @@ QQuailConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 
 	QMainWindow::destroy(destroyWindow, destroySubWindows);
 
-	if (qQuailGetMainWindow()->getLastActiveConvWindow() == getGaimConvWindow())
+    if (qQuailGetMainWindow()->getLastActiveConvWindow() == getConvWindow())
 		qQuailGetMainWindow()->setLastActiveConvWindow(NULL);
 }
 
@@ -964,7 +964,7 @@ removeBuddyCb(PurpleBuddy *buddy)
 	conv = purple_find_conversation(name);
 
 	if (conv != NULL)
-		purple_conversation_update(conv, GAIM_CONV_UPDATE_REMOVE);
+        purple_conversation_update(conv, PURPLE_CONV_UPDATE_REMOVE);
 }
 
 void
@@ -1319,7 +1319,7 @@ qQuailConvWindowGetConvUiOps()
  * Window UI ops
  **************************************************************************/
 static void
-qQuailConvWindowNew(GaimConvWindow *win)
+qQuailConvWindowNew(QQuailConvWindow *win)
 {
 	QQuailConvWindow *qwin;
 	QQuailMainWindow *mainWin = qQuailGetMainWindow();
@@ -1335,7 +1335,7 @@ qQuailConvWindowNew(GaimConvWindow *win)
 }
 
 static void
-qQuailConvWindowDestroy(GaimConvWindow *win)
+qQuailConvWindowDestroy(QQuailConvWindow *win)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
@@ -1346,7 +1346,7 @@ qQuailConvWindowDestroy(GaimConvWindow *win)
 }
 
 static void
-qQuailConvWindowShow(GaimConvWindow *win)
+qQuailConvWindowShow(QQuailConvWindow *win)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
@@ -1356,7 +1356,7 @@ qQuailConvWindowShow(GaimConvWindow *win)
 }
 
 static void
-qQuailConvWindowHide(GaimConvWindow *win)
+qQuailConvWindowHide(QQuailConvWindow *win)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
@@ -1364,7 +1364,7 @@ qQuailConvWindowHide(GaimConvWindow *win)
 }
 
 static void
-qQuailConvWindowRaise(GaimConvWindow *win)
+qQuailConvWindowRaise(QQuailConvWindow *win)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
@@ -1374,7 +1374,7 @@ qQuailConvWindowRaise(GaimConvWindow *win)
 }
 
 static void
-qQuailConvWindowSwitchConv(GaimConvWindow *win, unsigned int index)
+qQuailConvWindowSwitchConv(QQuailConvWindow *win, unsigned int index)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
@@ -1382,7 +1382,7 @@ qQuailConvWindowSwitchConv(GaimConvWindow *win, unsigned int index)
 }
 
 static void
-qQuailConvWindowAddConv(GaimConvWindow *win, PurpleConversation *conv)
+qQuailConvWindowAddConv(QQuailConvWindow *win, PurpleConversation *conv)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
@@ -1390,7 +1390,7 @@ qQuailConvWindowAddConv(GaimConvWindow *win, PurpleConversation *conv)
 }
 
 static void
-qQuailConvWindowRemoveConv(GaimConvWindow *win, PurpleConversation *conv)
+qQuailConvWindowRemoveConv(QQuailConvWindow *win, PurpleConversation *conv)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
@@ -1398,7 +1398,7 @@ qQuailConvWindowRemoveConv(GaimConvWindow *win, PurpleConversation *conv)
 }
 
 static void
-qQuailConvWindowMoveConv(GaimConvWindow *win, PurpleConversation *conv,
+qQuailConvWindowMoveConv(QQuailConvWindow *win, PurpleConversation *conv,
 					unsigned int newIndex)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
@@ -1407,14 +1407,14 @@ qQuailConvWindowMoveConv(GaimConvWindow *win, PurpleConversation *conv,
 }
 
 static int
-qQuailConvWindowGetActiveIndex(const GaimConvWindow *win)
+qQuailConvWindowGetActiveIndex(const QQuailConvWindow *win)
 {
 	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
 
 	return qwin->getActiveIndex();
 }
 
-static GaimConvWindowUiOps winOps =
+static PurpleConversationUiOps winOps =
 {
 	qQuailConvWindowGetConvUiOps,
 	qQuailConvWindowNew,
@@ -1430,7 +1430,7 @@ static GaimConvWindowUiOps winOps =
 	qQuailConvWindowGetActiveIndex
 };
 
-GaimConvWindowUiOps *
+PurpleConversationUiOps *
 qQuailGetConvWindowUiOps()
 {
 	return &winOps;

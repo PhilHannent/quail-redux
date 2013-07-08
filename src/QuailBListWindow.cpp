@@ -186,7 +186,7 @@ QQuailBListWindow::buildToolBar()
     button->setIcon(QIcon(QPixmap(":/data/images/actions/settings.png")));
 
     settingsMenu = new QMenu(button);
-	button->setPopup(settingsMenu);
+    button->setMenu(settingsMenu);
 
 	/* Show Offline Buddies */
     showOfflineButton = new QAction(QIcon(QPixmap(":/data/images/actions/offline_buddies.png")),
@@ -719,9 +719,9 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 	if (buddy != NULL)
 	{
         PurpleConversation *conv;
-		GaimConvWindow *win;
+        QQuailConvWindow *win;
 
-        conv = purple_conversation_new(PURPLE_CONV_IM, buddy->account,
+        conv = purple_conversation_new(PURPLE_CONV_TYPE_IM, buddy->account,
 									 buddy->name);
 
 		win = purple_conversation_get_window(conv);
@@ -883,7 +883,7 @@ qQuailBlistSetVisible(PurpleBuddyList *blist, gboolean show)
 		qblist->hide();
 }
 
-static GaimBlistUiOps blistUiOps =
+static PurpleBlistUiOps blistUiOps =
 {
 	qQuailBlistNewList,
 	qQuailBlistNewNode,
@@ -897,7 +897,7 @@ static GaimBlistUiOps blistUiOps =
 	NULL
 };
 
-GaimBlistUiOps *
+PurpleBlistUiOps *
 qQuailGetBlistUiOps()
 {
 	return &blistUiOps;

@@ -189,7 +189,7 @@ class QQuailConvWindow : public QMainWindow
 	private:
 		QMainWindow *parentMainWindow;
 
-		GaimConvWindow *win;
+        QQuailConvWindow *win;
 
 		int convWinId;
 
@@ -211,6 +211,6 @@ class QQuailConvWindow : public QMainWindow
 		QAction *userListToggle;
 };
 
-GaimConvWindowUiOps *qQuailGetConvWindowUiOps();
+PurpleConversationUiOps *qQuailGetConvWindowUiOps();
 
 #endif /* _QGAIM_CONV_WIN_H_ */
