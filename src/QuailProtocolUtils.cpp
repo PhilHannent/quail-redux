@@ -41,25 +41,23 @@ QQuailProtocolUtils::getProtocolName(QString protocolId)
 }
 
 QPixmap
-QQuailProtocolUtils::getProtocolIcon(const PurplePlugin *prpl,
-									QQuailPixmapSize size)
+QQuailProtocolUtils::getProtocolIcon(const PurplePlugin *prpl)
 {
 	PurplePluginProtocolInfo *prplInfo = NULL;
 
 	if (prpl == NULL)
 		return NULL;
 
-	prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+    prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	if (prplInfo->list_icon == NULL)
 		return NULL;
 
-	return getProtocolIcon(prplInfo->list_icon(NULL, NULL), size);
+    return getProtocolIcon(prplInfo->list_icon(NULL, NULL));
 }
 
 QPixmap
-QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account,
-									QQuailPixmapSize size)
+QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account)
 {
 	PurplePluginProtocolInfo *prplInfo = NULL;
 	PurplePlugin *prpl;
@@ -72,39 +70,16 @@ QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account,
 	if (prpl == NULL)
 		return NULL;
 
-	prplInfo = GAIM_PLUGIN_PROTOCOL_INFO(prpl);
+    prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	if (prplInfo->list_icon == NULL)
 		return NULL;
 
-	return getProtocolIcon(prplInfo->list_icon(account, NULL), size);
+    return getProtocolIcon(prplInfo->list_icon(account, NULL));
 }
 
 QPixmap
-QQuailProtocolUtils::getProtocolIcon(const QString &protoName,
-									QQuailPixmapSize size)
+QQuailProtocolUtils::getProtocolIcon(const QString &protoName)
 {
-	QPixmap *pixmap;
-	QDict<QPixmap> *pixmaps;
-
-	if (protoName.isEmpty())
-		return NULL;
-
-	if (size == QGAIM_PIXMAP_LARGE)
-		pixmaps = &largePixmaps;
-	else if (size == QGAIM_PIXMAP_SMALL)
-		pixmaps = &smallPixmaps;
-	else if (size == QGAIM_PIXMAP_MENU)
-		pixmaps = &menuPixmaps;
-
-	pixmap = pixmaps->find(protoName);
-
-	if (pixmap == NULL)
-	{
-        pixmap = new QPixmap(":/data/images/protocols/" +
-                              protoName + ".png");
-		pixmaps->insert(protoName, pixmap);
-	}
-
-	return *pixmap;
+    return QPixmap(":/data/images/protocols/" + protoName + ".png");
 }

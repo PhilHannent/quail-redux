@@ -198,7 +198,7 @@ QQuailBListWindow::buildToolBar()
 			this, SLOT(showOfflineBuddies(bool)));
 
 	/* Separator */
-    settingsMenu->insertSeparator();
+    //settingsMenu->insertSeparator();
 
 	/* Preferences */
     a = new QAction(tr("Preferences"), this);
@@ -212,7 +212,7 @@ QQuailBListWindow::buildToolBar()
     //toolbar->setStretchableWidget(label);
 
 	/* Now we're going to construct the toolbar on the right. */
-	toolbar->addSeparator();
+    //toolbar->addSeparator();
 
 	/* Buddy List */
     blistButton = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
@@ -460,36 +460,34 @@ addGroupCb(void *, const char *groupName)
 void
 QQuailBListWindow::showAddGroup()
 {
-	purple_request_input(this, tr("Add Group"),
-					   tr("Please enter the name of the group to be added."),
+    purple_request_input(this, tr("Add Group").toStdString().c_str(),
+                       tr("Please enter the name of the group to be added.").toStdString().c_str(),
 					   NULL,
-					   NULL, FALSE, FALSE,
-					   tr("Add"), G_CALLBACK(addGroupCb),
-					   tr("Cancel"), NULL, NULL);
+                       NULL, FALSE, FALSE, NULL,
+                       tr("Add").toStdString().c_str(), G_CALLBACK(addGroupCb),
+                       tr("Cancel").toStdString().c_str(), NULL,
+                       NULL, NULL, NULL,
+                       NULL);
 }
 
 static void
 removeBuddyCb(PurpleBuddy *buddy)
 {
-	PurpleGroup *group;
-    PurpleConversation *conv;
-	QString name;
 
-	if (buddy == NULL)
-		return;
+    if (buddy == NULL)
+        return;
 
-	group = purple_find_buddys_group(buddy);
-	name = buddy->name;
+    PurpleBlistNode* node = PURPLE_BLIST_NODE(buddy);
+    if (PURPLE_BLIST_NODE_IS_BUDDY(node)) {
+        purple_blist_remove_buddy((PurpleBuddy*)node);
+    } else if (PURPLE_BLIST_NODE_IS_CHAT(node)) {
+        purple_blist_remove_chat((PurpleChat*)node);
+    } else if (PURPLE_BLIST_NODE_IS_GROUP(node)) {
+        purple_blist_remove_group((PurpleGroup*)node);
+    } else if (PURPLE_BLIST_NODE_IS_CONTACT(node)) {
+        purple_blist_remove_contact((PurpleContact*)node);
+    }
 
-	serv_remove_buddy(purple_account_get_connection(buddy->account), name,
-					  group->name);
-	purple_blist_remove_buddy(buddy);
-	purple_blist_save();
-
-	conv = purple_find_conversation(name);
-
-	if (conv != NULL)
-        purple_conversation_update(conv, PURPLE_CONV_UPDATE_REMOVE);
 }
 
 static void
@@ -510,8 +508,8 @@ removeContactCb(PurpleContact *contact)
 
 		if (purple_account_get_connection(buddy->account) != NULL)
 		{
-			serv_remove_buddy(purple_account_get_connection(buddy->account),
-							  buddy->name, group->name);
+//			serv_remove_buddy(purple_account_get_connection(buddy->account),
+//							  buddy->name, group->name);
 		}
 	}
 
@@ -544,12 +542,14 @@ removeGroupCb(PurpleGroup *group)
 					PurpleBuddy *buddy = (PurpleBuddy *)child;
                     PurpleConversation *conv;
 
-					conv = purple_find_conversation(buddy->name);
+                    conv = purple_find_conversation_with_account(PURPLE_CONV_TYPE_CHAT,
+                                                                 buddy->name,
+                                                                 buddy->account);
 
 					if (purple_account_is_connected(buddy->account))
 					{
-						serv_remove_buddy(purple_account_get_connection(
-							buddy->account), buddy->name, group->name);
+//						serv_remove_buddy(purple_account_get_connection(
+//							buddy->account), buddy->name, group->name);
 						purple_blist_remove_buddy(buddy);
 
 						if (conv != NULL)
@@ -650,7 +650,7 @@ QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
 void
 QQuailBListWindow::showConfirmRemoveChat(PurpleChat *chat)
 {
-	QString name = purple_chat_get_display_name(chat);
+    QString name = purple_chat_get_name(chat);
 
 	int result = QMessageBox::information(this,
 			tr("Remove Chat"),
@@ -725,6 +725,7 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 									 buddy->name);
 
 		win = purple_conversation_get_window(conv);
+        win->raise();
 		purple_conv_window_raise(win);
 
 		purple_conv_window_switch_conversation(win,

@@ -544,7 +544,7 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
  * QQuailBuddyList
  **************************************************************************/
 QQuailBuddyList::QQuailBuddyList(QWidget *parent, const char *name)
-	: QListView(parent, name)
+    : QListWidget(parent, name)
 {
 	addColumn(tr("Buddy"), -1);
 	addColumn(tr("Idle"), 50);

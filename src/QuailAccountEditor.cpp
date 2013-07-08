@@ -116,7 +116,7 @@ QQuailAccountEditor::buildTabs()
 		widget = buildProtocolTab();
 
 		tabs->addTab(widget,
-			QQuailProtocolUtils::getProtocolIcon(plugin, QGAIM_PIXMAP_MENU),
+            QQuailProtocolUtils::getProtocolIcon(plugin),
 			plugin->info->name);
 
 		tabList.append(widget);

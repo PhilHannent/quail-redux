@@ -64,13 +64,12 @@ class QQuailBListItem : public QListWidgetItem
 		int textY1, textY2;
 };
 
-class QQuailBuddyList : public QListView
+class QQuailBuddyList : public QListWidget
 {
 	Q_OBJECT
 
 	public:
-		static QPixmap getBuddyStatusIcon(PurpleBlistNode *node,
-			QQuailPixmapSize size = QGAIM_PIXMAP_SMALL);
+        static QPixmap getBuddyStatusIcon(PurpleBlistNode *node);
 
 	public:
 		QQuailBuddyList(QWidget *parent = NULL, const char *name = NULL);
