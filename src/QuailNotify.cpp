@@ -212,7 +212,7 @@ qQuailGetNotifyUiOps()
 void
 qQuailNotifyBuzzer(void)
 {
-	if (!purple_prefs_get_bool("/gaim/qpe/notify/use_buzzer"))
+    if (!purple_prefs_get_bool("/quail/notify/use_buzzer"))
 		return;
 
 	ODevice::inst()->alarmSound();
@@ -221,7 +221,7 @@ qQuailNotifyBuzzer(void)
 void
 qQuailNotifyLedStart(void)
 {
-	if (!purple_prefs_get_bool("/gaim/qpe/notify/use_led"))
+    if (!purple_prefs_get_bool("/quail/notify/use_led"))
 		return;
 
 	ODevice *device = ODevice::inst();
@@ -254,7 +254,7 @@ qQuailNotifyLedStop(void)
 void
 qQuailNotifySound(void)
 {
-	if (!purple_prefs_get_bool("/gaim/qpe/notify/use_sound"))
+    if (!purple_prefs_get_bool("/quail/notify/use_sound"))
 		return;
 }
 
@@ -280,10 +280,10 @@ qQuailNotifyUserStop(void)
 void
 qQuailNotifyInit(void)
 {
-	purple_prefs_add_none("/gaim/qpe/notify");
-	purple_prefs_add_bool("/gaim/qpe/notify/incoming_im",   true);
-	purple_prefs_add_bool("/gaim/qpe/notify/incoming_chat", false);
-	purple_prefs_add_bool("/gaim/qpe/notify/use_buzzer",    false);
-	purple_prefs_add_bool("/gaim/qpe/notify/use_led",       true);
-	purple_prefs_add_bool("/gaim/qpe/notify/use_sound",     false);
+    purple_prefs_add_none("/quail/notify");
+    purple_prefs_add_bool("/quail/notify/incoming_im",   true);
+    purple_prefs_add_bool("/quail/notify/incoming_chat", false);
+    purple_prefs_add_bool("/quail/notify/use_buzzer",    false);
+    purple_prefs_add_bool("/quail/notify/use_led",       true);
+    purple_prefs_add_bool("/quail/notify/use_sound",     false);
 }

@@ -49,17 +49,16 @@ static QQuailMainWindow *mainWin = NULL;
 static void
 qQuailPrefsInit(void)
 {
-	purple_prefs_add_none("/gaim");
-	purple_prefs_add_none("/gaim/qpe");
-	purple_prefs_add_none("/gaim/qpe/blist");
-	purple_prefs_add_bool("/gaim/qpe/blist/show_offline_buddies", false);
-	purple_prefs_add_bool("/gaim/qpe/blist/show_empty_groups",    false);
-	purple_prefs_add_bool("/gaim/qpe/blist/show_idle_times",      true);
-	purple_prefs_add_bool("/gaim/qpe/blist/show_warning_levels",  true);
-	purple_prefs_add_bool("/gaim/qpe/blist/show_group_count",     true);
-	purple_prefs_add_bool("/gaim/qpe/blist/show_large_icons",
+    purple_prefs_add_none("/" + UI_ID);
+    purple_prefs_add_none("/quail/blist");
+    purple_prefs_add_bool("/quail/blist/show_offline_buddies", false);
+    purple_prefs_add_bool("/quail/blist/show_empty_groups",    false);
+    purple_prefs_add_bool("/quail/blist/show_idle_times",      true);
+    purple_prefs_add_bool("/quail/blist/show_warning_levels",  true);
+    purple_prefs_add_bool("/quail/blist/show_group_count",     true);
+    purple_prefs_add_bool("/quail/blist/show_large_icons",
 						(QPEApplication::desktop()->width() >= 600));
-	purple_prefs_add_bool("/gaim/qpe/blist/dim_idle_buddies",     true);
+    purple_prefs_add_bool("/quail/blist/dim_idle_buddies",     true);
 
 	qQuailNotifyInit();
 }

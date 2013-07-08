@@ -47,29 +47,29 @@ QQuailBlistPrefPage::QQuailBlistPrefPage(QWidget *parent, const char *name)
 void
 QQuailBlistPrefPage::accept()
 {
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_idle_times") ==
+    if (purple_prefs_get_bool("/quail/blist/show_idle_times") ==
 		idleTimes->isChecked() &&
-		purple_prefs_get_bool("/gaim/qpe/blist/show_warning_levels") ==
+        purple_prefs_get_bool("/quail/blist/show_warning_levels") ==
 		showWarnings->isChecked() &&
-		purple_prefs_get_bool("/gaim/qpe/blist/show_group_count") ==
+        purple_prefs_get_bool("/quail/blist/show_group_count") ==
 		groupCount->isChecked() &&
-		purple_prefs_get_bool("/gaim/qpe/blist/show_large_icons") ==
+        purple_prefs_get_bool("/quail/blist/show_large_icons") ==
 		largeIcons->isChecked() &&
-		purple_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies") ==
+        purple_prefs_get_bool("/quail/blist/dim_idle_buddies") ==
 		dimIdle->isChecked())
 	{
 		return;
 	}
 
-	purple_prefs_set_bool("/gaim/qpe/blist/show_idle_times",
+    purple_prefs_set_bool("/quail/blist/show_idle_times",
 						idleTimes->isChecked());
-	purple_prefs_set_bool("/gaim/qpe/blist/show_warning_levels",
+    purple_prefs_set_bool("/quail/blist/show_warning_levels",
 						showWarnings->isChecked());
-	purple_prefs_set_bool("/gaim/qpe/blist/show_group_count",
+    purple_prefs_set_bool("/quail/blist/show_group_count",
 						groupCount->isChecked());
-	purple_prefs_set_bool("/gaim/qpe/blist/show_large_icons",
+    purple_prefs_set_bool("/quail/blist/show_large_icons",
 						largeIcons->isChecked());
-	purple_prefs_set_bool("/gaim/qpe/blist/dim_idle_buddies",
+    purple_prefs_set_bool("/quail/blist/dim_idle_buddies",
 						dimIdle->isChecked());
 
 	qQuailGetMainWindow()->getBlistWindow()->reloadList();
@@ -87,35 +87,35 @@ QQuailBlistPrefPage::buildInterface()
 	largeIcons = new QCheckBox(tr("Show large icons"),
 							   this, "large icons checkbox");
 
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_large_icons"))
+    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
 		largeIcons->setChecked(true);
 
 	/* Show idle times */
 	idleTimes = new QCheckBox(tr("Show idle times"),
 							  this, "idle times checkbox");
 
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
+    if (purple_prefs_get_bool("/quail/blist/show_idle_times"))
 		idleTimes->setChecked(true);
 
 	/* Show warning levels */
 	showWarnings = new QCheckBox(tr("Show warning levels"),
 								 this, "warning levels checkbox");
 
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_warning_levels"))
+    if (purple_prefs_get_bool("/quail/blist/show_warning_levels"))
 		showWarnings->setChecked(true);
 
 	/* Show numbers in groups */
 	groupCount = new QCheckBox(tr("Show numbers in groups"),
 							   this, "group count checkbox");
 
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_group_count"))
+    if (purple_prefs_get_bool("/quail/blist/show_group_count"))
 		groupCount->setChecked(true);
 
 	/* Dim idle buddies */
 	dimIdle = new QCheckBox(tr("Dim idle buddies"),
 							this, "dim idle checkbox");
 
-	if (purple_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
+    if (purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
 		dimIdle->setChecked(true);
 
 	/* Spacer */
@@ -154,25 +154,25 @@ QQuailNotifyPrefPage::QQuailNotifyPrefPage(QWidget *parent, const char *name)
 void
 QQuailNotifyPrefPage::accept()
 {
-	if (purple_prefs_get_bool("/gaim/qpe/notify/incoming_im") ==
+    if (purple_prefs_get_bool("/quail/notify/incoming_im") ==
 		incomingIm->isChecked() &&
-		purple_prefs_get_bool("/gaim/qpe/notify/incoming_chat") ==
+        purple_prefs_get_bool("/quail/notify/incoming_chat") ==
 		incomingChat->isChecked() &&
-		purple_prefs_get_bool("/gaim/qpe/notify/use_buzzer") ==
+        purple_prefs_get_bool("/quail/notify/use_buzzer") ==
 		useBuzzer->isChecked() &&
-		purple_prefs_get_bool("/gaim/qpe/notify/use_led") ==
+        purple_prefs_get_bool("/quail/notify/use_led") ==
 		useLed->isChecked())
 	{
 		return;
 	}
 
-	purple_prefs_set_bool("/gaim/qpe/notify/incoming_im",
+    purple_prefs_set_bool("/quail/notify/incoming_im",
 						incomingIm->isChecked());
-	purple_prefs_set_bool("/gaim/qpe/notify/incoming_chat",
+    purple_prefs_set_bool("/quail/notify/incoming_chat",
 						incomingChat->isChecked());
-	purple_prefs_set_bool("/gaim/qpe/notify/use_buzzer",
+    purple_prefs_set_bool("/quail/notify/use_buzzer",
 						useBuzzer->isChecked());
-	purple_prefs_set_bool("/gaim/qpe/notify/use_led",
+    purple_prefs_set_bool("/quail/notify/use_led",
 						useLed->isChecked());
 }
 
@@ -194,14 +194,14 @@ QQuailNotifyPrefPage::buildInterface()
 	incomingIm = new QCheckBox(tr("Incoming IMs"),
 							   groupBox, "incoming ims checkbox");
 
-	if (purple_prefs_get_bool("/gaim/qpe/notify/incoming_im"))
+    if (purple_prefs_get_bool("/quail/notify/incoming_im"))
 		incomingIm->setChecked(true);
 
 	/* Incoming Chats */
 	incomingChat = new QCheckBox(tr("Incoming chat messages"),
 								 groupBox, "incoming chat checkbox");
 
-	if (purple_prefs_get_bool("/gaim/qpe/notify/incoming_chat"))
+    if (purple_prefs_get_bool("/quail/notify/incoming_chat"))
 		incomingChat->setChecked(true);
 
 	/* Notify Using groupbox */
@@ -210,13 +210,13 @@ QQuailNotifyPrefPage::buildInterface()
 	/* Buzzer */
 	useBuzzer = new QCheckBox(tr("Buzzer"), groupBox, "buzzer checkbox");
 
-	if (purple_prefs_get_bool("/gaim/qpe/notify/use_buzzer"))
+    if (purple_prefs_get_bool("/quail/notify/use_buzzer"))
 		useBuzzer->setChecked(true);
 
 	/* LED */
 	useLed = new QCheckBox(tr("LED"), groupBox, "led checkbox");
 
-	if (purple_prefs_get_bool("/gaim/qpe/notify/use_led"))
+    if (purple_prefs_get_bool("/quail/notify/use_led"))
 		useLed->setChecked(true);
 
 	/* Spacer */

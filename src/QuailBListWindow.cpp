@@ -192,7 +192,7 @@ QQuailBListWindow::buildToolBar()
     showOfflineButton = new QAction(QIcon(QPixmap(":/data/images/actions/offline_buddies.png")),
                                     tr("Show Offline Buddies"),
                                     this);
-    showOfflineButton->setChecked(purple_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"));
+    showOfflineButton->setChecked(purple_prefs_get_bool("/quail/blist/show_offline_buddies"));
     settingsMenu->addAction(showOfflineButton);
     connect(showOfflineButton, SIGNAL(toggled(bool)),
 			this, SLOT(showOfflineBuddies(bool)));
@@ -684,7 +684,7 @@ QQuailBListWindow::showConfirmRemoveGroup(PurpleGroup *group)
 void
 QQuailBListWindow::showOfflineBuddies(bool on)
 {
-	purple_prefs_set_bool("/gaim/qpe/blist/show_offline_buddies", on);
+    purple_prefs_set_bool("/quail/blist/show_offline_buddies", on);
 
 	buddylist->reload(true);
 }

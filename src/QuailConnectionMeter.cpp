@@ -32,18 +32,9 @@
 QQuailConnectionProgressBar::QQuailConnectionProgressBar(QWidget *parent,
 													   const char *name,
                                                        Qt::WindowFlags fl)
-	: QProgressBar(parent, name, fl)
+    : QProgressBar(parent)
 {
-	setCenterIndicator(true);
 }
-
-bool
-QQuailConnectionProgressBar::setIndicator(QString &str, int progress,
-										 int totalSteps)
-{
-	return QProgressBar::setIndicator(str, progress, totalSteps);
-}
-
 
 /**************************************************************************
  * QQuailConnectionMeter
@@ -51,22 +42,24 @@ QQuailConnectionProgressBar::setIndicator(QString &str, int progress,
 QQuailConnectionMeter::QQuailConnectionMeter(PurpleConnection *gc,
 										   QWidget *parent,
                                            const char *name, Qt::WindowFlags fl)
-	: QHBox(parent, name, fl), gc(gc)
+    : QWidget(parent), gc(gc)
 {
+    hbox = new QHBoxLayout(this);
+
 	QLabel *label, *icon;
 	PurpleAccount *account;
 
-	setSpacing(2);
-	setMargin(2);
-
 	account = purple_connection_get_account(gc);
 
-	icon = new QLabel(this);
+    icon = new QLabel();
 	icon->setPixmap(QQuailProtocolUtils::getProtocolIcon(account));
+    hbox->addWidget(icon);
 
-	label = new QLabel(purple_account_get_username(account), this);
+    label = new QLabel(purple_account_get_username(account));
+    hbox->addWidget(label);
 
-	progressBar = new QQuailConnectionProgressBar(this);
+    progressBar = new QQuailConnectionProgressBar();
+    hbox->addWidget(progressBar);
 }
 
 QQuailConnectionMeter::~QQuailConnectionMeter()
@@ -76,12 +69,8 @@ QQuailConnectionMeter::~QQuailConnectionMeter()
 void
 QQuailConnectionMeter::update(QString, int progress, int totalSteps)
 {
-	if (progress == 0)
-		progressBar->setTotalSteps(totalSteps);
+    progressBar->setValue(progress);
 
-	progressBar->setProgress(progress);
-
-//	progressBar->setIndicator(str, progress, totalSteps);
 }
 
 PurpleConnection *
@@ -96,9 +85,9 @@ QQuailConnectionMeter::getConnection() const
  **************************************************************************/
 QQuailConnectionMeters::QQuailConnectionMeters(QWidget *parent,
                                              const char *name, Qt::WindowFlags fl)
-	: QVBox(parent, name, fl)
+    : QWidget(parent, fl)
 {
-	meters.setAutoDelete(true);
+    vbox = new QVBoxLayout(this);
 }
 
 QQuailConnectionMeters::~QQuailConnectionMeters()
@@ -110,21 +99,19 @@ QQuailConnectionMeters::addMeter(QQuailConnectionMeter *meter)
 {
 	meters.append(meter);
 
-	meter->show();
+    show();
 }
 
 void
 QQuailConnectionMeters::removeMeter(QQuailConnectionMeter *meter)
 {
-	meters.remove(meter);
+    meters.removeAt(meters.indexOf(meter));
 }
 
 QQuailConnectionMeter *
 QQuailConnectionMeters::addConnection(PurpleConnection *gc)
 {
-	QQuailConnectionMeter *meter;
-
-	meter = new QQuailConnectionMeter(gc, this);
+    QQuailConnectionMeter *meter = new QQuailConnectionMeter(gc, this);
 
 	addMeter(meter);
 
@@ -134,13 +121,11 @@ QQuailConnectionMeters::addConnection(PurpleConnection *gc)
 QQuailConnectionMeter *
 QQuailConnectionMeters::findMeter(PurpleConnection *gc)
 {
-	QQuailConnectionMeter *meter;
-
-	for (meter = meters.first(); meter != NULL; meter = meters.next())
+    for (int i = 0; i < meters.size(); ++i)
 	{
-		if (meter->getConnection() == gc)
-			return meter;
+        if (meters.at(i)->getConnection() == gc)
+            return meters.at(i);
 	}
 
-	return NULL;
+    return 0;
 }

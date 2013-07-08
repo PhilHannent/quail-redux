@@ -26,14 +26,6 @@
 #include <QPixmap>
 #include <QImage>
 
-typedef enum
-{
-	QGAIM_PIXMAP_LARGE = 0,
-	QGAIM_PIXMAP_SMALL,
-	QGAIM_PIXMAP_MENU
-
-} QQuailPixmapSize;
-
 class QQuailImageUtils
 {
 	public:

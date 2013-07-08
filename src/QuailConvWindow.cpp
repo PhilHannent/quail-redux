@@ -37,7 +37,7 @@
 //#include <qpe/qpeapplication.h>
 
 #include <QAction>
-#include <QButton>
+#include <QPushButton>
 //#include <qheader.h>
 #include <QLabel>
 #include <QLayout>
@@ -181,9 +181,9 @@ QQuailConversation::write(const char *who, const char *message,
 			const char *prefName;
 
 			if (purple_conversation_get_type(conv) == GAIM_CONV_CHAT)
-				prefName = "/gaim/qpe/notify/incoming_chat";
+                prefName = "/quail/notify/incoming_chat";
 			else
-				prefName = "/gaim/qpe/notify/incoming_im";
+                prefName = "/quail/notify/incoming_im";
 
 			if (purple_prefs_get_bool(prefName))
 			{
@@ -519,7 +519,7 @@ QQuailConvChat::updated(PurpleConvUpdateType type)
 		{
 			color.setRgb(0xDF, 0x42, 0x1E);
 
-			if (purple_prefs_get_bool("/gaim/qpe/notify/incoming_chat"))
+            if (purple_prefs_get_bool("/quail/notify/incoming_chat"))
 			{
 				qQuailNotifyUser();
 				notifying = true;

@@ -44,16 +44,14 @@ delConvCb(char *, QQuailConvButton *button)
 }
 
 QQuailConvButton::QQuailConvButton(QWidget *parent, const char *name)
-	: QToolButton(parent, name), convs(NULL)
+    : QToolButton(parent), convs(NULL)
 {
 	setAutoRaise(true);
     setIcon(QIcon(QPixmap(":/data/images/actions/conversations.png")));
 
-	setPopupDelay(250);
-
     menu = new QMenu();
 
-	setPopup(menu);
+    setMenu(menu);
 
 	connect(menu, SIGNAL(aboutToShow()),
 			this, SLOT(generateMenu()));

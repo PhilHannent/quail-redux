@@ -41,7 +41,7 @@ class QQuailConnectionProgressBar : public QProgressBar
 		bool setIndicator(QString &str, int progress, int totalSteps);
 };
 
-class QQuailConnectionMeter : public QHBoxLayout
+class QQuailConnectionMeter : public QWidget
 {
 	Q_OBJECT
 
@@ -57,9 +57,10 @@ class QQuailConnectionMeter : public QHBoxLayout
 	private:
 		QQuailConnectionProgressBar *progressBar;
 		PurpleConnection *gc;
+        QHBoxLayout *hbox;
 };
 
-class QQuailConnectionMeters : public QVBoxLayout
+class QQuailConnectionMeters : public QWidget
 {
 	Q_OBJECT
 
@@ -76,7 +77,8 @@ class QQuailConnectionMeters : public QVBoxLayout
 		QQuailConnectionMeter *findMeter(PurpleConnection *gc);
 
 	public:
-		QList<QQuailConnectionMeter> meters;
+        QList<QQuailConnectionMeter*> meters;
+        QVBoxLayout *vbox;
 };
 
 #endif /* _QGAIM_CONNECTION_METER_H_ */

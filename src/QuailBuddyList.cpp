@@ -70,7 +70,7 @@ QQuailBListItem::updateInfo()
 {
 	QQuailPixmapSize pixmapSize;
 
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_large_icons"))
+    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
 		pixmapSize = QGAIM_PIXMAP_LARGE;
 	else
 		pixmapSize = QGAIM_PIXMAP_SMALL;
@@ -81,6 +81,7 @@ QQuailBListItem::updateInfo()
 	{
 		PurpleContact *contact = (PurpleContact *)node;
 		PurpleBuddy *buddy = purple_contact_get_priority_buddy(contact);
+        PurplePresence *presence = purple_buddy_get_presence(b);
 
 		if (buddy == NULL)
 			return;
@@ -96,27 +97,41 @@ QQuailBListItem::updateInfo()
 			if (buddy->evil > 0)
 				text += QString("%1%").arg(buddy->evil);
 
-			if (buddy->idle > 0 &&
-				purple_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
+            if (purple_prefs_get_bool("/quail/blist/show_idle_times"))
 			{
-				time_t t;
-				int ihrs, imin;
-				QString idle;
+                int idle_secs = 0;
+                /* Idle */
+                if (purple_presence_is_idle(presence))
+                {
+                    idle_secs = purple_presence_get_idle_time(presence);
+                    if (idle_secs > 0)
+                    {
+                        tmp = purple_str_seconds_to_string(time(NULL) - idle_secs);
+                        purple_notify_user_info_add_pair(user_info, _("Idle"), tmp);
 
-				time(&t);
+                        g_free(tmp);
+                        time_t t;
+                        int ihrs, imin;
+                        QString idle;
 
-				ihrs = (t - buddy->idle) / 3600;
-				imin = ((t - buddy->idle) / 60) % 60;
+                        time(&t);
 
-				if (ihrs > 0)
-					idle = QString("(%1:%2)").arg(ihrs).arg(imin, 2);
-				else
-					idle = QString("(%1)").arg(imin);
+                        ihrs = (t - idle_secs) / 3600;
+                        imin = ((t - idle_secs) / 60) % 60;
 
-				if (text != "")
-					text += "  ";
+                        if (ihrs > 0)
+                            idle = QString("(%1:%2)").arg(ihrs).arg(imin, 2);
+                        else
+                            idle = QString("(%1)").arg(imin);
 
-				text += idle;
+                        if (text != "")
+                            text += "  ";
+
+                        text += idle;
+
+                    }
+                }
+
 			}
 
 			setPixmap(0,
@@ -135,8 +150,7 @@ QQuailBListItem::updateInfo()
 		if (buddy->evil > 0)
 			text += QString("%1%").arg(buddy->evil);
 
-		if (buddy->idle > 0 &&
-			purple_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
+        if (purple_prefs_get_bool("/quail/blist/show_idle_times"))
 		{
 			time_t t;
 			int ihrs, imin;
@@ -253,7 +267,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 		buddy = purple_contact_get_priority_buddy(contact);
 	}
 
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_large_icons"))
+    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
 	{
 		if (column > 0)
 			return;
@@ -291,7 +305,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 				}
 
 				if (!isExpanded() && buddy->idle > 0 &&
-					purple_prefs_get_bool("/gaim/qpe/blist/show_idle_times"))
+                    purple_prefs_get_bool("/quail/blist/show_idle_times"))
 				{
 					time_t t;
 					int ihrs, imin;
@@ -310,7 +324,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 				}
 
 				if (!isExpanded() && buddy->evil > 0 &&
-					purple_prefs_get_bool("/gaim/qpe/blist/show_warning_levels"))
+                    purple_prefs_get_bool("/quail/blist/show_warning_levels"))
 				{
 					warning = QObject::tr("Warned (%1%) ").arg(buddy->evil);
 				}
@@ -345,7 +359,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 			}
 
 			if (buddy->idle > 0 &&
-				purple_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
+                purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
 			{
 				p->setPen(cg.dark());
 			}
@@ -362,7 +376,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
             QPalette _cg(cg);
 
 			if (buddy->idle > 0 &&
-				purple_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
+                purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
 			{
                 _cg.setColor(QPalette::Text, cg.dark());
 			}
@@ -375,7 +389,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
         QPalette _cg(cg);
 
 		if (buddy->idle > 0 &&
-			purple_prefs_get_bool("/gaim/qpe/blist/dim_idle_buddies"))
+            purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
 		{
             _cg.setColor(QPalette::Text, cg.dark());
 		}
@@ -397,7 +411,7 @@ QQuailBListItem::paintGroupInfo(QPainter *p, const QPalette &, int column,
 
 	groupName = group->name;
 
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_group_count"))
+    if (purple_prefs_get_bool("/quail/blist/show_group_count"))
 	{
 		groupName += " ";
 		detail = QString("(%1/%2)").arg(
@@ -425,7 +439,7 @@ QQuailBListItem::paintGroupInfo(QPainter *p, const QPalette &, int column,
  * QQuailBuddyList static utility functions
  **************************************************************************/
 QPixmap
-QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node, QQuailPixmapSize size)
+QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
 {
 	QImage statusImage;
 	QImage emblemImage;
@@ -480,38 +494,28 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node, QQuailPixmapSize size
     if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
 		((PurpleBuddy *)node)->present == GAIM_BUDDY_SIGNING_ON)
 	{
-		statusImage = Resource::loadImage("gaim/status/login");
+        statusImage = QPixmap(":/data/images/status/login.png");
 	}
     else if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
 			 ((PurpleBuddy *)node)->present == GAIM_BUDDY_SIGNING_OFF)
 	{
-		statusImage = Resource::loadImage("gaim/status/logout");
+        statusImage = QPixmap(":/data/images/status/logout.png");
 	}
 	else
 	{
-		statusImage = Resource::loadImage("gaim/protocols/" +
-										  QString(protoName));
+        statusImage = QPixmap(":/data/images/protocols/" +
+                              QString(protoName) + ".png");
 	}
-
-	if (size == QGAIM_PIXMAP_LARGE)
-		statusImage = statusImage.smoothScale(32, 32);
-	else if (size == QGAIM_PIXMAP_SMALL)
-		statusImage = statusImage.smoothScale(16, 16);
-	else if (size == QGAIM_PIXMAP_MENU)
-		statusImage = statusImage.smoothScale(14, 14);
 
 	if (statusImage.isNull())
 		return QPixmap();
 
 	if (se != NULL)
 	{
-		emblemImage = Resource::loadImage("gaim/status/" + QString(se));
+        emblemImage = QPixmap(":/data/images/status/" + QString(se) + ".png");
 
 		if (!emblemImage.isNull())
 		{
-			if (size == QGAIM_PIXMAP_SMALL || size == QGAIM_PIXMAP_MENU)
-				emblemImage = emblemImage.smoothScale(11, 11);
-
 			QQuailImageUtils::blendOnLower(
 					statusImage.width()  - emblemImage.width(),
 					statusImage.height() - emblemImage.height(),
@@ -551,9 +555,6 @@ QQuailBuddyList::QQuailBuddyList(QWidget *parent, const char *name)
 	setRootIsDecorated(true);
 
 	header()->hide();
-
-	QPEApplication::setStylusOperation(viewport(),
-									   QPEApplication::RightOnHold);
 
     connect(this, SIGNAL(expanded(QListWidgetItem *)),
             this, SLOT(nodeExpandedSlot(QListWidgetItem *)));
@@ -681,20 +682,22 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 	/* Get User Info */
 	if (prplInfo != NULL && prplInfo->get_info != NULL)
 	{
-		a = new QQuailAction(tr("Get Information"),
-                            QIcon(QPixmap(":/data/images/actions/info.png")),
-							QString::null, 0, this, 0, false, buddy);
-		a->addTo(menu);
+        a = new QQuailAction(QIcon(QPixmap(":/data/images/actions/info.png")),
+                             tr("Get Information"),
+                             this);
+        a->setData(buddy);
+        menu->addAction(a);
 
 		connect(a, SIGNAL(activated(void *)),
 				this, SLOT(userInfoSlot(void *)));
 	}
 
 	/* IM */
-	a = new QQuailAction(tr("IM"),
-                        QIcon(QPixmap(":/data/images/actions/send-im.png")),
-						QString::null, 0, this, 0, false, buddy);
-	a->addTo(menu);
+    a = new QQuailAction(QIcon(QPixmap(":/data/images/actions/send-im.png")),
+                         tr("IM"),
+                         this);
+    a->setData(buddy);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated(void *)),
 			this, SLOT(sendImSlot(void *)));
@@ -716,7 +719,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 			a = new QQuailAction(pbm->label, QString::null, 0, this, 0,
 								false, buddy);
 			a->setUserData2(pbm);
-			a->addTo(menu);
+            menu->addAction(a);
 
 			connect(a, SIGNAL(activated(void *, void *)),
 					this, SLOT(protoActionSlot(void *, void *)));
@@ -730,7 +733,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 	a = new QQuailAction(tr("Alias"),
                         QIcon(QPixmap(":/data/images/actions/alias.png")),
 						QString::null, 0, this, 0, false, buddy);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated(void *)),
 			this, SLOT(aliasBuddySlot(void *)));
@@ -739,7 +742,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 	a = new QQuailAction(tr("Remove"),
                         QIcon(QPixmap(":/data/images/actions/remove.png")),
 						QString::null, 0, this, 0, false, buddy);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated(void *)),
 			this, SLOT(removeBuddySlot(void *)));
@@ -755,7 +758,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 		a = new QQuailAction(tr("Expand"),
                             QIcon(QPixmap(":/data/images/actions/expand.png")),
 							QString::null, 0, this, 0);
-		a->addTo(menu);
+        menu->addAction(a);
 
 		connect(a, SIGNAL(activated()),
 				this, SLOT(expandContactSlot()));
@@ -764,7 +767,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 		{
 			PurpleBlistNode *bnode;
 			bool showOffline =
-				purple_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies");
+                purple_prefs_get_bool("/quail/blist/show_offline_buddies");
 
 			/* List of other accounts */
 			for (bnode = cnode->child; bnode != NULL; bnode = bnode->next)
@@ -809,7 +812,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QMenu *menu)
 	a = new QAction(tr("Collapse"),
                     QIcon(QPixmap(":/data/images/actions/collapse.png")),
 					QString::null, 0, this, 0);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(collapseContactSlot()));
@@ -818,7 +821,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QMenu *menu)
 	a = new QAction(tr("Remove"),
                     QIcon(QPixmap(":/data/images/actions/remove.png")),
 					QString::null, 0, this, 0);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(removeContactSlot()));
@@ -841,7 +844,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
 	a = new QAction(tr("Join Chat"),
                     QIcon(QPixmap(":/data/images/actions/join_chat.png")),
 					QString::null, 0, this, 0);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(joinChatSlot()));
@@ -852,7 +855,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
 	if (purple_blist_node_get_bool((PurpleBlistNode *)chat, "qpe-autojoin"))
 		a->setOn(true);
 
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(toggled(bool)),
 			this, SLOT(autoJoinChatSlot(bool)));
@@ -861,7 +864,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
 	a = new QAction(tr("Alias"),
                     QIcon(QPixmap(":/data/images/actions/alias.png")),
 					QString::null, 0, this, 0);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(aliasChatSlot()));
@@ -870,7 +873,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
 	a = new QAction(tr("Remove Chat"),
                     QIcon(QPixmap(":/data/images/actions/remove.png")),
 					QString::null, 0, this, 0);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(removeChatSlot()));
@@ -885,7 +888,7 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
 	a = new QAction(tr("Add a Buddy"),
                     QIcon(QPixmap(":/data/images/actions/add.png")),
 					QString::null, 0, this, 0);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(addBuddySlot()));
@@ -894,7 +897,7 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
 	a = new QAction(tr("Add a Chat"),
                     QIcon(QPixmap(":/data/images/actions/new-chat.png")),
 					QString::null, 0, this, 0);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(addChatSlot()));
@@ -903,14 +906,14 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
 	a = new QAction(tr("Remove Group"),
                     QIcon(QPixmap(":/data/images/actions/remove.png")),
 					QString::null, 0, this, 0);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(removeGroupSlot()));
 
 	/* Rename */
 	a = new QAction(tr("Rename"), QString::null, 0, this, 0);
-	a->addTo(menu);
+    menu->addAction(a);
 
 	connect(a, SIGNAL(activated()),
 			this, SLOT(renameGroupSlot()));
@@ -919,7 +922,7 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
 void
 QQuailBuddyList::resizeEvent(QResizeEvent *)
 {
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_large_icons"))
+    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
 		setColumnWidth(1, 0);
 	else
 		setColumnWidth(1, width() / 4);
@@ -1337,8 +1340,8 @@ QQuailBuddyList::updateGroup(PurpleBlistNode *node)
 	item = (QQuailBListItem *)node->ui_data;
 	group = (PurpleGroup *)node;
 
-	if (purple_prefs_get_bool("/gaim/qpe/blist/show_empty_groups")    ||
-		purple_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies") ||
+    if (purple_prefs_get_bool("/quail/blist/show_empty_groups")    ||
+        purple_prefs_get_bool("/quail/blist/show_offline_buddies") ||
 		purple_blist_get_group_online_count(group) > 0)
 	{
 		if (item == NULL)
@@ -1375,7 +1378,7 @@ QQuailBuddyList::updateContact(PurpleBlistNode *node)
 	if (buddy != NULL &&
 		(buddy->present != GAIM_BUDDY_OFFLINE ||
 		 (purple_account_is_connected(buddy->account) &&
-		  purple_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies"))))
+          purple_prefs_get_bool("/quail/blist/show_offline_buddies"))))
 	{
 		if (item == NULL)
 		{
@@ -1413,7 +1416,7 @@ QQuailBuddyList::updateBuddy(PurpleBlistNode *node)
 
 	if (buddy->present != GAIM_BUDDY_OFFLINE ||
 		(purple_account_is_connected(buddy->account) &&
-		 purple_prefs_get_bool("/gaim/qpe/blist/show_offline_buddies")))
+         purple_prefs_get_bool("/quail/blist/show_offline_buddies")))
 	{
 		if (item == NULL)
 		{
