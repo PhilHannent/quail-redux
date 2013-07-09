@@ -68,12 +68,12 @@ QQuailBListItem::getBlistNode() const
 void
 QQuailBListItem::updateInfo()
 {
-	QQuailPixmapSize pixmapSize;
+//	QQuailPixmapSize pixmapSize;
 
-    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
-		pixmapSize = QGAIM_PIXMAP_LARGE;
-	else
-		pixmapSize = QGAIM_PIXMAP_SMALL;
+//    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
+//		pixmapSize = QGAIM_PIXMAP_LARGE;
+//	else
+//		pixmapSize = QGAIM_PIXMAP_SMALL;
 
 	dirty = true;
 
@@ -81,7 +81,8 @@ QQuailBListItem::updateInfo()
 	{
 		PurpleContact *contact = (PurpleContact *)node;
 		PurpleBuddy *buddy = purple_contact_get_priority_buddy(contact);
-        PurplePresence *presence = purple_buddy_get_presence(b);
+        PurplePresence *presence = purple_buddy_get_presence(buddy);
+        char *tmp;
 
 		if (buddy == NULL)
 			return;
@@ -94,8 +95,8 @@ QQuailBListItem::updateInfo()
 		{
             QString text("");
 
-			if (buddy->evil > 0)
-				text += QString("%1%").arg(buddy->evil);
+//			if (buddy->evil > 0)
+//				text += QString("%1%").arg(buddy->evil);
 
             if (purple_prefs_get_bool("/quail/blist/show_idle_times"))
 			{
@@ -107,7 +108,7 @@ QQuailBListItem::updateInfo()
                     if (idle_secs > 0)
                     {
                         tmp = purple_str_seconds_to_string(time(NULL) - idle_secs);
-                        purple_notify_user_info_add_pair(user_info, _("Idle"), tmp);
+                        //purple_notify_user_info_add_pair(user_info, tr("Idle"), tmp);
 
                         g_free(tmp);
                         time_t t;
@@ -134,55 +135,67 @@ QQuailBListItem::updateInfo()
 
 			}
 
-			setPixmap(0,
-				QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy,
-												   pixmapSize));
-			setText(1, text);
+            setPixmap(QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy));
+            //setText(1, text);
 		}
 
-		setText(0, purple_get_buddy_alias(buddy));
+        //setText(0, purple_get_buddy_alias(buddy));
 	}
     else if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 	{
 		PurpleBuddy *buddy = (PurpleBuddy *)node;
+        PurplePresence *presence = purple_buddy_get_presence(buddy);
 		QString text = "";
 
-		if (buddy->evil > 0)
-			text += QString("%1%").arg(buddy->evil);
+        //if (buddy->evil > 0)
+            //text += QString("%1%").arg(buddy->evil);
 
         if (purple_prefs_get_bool("/quail/blist/show_idle_times"))
 		{
-			time_t t;
-			int ihrs, imin;
-			QString idle;
+            int idle_secs = 0;
+            /* Idle */
+            if (purple_presence_is_idle(presence))
+            {
+                idle_secs = purple_presence_get_idle_time(presence);
+                if (idle_secs > 0)
+                {
+                    //tmp = purple_str_seconds_to_string(time(NULL) - idle_secs);
+                    //purple_notify_user_info_add_pair(user_info, tr("Idle"), tmp);
 
-			time(&t);
+                    //g_free(tmp);
+                    time_t t;
+                    int ihrs, imin;
+                    QString idle;
 
-			ihrs = (t - ((PurpleBuddy *)node)->idle) / 3600;
-			imin = ((t - ((PurpleBuddy*)node)->idle) / 60) % 60;
+                    time(&t);
 
-			if (ihrs > 0)
-				idle = QString("(%1:%2)").arg(ihrs).arg(imin, 2);
-			else
-				idle = QString("(%1)").arg(imin);
+                    ihrs = (t - idle_secs) / 3600;
+                    imin = ((t - idle_secs) / 60) % 60;
 
-			if (text != "")
-				text += "  ";
+                    if (ihrs > 0)
+                        idle = QString("(%1:%2)").arg(ihrs).arg(imin, 2);
+                    else
+                        idle = QString("(%1)").arg(imin);
 
-			text += idle;
-		}
+                    if (text != "")
+                        text += "  ";
 
-		setPixmap(0, QQuailBuddyList::getBuddyStatusIcon(node, pixmapSize));
-		setText(0, purple_get_buddy_alias(buddy));
-		setText(1, text);
+                    text += idle;
+
+                }
+            }
+        }
+
+        setIcon(QQuailBuddyList::getBuddyStatusIcon(node));
+        //setText(0, purple_get_buddy_alias(buddy));
+        //setText(1, text);
 	}
     else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 	{
 		PurpleChat *chat = (PurpleChat *)node;
 
-		setPixmap(0, QQuailProtocolUtils::getProtocolIcon(chat->account,
-														 pixmapSize));
-		setText(0, purple_chat_get_display_name(chat));
+        setIcon(QQuailProtocolUtils::getProtocolIcon(chat->account));
+        //setText(0, purple_chat_get_display_name(chat));
 	}
 }
 
@@ -190,34 +203,34 @@ void
 QQuailBListItem::paintCell(QPainter *p, const QPalette &cg, int column,
 						  int width, int align)
 {
-    QListWidget *lv = this->listWidget();
-	const QPixmap *icon = pixmap(column);
+//    QListWidget *lv = this->listWidget();
+//	const QPixmap *icon = pixmap(column);
 
-	p->fillRect(0, 0, width, height(), cg.base());
+//	p->fillRect(0, 0, width, height(), cg.base());
 
-	int itMarg = (lv == NULL ? 1 : lv->itemMargin());
-	int lmarg = itMarg;
+//	int itMarg = (lv == NULL ? 1 : lv->itemMargin());
+//	int lmarg = itMarg;
 
-	if (isSelected() && (column == 0 || lv->allColumnsShowFocus()))
-	{
-		p->fillRect(0, 0, width, height(), cg.highlight());
-		p->setPen(cg.highlightedText());
-	}
-	else
-		p->setPen(cg.text());
+//	if (isSelected() && (column == 0 || lv->allColumnsShowFocus()))
+//	{
+//		p->fillRect(0, 0, width, height(), cg.highlight());
+//		p->setPen(cg.highlightedText());
+//	}
+//	else
+//		p->setPen(cg.text());
 
-	if (icon)
-	{
-		p->drawPixmap(lmarg, (height() - icon->height()) / 2, *icon);
-		lmarg += icon->width() + itMarg;
-	}
+//	if (icon)
+//	{
+//		p->drawPixmap(lmarg, (height() - icon->height()) / 2, *icon);
+//		lmarg += icon->width() + itMarg;
+//	}
 
-    if (PURPLE_BLIST_NODE_IS_BUDDY(node) || PURPLE_BLIST_NODE_IS_CONTACT(node))
-		paintBuddyInfo(p, cg, column, width, align, lmarg, itMarg);
-    else if (PURPLE_BLIST_NODE_IS_GROUP(node))
-		paintGroupInfo(p, cg, column, width, align, lmarg, itMarg);
-	else
-        QListWidgetItem::paintCell(p, cg, column, width, align);
+//    if (PURPLE_BLIST_NODE_IS_BUDDY(node) || PURPLE_BLIST_NODE_IS_CONTACT(node))
+//		paintBuddyInfo(p, cg, column, width, align, lmarg, itMarg);
+//    else if (PURPLE_BLIST_NODE_IS_GROUP(node))
+//		paintGroupInfo(p, cg, column, width, align, lmarg, itMarg);
+//	else
+//        QListWidgetItem::paintCell(p, cg, column, width, align);
 
 	dirty = false;
 }
@@ -226,12 +239,12 @@ void
 QQuailBListItem::paintBranches(QPainter *p, const QPalette &cg,
                               int width, int x, int height)
 {
-    if (PURPLE_BLIST_NODE_IS_CHAT(node) || PURPLE_BLIST_NODE_IS_BUDDY(node))
-	{
-		p->fillRect(0, 0, width, height, QBrush(cg.base()));
-	}
-	else
-        return QListWidgetItem::paintBranches(p, cg, width, x, height);
+//    if (PURPLE_BLIST_NODE_IS_CHAT(node) || PURPLE_BLIST_NODE_IS_BUDDY(node))
+//	{
+//		p->fillRect(0, 0, width, height, QBrush(cg.base()));
+//	}
+//	else
+//        return QListWidgetItem::paintBranches(p, cg, width, x, height);
 }
 
 void
@@ -304,7 +317,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 					}
 				}
 
-				if (!isExpanded() && buddy->idle > 0 &&
+                if (!isExpanded() &&
                     purple_prefs_get_bool("/quail/blist/show_idle_times"))
 				{
 					time_t t;
@@ -316,18 +329,17 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 
 					if (ihrs)
 					{
-						idleTime = QString().sprintf(
-							QObject::tr("Idle (%dh%02dm) "), ihrs, imin);
+                        idleTime = tr("Idle (%1h%2m) ").args( ihrs, imin);
 					}
 					else
-						idleTime = QObject::tr("Idle (%1m) ").arg(imin);
+                        idleTime = tr("Idle (%1m) ").arg(imin);
 				}
 
-				if (!isExpanded() && buddy->evil > 0 &&
-                    purple_prefs_get_bool("/quail/blist/show_warning_levels"))
-				{
-					warning = QObject::tr("Warned (%1%) ").arg(buddy->evil);
-				}
+//				if (!isExpanded() && buddy->evil > 0 &&
+//                    purple_prefs_get_bool("/quail/blist/show_warning_levels"))
+//				{
+//                    warning = tr("Warned (%1%) ").arg(buddy->evil);
+//				}
 
                 if (!PURPLE_BUDDY_IS_ONLINE(buddy) && statusText.isEmpty())
 					statusText = QObject::tr("Offline ");
@@ -671,7 +683,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 {
 	PurplePlugin *prpl = NULL;
 	PurplePluginProtocolInfo *prplInfo = NULL;
-	QQuailAction *a;
+    QQuailAction *a;
 
 	prpl = purple_plugins_find_with_id(
 		purple_account_get_protocol_id(buddy->account));
@@ -685,7 +697,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
         a = new QQuailAction(QIcon(QPixmap(":/data/images/actions/info.png")),
                              tr("Get Information"),
                              this);
-        a->setData(buddy);
+        a->setData(QVariant(buddy));
         menu->addAction(a);
 
 		connect(a, SIGNAL(activated(void *)),
@@ -716,9 +728,9 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 
 			pbm = (struct proto_buddy_menu *)l->data;
 
-			a = new QQuailAction(pbm->label, QString::null, 0, this, 0,
-								false, buddy);
-			a->setUserData2(pbm);
+            a = new QQuailAction(pbm->label, QString::null, 0, this, 0,
+                                false, buddy);
+            a->setUserData2(pbm);
             menu->addAction(a);
 
 			connect(a, SIGNAL(activated(void *, void *)),
@@ -727,7 +739,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 	}
 
 	/* Separator */
-	menu->insertSeparator();
+    menu->addSeparator();
 
 	/* Alias */
 	a = new QQuailAction(tr("Alias"),
@@ -752,7 +764,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 		PurpleBlistNode *cnode = ((PurpleBlistNode *)buddy)->parent;
 
 		/* Separator */
-		menu->insertSeparator();
+        menu->addSeparator();
 
 		/* Expand */
 		a = new QQuailAction(tr("Expand"),
@@ -782,13 +794,12 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 
 				if (!showOffline && GAIM_BUDDY_IS_ONLINE(buddy2))
 				{
-                    QMenu *submenu = new QMenu(this);
+                    QMenu *subMenu = new QMenu(this);
 
-					populateBuddyMenu(buddy2, submenu, false);
-
-					menu->insertItem(
-						QQuailBuddyList::getBuddyStatusIcon(bnode),
-						buddy2->name, submenu);
+                    populateBuddyMenu(buddy2, subMenu, false);
+                    subMenu->setIcon(QQuailBuddyList::getBuddyStatusIcon(bnode));
+                    subMenu->setTitle(buddy2->name);
+                    menu->addMenu(subMenu);
 				}
 			}
 		}

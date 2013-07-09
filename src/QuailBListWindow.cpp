@@ -198,7 +198,7 @@ QQuailBListWindow::buildToolBar()
 			this, SLOT(showOfflineBuddies(bool)));
 
 	/* Separator */
-    //settingsMenu->insertSeparator();
+    settingsMenu->addSeparator();
 
 	/* Preferences */
     a = new QAction(tr("Preferences"), this);

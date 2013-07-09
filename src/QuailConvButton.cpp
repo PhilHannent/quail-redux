@@ -120,15 +120,13 @@ QQuailConvButton::generateMenu()
 		if (buddy == NULL)
 		{
 			menu->insertItem(
-				QQuailProtocolUtils::getProtocolIcon(account,
-													QGAIM_PIXMAP_MENU),
+                QQuailProtocolUtils::getProtocolIcon(account),
 				purple_conversation_get_title(conv), i);
 		}
 		else
 		{
 			menu->insertItem(
-				QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy,
-												   QGAIM_PIXMAP_MENU),
+                QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy),
 				purple_conversation_get_title(conv), i);
 		}
 
