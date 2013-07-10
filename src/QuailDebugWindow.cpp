@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailDebugWindow.cpp Debug window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -29,30 +29,27 @@
 #include <qapplication.h>
 
 static void
-qQuailDebugPrint(GaimDebugLevel, const char *category,
-				const char *format, va_list args)
+qQuailDebugPrint(PurpleDebugLevel, const char *category,
+                const char *arg_s)
 {
-	gchar *arg_s;
-
-	arg_s = g_strdup_vprintf(format, args);
-
-	if (arg_s[strlen(arg_s) - 1] == '\n')
-		g_strchomp(arg_s);
-
 	if (category == NULL)
 		qDebug("%s", arg_s);
 	else
 		qDebug("%s: %s", category, arg_s);
 
-	g_free(arg_s);
 }
 
-static GaimDebugUiOps ops =
+static PurpleDebugUiOps ops =
 {
-	qQuailDebugPrint
+    qQuailDebugPrint,
+    NULL, /* is_enabled */
+    NULL,
+    NULL,
+    NULL,
+    NULL,
 };
 
-GaimDebugUiOps *
+PurpleDebugUiOps *
 qQuailGetDebugUiOps(void)
 {
 	return &ops;

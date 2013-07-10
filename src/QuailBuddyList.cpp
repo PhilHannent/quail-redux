@@ -431,7 +431,7 @@ QQuailBListItem::paintGroupInfo(QPainter *p, const QPalette &, int column,
 			purple_blist_get_group_size(group, FALSE));
 	}
 
-	f.setBold(true);
+//	f.setBold(true);
 //	p->setFont(f);
 //	p->drawText(lmarg, 0, width - lmarg - itMarg, height(),
 //				align | AlignVCenter, groupName);
