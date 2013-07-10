@@ -57,7 +57,7 @@ qQuailPrefsInit(void)
     purple_prefs_add_bool("/quail/blist/show_warning_levels",  true);
     purple_prefs_add_bool("/quail/blist/show_group_count",     true);
     purple_prefs_add_bool("/quail/blist/show_large_icons",
-						(QPEApplication::desktop()->width() >= 600));
+                        (QApplication::desktop()->width() >= 600));
     purple_prefs_add_bool("/quail/blist/dim_idle_buddies",     true);
 
 	qQuailNotifyInit();
@@ -74,9 +74,9 @@ qQuailCoreUiInit(void)
 {
 	purple_blist_set_ui_ops(qQuailGetBlistUiOps());
 	purple_connections_set_ui_ops(qQuailGetConnectionUiOps());
-	purple_conversations_set_win_ui_ops(qQuailGetConvWindowUiOps());
+    //purple_conversations_set_win_ui_ops(qQuailGetConvWindowUiOps());
 	purple_notify_set_ui_ops(qQuailGetNotifyUiOps());
-	purple_request_set_ui_ops(qQuailGetRequestUiOps());
+    //purple_request_set_ui_ops(qQuailGetRequestUiOps());
 }
 
 static void
@@ -85,7 +85,7 @@ qQuailCoreQuit(void)
 	exit(0);
 }
 
-static GaimCoreUiOps coreOps =
+static PurpleCoreUiOps coreOps =
 {
 	qQuailPrefsInit,
 	qQuailCoreDebugInit,
@@ -93,7 +93,7 @@ static GaimCoreUiOps coreOps =
 	qQuailCoreQuit
 };
 
-static GaimCoreUiOps *
+static PurpleCoreUiOps *
 qQuailGetCoreUiOps()
 {
 	return &coreOps;
