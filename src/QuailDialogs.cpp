@@ -479,8 +479,10 @@ QQuailNewImDialog::buildInterface()
 	label = new QLabel(tr("<p>Please enter the screen name of the person you "
                           "would like to IM.</p>"));
     vbox->addWidget(label);
-	frame = new QFrame(vbox);
-	grid = new QGridLayout(frame, 1, 1);
+    frame = new QFrame();
+    vbox->addWidget(frame);
+    grid = new QGridLayout();
+    grid->addWidget(frame);
 	grid->setSpacing(5);
 
 	/* Screen Name */
@@ -494,7 +496,8 @@ QQuailNewImDialog::buildInterface()
 	grid->addWidget(accountCombo, 3, 1);
 
 	/* Add a spacer. */
-	spacer = new QLabel("", vbox);
+    spacer = new QLabel();
+    vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
 }
 
@@ -510,17 +513,17 @@ QQuailNewImDialog::accept()
 
 	account = accountCombo->getCurrentAccount();
 
-	conv = purple_find_conversation(screenname);
+//	conv = purple_find_conversation(screenname);
 
-	if (conv == NULL)
-        conv = purple_conversation_new(PURPLE_CONV_IM, account, screenname);
-	else
-	{
-		purple_conv_window_raise(purple_conversation_get_window(conv));
+//	if (conv == NULL)
+//        conv = purple_conversation_new(PURPLE_CONV_IM, account, screenname);
+//	else
+//	{
+//		purple_conv_window_raise(purple_conversation_get_window(conv));
 
-		if (account)
-			purple_conversation_set_account(conv, account);
-	}
+//		if (account)
+//			purple_conversation_set_account(conv, account);
+//	}
 
 	QDialog::accept();
 }
@@ -530,7 +533,7 @@ QQuailNewImDialog::accept()
  **************************************************************************/
 QQuailJoinChatDialog::QQuailJoinChatDialog(QWidget *parent, const char *name,
                                          Qt::WindowFlags fl)
-	: QDialog(parent, name, fl)
+    : QDialog(parent)
 {
 	buildInterface();
 }
@@ -557,12 +560,13 @@ QQuailJoinChatDialog::buildInterface()
 	vbox->setSpacing(5);
 	vbox->setMargin(6);
 
-	widgetsFrame = new QFrame(vbox);
+    widgetsFrame = new QFrame();
+    vbox->addWidget(widgetFrame);
 	grid = new QGridLayout(widgetsFrame, 1, 1);
 	grid->setSpacing(5);
 
-	labels.setAutoDelete(true);
-	widgets.setAutoDelete(true);
+//	labels.setAutoDelete(true);
+//	widgets.setAutoDelete(true);
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Join Chat As:"), widgetsFrame), 0, 0);
@@ -574,7 +578,8 @@ QQuailJoinChatDialog::buildInterface()
 			this, SLOT(accountChanged(int)));
 
 	/* Add a spacer. */
-	spacer = new QLabel("", vbox);
+    spacer = new QLabel();
+    vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
 
 	rebuildWidgetsFrame();
