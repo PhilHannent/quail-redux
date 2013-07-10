@@ -724,12 +724,12 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
         conv = purple_conversation_new(PURPLE_CONV_TYPE_IM, buddy->account,
 									 buddy->name);
 
-		win = purple_conversation_get_window(conv);
-        win->raise();
-		purple_conv_window_raise(win);
+//		win = purple_conversation_get_window(conv);
+//        win->raise();
+//		purple_conv_window_raise(win);
 
-		purple_conv_window_switch_conversation(win,
-				purple_conversation_get_index(conv));
+//		purple_conv_window_switch_conversation(win,
+//				purple_conversation_get_index(conv));
 	}
 	else
 	{
@@ -852,7 +852,7 @@ qQuailBlistRemove(PurpleBuddyList *blist, PurpleBlistNode *node)
 
 	if (item != NULL)
 	{
-		parent = (QQuailBListItem *)item->parent();
+//		parent = (QQuailBListItem *)item->parent();
 
 		delete item;
 

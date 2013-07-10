@@ -35,6 +35,20 @@ class QQuailTabWidget;
 class QListView;
 class QTabWidget;
 
+/**
+ * Unseen text states.
+ */
+//TODO: Surely this should be in libpurple's conversation.h
+typedef enum
+{
+    QUAIL_UNSEEN_NONE,   /**< No unseen text in the conversation. */
+    QUAIL_UNSEEN_EVENT,  /**< Unseen events in the conversation.  */
+    QUAIL_UNSEEN_NO_LOG, /**< Unseen text with NO_LOG flag.       */
+    QUAIL_UNSEEN_TEXT,   /**< Unseen text in the conversation.    */
+    QUAIL_UNSEEN_NICK    /**< Unseen text and the nick was said.  */
+} QuailUnseenState;
+
+
 class QQuailConversation : public QWidget
 {
 	Q_OBJECT
@@ -108,8 +122,8 @@ class QQuailConvChat : public QQuailConversation
 		virtual void updateTyping();
 
 	protected:
-        QQuailConvChat *chat;
-		QListView *userList;
+        PurpleConvChat *chat;
+        QListWidget *userList;
 };
 
 class QQuailConvIm : public QQuailConversation

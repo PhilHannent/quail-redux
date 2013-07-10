@@ -84,7 +84,7 @@ QQuailProtocolBox::buildMenu(QString protocolId)
 		plugin = (PurplePlugin *)p->data;
 
 		insertItem(
-			QQuailProtocolUtils::getProtocolIcon(plugin, QGAIM_PIXMAP_MENU),
+            QQuailProtocolUtils::getProtocolIcon(plugin),
 			plugin->info->name);
 
 		if (protocolId != NULL && protocolId == plugin->info->id)
