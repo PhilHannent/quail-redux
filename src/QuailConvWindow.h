@@ -24,6 +24,7 @@
 #include <QVariant>
 #include <QWidget>
 #include <QMainWindow>
+#include <QToolButton>
 
 #include <libpurple/conversation.h>
 
@@ -32,7 +33,6 @@ class QQuailMultiLineEdit;
 class QQuailTabWidget;
 class QListView;
 class QTabWidget;
-class QTextView;
 
 class QQuailConversation : public QWidget
 {

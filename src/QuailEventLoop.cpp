@@ -33,10 +33,10 @@ typedef struct
 
 } QQuailSourceInfo;
 
-static void qQuailSourceRemove(guint handle);
+static gboolean qQuailSourceRemove(guint handle);
 
 static guint nextSourceId = 0;
-static QMap<QQuailSourceInfo> sources;
+static QMap<guint, QQuailSourceInfo*> sources;
 
 QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
 	: QTimer(), sourceId(sourceId), func(func), userData(data)
@@ -58,7 +58,7 @@ QQuailInputNotifier::QQuailInputNotifier(int fd, PurpleInputCondition cond,
 	: QObject(), func(func), userData(userData), readNotifier(NULL),
 	  writeNotifier(NULL)
 {
-	if (cond & GAIM_INPUT_READ)
+    if (cond & PURPLE_INPUT_READ)
 	{
 		readNotifier = new QSocketNotifier(fd, QSocketNotifier::Read);
 
@@ -66,7 +66,7 @@ QQuailInputNotifier::QQuailInputNotifier(int fd, PurpleInputCondition cond,
 				this, SLOT(ioInvoke(int)));
 	}
 
-	if (cond & GAIM_INPUT_WRITE)
+    if (cond & PURPLE_INPUT_WRITE)
 	{
 		writeNotifier = new QSocketNotifier(fd, QSocketNotifier::Write);
 
@@ -90,10 +90,10 @@ QQuailInputNotifier::ioInvoke(int fd)
 	int cond = 0;
 
 	if (readNotifier != NULL)
-		cond |= GAIM_INPUT_READ;
+        cond |= PURPLE_INPUT_READ;
 
 	if (writeNotifier != NULL)
-		cond |= GAIM_INPUT_WRITE;
+        cond |= PURPLE_INPUT_WRITE;
 
 	func(userData, fd, (PurpleInputCondition)cond);
 }
@@ -114,7 +114,7 @@ qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 	return info->handle;
 }
 
-static guint
+static gboolean
 qQuailTimeoutRemove(guint handle)
 {
 	qQuailSourceRemove(handle);
@@ -137,15 +137,15 @@ qQuailInputAdd(int fd, PurpleInputCondition cond, PurpleInputFunction func,
 	return info->handle;
 }
 
-static void
+static gboolean
 qQuailSourceRemove(guint handle)
 {
 	QQuailSourceInfo *info;
 
-	info = sources.find(handle);
+    info = sources.value(handle);
 
 	if (info == NULL)
-		return;
+        return false;
 
 	sources.remove(handle);
 
@@ -157,15 +157,36 @@ qQuailSourceRemove(guint handle)
 	delete info;
 }
 
-static GaimEventLoopUiOps eventloop_ops =
+static int
+qQuailInputGetError(int fd, int *error)
 {
-	qQuailTimeoutAdd,
-	qQuailTimeoutRemove,
-	qQuailInputAdd,
-	qQuailSourceRemove
+
+
+}
+
+static guint
+qQuailTimeoutAddSeconds(guint interval,
+                        GSourceFunc function,
+                        gpointer data)
+{
+        return qQuailTimeoutAdd(interval * 1000,function, data);
+}
+
+
+static PurpleEventLoopUiOps eventloop_ops =
+{
+    qQuailTimeoutAdd, /*timeout_add */
+    qQuailTimeoutRemove,/*timeout_remove */
+    qQuailInputAdd, /*input_add */
+    qQuailSourceRemove, /*input_remove */
+    qQuailInputGetError, /* input_get_error */
+    qQuailTimeoutAddSeconds, /* timeout_add_seconds */
+    NULL,
+    NULL,
+    NULL
 };
 
-GaimEventLoopUiOps *
+PurpleEventLoopUiOps *
 qQuailGetEventLoopUiOps(void)
 {
 	return &eventloop_ops;
