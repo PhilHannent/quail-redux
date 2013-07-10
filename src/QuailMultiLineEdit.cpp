@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailMultiLineEdit.cpp Multi-line edit widget with history
  *                              functionality
  *
@@ -22,7 +22,7 @@
 #include "QuailMultiLineEdit.h"
 
 QQuailMultiLineEdit::QQuailMultiLineEdit(QWidget *parent, const char *name)
-	: QMultiLineEdit(parent, name), historyEnabled(false)
+    : QTextEdit(parent, name), historyEnabled(false)
 {
 	index = -1;
 	installEventFilter(this);
@@ -54,7 +54,7 @@ QQuailMultiLineEdit::eventFilter(QObject *object, QEvent *event)
 		}
 	}
 
-	return QMultiLineEdit::eventFilter(object, event);
+    return QTextEdit::eventFilter(object, event);
 }
 
 void
@@ -99,5 +99,5 @@ QQuailMultiLineEdit::keyPressEvent(QKeyEvent *event)
 		}
 	}
 
-	QMultiLineEdit::keyPressEvent(event);
+    QTextEdit::keyPressEvent(event);
 }

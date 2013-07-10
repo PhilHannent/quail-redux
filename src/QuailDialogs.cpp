@@ -41,7 +41,7 @@
  **************************************************************************/
 QQuailAddBuddyDialog::QQuailAddBuddyDialog(QWidget *parent, const char *name,
                                          Qt::WindowFlags fl)
-	: QDialog(parent, name, fl)
+    : QDialog(parent)
 {
 	buildInterface();
 }
@@ -77,15 +77,14 @@ QQuailAddBuddyDialog::buildInterface()
 	QGridLayout *grid;
 	QLabel *label;
 	QLabel *spacer;
-	QVBox *vbox;
+    QVBoxLayout *vbox;
 	QVBoxLayout *layout;
 
     setWindowTitle(tr("Add Buddy"));
 
 	layout = new QVBoxLayout(this);
-	layout->setAutoAdd(true);
 
-	vbox = new QVBox(this);
+    vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
 	vbox->setMargin(6);
 
@@ -93,11 +92,12 @@ QQuailAddBuddyDialog::buildInterface()
 						  "would like to add to your buddy list. You may "
 						  "optionally enter an alias, or nickname, for the "
 						  "buddy. The alias will be displayed in place of "
-						  "the screen name whenever possible.</p>"),
-					   vbox);
-
-	frame = new QFrame(vbox);
-	grid = new QGridLayout(frame, 1, 1);
+                          "the screen name whenever possible.</p>"));
+    vbox->addWidget(label);
+    frame = new QFrame();
+    vbox->addWidget(frame);
+    grid = new QGridLayout();
+    frame->setLayout(grid);
 	grid->setSpacing(5);
 
 	/* Username */
@@ -112,7 +112,7 @@ QQuailAddBuddyDialog::buildInterface()
 
 	/* Group */
 	grid->addWidget(new QLabel(tr("Group:"), frame), 2, 0);
-	groupCombo = new QComboBox(true, frame, "group");
+    groupCombo = new QComboBox();
 	grid->addWidget(groupCombo, 2, 1);
 
 	populateGroupCombo();
@@ -123,7 +123,8 @@ QQuailAddBuddyDialog::buildInterface()
 	grid->addWidget(accountCombo, 3, 1);
 
 	/* Add a spacer. */
-	spacer = new QLabel("", vbox);
+    spacer = new QLabel("");
+    vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
 }
 
@@ -133,7 +134,7 @@ QQuailAddBuddyDialog::populateGroupCombo()
 	PurpleBlistNode *node = purple_get_blist()->root;
 
 	if (node == NULL)
-		groupCombo->insertItem(tr("Buddies"));
+        groupCombo->addItem(tr("Buddies"));
 	else
 	{
 		for (; node != NULL; node = node->next)
@@ -142,7 +143,7 @@ QQuailAddBuddyDialog::populateGroupCombo()
 			{
 				PurpleGroup *g = (PurpleGroup *)node;
 
-				groupCombo->insertItem(g->name);
+                groupCombo->addItem(g->name);
 			}
 		}
 	}
@@ -161,31 +162,31 @@ QQuailAddBuddyDialog::accept()
 
 	if (screenname.isEmpty())
 	{
-		purple_notify_error(this, tr("Add Buddy"),
-						  tr("You must specify a screen name to add."), NULL);
+//		purple_notify_error(this, tr("Add Buddy"),
+//						  tr("You must specify a screen name to add."), NULL);
 		return;
 	}
 
-	conv = purple_find_conversation(screenname);
+//	conv = purple_find_conversation(screenname);
 
-	if ((g = purple_find_group(group)) == NULL)
-	{
-		g = purple_group_new(group);
-		purple_blist_add_group(g, NULL);
-	}
+//	if ((g = purple_find_group(group)) == NULL)
+//	{
+//		g = purple_group_new(group);
+//		purple_blist_add_group(g, NULL);
+//	}
 
 	account = accountCombo->getCurrentAccount();
 
-	b = purple_buddy_new(account, screenname,
-					   (alias.isEmpty() ? NULL : (const char *)alias));
+    b = purple_buddy_new(account, screenname.toStdString().c_str(),
+                       (alias.isEmpty() ? NULL : (const char *)alias.toStdString().c_str()));
 
 	purple_blist_add_buddy(b, NULL, g, NULL);
-	serv_add_buddy(purple_account_get_connection(account), screenname, g);
+//	serv_add_buddy(purple_account_get_connection(account), screenname, g);
 
-	if (conv != NULL)
-		purple_conversation_update(conv, GAIM_CONV_UPDATE_ADD);
+//	if (conv != NULL)
+//		purple_conversation_update(conv, GAIM_CONV_UPDATE_ADD);
 
-	purple_blist_save();
+//	purple_blist_save();
 
 	QDialog::accept();
 }
@@ -196,7 +197,7 @@ QQuailAddBuddyDialog::accept()
  **************************************************************************/
 QQuailAddChatDialog::QQuailAddChatDialog(QWidget *parent, const char *name,
                                        Qt::WindowFlags fl)
-	: QDialog(parent, name, fl)
+    : QDialog(parent)
 {
 	buildInterface();
 }
@@ -224,28 +225,29 @@ QQuailAddChatDialog::buildInterface()
 {
 	QLabel *label;
 	QLabel *spacer;
-	QVBox *vbox;
+    QVBoxLayout *vbox;
 	QVBoxLayout *layout;
 
     setWindowTitle(tr("Add Chat"));
 
 	layout = new QVBoxLayout(this);
-	layout->setAutoAdd(true);
 
-	vbox = new QVBox(this);
+    vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
 	vbox->setMargin(6);
 
 	label = new QLabel(tr("<p>Please enter an alias and the appropriate "
 						  "information about the chat you would like to add "
-						  "to your buddy list.</p>"),
-					   vbox);
+                          "to your buddy list.</p>"));
 
-	labels.setAutoDelete(true);
-	widgets.setAutoDelete(true);
+    vbox->addWidget(label);
+//	labels.setAutoDelete(true);
+//	widgets.setAutoDelete(true);
 
-	widgetsFrame = new QFrame(vbox);
-	grid = new QGridLayout(widgetsFrame, 1, 1);
+    widgetsFrame = new QFrame();
+    vbox->addWidget(widgetsFrame);
+    grid = new QGridLayout();
+    widgetsFrame->setLayout(grid);
 	grid->setSpacing(5);
 
 	/* Account */
@@ -266,13 +268,15 @@ QQuailAddChatDialog::buildInterface()
 	/* Group */
 	groupLabel = new QLabel(tr("Group:"), widgetsFrame);
 	grid->addWidget(groupLabel, 2, 0);
-	groupCombo = new QComboBox(true, widgetsFrame, "group");
+    groupCombo = new QComboBox();
+    //widgetsFrame
 	grid->addWidget(groupCombo, 2, 1);
 
 	populateGroupCombo();
 
 	/* Add a spacer. */
-	spacer = new QLabel("", vbox);
+    spacer = new QLabel("");
+    vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
 
 	rebuildWidgetsFrame();
@@ -284,7 +288,7 @@ QQuailAddChatDialog::populateGroupCombo()
 	PurpleBlistNode *node = purple_get_blist()->root;
 
 	if (node == NULL)
-		groupCombo->insertItem(tr("Buddies"));
+        groupCombo->addItem(tr("Buddies"));
 	else
 	{
 		for (; node != NULL; node = node->next)
@@ -293,7 +297,7 @@ QQuailAddChatDialog::populateGroupCombo()
 			{
 				PurpleGroup *g = (PurpleGroup *)node;
 
-				groupCombo->insertItem(g->name);
+                groupCombo->addItem(g->name);
 			}
 		}
 	}
@@ -326,8 +330,9 @@ QQuailAddChatDialog::rebuildWidgetsFrame()
 
 		if (pce->is_int)
 		{
-			QSpinBox *spinbox = new QSpinBox(pce->min, pce->max, 1,
-											 widgetsFrame);
+            QSpinBox *spinbox = new QSpinBox(widgetsFrame);
+            spinbox->setMinimum(pce->min);
+            spinbox->setMaximum(pce->max);
 			spinbox->setValue(pce->min);
 
 			grid->addWidget(spinbox, row, 1);
@@ -338,13 +343,10 @@ QQuailAddChatDialog::rebuildWidgetsFrame()
 		}
 		else
 		{
-			QLineEdit *edit = new QLineEdit(pce->def, widgetsFrame);
-
-			grid->addWidget(edit, row, 1);
-
-			widgets.append(edit);
-
-			edit->show();
+//			QLineEdit *edit = new QLineEdit(pce->def, widgetsFrame);
+//			grid->addWidget(edit, row, 1);
+//			widgets.append(edit);
+//			edit->show();
 		}
 
 		g_free(pce);
@@ -398,7 +400,7 @@ QQuailAddChatDialog::accept()
 
 			g_hash_table_replace(components,
 								 g_strdup(pce->identifier),
-								 g_strdup(spinbox->cleanText()));
+                                 g_strdup(spinbox->cleanText().toStdString().c_str()));
 		}
 		else
 		{
@@ -406,7 +408,7 @@ QQuailAddChatDialog::accept()
 
 			g_hash_table_replace(components,
 								 g_strdup(pce->identifier),
-								 g_strdup(edit->text()));
+                                 g_strdup(edit->text().toStdString().c_str()));
 		}
 
 		g_free(pce);
@@ -415,19 +417,19 @@ QQuailAddChatDialog::accept()
 	g_list_free(chatInfoList);
 
 	chat = purple_chat_new(accountCombo->getCurrentAccount(),
-							   (alias.isEmpty() ? NULL : (const char *)alias),
+                               (alias.isEmpty() ? NULL : (const char *)alias.toStdString().c_str()),
 							   components);
 
-	if ((group = purple_find_group(groupName)) == NULL)
+    if ((group = purple_find_group(groupName.toStdString().c_str())) == NULL)
 	{
-		group = purple_group_new(groupName);
+        group = purple_group_new(groupName.toStdString().c_str());
 		purple_blist_add_group(group, NULL);
 	}
 
 	if (chat != NULL)
 	{
 		purple_blist_add_chat(chat, group, NULL);
-		purple_blist_save();
+        //purple_blist_save();
 	}
 
 	QDialog::accept();
@@ -439,7 +441,7 @@ QQuailAddChatDialog::accept()
  **************************************************************************/
 QQuailNewImDialog::QQuailNewImDialog(QWidget *parent, const char *name,
                                    Qt::WindowFlags fl)
-	: QDialog(parent, name, fl)
+    : QDialog(parent)
 {
 	buildInterface();
 }
@@ -463,22 +465,20 @@ QQuailNewImDialog::buildInterface()
 	QGridLayout *grid;
 	QLabel *label;
 	QLabel *spacer;
-	QVBox *vbox;
+    QVBoxLayout *vbox;
 	QVBoxLayout *layout;
 
     setWindowTitle(tr("New Message"));
 
 	layout = new QVBoxLayout(this);
-	layout->setAutoAdd(true);
 
-	vbox = new QVBox(this);
+    vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
 	vbox->setMargin(6);
 
 	label = new QLabel(tr("<p>Please enter the screen name of the person you "
-						  "would like to IM.</p>"),
-					   vbox);
-
+                          "would like to IM.</p>"));
+    vbox->addWidget(label);
 	frame = new QFrame(vbox);
 	grid = new QGridLayout(frame, 1, 1);
 	grid->setSpacing(5);

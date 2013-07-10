@@ -89,8 +89,8 @@ class QQuailAddChatDialog : public QDialog
 		QQuailAccountBox *accountCombo;
 		QGridLayout *grid;
 		QFrame *widgetsFrame;
-		QList<QWidget> labels;
-		QList<QWidget> widgets;
+        QList<QWidget*> labels;
+        QList<QWidget*> widgets;
 };
 
 class QQuailNewImDialog : public QDialog

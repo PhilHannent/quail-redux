@@ -23,7 +23,7 @@
 
 #include <libpurple/notify.h>
 
-GaimNotifyUiOps *qQuailGetNotifyUiOps();
+PurpleNotifyUiOps *qQuailGetNotifyUiOps();
 
 void qQuailNotifyBuzzer(void);
 void qQuailNotifyLedStart(void);

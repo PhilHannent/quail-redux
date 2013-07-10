@@ -184,7 +184,7 @@ QQuailNotifyPrefPage::buildInterface()
 
 	layout->setAutoAdd(true);
 
-	QVBox *vbox = new QVBox(this);
+    QVBoxLayout *vbox = new QVBoxLayout(this);
 	vbox->setSpacing(6);
 	vbox->setMargin(6);
 

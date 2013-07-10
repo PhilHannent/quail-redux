@@ -130,7 +130,7 @@ QQuailMainWindow::~QQuailMainWindow()
 void
 QQuailMainWindow::buildInterface()
 {
-	QVBox *vbox = new QVBox(this);
+    QVBoxLayout *vbox = new QVBoxLayout(this);
 
 	widgetStack = new QWidgetStack(vbox);
 	vbox->setStretchFactor(widgetStack, 1);

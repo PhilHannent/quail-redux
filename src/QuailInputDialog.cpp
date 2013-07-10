@@ -30,12 +30,12 @@
 
 QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent,
                                    const char *name, bool modal, Qt::WindowFlags fl)
-	: QDialog(parent, name, modal, fl), multiline(multiline), masked(false)
+    : QDialog(parent), multiline(multiline), masked(false)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this, 8);
-	layout->setAutoAdd(true);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
 	label = new QLabel(this);
+    layout->addWidget(label);
 
 	mapper = new QSignalMapper(this);
 
@@ -44,10 +44,10 @@ QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent,
 
 	if (multiline)
 	{
-		QMultiLineEdit *mlEntry = new QMultiLineEdit(this);
+        QTextEdit *mlEntry = new QTextEdit(this);
+        layout->addWidget(mlEntry);
 
-		mlEntry->setFixedVisibleLines(3);
-		mlEntry->setWordWrap(QMultiLineEdit::WidgetWidth);
+//		mlEntry->setFixedVisibleLines(3);
 
 		entry = mlEntry;
 	}
@@ -58,7 +58,8 @@ QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent,
 		entry = slEntry;
 	}
 
-	hbox = new QHBox(this);
+    hbox = new QHBoxLayout(this);
+    hbox->addLayout(layout);
 	hbox->setSpacing(6);
 }
 
@@ -75,11 +76,11 @@ QQuailInputDialog::setMasked(bool masked)
 
 	if (multiline)
 	{
-		QMultiLineEdit *mlEntry = (QMultiLineEdit *)entry;
+        QTextEdit *mlEntry = (QTextEdit *)entry;
 
-		mlEntry->setEchoMode(masked
-							 ? QMultiLineEdit::Password
-							 : QMultiLineEdit::Normal);
+//		mlEntry->setEchoMode(masked
+//                             ? QTextEdit::Password
+//                             : QTextEdit::Normal);
 	}
 	else
 	{
@@ -102,7 +103,7 @@ QQuailInputDialog::setDefaultValue(const QString &text)
 {
 	if (multiline)
 	{
-		QMultiLineEdit *mlEntry = (QMultiLineEdit *)entry;
+        QTextEdit *mlEntry = (QTextEdit *)entry;
 
 		mlEntry->setText(text);
 	}
@@ -119,9 +120,9 @@ QQuailInputDialog::getText() const
 {
 	if (multiline)
 	{
-		QMultiLineEdit *mlEntry = (QMultiLineEdit *)entry;
+        QTextEdit *mlEntry = (QTextEdit *)entry;
 
-		return mlEntry->text();
+        return mlEntry->toPlainText();
 	}
 	else
 	{
@@ -141,7 +142,8 @@ QQuailInputDialog::addButtons(const QString &cancel, const QString &ok)
 void
 QQuailInputDialog::addButton(const QString &text, int result)
 {
-	QPushButton *button = new QPushButton(text, hbox);
+    QPushButton *button = new QPushButton(text);
+    hbox->addWidget(button);
 
 	mapper->setMapping(button, result);
 

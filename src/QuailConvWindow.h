@@ -24,6 +24,7 @@
 #include <QVariant>
 #include <QWidget>
 #include <QMainWindow>
+#include <QTextEdit>
 #include <QToolButton>
 
 #include <libpurple/conversation.h>
@@ -66,7 +67,7 @@ class QQuailConversation : public QWidget
 
 	protected:
         PurpleConversation *conv;
-		QTextView *text;
+        QTextEdit *text;
 		QQuailMultiLineEdit *entry;
 		int tabId;
 		bool notifying;

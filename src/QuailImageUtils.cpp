@@ -24,15 +24,17 @@
 
 #include <glib.h>
 
+//TODO: Re-implement using Nokia's method https://www.developer.nokia.com/Community/Wiki/Image_editing_techniques_and_algorithms_using_Qt
+
 QImage &
 QQuailImageUtils::greyImage(QImage &image)
 {
 	int pixels = (image.depth() > 8
 				  ? image.width() * image.height()
-				  : image.numColors());
+                  : image.colorCount());
 	unsigned int *data = (image.depth() > 8
 						  ? (unsigned int *)image.bits()
-						  : (unsigned int *)image.colorTable());
+                          : (unsigned int *)image.colorTable().data());
 	int val, alpha, i;
 
 	for (i = 0; i < pixels; i++)
@@ -56,10 +58,10 @@ QQuailImageUtils::desaturate(QImage &image, float value)
 
 	int pixels = (image.depth() > 8
 				  ? image.width() * image.height()
-				  : image.numColors());
+                  : image.colorCount());
 	unsigned int *data = (image.depth() > 8
 						  ? (unsigned int *)image.bits()
-						  : (unsigned int *)image.colorTable());
+                          : (unsigned int *)image.colorTable().data());
 
 	QColor color;
 	int h, s, v, i;
@@ -67,7 +69,7 @@ QQuailImageUtils::desaturate(QImage &image, float value)
 	for (i = 0; i < pixels; i++)
 	{
 		color.setRgb(data[i]);
-		color.hsv(&h, &s, &v);
+        color.getHsv(&h, &s, &v);
 		color.setHsv(h, (int)(s * (1.0 - value)), v);
 
 		data[i] = qRgba(color.red(), color.green(), color.blue(),
@@ -88,10 +90,10 @@ QQuailImageUtils::saturate(QImage &image, float value)
 
 	int pixels = (image.depth() > 8
 				  ? image.width() * image.height()
-				  : image.numColors());
+                  : image.colorCount());
 	unsigned int *data = (image.depth() > 8
 						  ? (unsigned int *)image.bits()
-						  : (unsigned int *)image.colorTable());
+                          : (unsigned int *)image.colorTable().data());
 
 	for (int i = 0; i < pixels; i++)
 	{
@@ -114,7 +116,7 @@ QQuailImageUtils::greyPixmap(QPixmap &pixmap)
 {
 	QImage image;
 
-	image = pixmap.convertToImage();
+    image = pixmap.toImage();
 
 	greyImage(image);
 
@@ -128,7 +130,7 @@ QQuailImageUtils::saturate(QPixmap &pixmap, float value)
 {
 	QImage image;
 
-	image = pixmap.convertToImage();
+    image = pixmap.toImage();
 
 	saturate(image, value);
 
@@ -138,7 +140,8 @@ QQuailImageUtils::saturate(QPixmap &pixmap, float value)
 }
 
 void
-QQuailImageUtils::blendOnLower(int xOffset, int yOffset, const QImage &upper,
+QQuailImageUtils::blendOnLower(int xOffset, int yOffset,
+                               QImage &upper,
 							  QImage &lower)
 {
 	int upperWidth  = upper.width();
@@ -187,8 +190,8 @@ QQuailImageUtils::blendOnLower(int xOffset, int yOffset, const QImage &upper,
 
 	for (int y = 0; y < height; y++)
 	{
-		uchar *upperLine = upper.scanLine(y + upperYOffset) +
-			((width + upperXOffset) << 2) - 1;
+        uchar *upperLine = upper.scanLine(y + upperYOffset) +
+            ((width + upperXOffset) << 2) - 1;
 		uchar *lowerLine = lower.scanLine(y + yOffset) +
 			((width + xOffset) << 2) - 1;
 

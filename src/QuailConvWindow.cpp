@@ -413,7 +413,6 @@ QQuailConvChat::buildInterface()
 	text  = new QTextView(this);
 
 	entry = new QQuailMultiLineEdit(this);
-	entry->setWordWrap(QMultiLineEdit::WidgetWidth);
 	entry->setHistoryEnabled(true);
 	entry->setFixedVisibleLines(3);
 
