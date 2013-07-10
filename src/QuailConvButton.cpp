@@ -119,15 +119,15 @@ QQuailConvButton::generateMenu()
 
 		if (buddy == NULL)
 		{
-			menu->insertItem(
-                QQuailProtocolUtils::getProtocolIcon(account),
-				purple_conversation_get_title(conv), i);
+//            menu->addAction(
+//                QQuailProtocolUtils::getProtocolIcon(account),
+//				purple_conversation_get_title(conv), i);
 		}
 		else
 		{
-			menu->insertItem(
-                QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy),
-				purple_conversation_get_title(conv), i);
+//            menu->addAction(
+//                QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy),
+//				purple_conversation_get_title(conv), i);
 		}
 
 		convs[i] = conv;
@@ -138,7 +138,7 @@ void
 QQuailConvButton::convActivated(int id)
 {
     PurpleConversation *conv;
-	GaimConvWindow *win;
+    QQuailConvWindow *win;
 
 	conv = convs[id];
 
@@ -152,17 +152,17 @@ QQuailConvButton::convActivated(int id)
 
 	}
 
-	win = purple_conversation_get_window(conv);
+//	win = purple_conversation_get_window(conv);
 
-	purple_conv_window_switch_conversation(win, purple_conversation_get_index(conv));
-	purple_conv_window_raise(win);
+//	purple_conv_window_switch_conversation(win, purple_conversation_get_index(conv));
+//	purple_conv_window_raise(win);
 }
 
 void
 QQuailConvButton::buttonClicked()
 {
-	GaimConvWindow *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
+    QQuailConvWindow *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
 
-	if (lastWin != NULL)
-		purple_conv_window_raise(lastWin);
+//	if (lastWin != NULL)
+//		purple_conv_window_raise(lastWin);
 }
