@@ -23,7 +23,7 @@
 
 #include <QDialog>
 
-class OTabWidget;
+class QTabWidget;
 class QCheckBox;
 
 class QQuailPrefPage : public QWidget
@@ -150,7 +150,7 @@ class QQuailPrefsDialog : public QDialog
 		void buildInterface();
 
 	private:
-		OTabWidget *tabs;
+        QTabWidget *tabs;
 
 		QQuailPrefPage *blistPage;
 		QQuailPrefPage *convPage;

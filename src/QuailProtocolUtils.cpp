@@ -26,14 +26,14 @@
 #include <QObject>
 #include <QPixmap>
 
-static QMap<QPixmap> largePixmaps;
-static QMap<QPixmap> smallPixmaps;
-static QMap<QPixmap> menuPixmaps;
+//static QMap<QPixmap> largePixmaps;
+//static QMap<QPixmap> smallPixmaps;
+//static QMap<QPixmap> menuPixmaps;
 
 QString
 QQuailProtocolUtils::getProtocolName(QString protocolId)
 {
-	PurplePlugin *p = purple_plugins_find_with_id(protocolId);
+    PurplePlugin *p = purple_plugins_find_with_id(protocolId.toStdString().c_str());
 
 	return ((p != NULL && p->info->name != NULL)
 			? QObject::tr(p->info->name)
@@ -46,12 +46,12 @@ QQuailProtocolUtils::getProtocolIcon(const PurplePlugin *prpl)
 	PurplePluginProtocolInfo *prplInfo = NULL;
 
 	if (prpl == NULL)
-		return NULL;
+        return QPixmap();
 
     prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	if (prplInfo->list_icon == NULL)
-		return NULL;
+        return QPixmap();
 
     return getProtocolIcon(prplInfo->list_icon(NULL, NULL));
 }
@@ -63,17 +63,17 @@ QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account)
 	PurplePlugin *prpl;
 
 	if (account == NULL)
-		return NULL;
+        return QPixmap();
 
 	prpl = purple_plugins_find_with_id(purple_account_get_protocol_id(account));
 
 	if (prpl == NULL)
-		return NULL;
+        return QPixmap();
 
     prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	if (prplInfo->list_icon == NULL)
-		return NULL;
+        return QPixmap();
 
     return getProtocolIcon(prplInfo->list_icon(account, NULL));
 }

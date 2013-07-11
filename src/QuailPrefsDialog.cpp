@@ -174,47 +174,50 @@ void
 QQuailNotifyPrefPage::buildInterface()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
-	QVGroupBox *groupBox;
+    QGroupBox *groupBox;
 
-	layout->setAutoAdd(true);
+//	layout->setAutoAdd(true);
 
     QVBoxLayout *vbox = new QVBoxLayout(this);
 	vbox->setSpacing(6);
 	vbox->setMargin(6);
 
 	/* Notify On groupbox */
-	groupBox = new QVGroupBox(tr("Notify On"), vbox);
+    groupBox = new QGroupBox(tr("Notify On"));
+    vbox->addWidget(groupBox);
 	/* Incoming IMs */
 	incomingIm = new QCheckBox(tr("Incoming IMs"),
-							   groupBox, "incoming ims checkbox");
+                               groupBox);
 
     if (purple_prefs_get_bool("/quail/notify/incoming_im"))
 		incomingIm->setChecked(true);
 
 	/* Incoming Chats */
 	incomingChat = new QCheckBox(tr("Incoming chat messages"),
-								 groupBox, "incoming chat checkbox");
+                                 groupBox);
 
     if (purple_prefs_get_bool("/quail/notify/incoming_chat"))
 		incomingChat->setChecked(true);
 
 	/* Notify Using groupbox */
-	groupBox = new QVGroupBox(tr("Notify Using"), vbox);
+    groupBox = new QGroupBox(tr("Notify Using"));
+    vbox->addWidget(groupBox);
 
 	/* Buzzer */
-	useBuzzer = new QCheckBox(tr("Buzzer"), groupBox, "buzzer checkbox");
+    useBuzzer = new QCheckBox(tr("Buzzer"), groupBox);
 
     if (purple_prefs_get_bool("/quail/notify/use_buzzer"))
 		useBuzzer->setChecked(true);
 
 	/* LED */
-	useLed = new QCheckBox(tr("LED"), groupBox, "led checkbox");
+    useLed = new QCheckBox(tr("LED"), groupBox);
 
     if (purple_prefs_get_bool("/quail/notify/use_led"))
 		useLed->setChecked(true);
 
 	/* Spacer */
-	QLabel *spacer = new QLabel("", vbox);
+    QLabel *spacer = new QLabel("");
+    vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
 }
 
@@ -281,7 +284,7 @@ QQuailPluginPrefPage::buildInterface()
  **************************************************************************/
 QQuailPrefsDialog::QQuailPrefsDialog(QWidget *parent, const char *name,
                                    Qt::WindowFlags fl)
-	: QDialog(parent, name, fl)
+    : QDialog(parent)
 {
 	buildInterface();
 }
@@ -298,10 +301,10 @@ QQuailPrefsDialog::buildInterface()
     setWindowTitle(tr("Preferences"));
 
 	layout = new QVBoxLayout(this);
-	layout->setAutoAdd(true);
+    //layout->setAutoAdd(true);
 
-	tabs = new OTabWidget(this, "pref tabs");
-
+    tabs = new QTabWidget();
+    layout->addWidget(tabs);
 	blistPage    = new QQuailBlistPrefPage(this,  "blist page");
 	notifyPage   = new QQuailNotifyPrefPage(this, "notify page");
 #if 0
@@ -311,8 +314,8 @@ QQuailPrefsDialog::buildInterface()
 	pluginPage   = new QQuailPluginPrefPage(this, "plugin page");
 #endif
 
-	tabs->addTab(blistPage,    "gaim/16x16/blist",         tr("Buddy List"));
-	tabs->addTab(notifyPage,   "gaim/16x16/warn",          tr("Notification"));
+    tabs->addTab(blistPage, tr("Buddy List"));
+    tabs->addTab(notifyPage, tr("Notification"));
 #if 0
 	tabs->addTab(convPage,     "gaim/16x16/conversations", tr("Conversations"));
 	tabs->addTab(awayIdlePage, "gaim/16x16/away",          tr("Away/Idle"));
@@ -320,15 +323,15 @@ QQuailPrefsDialog::buildInterface()
 	tabs->addTab(pluginPage,   "gaim/16x16/connect",       tr("Plugins"));
 #endif
 
-	tabs->setCurrentTab(blistPage);
+    tabs->setCurrentIndex(0);
 }
 
 void
 QQuailPrefsDialog::accept()
 {
-	OWait wait(this);
+//	OWait wait(this);
 
-	wait.show();
+//	wait.show();
 
 	blistPage->accept();
 	notifyPage->accept();
@@ -341,7 +344,7 @@ QQuailPrefsDialog::accept()
 
 	QDialog::accept();
 
-	wait.hide();
+//	wait.hide();
 }
 
 void

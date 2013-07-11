@@ -58,7 +58,7 @@ qQuailRequestInput(const char *title, const char *primary,
 	}
 
 	if (title == NULL)
-		newTitle = QString(primary).stripWhiteSpace();
+        newTitle = QString(primary).trimmed();
 	else
 		newTitle = title;
 
