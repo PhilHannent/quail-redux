@@ -31,11 +31,12 @@
  **************************************************************************/
 static void *
 qQuailRequestInput(const char *title, const char *primary,
-				  const char *secondary, const char *defaultValue,
-				  gboolean multiline, gboolean masked,
-				  const char *okText, GCallback okCb,
-				  const char *cancelText, GCallback cancelCb,
-				  void *userData)
+                   const char *secondary, const char *default_value,
+                   gboolean multiline, gboolean masked, gchar *hint,
+                   const char *ok_text, GCallback ok_cb,
+                   const char *cancel_text, GCallback cancel_cb,
+                   PurpleAccount *account, const char *who,
+                   PurpleConversation *conv, void *user_data)
 {
 	QString message;
 	QString newTitle;
@@ -67,28 +68,28 @@ qQuailRequestInput(const char *title, const char *primary,
     dialog->setWindowTitle(newTitle);
 	dialog->setInfoText(message);
 
-	if (defaultValue != NULL)
-		dialog->setDefaultValue(defaultValue);
+    if (default_value != NULL)
+        dialog->setDefaultValue(default_value);
 
 	if (masked)
 		dialog->setMasked();
 
-	dialog->addButtons(cancelText, okText);
+    dialog->addButtons(cancel_text, ok_text);
 
 	/* Execute the dialog. */
 	int result = dialog->exec();
 
-	purple_debug(GAIM_DEBUG_MISC, "requestInput",
+    purple_debug(PURPLE_DEBUG_MISC, "requestInput",
 			   "result = %d, '%s'\n", result,
-			   (const char *)dialog->getText());
+               (const char *)dialog->getText().toStdString().c_str());
 
 	if (result == 1)
 	{
-		if (okCb != NULL)
-			((GaimRequestInputCb)okCb)(userData, dialog->getText());
+        if (ok_cb != NULL)
+            ((PurpleRequestInputCb)ok_cb)(user_data, dialog->getText().toStdString().c_str());
 	}
-	else if (cancelCb != NULL)
-		((GaimRequestInputCb)cancelCb)(userData, NULL);
+    else if (cancel_cb != NULL)
+        ((PurpleRequestInputCb)cancel_cb)(user_data, NULL);
 
 	delete dialog;
 
@@ -97,8 +98,10 @@ qQuailRequestInput(const char *title, const char *primary,
 
 static void *
 qQuailRequestAction(const char *title, const char *primary,
-				   const char *secondary, unsigned int,
-				   void *userData, size_t actionCount, va_list actions)
+                    const char *secondary, int default_action,
+                    PurpleAccount *account, const char *who,
+                    PurpleConversation *conv, void *user_data,
+                    size_t action_count, va_list actions)
 {
 	QMessageBox *msgbox;
 	QString message;
@@ -122,7 +125,7 @@ qQuailRequestAction(const char *title, const char *primary,
 	}
 
 	if (title == NULL)
-		newTitle = QString(primary).stripWhiteSpace();
+        newTitle = QString(primary).trimmed();
 	else
 		newTitle = title;
 
@@ -130,10 +133,10 @@ qQuailRequestAction(const char *title, const char *primary,
     msgbox->setWindowTitle(newTitle);
 	msgbox->setText(message);
 
-	cbs = new GCallback[actionCount];
+    cbs = new GCallback[action_count];
 
 #if 0
-	if (actionCount > 2)
+    if (action_count > 2)
 	{
 		for (size_t i = 0; i < 2; i++)
 		{
@@ -142,7 +145,7 @@ qQuailRequestAction(const char *title, const char *primary,
 			cbs[i] = va_arg(actions, GCallback);
 		}
 
-		for (size_t i = 2; i < actionCount; i++)
+        for (size_t i = 2; i < action_count; i++)
 		{
 			const char *text = va_arg(actions, char *);
 			GCallback cb     = va_arg(actions, GCallback);
@@ -153,7 +156,7 @@ qQuailRequestAction(const char *title, const char *primary,
 	}
 	else
 	{
-		for (size_t i = 0; i < actionCount; i++)
+        for (size_t i = 0; i < action_count; i++)
 		{
 			(void)va_arg(actions, char *);
 
@@ -162,7 +165,7 @@ qQuailRequestAction(const char *title, const char *primary,
 	}
 #endif
 
-	for (size_t i = 0; i < actionCount; i++)
+    for (size_t i = 0; i < action_count; i++)
 	{
 		const char *text = va_arg(actions, char *);
 		GCallback cb     = va_arg(actions, GCallback);
@@ -172,12 +175,12 @@ qQuailRequestAction(const char *title, const char *primary,
 	}
 
 	int result = msgbox->exec();
-	purple_debug(GAIM_DEBUG_MISC, "QQuailRequest", "result = %d\n", result);
+    purple_debug(PURPLE_DEBUG_MISC, "QQuailRequest", "result = %d\n", result);
 
-	result = actionCount - result - 1;
+    result = action_count - result - 1;
 
 	if (cbs[result] != NULL)
-		((GaimRequestActionCb)cbs[result])(userData, result);
+        ((PurpleRequestActionCb)cbs[result])(user_data, result);
 
 	delete cbs;
 
@@ -187,10 +190,16 @@ qQuailRequestAction(const char *title, const char *primary,
 static PurpleRequestUiOps requestOps =
 {
 	qQuailRequestInput,
-	NULL,
+    NULL, /* request_choice */
 	qQuailRequestAction,
-	NULL,
-	NULL
+    NULL, /* request_fields */
+    NULL, /* request_file */
+    NULL, /* close_request */
+    NULL, /* request_folder */
+    NULL, /* request_action_with_icon */
+    NULL,
+    NULL,
+    NULL
 };
 
 PurpleRequestUiOps *

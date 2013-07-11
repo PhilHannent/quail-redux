@@ -41,11 +41,11 @@ class QQuailTabBar : public QTabBar
 
 		int getLastId() const;
 
-		virtual int insertTab(QTab *tab, int index = -1);
+        virtual int insertTab(QWidget *tab, int index = -1);
 
 	protected:
 		virtual void paintLabel(QPainter *painter, const QRect &rect,
-								QTab *tab, bool hasFocus) const;
+                                QWidget *tab, bool hasFocus) const;
 
 	protected:
 		QMap<int, QColor> colors;
