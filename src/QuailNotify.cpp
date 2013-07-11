@@ -44,8 +44,7 @@ static void *qQuailNotifyEmails(size_t count, gboolean detailed,
 
 static void *
 qQuailNotifyMessage(PurpleNotifyMsgType type, const char *title,
-				   const char *primary, const char *secondary,
-				   GCallback, void *)
+                    const char *primary, const char *secondary)
 {
 	QString message;
 	QString newTitle;
@@ -93,21 +92,22 @@ qQuailNotifyMessage(PurpleNotifyMsgType type, const char *title,
 }
 
 static void *
-qQuailNotifyEmail(const char *subject, const char *from, const char *to,
-				 const char *url, GCallback cb, void *userData)
+qQuailNotifyEmail(PurpleConnection *gc,
+                  const char *subject, const char *from,
+                  const char *to, const char *url)
 {
-	return qQuailNotifyEmails(1, true,
-							 (subject == NULL ? NULL : &subject),
-							 (from    == NULL ? NULL : &from),
-							 (to      == NULL ? NULL : &to),
-							 (url     == NULL ? NULL : &url),
-							 cb, userData);
+//    return qQuailNotifyEmails(gc,
+//							 (subject == NULL ? NULL : &subject),
+//							 (from    == NULL ? NULL : &from),
+//							 (to      == NULL ? NULL : &to),
+//                             (url     == NULL ? NULL : &url));
 }
 
 static void *
-qQuailNotifyEmails(size_t count, gboolean, const char **subjects,
-				  const char **froms, const char **tos, const char **,
-				  GCallback, void *)
+qQuailNotifyEmails(PurpleConnection *gc,
+                   size_t count, gboolean detailed,
+                   const char **subjects, const char **froms,
+                   const char **tos, const char **urls)
 {
 	QString str, title;
 
@@ -139,8 +139,7 @@ qQuailNotifyEmails(size_t count, gboolean, const char **subjects,
 
 static void *
 qQuailNotifyFormatted(const char *title, const char *primary,
-					 const char *secondary, const char *text,
-					 GCallback, void *)
+                      const char *secondary, const char *text)
 {
 	QDialog *dialog;
 	QVBoxLayout *layout;
