@@ -666,9 +666,11 @@ QQuailJoinChatDialog::accept()
 
     chatInfoList = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
 
-	for (widget = widgets.first(), l = chatInfoList;
+    QListIterator<QWidget*> widgetIter(widgets);
+    widgetIter.toFront();
+    for (widget = widgetIter.next(), l = chatInfoList;
 		 widget != NULL && l != NULL;
-		 widget = widgets.next(), l = l->next)
+         widget = widgetIter.next(), l = l->next)
 	{
 		pce = (struct proto_chat_entry *)l->data;
 
@@ -676,17 +678,17 @@ QQuailJoinChatDialog::accept()
 		{
 			QSpinBox *spinbox = (QSpinBox *)widget;
 
-			g_hash_table_replace(components,
-                                 g_strdup(pce->identifier),
-                                 g_strdup(spinbox->text().trimmed()));
+//			g_hash_table_replace(components,
+//                                 g_strdup(pce->identifier),
+//                                 g_strdup(spinbox->text().trimmed()));
 		}
 		else
 		{
 			QLineEdit *edit = (QLineEdit *)widget;
 
-			g_hash_table_replace(components,
-								 g_strdup(pce->identifier),
-                                 g_strdup(edit->text()));
+//			g_hash_table_replace(components,
+//								 g_strdup(pce->identifier),
+//                                 g_strdup(edit->text()));
 		}
 
 		g_free(pce);

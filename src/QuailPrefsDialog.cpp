@@ -79,41 +79,35 @@ void
 QQuailBlistPrefPage::buildInterface()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setAutoAdd(true);
 	layout->setSpacing(6);
 	layout->setMargin(6);
 
 	/* Show large icons */
-	largeIcons = new QCheckBox(tr("Show large icons"),
-							   this, "large icons checkbox");
+    largeIcons = new QCheckBox(tr("Show large icons"), this);
 
     if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
 		largeIcons->setChecked(true);
 
 	/* Show idle times */
-	idleTimes = new QCheckBox(tr("Show idle times"),
-							  this, "idle times checkbox");
+    idleTimes = new QCheckBox(tr("Show idle times"), this);
 
     if (purple_prefs_get_bool("/quail/blist/show_idle_times"))
 		idleTimes->setChecked(true);
 
 	/* Show warning levels */
-	showWarnings = new QCheckBox(tr("Show warning levels"),
-								 this, "warning levels checkbox");
+    showWarnings = new QCheckBox(tr("Show warning levels"), this);
 
     if (purple_prefs_get_bool("/quail/blist/show_warning_levels"))
 		showWarnings->setChecked(true);
 
 	/* Show numbers in groups */
-	groupCount = new QCheckBox(tr("Show numbers in groups"),
-							   this, "group count checkbox");
+    groupCount = new QCheckBox(tr("Show numbers in groups"), this);
 
     if (purple_prefs_get_bool("/quail/blist/show_group_count"))
 		groupCount->setChecked(true);
 
 	/* Dim idle buddies */
-	dimIdle = new QCheckBox(tr("Dim idle buddies"),
-							this, "dim idle checkbox");
+    dimIdle = new QCheckBox(tr("Dim idle buddies"), this);
 
     if (purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
 		dimIdle->setChecked(true);

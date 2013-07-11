@@ -26,7 +26,7 @@
 #include <QPixmap>
 
 QQuailProtocolBox::QQuailProtocolBox(QWidget *parent, const char *name)
-	: QComboBox(parent, name)
+    : QComboBox(parent)
 {
 	GList *protocols;
 	PurplePlugin *prpl;
@@ -43,7 +43,7 @@ QQuailProtocolBox::QQuailProtocolBox(QWidget *parent, const char *name)
 
 QQuailProtocolBox::QQuailProtocolBox(QString protocolId, QWidget *parent,
 								   const char *name)
-	: QComboBox(parent, name)
+    : QComboBox(parent)
 {
 	buildMenu(protocolId);
 }
@@ -63,7 +63,7 @@ QQuailProtocolBox::setCurrentProtocol(QString protocolId)
 
 		if (plugin->info->id == protocolId)
 		{
-			setCurrentItem(i);
+            setCurrentIndex(i);
 			break;
 		}
 	}
@@ -83,11 +83,11 @@ QQuailProtocolBox::buildMenu(QString protocolId)
 
 		plugin = (PurplePlugin *)p->data;
 
-		insertItem(
+        addItem(
             QQuailProtocolUtils::getProtocolIcon(plugin),
 			plugin->info->name);
 
 		if (protocolId != NULL && protocolId == plugin->info->id)
-			setCurrentItem(count);
+            setCurrentIndex(count);
 	}
 }
