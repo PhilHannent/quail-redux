@@ -387,10 +387,11 @@ QQuailAddChatDialog::accept()
 									   g_free, g_free);
 
     chatInfoList = PURPLE_PLUGIN_PROTOCOL_INFO(gc->prpl)->chat_info(gc);
-
-	for (widget = widgets.first(), l = chatInfoList;
+    QListIterator<QWidget*> widgetsIter(widgets);
+    widgetsIter.toFront();
+    for (widget = widgetsIter.next(), l = chatInfoList;
 		 widget != NULL && l != NULL;
-		 widget = widgets.next(), l = l->next)
+         widget = widgetsIter.next(), l = l->next)
 	{
 		pce = (struct proto_chat_entry *)l->data;
 
@@ -554,15 +555,17 @@ QQuailJoinChatDialog::buildInterface()
     setWindowTitle(tr("Join Chat"));
 
 	layout = new QVBoxLayout(this);
-	layout->setAutoAdd(true);
+//	layout->setAutoAdd(true);
 
     vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
 	vbox->setMargin(6);
 
     widgetsFrame = new QFrame();
-    vbox->addWidget(widgetFrame);
-	grid = new QGridLayout(widgetsFrame, 1, 1);
+    vbox->addWidget(widgetsFrame);
+
+    grid = new QGridLayout();
+    widgetsFrame->setLayout(grid);
 	grid->setSpacing(5);
 
 //	labels.setAutoDelete(true);
@@ -612,8 +615,8 @@ QQuailJoinChatDialog::rebuildWidgetsFrame()
 
 		if (pce->is_int)
 		{
-			QSpinBox *spinbox = new QSpinBox(pce->min, pce->max, 1,
-											 widgetsFrame);
+            QSpinBox *spinbox = new QSpinBox(widgetsFrame);
+            spinbox->setRange(pce->min, pce->max);
 			spinbox->setValue(pce->min);
 
 			grid->addWidget(spinbox, row, 1);
@@ -624,7 +627,9 @@ QQuailJoinChatDialog::rebuildWidgetsFrame()
 		}
 		else
 		{
-			QLineEdit *edit = new QLineEdit(pce->def, widgetsFrame);
+            //QLineEdit *edit = new QLineEdit(pce->def, widgetsFrame);
+            QLineEdit *edit = new QLineEdit(widgetsFrame);
+            edit->setText(pce->label);
 
 			grid->addWidget(edit, row, 1);
 
@@ -672,8 +677,8 @@ QQuailJoinChatDialog::accept()
 			QSpinBox *spinbox = (QSpinBox *)widget;
 
 			g_hash_table_replace(components,
-								 g_strdup(pce->identifier),
-								 g_strdup(spinbox->cleanText()));
+                                 g_strdup(pce->identifier),
+                                 g_strdup(spinbox->text().trimmed()));
 		}
 		else
 		{
@@ -681,7 +686,7 @@ QQuailJoinChatDialog::accept()
 
 			g_hash_table_replace(components,
 								 g_strdup(pce->identifier),
-								 g_strdup(edit->text()));
+                                 g_strdup(edit->text()));
 		}
 
 		g_free(pce);

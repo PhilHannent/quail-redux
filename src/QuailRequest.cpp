@@ -184,7 +184,7 @@ qQuailRequestAction(const char *title, const char *primary,
 	return NULL;
 }
 
-static GaimRequestUiOps requestOps =
+static PurpleRequestUiOps requestOps =
 {
 	qQuailRequestInput,
 	NULL,
@@ -193,7 +193,7 @@ static GaimRequestUiOps requestOps =
 	NULL
 };
 
-GaimRequestUiOps *
+PurpleRequestUiOps *
 qQuailGetRequestUiOps()
 {
 	return &requestOps;

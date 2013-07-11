@@ -137,8 +137,8 @@ class QQuailJoinChatDialog : public QDialog
 		QQuailAccountBox *accountCombo;
 		QGridLayout *grid;
 		QFrame *widgetsFrame;
-		QList<QWidget> labels;
-		QList<QWidget> widgets;
+        QList<QWidget*> labels;
+        QList<QWidget*> widgets;
 };
 
 #endif /* _QGAIM_DIALOGS_H_ */

@@ -43,7 +43,7 @@ static void *qQuailNotifyEmails(size_t count, gboolean detailed,
 							   GCallback cb, void *userData);
 
 static void *
-qQuailNotifyMessage(GaimNotifyMsgType type, const char *title,
+qQuailNotifyMessage(PurpleNotifyMsgType type, const char *title,
 				   const char *primary, const char *secondary,
 				   GCallback, void *)
 {
@@ -67,21 +67,21 @@ qQuailNotifyMessage(GaimNotifyMsgType type, const char *title,
 	}
 
 	if (title == NULL)
-		newTitle = QString(primary).stripWhiteSpace();
+        newTitle = QString(primary).trimmed();
 	else
 		newTitle = title;
 
 	switch (type)
 	{
-		case GAIM_NOTIFY_MSG_ERROR:
+        case PURPLE_NOTIFY_MSG_ERROR:
 			QMessageBox::critical(NULL, newTitle, message);
 			break;
 
-		case GAIM_NOTIFY_MSG_WARNING:
+        case PURPLE_NOTIFY_MSG_WARNING:
 			QMessageBox::warning(NULL, newTitle, message);
 			break;
 
-		case GAIM_NOTIFY_MSG_INFO:
+        case PURPLE_NOTIFY_MSG_INFO:
 			QMessageBox::information(NULL, newTitle, message);
 			break;
 
@@ -111,24 +111,25 @@ qQuailNotifyEmails(size_t count, gboolean, const char **subjects,
 {
 	QString str, title;
 
-    title = tr("You have new mail!");
+    //title = tr("You have new mail!");
+    title = "You have new mail!";
 
 	str = "<p>";
 
 	if (count == 1)
-        str += tr("%1 has 1 new e-mail.").arg(*tos);
+        str += QString("%1 has 1 new e-mail.").arg(*tos);
 	else
-        str += tr("%1 has %2 new e-mails.").arg(*tos, count);
+        str += QString("%1 has %2 new e-mails.").arg(*tos, count);
 
 	str += "</p>";
 
 	if (count == 1)
 	{
 		if (froms != NULL)
-            str += tr("<p>From: %1</p>").arg(*froms);
+            str += QString("<p>From: %1</p>").arg(*froms);
 
 		if (subjects != NULL)
-            str += tr("<p>Subject: %1</p>").arg(*subjects);
+            str += QString("<p>Subject: %1</p>").arg(*subjects);
 	}
 
 	QMessageBox::information(NULL, title, str);
@@ -144,7 +145,7 @@ qQuailNotifyFormatted(const char *title, const char *primary,
 	QDialog *dialog;
 	QVBoxLayout *layout;
 	QLabel *label;
-	QTextView *textview;
+    QTextEdit *textview;
 	QString message;
 	QString newTitle;
 
@@ -167,7 +168,7 @@ qQuailNotifyFormatted(const char *title, const char *primary,
 	if (title == NULL)
 	{
 		if (primary != NULL)
-			newTitle = QString(primary).stripWhiteSpace();
+            newTitle = QString(primary).trimmed();
 		else
 			newTitle = "";
 	}
@@ -175,17 +176,21 @@ qQuailNotifyFormatted(const char *title, const char *primary,
 		newTitle = title;
 
 
-	dialog = new QDialog(NULL, "notify-formatted");
+    //dialog = new QDialog(NULL, "notify-formatted");
+    dialog = new QDialog();
     dialog->setWindowTitle(newTitle);
 
-	layout = new QVBoxLayout(dialog, 8);
+    layout = new QVBoxLayout();
+    dialog->setLayout(layout);
 
-	layout->setAutoAdd(true);
+    //layout->setAutoAdd(true);
 
 	label = new QLabel(dialog);
+    layout->addWidget(label);
 	label->setText(message);
 
-	textview = new QTextView(dialog);
+    textview = new QTextEdit(dialog);
+    layout->addWidget(textview);
 	textview->setText(text);
 
 	dialog->showMaximized();
@@ -193,17 +198,25 @@ qQuailNotifyFormatted(const char *title, const char *primary,
 	return NULL;
 }
 
-static GaimNotifyUiOps notifyOps =
+static PurpleNotifyUiOps notifyOps =
 {
 	qQuailNotifyMessage,
 	qQuailNotifyEmail,
 	qQuailNotifyEmails,
-	qQuailNotifyFormatted,
-	NULL,
-	NULL
+    qQuailNotifyFormatted,
+
+    NULL, /* searchresults */
+    NULL, /* searchresults_new_rows */
+    NULL, /* userinfo */
+    NULL, /* uri */
+    NULL, /* close_notify */
+    NULL,
+    NULL,
+    NULL,
+    NULL
 };
 
-GaimNotifyUiOps *
+PurpleNotifyUiOps *
 qQuailGetNotifyUiOps()
 {
 	return &notifyOps;
@@ -215,7 +228,7 @@ qQuailNotifyBuzzer(void)
     if (!purple_prefs_get_bool("/quail/notify/use_buzzer"))
 		return;
 
-	ODevice::inst()->alarmSound();
+    //ODevice::inst()->alarmSound();
 }
 
 void
@@ -224,31 +237,31 @@ qQuailNotifyLedStart(void)
     if (!purple_prefs_get_bool("/quail/notify/use_led"))
 		return;
 
-	ODevice *device = ODevice::inst();
+//	ODevice *device = ODevice::inst();
 
-	if (!device->ledList().isEmpty())
-	{
-		OLed led = (device->ledList().contains(Led_Mail)
-					? Led_Mail : device->ledList()[0]);
+//	if (!device->ledList().isEmpty())
+//	{
+//		OLed led = (device->ledList().contains(Led_Mail)
+//					? Led_Mail : device->ledList()[0]);
 
-		device->setLedState(led,
-							(device->ledStateList(led).contains(Led_BlinkSlow)
-							 ? Led_BlinkSlow : Led_On));
-	}
+//		device->setLedState(led,
+//							(device->ledStateList(led).contains(Led_BlinkSlow)
+//							 ? Led_BlinkSlow : Led_On));
+//	}
 }
 
 void
 qQuailNotifyLedStop(void)
 {
-	ODevice *device = ODevice::inst();
+//	ODevice *device = ODevice::inst();
 
-	if (!device->ledList().isEmpty())
-	{
-		OLed led = (device->ledList().contains(Led_Mail)
-					? Led_Mail : device->ledList()[0]);
+//	if (!device->ledList().isEmpty())
+//	{
+//		OLed led = (device->ledList().contains(Led_Mail)
+//					? Led_Mail : device->ledList()[0]);
 
-		device->setLedState(led, Led_Off);
-	}
+//		device->setLedState(led, Led_Off);
+//	}
 }
 
 void

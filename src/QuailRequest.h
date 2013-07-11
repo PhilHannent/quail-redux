@@ -23,6 +23,6 @@
 
 #include <libpurple/request.h>
 
-GaimRequestUiOps *qQuailGetRequestUiOps();
+PurpleRequestUiOps *qQuailGetRequestUiOps();
 
 #endif /* _QGAIM_REQUEST_H_ */

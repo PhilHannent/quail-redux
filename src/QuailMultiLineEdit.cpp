@@ -20,9 +20,11 @@
  * MA  02111-1307  USA
  */
 #include "QuailMultiLineEdit.h"
+#include <QEvent>
+#include <QKeyEvent>
 
 QQuailMultiLineEdit::QQuailMultiLineEdit(QWidget *parent, const char *name)
-    : QTextEdit(parent, name), historyEnabled(false)
+    : QTextEdit(parent), historyEnabled(false)
 {
 	index = -1;
 	installEventFilter(this);
@@ -47,10 +49,10 @@ QQuailMultiLineEdit::eventFilter(QObject *object, QEvent *event)
 	{
 		QKeyEvent *k = (QKeyEvent *)event;
 
-		if (k->key() == Key_Tab)
+        if (k->key() == Qt::Key_Tab)
 		{
 			/* Tab */
-			return TRUE;
+            return true;
 		}
 	}
 
@@ -64,7 +66,7 @@ QQuailMultiLineEdit::keyPressEvent(QKeyEvent *event)
 
 	if (historyEnabled)
 	{
-		if (key == Key_Up)
+        if (key == Qt::Key_Up)
 		{
 			if (history.count() > 0 &&
 				index < (signed int)history.count() - 1)
@@ -73,7 +75,7 @@ QQuailMultiLineEdit::keyPressEvent(QKeyEvent *event)
 				setText(history[index]);
 			}
 		}
-		else if (key == Key_Down)
+        else if (key == Qt::Key_Down)
 		{
 			if (history.count() > 0 && index > 0)
 			{
@@ -87,12 +89,12 @@ QQuailMultiLineEdit::keyPressEvent(QKeyEvent *event)
 				setText("");
 			}
 		}
-		else if (key == Key_Return)
+        else if (key == Qt::Key_Return)
 		{
-			history.prepend(text());
+            history.prepend(this->toPlainText());
 			index = -1;
 		}
-		else if (key == Key_Tab)
+        else if (key == Qt::Key_Tab)
 		{
 			/* TODO Tab completion */
 			return;

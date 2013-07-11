@@ -185,7 +185,7 @@ QQuailMainWindow::closeEvent(QCloseEvent *event)
 
 		QQuailConvWindow *qwin = (QQuailConvWindow *)visibleWidget;
 
-		purple_conv_window_destroy(qwin->getGaimConvWindow());
+        purple_conv_window_destroy(qwin->getConvWindow());
 
 		event->ignore();
 	}
@@ -203,9 +203,9 @@ void
 QQuailMainWindow::removeConversationWindow(QQuailConvWindow *win)
 {
 	GList *l;
-	GaimConvWindow *newWin = NULL;
+    QQuailConvWindow *newWin = NULL;
 
-	l = g_list_find(purple_get_windows(), win->getGaimConvWindow());
+    l = g_list_find(purple_get_windows(), win->getConvWindow());
 
 	getWidgetStack()->removeWidget(win);
 
@@ -253,7 +253,7 @@ QQuailMainWindow::getLastActiveConvWindow() const
 	return lastConvWin;
 }
 
-QWidgetStack *
+QStackedWidget *
 QQuailMainWindow::getWidgetStack() const
 {
 	return widgetStack;
