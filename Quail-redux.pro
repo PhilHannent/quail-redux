@@ -109,6 +109,13 @@ win32-g++ {
         c:/dev/pidgin-main \
         c:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
         C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
+
+    LIBS += -L"C:\dev\win32-dev\gtk-2.24.10\lib"
+    LIBS += -L"C:\dev\pidgin-main\libpurple"
+    LIBS += -L"C:\dev\pidgin-main\libpurple"
+    LIBS += -L"C:\Qt\Qt5.1.0-mingw32\5.1.0-beta1\mingw47_32\lib"
+    LIBS += -L"C:\Qt\Qt5.1.0-mingw32\5.1.0-beta1\mingw47_32\bin"
+
 }
 
 LIBS        += \
