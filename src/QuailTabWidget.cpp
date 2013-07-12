@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file QQuailTabWidget.cpp Tab widget with colored label support.
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
@@ -22,9 +22,9 @@
 #include "QuailTabBar.h"
 
 QQuailTabWidget::QQuailTabWidget(QWidget *parent, const char *name)
-	: QTabWidget(parent, name)
+    : QTabWidget(parent)
 {
-	setTabBar(new QQuailTabBar(this, "tab control"));
+    setTabBar(new QQuailTabBar(this));
 }
 
 void

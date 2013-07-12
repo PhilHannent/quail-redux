@@ -31,6 +31,7 @@
 class QQuailAccountsWindow;
 class QQuailConnectionMeters;
 class QQuailConvWindow;
+class QQuailConversation;
 
 class QQuailMainWindow : public QMainWindow
 {
@@ -44,14 +45,14 @@ class QQuailMainWindow : public QMainWindow
                         Qt::WindowFlags fl = 0);
 		~QQuailMainWindow();
 
-		void addConversationWindow(QQuailConvWindow *win);
-		void removeConversationWindow(QQuailConvWindow *win);
+        void addConversationWindow(PurpleConversation *win);
+        void removeConversationWindow(QQuailConversation *win);
 
 		QQuailBListWindow *getBlistWindow() const;
 		QQuailAccountsWindow *getAccountsWindow() const;
 
-        void setLastActiveConvWindow(QQuailConvWindow *win);
-        QQuailConvWindow *getLastActiveConvWindow() const;
+        void setLastActiveConvWindow(QQuailConversation *win);
+        QQuailConversation *getLastActiveConvWindow() const;
 
         QStackedWidget *getWidgetStack() const;
 		QQuailConnectionMeters *getMeters() const;
@@ -72,7 +73,7 @@ class QQuailMainWindow : public QMainWindow
 		QQuailBListWindow *blistWin;
 		QQuailConnectionMeters *meters;
 
-        QQuailConvWindow *lastConvWin;
+        QQuailConversation *lastConvWin;
 
 		int nextConvWinId;
 };

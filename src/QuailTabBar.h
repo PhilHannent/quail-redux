@@ -31,7 +31,7 @@ class QQuailTabBar : public QTabBar
 	Q_OBJECT
 
 	public:
-		QQuailTabBar(QWidget *parent = NULL, const char *name = NULL);
+        QQuailTabBar(QWidget *parent = NULL);
 
 		void setTabColor(int id, const QColor &color);
 		const QColor &getTabColor(int id) const;

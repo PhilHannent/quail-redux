@@ -20,10 +20,13 @@
  */
 #include "QuailMainWindow.h"
 
+#include <QApplication>
+#include <QDebug>
+#include <QDesktopWidget>
+#include <QCloseEvent>
 #include <QTimer>
 #include <QVariant>
 #include <QVBoxLayout>
-//#include <qpe/qpeapplication.h>
 
 #include <libpurple/prefs.h>
 #include <libpurple/conversation.h>
@@ -49,7 +52,7 @@ static QQuailMainWindow *mainWin = NULL;
 static void
 qQuailPrefsInit(void)
 {
-    purple_prefs_add_none("/" + UI_ID);
+    purple_prefs_add_none("/quail");
     purple_prefs_add_none("/quail/blist");
     purple_prefs_add_bool("/quail/blist/show_offline_buddies", false);
     purple_prefs_add_bool("/quail/blist/show_empty_groups",    false);
@@ -57,7 +60,7 @@ qQuailPrefsInit(void)
     purple_prefs_add_bool("/quail/blist/show_warning_levels",  true);
     purple_prefs_add_bool("/quail/blist/show_group_count",     true);
     purple_prefs_add_bool("/quail/blist/show_large_icons",
-                        (QApplication::desktop()->width() >= 600));
+                        (QApplication::desktop()->screenGeometry().width() >= 600));
     purple_prefs_add_bool("/quail/blist/dim_idle_buddies",     true);
 
 	qQuailNotifyInit();
@@ -104,7 +107,7 @@ qQuailGetCoreUiOps()
  * QQuailMainWindow
  **************************************************************************/
 QQuailMainWindow::QQuailMainWindow(QWidget *parent, const char *name, Qt::WindowFlags fl)
-	: QMainWindow(parent, name, fl),
+    : QMainWindow(parent),
 	  accountsWin(NULL), blistWin(NULL), nextConvWinId(0)
 {
 	mainWin = this;
@@ -119,7 +122,7 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent, const char *name, Qt::Window
 	purple_set_blist(purple_blist_new());
 	purple_blist_load();
 
-	purple_accounts_auto_login("qpe-gaim");
+    //purple_accounts_auto_login("quail");
 }
 
 QQuailMainWindow::~QQuailMainWindow()
@@ -132,13 +135,15 @@ QQuailMainWindow::buildInterface()
 {
     QVBoxLayout *vbox = new QVBoxLayout(this);
 
-	widgetStack = new QWidgetStack(vbox);
+    widgetStack = new QStackedWidget();
+    vbox->addWidget(widgetStack);
 	vbox->setStretchFactor(widgetStack, 1);
 
 	/* Create the connection meters box. */
-	meters = new QQuailConnectionMeters(vbox);
+    meters = new QQuailConnectionMeters();
+    vbox->addWidget(meters);
 
-	setCentralWidget(vbox);
+    setCentralWidget(widgetStack);
 }
 
 void
@@ -149,33 +154,33 @@ QQuailMainWindow::initCore()
 	purple_core_set_ui_ops(qQuailGetCoreUiOps());
 	purple_eventloop_set_ui_ops(qQuailGetEventLoopUiOps());
 
-	if (!purple_core_init("qpe-gaim")) {
-		qFatal(tr("Initialization of the Gaim core failed.\n"
-				  "Please report this!\n"));
+    if (!purple_core_init("quail")) {
+        qDebug() << tr("Initialization of the Quail core failed.\n"
+                  "Please report this!\n");
 	}
 
 #ifdef LOCAL_COMPILE
 	plugin_search_paths[0] = "/opt/Qtopia/lib/gaim";
 #else
-	plugin_search_paths[0] = "/usr/lib/gaim";
+    plugin_search_paths[0] = "/usr/lib/libpurple";
 #endif
 
-	purple_plugins_set_search_paths(sizeof(plugin_search_paths) /
-								  sizeof(*plugin_search_paths),
-								  plugin_search_paths);
+//	purple_plugins_set_search_paths(sizeof(plugin_search_paths) /
+//								  sizeof(*plugin_search_paths),
+//								  plugin_search_paths);
 
 	purple_plugins_probe(NULL);
 
 	purple_prefs_load();
 
-	purple_accounts_load();
+    //purple_accounts_load();
 	purple_pounces_load();
 }
 
 void
 QQuailMainWindow::closeEvent(QCloseEvent *event)
 {
-	QWidget *visibleWidget = widgetStack->visibleWidget();
+    QWidget *visibleWidget = widgetStack->currentWidget();
 
 	if (visibleWidget == accountsWin || visibleWidget == blistWin)
 		event->accept();
@@ -185,46 +190,56 @@ QQuailMainWindow::closeEvent(QCloseEvent *event)
 
 		QQuailConvWindow *qwin = (QQuailConvWindow *)visibleWidget;
 
-        purple_conv_window_destroy(qwin->getConvWindow());
+        //purple_conv_window_destroy(qwin->getConvWindow());
 
 		event->ignore();
 	}
 }
 
 void
-QQuailMainWindow::addConversationWindow(QQuailConvWindow *win)
+QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
 {
-	win->setId(nextConvWinId++);
+    PurpleConversationType conv_type = purple_conversation_get_type(conv);
+    QQuailConversation *win;
 
-	getWidgetStack()->addWidget(win, win->getId());
+    if (conv_type == PURPLE_CONV_TYPE_IM) {
+        win = new QQuailConvIm(conv, this);
+    } else if (conv_type == PURPLE_CONV_TYPE_CHAT) {
+        win = new QQuailConvChat(conv, this);
+    }
+
+    conv->ui_data = win;
+    //win->setId(nextConvWinId++);
+
+    getWidgetStack()->addWidget(win);
 }
 
 void
-QQuailMainWindow::removeConversationWindow(QQuailConvWindow *win)
+QQuailMainWindow::removeConversationWindow(QQuailConversation *win)
 {
 	GList *l;
-    QQuailConvWindow *newWin = NULL;
+    QQuailConversation *newWin = NULL;
 
-    l = g_list_find(purple_get_windows(), win->getConvWindow());
+//    l = g_list_find(purple_get_windows(), win->getConvWindow());
 
-	getWidgetStack()->removeWidget(win);
+//	getWidgetStack()->removeWidget(win);
 
-	if (l != NULL)
-	{
-		if (l->next != NULL)
-			newWin = (GaimConvWindow *)l->next->data;
-		else if (l->prev != NULL)
-			newWin = (GaimConvWindow *)l->prev->data;
+//	if (l != NULL)
+//	{
+//		if (l->next != NULL)
+//            newWin = (QQuailConversation *)l->next->data;
+//		else if (l->prev != NULL)
+//            newWin = (QQuailConversation *)l->prev->data;
 
-		if (newWin != NULL)
-		{
-			QQuailConvWindow *qwin = (QQuailConvWindow *)newWin->ui_data;
+//		if (newWin != NULL)
+//		{
+//            QQuailConversation *qwin = (QQuailConversation *)newWin->ui_data;
 
-			getWidgetStack()->raiseWidget(qwin);
+//            //getWidgetStack()->setCurrentWidget(qwin);
 
-			return;
-		}
-	}
+//			return;
+//		}
+//	}
 
 	showBlistWindow();
 }
@@ -242,12 +257,12 @@ QQuailMainWindow::getAccountsWindow() const
 }
 
 void
-QQuailMainWindow::setLastActiveConvWindow(GaimConvWindow *win)
+QQuailMainWindow::setLastActiveConvWindow(QQuailConversation *win)
 {
 	lastConvWin = win;
 }
 
-GaimConvWindow *
+QQuailConversation *
 QQuailMainWindow::getLastActiveConvWindow() const
 {
 	return lastConvWin;
@@ -271,11 +286,11 @@ QQuailMainWindow::showBlistWindow()
 	if (blistWin == NULL)
 	{
 		blistWin = new QQuailBListWindow(this);
-		widgetStack->addWidget(blistWin, 0);
+        widgetStack->addWidget(blistWin);
 	}
 
-    setWindowTitle(tr("Gaim - Buddy List"));
-	widgetStack->raiseWidget(blistWin);
+    setWindowTitle(tr("Buddy List"));
+    widgetStack->setCurrentWidget(blistWin);
 }
 
 void
@@ -284,11 +299,11 @@ QQuailMainWindow::showAccountsWindow()
 	if (accountsWin == NULL)
 	{
 		accountsWin = new QQuailAccountsWindow(this);
-		widgetStack->addWidget(accountsWin, 1);
+        widgetStack->addWidget(accountsWin);
 	}
 
-    setWindowTitle(tr("Gaim - Accounts"));
-	widgetStack->raiseWidget(accountsWin);
+    setWindowTitle(tr("Accounts"));
+    widgetStack->setCurrentWidget(accountsWin);
 }
 
 QQuailMainWindow *

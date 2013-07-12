@@ -25,7 +25,7 @@
 /**************************************************************************
  * QQuailTabBar
  **************************************************************************/
-QQuailTabBar::QQuailTabBar(QWidget *parent, const char *name)
+QQuailTabBar::QQuailTabBar(QWidget *parent)
     : QTabBar(parent), lastId(0)
 {
 }

@@ -170,7 +170,7 @@ QQuailConversation::write(const char *who, const char *message,
     if (flags & PURPLE_MESSAGE_RECV)
 	{
         PurpleConversation *activeConv;
-        QQuailConvWindow *win;
+        QQuailConversation *win;
 
 //		win = purple_conversation_get_window(conv);
 //		activeConv = purple_conv_window_get_active_conversation(win);
@@ -704,7 +704,7 @@ QQuailConvIm::updateTyping()
 /**************************************************************************
  * QQuailConvWindow
  **************************************************************************/
-QQuailConvWindow::QQuailConvWindow(QQuailConvWindow *win, QMainWindow *parent)
+QQuailConvWindow::QQuailConvWindow(QQuailConversation *win, QMainWindow *parent)
 	: QMainWindow(), parentMainWindow(parent), win(win), convWinId(0)
 {
 	connect(parent, SIGNAL(pixmapSizeChanged(bool)),
@@ -720,12 +720,12 @@ QQuailConvWindow::~QQuailConvWindow()
 }
 
 void
-QQuailConvWindow::setConvWindow(QQuailConvWindow *win)
+QQuailConvWindow::setConvWindow(QQuailConversation *win)
 {
 	this->win = win;
 }
 
-QQuailConvWindow *
+QQuailConversation *
 QQuailConvWindow::getConvWindow() const
 {
 	return win;
@@ -743,8 +743,8 @@ QQuailConvWindow::switchConversation(unsigned int index)
 void
 QQuailConvWindow::addConversation(PurpleConversation *conv)
 {
-	QQuailConversation *qconv = NULL;
-	PurpleAccount *account;
+    QQuailConversation *qconv = NULL;
+    PurpleAccount *account;
 	PurpleBuddy *b;
     PurpleConversationType type = purple_conversation_get_type(conv);
     if (type == PURPLE_CONV_TYPE_IM)
@@ -1216,7 +1216,8 @@ qQuailConvDestroy(PurpleConversation *conv)
 
 static void
 qQuailConvWriteChat(PurpleConversation *conv, const char *who,
-                   const char *message, PurpleMessageFlags flags, time_t mtime)
+                    const char *message, PurpleMessageFlags flags,
+                    time_t mtime)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
 
@@ -1225,7 +1226,8 @@ qQuailConvWriteChat(PurpleConversation *conv, const char *who,
 
 static void
 qQuailConvWriteIm(PurpleConversation *conv, const char *who,
-                 const char *message, PurpleMessageFlags flags, time_t mtime)
+                  const char *message, PurpleMessageFlags flags,
+                  time_t mtime)
 {
 	QQuailConvIm *qim = (QQuailConvIm *)conv->ui_data;
 
@@ -1233,12 +1235,16 @@ qQuailConvWriteIm(PurpleConversation *conv, const char *who,
 }
 
 static void
-qQuailConvWriteConv(PurpleConversation *conv, const char *who,
-                   const char *message, PurpleMessageFlags flags, time_t mtime)
+qQuailConvWriteConv(PurpleConversation *conv,
+                    const char *name,
+                    const char *alias,
+                    const char *message,
+                    PurpleMessageFlags flags,
+                    time_t mtime)
 {
 	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
 
-	qconv->write(who, message, flags, mtime);
+    qconv->write(name, message, flags, mtime);
 }
 
 static void
@@ -1250,20 +1256,22 @@ qQuailConvChatAddUser(PurpleConversation *conv, const char *user)
 }
 
 static void
-qQuailConvChatAddUsers(PurpleConversation *conv, GList *users)
+qQuailConvChatAddUsers(PurpleConversation *conv,
+                       GList *cbuddies,
+                       gboolean new_arrivals)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
 
-	qchat->addUsers(users);
+    qchat->addUsers(cbuddies);
 }
 
 static void
-qQuailConvChatRenameUser(PurpleConversation *conv, const char *oldName,
-						const char *newName)
+qQuailConvChatRenameUser(PurpleConversation *conv, const char *old_name,
+                         const char *new_name, const char *new_alias)
 {
 	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
 
-	qchat->renameUser(oldName, newName);
+    qchat->renameUser(old_name, new_name);
 }
 
 static void
@@ -1283,152 +1291,160 @@ qQuailConvChatRemoveUsers(PurpleConversation *conv, GList *users)
 }
 
 static void
-qQuailConvUpdated(PurpleConversation *conv, PurpleConvUpdateType type)
+qQuailConvUpdated(PurpleConversation *conv, const char *user)
 {
 	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
 
-	qconv->updated(type);
-}
-
-static PurpleConversationUiOps convOps =
-{
-	qQuailConvDestroy,
-	qQuailConvWriteChat,
-	qQuailConvWriteIm,
-	qQuailConvWriteConv,
-	qQuailConvChatAddUser,
-	qQuailConvChatAddUsers,
-	qQuailConvChatRenameUser,
-	qQuailConvChatRemoveUser,
-	qQuailConvChatRemoveUsers,
-	NULL,
-	qQuailConvUpdated
-};
-
-static PurpleConversationUiOps *
-qQuailConvWindowGetConvUiOps()
-{
-	return &convOps;
+    //qconv->updated(type);
 }
 
 /**************************************************************************
  * Window UI ops
  **************************************************************************/
 static void
-qQuailConvWindowNew(QQuailConvWindow *win)
+qQuailConvWindowNew(PurpleConversation *conv)
 {
-	QQuailConvWindow *qwin;
+//    QQuailConversation *qwin;
 	QQuailMainWindow *mainWin = qQuailGetMainWindow();
 
-	qwin = new QQuailConvWindow(win, mainWin);
+    mainWin->addConversationWindow(conv);
 
-	mainWin->addConversationWindow(qwin);
+//    mainWin->getWidgetStack()->addWidget(qwin);
+    //mainWin->getWidgetStack()->setCurrentWidget(qwin);
 
-	mainWin->getWidgetStack()->addWidget(qwin, qwin->getId());
-	mainWin->getWidgetStack()->raiseWidget(qwin->getId());
-
-	win->ui_data = qwin;
+//    conv->ui_data = qwin;
 }
 
 static void
-qQuailConvWindowDestroy(QQuailConvWindow *win)
+qQuailConvWindowDestroy(PurpleConversation *conv)
 {
-    QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+    QQuailConversation *qwin = (QQuailConversation *)conv->ui_data;
 
 	qQuailGetMainWindow()->removeConversationWindow(qwin);
 
-	win->ui_data = NULL;
+    conv->ui_data = NULL;
 	delete qwin;
 }
 
-static void
-qQuailConvWindowShow(QQuailConvWindow *win)
+//static void
+//qQuailConvWindowShow(QQuailConvWindow *win)
+//{
+//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+
+//	qQuailGetMainWindow()->setLastActiveConvWindow(win);
+
+//	qwin->show();
+//}
+
+//static void
+//qQuailConvWindowHide(QQuailConvWindow *win)
+//{
+//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+
+//	qwin->hide();
+//}
+
+//static void
+//qQuailConvWindowRaise(QQuailConvWindow *win)
+//{
+//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+
+//	qQuailGetMainWindow()->setLastActiveConvWindow(win);
+
+//	qQuailGetMainWindow()->getWidgetStack()->setCurrentWidget(qwin->getId());
+//}
+
+//static void
+//qQuailConvWindowSwitchConv(QQuailConvWindow *win, unsigned int index)
+//{
+//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+
+//	qwin->switchConversation(index);
+//}
+
+//static void
+//qQuailConvWindowAddConv(QQuailConvWindow *win, PurpleConversation *conv)
+//{
+//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+
+//	qwin->addConversation(conv);
+//}
+
+//static void
+//qQuailConvWindowRemoveConv(QQuailConvWindow *win, PurpleConversation *conv)
+//{
+//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+
+//	qwin->removeConversation(conv);
+//}
+
+//static void
+//qQuailConvWindowMoveConv(QQuailConvWindow *win, PurpleConversation *conv,
+//					unsigned int newIndex)
+//{
+//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+
+//	qwin->moveConversation(conv, newIndex);
+//}
+
+//static int
+//qQuailConvWindowGetActiveIndex(const QQuailConvWindow *win)
+//{
+//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+
+//	return qwin->getActiveIndex();
+//}
+
+static PurpleConversationUiOps convOps =
 {
-	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
-
-	qQuailGetMainWindow()->setLastActiveConvWindow(win);
-
-	qwin->show();
-}
-
-static void
-qQuailConvWindowHide(QQuailConvWindow *win)
-{
-	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
-
-	qwin->hide();
-}
-
-static void
-qQuailConvWindowRaise(QQuailConvWindow *win)
-{
-	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
-
-	qQuailGetMainWindow()->setLastActiveConvWindow(win);
-
-	qQuailGetMainWindow()->getWidgetStack()->raiseWidget(qwin->getId());
-}
-
-static void
-qQuailConvWindowSwitchConv(QQuailConvWindow *win, unsigned int index)
-{
-	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
-
-	qwin->switchConversation(index);
-}
-
-static void
-qQuailConvWindowAddConv(QQuailConvWindow *win, PurpleConversation *conv)
-{
-	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
-
-	qwin->addConversation(conv);
-}
-
-static void
-qQuailConvWindowRemoveConv(QQuailConvWindow *win, PurpleConversation *conv)
-{
-	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
-
-	qwin->removeConversation(conv);
-}
-
-static void
-qQuailConvWindowMoveConv(QQuailConvWindow *win, PurpleConversation *conv,
-					unsigned int newIndex)
-{
-	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
-
-	qwin->moveConversation(conv, newIndex);
-}
-
-static int
-qQuailConvWindowGetActiveIndex(const QQuailConvWindow *win)
-{
-	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
-
-	return qwin->getActiveIndex();
-}
-
-static PurpleConversationUiOps winOps =
-{
-	qQuailConvWindowGetConvUiOps,
-	qQuailConvWindowNew,
-	qQuailConvWindowDestroy,
-	qQuailConvWindowShow,
-	qQuailConvWindowHide,
-	qQuailConvWindowRaise,
-	NULL,
-	qQuailConvWindowSwitchConv,
-	qQuailConvWindowAddConv,
-	qQuailConvWindowRemoveConv,
-	qQuailConvWindowMoveConv,
-	qQuailConvWindowGetActiveIndex
+    qQuailConvWindowNew,
+    qQuailConvDestroy,
+    qQuailConvWriteChat,
+    qQuailConvWriteIm,
+    qQuailConvWriteConv,
+    //qQuailConvChatAddUser,
+    qQuailConvChatAddUsers,
+    qQuailConvChatRenameUser,
+    //qQuailConvChatRemoveUser,
+    qQuailConvChatRemoveUsers,
+    qQuailConvUpdated, /* chat_update_user */
+    NULL, /* present */
+    NULL, /* has_focus */
+    NULL, /* custom_smiley_add */
+    NULL, /* custom_smiley_write */
+    NULL, /* custom_smiley_close */
+    NULL, /* send_confirm */
+    NULL,
+    NULL,
+    NULL,
+    NULL,
 };
 
-PurpleConversationUiOps *
-qQuailGetConvWindowUiOps()
+static PurpleConversationUiOps *
+qQuailConvWindowGetConvUiOps()
 {
-	return &winOps;
+    return &convOps;
 }
+
+
+//static PurpleConversationUiOps winOps =
+//{
+//    qQuailConvWindowGetConvUiOps,
+//    qQuailConvWindowDestroy,
+//    qQuailConvWindowShow,
+//    qQuailConvWindowHide,
+//    qQuailConvWindowRaise,
+//    NULL,
+//    qQuailConvWindowSwitchConv,
+//    qQuailConvWindowAddConv,
+//    qQuailConvWindowRemoveConv,
+//    qQuailConvWindowMoveConv,
+//    qQuailConvWindowGetActiveIndex
+//};
+
+//PurpleConversationUiOps *
+//qQuailGetConvWindowUiOps()
+//{
+//    return &winOps;
+//}
 

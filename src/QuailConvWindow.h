@@ -21,11 +21,12 @@
 #ifndef _QGAIM_CONV_WIN_H_
 #define _QGAIM_CONV_WIN_H_
 
-#include <QVariant>
-#include <QWidget>
+#include <QListWidget>
 #include <QMainWindow>
 #include <QTextEdit>
 #include <QToolButton>
+#include <QVariant>
+#include <QWidget>
 
 #include <libpurple/conversation.h>
 
@@ -160,11 +161,11 @@ class QQuailConvWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-        QQuailConvWindow(QQuailConvWindow *win, QMainWindow *parent);
+        QQuailConvWindow(QQuailConversation *win, QMainWindow *parent);
 		~QQuailConvWindow();
 
-        void setConvWindow(QQuailConvWindow *win);
-        QQuailConvWindow *getConvWindow() const;
+        void setConvWindow(QQuailConversation *win);
+        QQuailConversation *getConvWindow() const;
 
 		void switchConversation(unsigned int index);
         void addConversation(PurpleConversation *conv);
@@ -204,7 +205,8 @@ class QQuailConvWindow : public QMainWindow
 	private:
 		QMainWindow *parentMainWindow;
 
-        QQuailConvWindow *win;
+        QQuailConversation *win;
+        QList<QQuailConversation*> quail_convsations;
 
 		int convWinId;
 
