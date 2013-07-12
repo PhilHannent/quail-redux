@@ -60,5 +60,6 @@
         <file>data/images/actions/user.png</file>
         <file>data/images/actions/userlist.png</file>
         <file>data/images/actions/warn.png</file>
+        <file>data/images/logo.png</file>
     </qresource>
 </RCC>

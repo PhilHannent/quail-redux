@@ -18,3 +18,4 @@ temp*
 moc_*
 object_script.Quail
 *.pdb
+qrc_*.cpp
