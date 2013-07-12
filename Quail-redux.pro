@@ -1,6 +1,9 @@
+DEFINES += APP_DISPLAY_VERSION=\\\"0.1.0\\\"
+DEFINES += APP_MAJOR_VERSION=\\\"0\\\"
+
 TEMPLATE = app
 TARGET   = Quail
-VERSION  = 0.9
+VERSION = $${APP_DISPLAY_VERSION}
 CONFIG   = qt warn_on debug
 
 DEFINES += APP_NAME=\\\"Quail\\\"
@@ -116,6 +119,7 @@ win32-g++ {
     LIBS += -L"C:\Qt\Qt5.1.0-mingw32\5.1.0-beta1\mingw47_32\lib"
     LIBS += -L"C:\Qt\Qt5.1.0-mingw32\5.1.0-beta1\mingw47_32\bin"
 
+    RC_FILE = resource.rc
 }
 
 LIBS        += \
