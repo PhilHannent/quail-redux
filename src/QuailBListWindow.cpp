@@ -110,128 +110,46 @@ void
 QQuailBListWindow::buildToolBar()
 {
     qDebug() << "QQuailBListWindow::buildToolBar";
-	QAction *a;
-	QToolButton *button;
-	toolbar = new QToolBar(this);
-    toolbar->setMovable(true);
-	/* IM */
-    imButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-im.png")),
-                    tr("Send IM"),
-                    this);
-    toolbar->addAction(imButton);
-    imButton->setEnabled(true);
-
-    connect(imButton, SIGNAL(triggered(bool)),
+    connect(parentMainWindow, SIGNAL(signalImButton(bool)),
 			this, SLOT(openImSlot()));
 
 	/* Chat */
-    chatButton = new QAction(newChatIconSet, tr("Open Chat"), this);
-    toolbar->addAction(chatButton);
-    chatButton->setEnabled(true);
-
-    connect(chatButton, SIGNAL(triggered(bool)),
+    connect(parentMainWindow, SIGNAL(signalChatButton(bool)),
 			this, SLOT(openChatSlot()));
 
-	toolbar->addSeparator();
-
-	/* Add */
-    button = new QToolButton(toolbar);
-	button->setAutoRaise(true);
-    button->setIcon(QIcon(QPixmap(":/data/images/actions/add.png")));
-    button->setEnabled(true);
-    button->setText(tr("Add..."));
-	addButton = button;
-
-    addMenu = new QMenu(button);
-    button->setMenu(addMenu);
-    //button->setPopupDelay(0);
-
 	/* Add Buddy */
-    addBuddyButton = new QAction(QIcon(QPixmap(":/data/images/actions/user.png")),
-                                 tr("Add Buddy"),
-                                 this);
-    addMenu->addAction(addBuddyButton);
-    connect(addBuddyButton, SIGNAL(triggered(bool)),
-			this, SLOT(showAddBuddy()));
+    connect(parentMainWindow, SIGNAL(signalShowAddBuddy(bool)),
+            this, SLOT(showAddBuddy()));
 
 	/* Add Chat */
-    addChatButton = new QAction(newChatIconSet, tr("Add Chat"), this);
-    addMenu->addAction(addChatButton);
-    connect(addChatButton, SIGNAL(triggered(bool)),
+    connect(parentMainWindow, SIGNAL(signalShowAddChat(bool)),
 			this, SLOT(showAddChat()));
 
 	/* Add Group */
-    addGroupButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-group.png")),
-                                 tr("Add Group"),
-                                 this);
-    addMenu->addAction(addGroupButton);
-    connect(addGroupButton, SIGNAL(triggered(bool)),
+    connect(parentMainWindow, SIGNAL(signalShowAddGroup(bool)),
 			this, SLOT(showAddGroup()));
 
 	/* Remove */
-    removeButton = new QAction(QIcon(QPixmap(":/data/images/actions/remove.png")),
-                               tr("Remove"),
-                               this);
-    toolbar->addAction(removeButton);
-    removeButton->setEnabled(true);
-    connect(removeButton, SIGNAL(triggered(bool)),
+    connect(parentMainWindow, SIGNAL(signalShowRemoveBuddy(bool)),
 			this, SLOT(showRemoveBuddy()));
 
-	toolbar->addSeparator();
-
 	/* Settings menu */
-    button = new QToolButton(this);
-    toolbar->addWidget(button);
-	button->setAutoRaise(true);
-    button->setIcon(QIcon(QPixmap(":/data/images/actions/settings.png")));
-    button->setText(tr("Settings"));
-
-    settingsMenu = new QMenu(this);
-    button->setMenu(settingsMenu);
-
 	/* Show Offline Buddies */
-    showOfflineButton = new QAction(QIcon(QPixmap(":/data/images/actions/offline_buddies.png")),
-                                    tr("Show Offline Buddies"),
-                                    this);
-    showOfflineButton->setChecked(purple_prefs_get_bool("/quail/blist/show_offline_buddies"));
-    settingsMenu->addAction(showOfflineButton);
-    connect(showOfflineButton, SIGNAL(toggled(bool)),
+    connect(parentMainWindow, SIGNAL(signalShowOfflineBuddys(bool)),
 			this, SLOT(showOfflineBuddies(bool)));
 
-	/* Separator */
-    settingsMenu->addSeparator();
-
 	/* Preferences */
-    a = new QAction(tr("Preferences"), this);
-    settingsMenu->addAction(a);
-    connect(a, SIGNAL(triggered(bool)),
+    connect(parentMainWindow, SIGNAL(signalShowPrefs(bool)),
 			this, SLOT(showPreferencesSlot()));
 
-	/* Now we're going to construct the toolbar on the right. */
-    //toolbar->addSeparator();
-
 	/* Buddy List */
-    blistButton = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
-                              tr("Buddy List"),
-                              this);
-    blistButton->setChecked(true);
-    toolbar->addAction(blistButton);
-	connect(blistButton, SIGNAL(toggled(bool)),
+    connect(parentMainWindow, SIGNAL(signalShowBuddyList(bool)),
 			this, SLOT(blistToggled(bool)));
 
 	/* Accounts */
-    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
-                    tr("Accounts"),
-                    this);
-    toolbar->addAction(a);
-    connect(a, SIGNAL(triggered(bool)),
+    connect(parentMainWindow, SIGNAL(signalShowAccounts(bool)),
 			this, SLOT(showAccountsWindow()));
 
-	/* Conversations */
-    button = new QQuailConvButton(toolbar);
-    toolbar->addWidget(button);
-
-    this->addToolBar(toolbar);
     qDebug() << "QQuailBListWindow::buildToolBar.end";
 }
 
