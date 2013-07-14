@@ -179,11 +179,12 @@ QQuailBListWindow::buildToolBar()
 	toolbar->addSeparator();
 
 	/* Settings menu */
-    button = new QToolButton(toolbar);
+    button = new QToolButton(this);
+    toolbar->addWidget(button);
 	button->setAutoRaise(true);
     button->setIcon(QIcon(QPixmap(":/data/images/actions/settings.png")));
 
-    settingsMenu = new QMenu(button);
+    settingsMenu = new QMenu(this);
     button->setMenu(settingsMenu);
 
 	/* Show Offline Buddies */
@@ -404,6 +405,7 @@ QQuailBListWindow::showAddBuddy()
 void
 QQuailBListWindow::showAddChat(PurpleGroup *group)
 {
+    qDebug() << "QQuailBListWindow::showAddChat()";
 	QQuailAddChatDialog *dialog;
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
@@ -444,6 +446,7 @@ QQuailBListWindow::showAddChat()
 static void
 addGroupCb(void *, const char *groupName)
 {
+    qDebug() << "QQuailBListWindow::addGroupCb()";
 	PurpleGroup *group;
 
 	group = purple_group_new(groupName);
@@ -455,6 +458,7 @@ addGroupCb(void *, const char *groupName)
 void
 QQuailBListWindow::showAddGroup()
 {
+    qDebug() << "QQuailBListWindow::showAddGroup()";
     purple_request_input(this, tr("Add Group").toStdString().c_str(),
                        tr("Please enter the name of the group to be added.").toStdString().c_str(),
 					   NULL,
@@ -468,7 +472,7 @@ QQuailBListWindow::showAddGroup()
 static void
 removeBuddyCb(PurpleBuddy *buddy)
 {
-
+    qDebug() << "QQuailBListWindow::removeBuddyCb()";
     if (buddy == NULL)
         return;
 
@@ -488,6 +492,7 @@ removeBuddyCb(PurpleBuddy *buddy)
 static void
 removeContactCb(PurpleContact *contact)
 {
+    qDebug() << "QQuailBListWindow::removeContactCb()";
 	PurpleBlistNode *bnode, *cnode;
 	PurpleGroup *group;
 
@@ -514,6 +519,7 @@ removeContactCb(PurpleContact *contact)
 static void
 removeChatCb(PurpleChat *chat)
 {
+    qDebug() << "QQuailBListWindow::removeChatCb()";
 	purple_blist_remove_chat(chat);
     //TODO: See if this is required any more
     //purple_blist_save();
@@ -522,6 +528,7 @@ removeChatCb(PurpleChat *chat)
 static void
 removeGroupCb(PurpleGroup *group)
 {
+    qDebug() << "QQuailBListWindow::removeGroupCb()";
 	PurpleBlistNode *node, *child;
 
 	for (node = ((PurpleBlistNode *)group)->child;
@@ -573,6 +580,7 @@ removeGroupCb(PurpleGroup *group)
 void
 QQuailBListWindow::showRemoveBuddy()
 {
+    qDebug() << "QQuailBListWindow::showRemoveBuddy()";
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
 
@@ -600,6 +608,7 @@ QQuailBListWindow::showRemoveBuddy()
 void
 QQuailBListWindow::showConfirmRemoveBuddy(PurpleBuddy *buddy)
 {
+    qDebug() << "QQuailBListWindow::showConfirmRemoveBuddy()";
 	QString name = buddy->name;
 
 	int result = QMessageBox::information(this,
@@ -616,6 +625,7 @@ QQuailBListWindow::showConfirmRemoveBuddy(PurpleBuddy *buddy)
 void
 QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
 {
+    qDebug() << "QQuailBListWindow::showConfirmRemoveContact()";
 	PurpleBuddy *buddy = purple_contact_get_priority_buddy(contact);
 
 	if (buddy == NULL)
@@ -645,6 +655,7 @@ QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
 void
 QQuailBListWindow::showConfirmRemoveChat(PurpleChat *chat)
 {
+    qDebug() << "QQuailBListWindow::showConfirmRemoveChat()";
     QString name = purple_chat_get_name(chat);
 
 	int result = QMessageBox::information(this,
@@ -662,6 +673,7 @@ QQuailBListWindow::showConfirmRemoveChat(PurpleChat *chat)
 void
 QQuailBListWindow::showConfirmRemoveGroup(PurpleGroup *group)
 {
+    qDebug() << "QQuailBListWindow::showConfirmRemoveGroup()";
 	QString name = group->name;
 
 	int result = QMessageBox::information(this,
@@ -679,6 +691,7 @@ QQuailBListWindow::showConfirmRemoveGroup(PurpleGroup *group)
 void
 QQuailBListWindow::showOfflineBuddies(bool on)
 {
+    qDebug() << "QQuailBListWindow::showOfflineBuddies()";
     purple_prefs_set_bool("/quail/blist/show_offline_buddies", on);
 
 	buddylist->reload(true);
@@ -687,6 +700,7 @@ QQuailBListWindow::showOfflineBuddies(bool on)
 void
 QQuailBListWindow::showPreferencesSlot()
 {
+    qDebug() << "QQuailBListWindow::showPreferencesSlot()";
 	QQuailPrefsDialog *prefsDialog = new QQuailPrefsDialog();
 
 	prefsDialog->showMaximized();
@@ -695,12 +709,14 @@ QQuailBListWindow::showPreferencesSlot()
 void
 QQuailBListWindow::showAccountsWindow()
 {
+    qDebug() << "QQuailBListWindow::showAccountsWindow()";
 	qQuailGetMainWindow()->showAccountsWindow();
 }
 
 void
-QQuailBListWindow::blistToggled(bool)
+QQuailBListWindow::blistToggled(bool bTriggered)
 {
+    qDebug() << "QQuailBListWindow::blistToggled()";
     //TODO: Check to see if this should toggle
     blistButton->setChecked(true);
 }
@@ -708,6 +724,7 @@ QQuailBListWindow::blistToggled(bool)
 void
 QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 {
+    qDebug() << "QQuailBListWindow::openImSlot()";
 	if (buddy == NULL)
 		buddy = buddylist->getSelectedBuddy();
 
@@ -745,6 +762,7 @@ QQuailBListWindow::openImSlot()
 void
 QQuailBListWindow::openChatSlot(PurpleChat *chat)
 {
+    qDebug() << "QQuailBListWindow::openChatSlot()";
 	QQuailBListItem *item;
 	PurpleBlistNode *node = NULL;
 
@@ -783,11 +801,12 @@ QQuailBListWindow::openChatSlot()
 }
 
 /**************************************************************************
- * Gaim callbacks
+ * callbacks
  **************************************************************************/
 static void
 signedOnCb(PurpleConnection *gc, PurpleBuddyList *blist)
 {
+    qDebug() << "QQuailBListWindow::signedOnCb()";
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
 	qblist->accountSignedOn(purple_connection_get_account(gc));
@@ -796,6 +815,7 @@ signedOnCb(PurpleConnection *gc, PurpleBuddyList *blist)
 static void
 signedOffCb(PurpleConnection *gc, PurpleBuddyList *blist)
 {
+    qDebug() << "QQuailBListWindow::signedOffCb()";
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
 	qblist->accountSignedOff(purple_connection_get_account(gc));
@@ -807,6 +827,7 @@ signedOffCb(PurpleConnection *gc, PurpleBuddyList *blist)
 static void
 qQuailBlistNewList(PurpleBuddyList *blist)
 {
+    qDebug() << "QQuailBListWindow::qQuailBlistNewList()";
 	QQuailBListWindow *win = qQuailGetMainWindow()->getBlistWindow();
 	blist->ui_data = win;
     win->setBlist(blist);
@@ -821,11 +842,13 @@ qQuailBlistNewList(PurpleBuddyList *blist)
 static void
 qQuailBlistNewNode(PurpleBlistNode *)
 {
+    qDebug() << "QQuailBListWindow::qQuailBlistNewNode()";
 }
 
 static void
 qQuailBlistShow(PurpleBuddyList *blist)
 {
+    qDebug() << "QQuailBListWindow::qQuailBlistShow()";
 	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
 
 	blist_win->show();
@@ -834,6 +857,7 @@ qQuailBlistShow(PurpleBuddyList *blist)
 static void
 qQuailBlistUpdate(PurpleBuddyList *blist, PurpleBlistNode *node)
 {
+    qDebug() << "QQuailBListWindow::qQuailBlistUpdate()";
 	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
 	blist_win->updateNode(node);
 }
@@ -841,6 +865,7 @@ qQuailBlistUpdate(PurpleBuddyList *blist, PurpleBlistNode *node)
 static void
 qQuailBlistRemove(PurpleBuddyList *blist, PurpleBlistNode *node)
 {
+    qDebug() << "QQuailBListWindow::qQuailBlistRemove()";
 	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
 	QQuailBListItem *item = (QQuailBListItem *)node->ui_data;
 	QQuailBListItem *parent;
@@ -861,6 +886,7 @@ qQuailBlistRemove(PurpleBuddyList *blist, PurpleBlistNode *node)
 static void
 qQuailBlistDestroy(PurpleBuddyList *blist)
 {
+    qDebug() << "QQuailBListWindow::qQuailBlistDestroy()";
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
 	delete qblist;
@@ -871,6 +897,7 @@ qQuailBlistDestroy(PurpleBuddyList *blist)
 static void
 qQuailBlistSetVisible(PurpleBuddyList *blist, gboolean show)
 {
+    qDebug() << "QQuailBListWindow::qQuailBlistSetVisible()";
 	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
 
 	if (show)
@@ -888,9 +915,13 @@ static PurpleBlistUiOps blistUiOps =
 	qQuailBlistRemove,
 	qQuailBlistDestroy,
 	qQuailBlistSetVisible,
-	NULL,
-	NULL,
-	NULL
+    NULL, /* request_add_buddy */
+    NULL, /* request_add_chat */
+    NULL, /* request_add_group */
+    NULL, /* save_node */
+    NULL, /* remove_node */
+    NULL, /* save_account */
+    NULL
 };
 
 PurpleBlistUiOps *

@@ -235,7 +235,6 @@ QQuailAccountsWindow::setupToolbar()
 {
     qDebug() << "QQuailAccountsWindow::setupToolbar";
 	QAction *a;
-	QLabel *label;
 	QToolButton *button;
 
 	toolbar = new QToolBar(this);
@@ -295,12 +294,6 @@ QQuailAccountsWindow::setupToolbar()
 	a->setEnabled(false);
     connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(disconnectFromAccount()));
-
-
-	/* Add some whitespace. */
-	label = new QLabel(toolbar);
-	label->setText("");
-    //toolbar->setStretchableWidget(label);
 
 	/* Now we're going to construct the toolbar on the right. */
 	toolbar->addSeparator();
@@ -558,11 +551,17 @@ qQuailConnNotice(PurpleConnection *gc, const char *text)
 
 static PurpleConnectionUiOps connUiOps =
 {
-	qQuailConnConnectProgress,
-	qQuailConnConnected,
-	qQuailConnDisconnected,
-	qQuailConnNotice,
-	NULL
+    qQuailConnConnectProgress, /*connect_progress*/
+    qQuailConnConnected, /* connected */
+    qQuailConnDisconnected, /* disconnected */
+    qQuailConnNotice, /* notice */
+    NULL, /*report_disconnect */
+    NULL, /* network_connected*/
+    NULL, /* network_disconnected*/
+    NULL, /* report_disconnect_reason*/
+    NULL,
+    NULL,
+    NULL
 };
 
 PurpleConnectionUiOps *

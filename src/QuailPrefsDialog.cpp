@@ -24,6 +24,7 @@
 #include <libpurple/debug.h>
 #include <libpurple/prefs.h>
 
+#include <QDebug>
 #include <QCheckBox>
 #include <QLabel>
 #include <qlayout.h>
@@ -78,6 +79,7 @@ QQuailBlistPrefPage::accept()
 void
 QQuailBlistPrefPage::buildInterface()
 {
+    qDebug() << "QQuailBlistPrefPage::buildInterface()";
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setSpacing(6);
 	layout->setMargin(6);
@@ -148,6 +150,7 @@ QQuailNotifyPrefPage::QQuailNotifyPrefPage(QWidget *parent, const char *name)
 void
 QQuailNotifyPrefPage::accept()
 {
+    qDebug() << "QQuailNotifyPrefPage::accept()";
     if (purple_prefs_get_bool("/quail/notify/incoming_im") ==
 		incomingIm->isChecked() &&
         purple_prefs_get_bool("/quail/notify/incoming_chat") ==
@@ -173,7 +176,8 @@ QQuailNotifyPrefPage::accept()
 void
 QQuailNotifyPrefPage::buildInterface()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    qDebug() << "QQuailNotifyPrefPage::buildInterface()";
+    QVBoxLayout *layout = new QVBoxLayout(this);
     QGroupBox *groupBox;
 
 //	layout->setAutoAdd(true);
@@ -228,6 +232,7 @@ QQuailNotifyPrefPage::buildInterface()
 QQuailAwayPrefPage::QQuailAwayPrefPage(QWidget *parent, const char *name)
 	: QQuailPrefPage(parent, name)
 {
+    qDebug() << "QQuailAwayPrefPage::QQuailAwayPrefPage()";
 }
 
 void
@@ -247,6 +252,7 @@ QQuailAwayPrefPage::buildInterface()
 QQuailProxyPrefPage::QQuailProxyPrefPage(QWidget *parent, const char *name)
 	: QQuailPrefPage(parent, name)
 {
+    qDebug() << "QQuailProxyPrefPage::QQuailProxyPrefPage()";
 }
 
 void
@@ -266,6 +272,7 @@ QQuailProxyPrefPage::buildInterface()
 QQuailPluginPrefPage::QQuailPluginPrefPage(QWidget *parent, const char *name)
 	: QQuailPrefPage(parent, name)
 {
+    qDebug() << "QQuailPluginPrefPage::QQuailPluginPrefPage()";
 }
 
 void
@@ -276,6 +283,7 @@ QQuailPluginPrefPage::accept()
 void
 QQuailPluginPrefPage::buildInterface()
 {
+    qDebug() << "QQuailPluginPrefPage::buildInterface()";
 }
 
 
@@ -286,6 +294,7 @@ QQuailPrefsDialog::QQuailPrefsDialog(QWidget *parent, const char *name,
                                    Qt::WindowFlags fl)
     : QDialog(parent)
 {
+    qDebug() << "QQuailPrefsDialog::QQuailPrefsDialog()";
 	buildInterface();
 }
 
@@ -296,6 +305,7 @@ QQuailPrefsDialog::~QQuailPrefsDialog()
 void
 QQuailPrefsDialog::buildInterface()
 {
+    qDebug() << "QQuailPrefsDialog::buildInterface()";
 	QVBoxLayout *layout;
 
     setWindowTitle(tr("Preferences"));
