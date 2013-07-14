@@ -49,8 +49,7 @@ HEADERS = \
         src/QuailProtocolUtils.h \
         src/QuailRequest.h \
         src/QuailTabBar.h \
-        src/QuailTabWidget.h \
-	src/base.h
+        src/QuailTabWidget.h
 
 
 SOURCES = \

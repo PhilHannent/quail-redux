@@ -2,6 +2,7 @@
  * @file QQuailDebugWindow.cpp Debug window
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
+ * @Copyright (C) 2013      Phil Hannent.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,7 +27,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <qapplication.h>
+#include <QApplication>
 
 static void
 qQuailDebugPrint(PurpleDebugLevel, const char *category,

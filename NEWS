@@ -1,6 +1,11 @@
 Quail Release Notes
 -----------------------------
 
+version 0.9.1 (pending)
+	* initial main window opening
+	* lots of Qt3 to Qt4/Qt5 changes
+	* lots of libgaim to libpurple 2.10.7 changes
+
 version 0.9.0 (15th May 2013)
 	* initial fork of Gaim for Qtopia
 	* Rename some files

@@ -2,6 +2,7 @@
  * @file QQuailImageUtils.h Image utility functions
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
+ * @Copyright (C) 2013      Phil Hannent.
  *
  * Parts of this code Copyright (C) 2003-2004 The KDE project.
  *

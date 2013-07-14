@@ -2,6 +2,7 @@
  * @file QQuailConvWindow.cpp Conversation windows
  *
  * @Copyright (C) 2003-2004 Christian Hammond.
+ * @Copyright (C) 2013      Phil Hannent.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -28,7 +29,6 @@
 #include "QuailTabBar.h"
 #include "QuailTabWidget.h"
 #include "QuailMainWindow.h"
-#include "base.h"
 
 #include <libpurple/debug.h>
 #include <libpurple/prefs.h>
