@@ -33,6 +33,7 @@
 //#include <qpe/resource.h>
 
 #include <QAction>
+#include <QDebug>
 //#include <qheader.h>
 #include <QMenu>
 #include <QTimer>
@@ -558,6 +559,7 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
 QQuailBuddyList::QQuailBuddyList(QWidget *parent, const char *name)
     : QListWidget(parent)
 {
+    qDebug() << "QQuailBuddyList::QQuailBuddyList";
 //	addColumn(tr("Buddy"), -1);
 //	addColumn(tr("Idle"), 50);
 
@@ -772,7 +774,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 							QString::null, 0, this, 0);
         menu->addAction(a);
 
-		connect(a, SIGNAL(activated()),
+        connect(a, SIGNAL(triggered(bool)),
 				this, SLOT(expandContactSlot()));
 
 		if (cnode->child->next != NULL)
@@ -825,7 +827,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QMenu *menu)
                     this);
     menu->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(collapseContactSlot()));
 
 	/* Remove */
@@ -834,7 +836,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QMenu *menu)
                     this);
     menu->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(removeContactSlot()));
 }
 
@@ -857,7 +859,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
                     , this);
     menu->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(joinChatSlot()));
 
 	/* Auto-Join */
@@ -877,7 +879,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
                     , this);
     menu->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(aliasChatSlot()));
 
 	/* Remove */
@@ -886,7 +888,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
                     , this);
     menu->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(removeChatSlot()));
 }
 
@@ -901,7 +903,7 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
                     this);
     menu->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(addBuddySlot()));
 
 	/* Add a Chat */
@@ -910,7 +912,7 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
                     this);
     menu->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(addChatSlot()));
 
 	/* Delete Group */
@@ -919,14 +921,14 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
                     this);
     menu->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(removeGroupSlot()));
 
 	/* Rename */
     a = new QAction(tr("Rename"), this);
     menu->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(renameGroupSlot()));
 }
 

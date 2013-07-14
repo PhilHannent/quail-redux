@@ -36,7 +36,7 @@
 //#include <qpe/resource.h>
 
 #include <QAction>
-//#include <qheader.h>
+#include <QDebug>
 #include <QLabel>
 #include <QLayout>
 #include <QListView>
@@ -53,9 +53,7 @@
 QQuailBListWindow::QQuailBListWindow(QMainWindow *parent)
 	: QMainWindow(), parentMainWindow(parent), convsMenu(NULL)
 {
-	connect(parent, SIGNAL(pixmapSizeChanged(bool)),
-			this, SLOT(setUsesBigPixmaps(bool)));
-
+    qDebug() << "QQuailBListWindow::QQuailBListWindow";
 	buildInterface();
 }
 
@@ -68,6 +66,7 @@ QQuailBListWindow::~QQuailBListWindow()
 void
 QQuailBListWindow::buildInterface()
 {
+    qDebug() << "QQuailBListWindow::buildInterface";
     newChatIconSet = QIcon(QPixmap(":/data/images/actions/new-chat.png"));
 
     openChatIconSet = QIcon(QPixmap(":/data/images/actions/chat.png"));
@@ -110,10 +109,9 @@ QQuailBListWindow::buildInterface()
 void
 QQuailBListWindow::buildToolBar()
 {
+    qDebug() << "QQuailBListWindow::buildToolBar";
 	QAction *a;
-	QLabel *label;
 	QToolButton *button;
-
 	toolbar = new QToolBar(this);
     toolbar->setMovable(false);
 	/* IM */
@@ -123,7 +121,7 @@ QQuailBListWindow::buildToolBar()
     toolbar->addAction(imButton);
     imButton->setEnabled(false);
 
-    connect(imButton, SIGNAL(activated()),
+    connect(imButton, SIGNAL(triggered(bool)),
 			this, SLOT(openImSlot()));
 
 	/* Chat */
@@ -131,7 +129,7 @@ QQuailBListWindow::buildToolBar()
     toolbar->addAction(chatButton);
     chatButton->setEnabled(false);
 
-    connect(chatButton, SIGNAL(activated()),
+    connect(chatButton, SIGNAL(triggered(bool)),
 			this, SLOT(openChatSlot()));
 
 	toolbar->addSeparator();
@@ -152,13 +150,13 @@ QQuailBListWindow::buildToolBar()
                                  tr("Add Buddy"),
                                  this);
     addMenu->addAction(addBuddyButton);
-    connect(addBuddyButton, SIGNAL(activated()),
+    connect(addBuddyButton, SIGNAL(triggered(bool)),
 			this, SLOT(showAddBuddy()));
 
 	/* Add Chat */
     addChatButton = new QAction(newChatIconSet, tr("Add Chat"), this);
     addMenu->addAction(addChatButton);
-    connect(addChatButton, SIGNAL(activated()),
+    connect(addChatButton, SIGNAL(triggered(bool)),
 			this, SLOT(showAddChat()));
 
 	/* Add Group */
@@ -166,7 +164,7 @@ QQuailBListWindow::buildToolBar()
                                  tr("Add Group"),
                                  this);
     addMenu->addAction(addGroupButton);
-    connect(addGroupButton, SIGNAL(activated()),
+    connect(addGroupButton, SIGNAL(triggered(bool)),
 			this, SLOT(showAddGroup()));
 
 	/* Remove */
@@ -175,7 +173,7 @@ QQuailBListWindow::buildToolBar()
                                this);
     toolbar->addAction(removeButton);
     removeButton->setEnabled(false);
-    connect(removeButton, SIGNAL(activated()),
+    connect(removeButton, SIGNAL(triggered(bool)),
 			this, SLOT(showRemoveBuddy()));
 
 	toolbar->addSeparator();
@@ -203,13 +201,8 @@ QQuailBListWindow::buildToolBar()
 	/* Preferences */
     a = new QAction(tr("Preferences"), this);
     settingsMenu->addAction(a);
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(showPreferencesSlot()));
-
-	/* Add some whitespace. */
-	label = new QLabel(toolbar);
-	label->setText("");
-    //toolbar->setStretchableWidget(label);
 
 	/* Now we're going to construct the toolbar on the right. */
     //toolbar->addSeparator();
@@ -228,11 +221,13 @@ QQuailBListWindow::buildToolBar()
                     tr("Accounts"),
                     this);
     toolbar->addAction(a);
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
 	button = new QQuailConvButton(toolbar, "conversations");
+    this->addToolBar(toolbar);
+    qDebug() << "QQuailBListWindow::buildToolBar.end";
 }
 
 void

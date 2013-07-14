@@ -23,6 +23,7 @@
 
 #include <libpurple/debug.h>
 
+#include <QDebug>
 #include <QPushButton>
 #include <QLabel>
 
@@ -44,6 +45,7 @@ QQuailConnectionMeter::QQuailConnectionMeter(PurpleConnection *gc,
                                            const char *name, Qt::WindowFlags fl)
     : QWidget(parent), gc(gc)
 {
+    qDebug() << "QQuailConnectionMeter::QQuailConnectionMeter";
     hbox = new QHBoxLayout(this);
 
 	QLabel *label, *icon;
@@ -69,6 +71,7 @@ QQuailConnectionMeter::~QQuailConnectionMeter()
 void
 QQuailConnectionMeter::update(QString, int progress, int totalSteps)
 {
+    qDebug() << "QQuailConnectionMeter::update";
     progressBar->setValue(progress);
 
 }
@@ -76,6 +79,7 @@ QQuailConnectionMeter::update(QString, int progress, int totalSteps)
 PurpleConnection *
 QQuailConnectionMeter::getConnection() const
 {
+    qDebug() << "QQuailConnectionMeter::getConnection";
 	return gc;
 }
 
@@ -87,6 +91,7 @@ QQuailConnectionMeters::QQuailConnectionMeters(QWidget *parent,
                                              const char *name, Qt::WindowFlags fl)
     : QWidget(parent, fl)
 {
+    qDebug() << "QQuailConnectionMeters::QQuailConnectionMeters";
     vbox = new QVBoxLayout(this);
 }
 
@@ -97,6 +102,7 @@ QQuailConnectionMeters::~QQuailConnectionMeters()
 void
 QQuailConnectionMeters::addMeter(QQuailConnectionMeter *meter)
 {
+    qDebug() << "QQuailConnectionMeters::addMeter";
 	meters.append(meter);
 
     show();
@@ -105,12 +111,14 @@ QQuailConnectionMeters::addMeter(QQuailConnectionMeter *meter)
 void
 QQuailConnectionMeters::removeMeter(QQuailConnectionMeter *meter)
 {
+    qDebug() << "QQuailConnectionMeters::removeMeter";
     meters.removeAt(meters.indexOf(meter));
 }
 
 QQuailConnectionMeter *
 QQuailConnectionMeters::addConnection(PurpleConnection *gc)
 {
+    qDebug() << "QQuailConnectionMeters::addConnection";
     QQuailConnectionMeter *meter = new QQuailConnectionMeter(gc, this);
 
 	addMeter(meter);
@@ -121,6 +129,7 @@ QQuailConnectionMeters::addConnection(PurpleConnection *gc)
 QQuailConnectionMeter *
 QQuailConnectionMeters::findMeter(PurpleConnection *gc)
 {
+    qDebug() << "QQuailConnectionMeters::findMeter";
     for (int i = 0; i < meters.size(); ++i)
 	{
         if (meters.at(i)->getConnection() == gc)

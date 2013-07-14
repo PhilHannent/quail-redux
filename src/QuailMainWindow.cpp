@@ -110,6 +110,7 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent, const char *name, Qt::Window
     : QMainWindow(parent),
 	  accountsWin(NULL), blistWin(NULL), nextConvWinId(0)
 {
+    qDebug() << "QQuailMainWindow";
 	mainWin = this;
 
 	buildInterface();
@@ -133,9 +134,11 @@ QQuailMainWindow::~QQuailMainWindow()
 void
 QQuailMainWindow::buildInterface()
 {
+    qDebug() << "QQuailMainWindow::buildInterface()";
     QVBoxLayout *vbox = new QVBoxLayout(this);
+    qDebug() << "QQuailMainWindow::buildInterface().1";
 
-    widgetStack = new QStackedWidget();
+    widgetStack = new QStackedWidget(this);
     vbox->addWidget(widgetStack);
 	vbox->setStretchFactor(widgetStack, 1);
 
@@ -149,6 +152,7 @@ QQuailMainWindow::buildInterface()
 void
 QQuailMainWindow::initCore()
 {
+    qDebug() << "QQuailMainWindow::initCore()";
 	char *plugin_search_paths[1];
 
 	purple_core_set_ui_ops(qQuailGetCoreUiOps());
@@ -199,6 +203,7 @@ QQuailMainWindow::closeEvent(QCloseEvent *event)
 void
 QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
 {
+    qDebug() << "QQuailMainWindow::addConversationWindow()";
     PurpleConversationType conv_type = purple_conversation_get_type(conv);
     QQuailConversation *win;
 
@@ -217,7 +222,8 @@ QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
 void
 QQuailMainWindow::removeConversationWindow(QQuailConversation *win)
 {
-	GList *l;
+    qDebug() << "QQuailMainWindow::removeConversationWindow()";
+    GList *l;
     QQuailConversation *newWin = NULL;
 
 //    l = g_list_find(purple_get_windows(), win->getConvWindow());
@@ -247,19 +253,22 @@ QQuailMainWindow::removeConversationWindow(QQuailConversation *win)
 QQuailBListWindow *
 QQuailMainWindow::getBlistWindow() const
 {
-	return blistWin;
+    qDebug() << "QQuailMainWindow::getBlistWindow()";
+    return blistWin;
 }
 
 QQuailAccountsWindow *
 QQuailMainWindow::getAccountsWindow() const
 {
-	return accountsWin;
+    qDebug() << "QQuailMainWindow::getAccountsWindow()";
+    return accountsWin;
 }
 
 void
 QQuailMainWindow::setLastActiveConvWindow(QQuailConversation *win)
 {
-	lastConvWin = win;
+    qDebug() << "QQuailMainWindow::setLastActiveConvWindow()";
+    lastConvWin = win;
 }
 
 QQuailConversation *
@@ -283,7 +292,8 @@ QQuailMainWindow::getMeters() const
 void
 QQuailMainWindow::showBlistWindow()
 {
-	if (blistWin == NULL)
+    qDebug() << "QQuailMainWindow::showBlistWindow()";
+    if (blistWin == NULL)
 	{
 		blistWin = new QQuailBListWindow(this);
         widgetStack->addWidget(blistWin);
@@ -296,7 +306,8 @@ QQuailMainWindow::showBlistWindow()
 void
 QQuailMainWindow::showAccountsWindow()
 {
-	if (accountsWin == NULL)
+    qDebug() << "QQuailMainWindow::showAccountsWindow()";
+    if (accountsWin == NULL)
 	{
 		accountsWin = new QQuailAccountsWindow(this);
         widgetStack->addWidget(accountsWin);

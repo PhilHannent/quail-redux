@@ -92,7 +92,7 @@ DISTFILES = \
 
 linux-g++* {
     message("Using unix")
-INCLUDEPATH += \
+        INCLUDEPATH += \
         ../pidgin-main/libpurple \
 	/usr/include/glib-2.0 \
 	/usr/lib/glib-2.0/include
@@ -102,6 +102,8 @@ INCLUDEPATH += \
 		/usr/include/libpurple \
 		../pidgin-main/libpurple \
 		/usr/lib/x86_64-linux-gnu/glib-2.0/include
+
+	LIBS += /usr/lib/libpurple.so
 
 }
 win32-g++ {
@@ -120,12 +122,12 @@ win32-g++ {
     LIBS += -L"C:\Qt\Qt5.1.0-mingw32\5.1.0-beta1\mingw47_32\bin"
 
     RC_FILE = resource.rc
+
+        LIBS        += -llibpurple
 }
 
-LIBS        += \
-        -llibpurple \
-	-lglib-2.0 \
-	-lgmodule-2.0
+LIBS += -lglib-2.0 -lgmodule-2.0
+
 
 OBJECTS_DIR = obj
 MOC_DIR     = moc

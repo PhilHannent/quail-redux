@@ -1079,7 +1079,7 @@ QQuailConvWindow::setupToolbar()
                     this);
     toolbar->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(closeConv()));
 
 	/* Separator */
@@ -1119,7 +1119,7 @@ QQuailConvWindow::setupToolbar()
 	addRemoveButton = a;
     userMenu->addAction(a);
 
-	connect(addRemoveButton, SIGNAL(activated()),
+    connect(addRemoveButton, SIGNAL(triggered(bool)),
 			this, SLOT(addRemoveBuddySlot()));
 
 	/* Info */
@@ -1130,7 +1130,7 @@ QQuailConvWindow::setupToolbar()
     userMenu->addAction(a);
 	a->setEnabled(false);
 
-	connect(infoButton, SIGNAL(activated()),
+    connect(infoButton, SIGNAL(triggered(bool)),
 			this, SLOT(userInfoSlot()));
 
 	/* Formatting */
@@ -1151,7 +1151,7 @@ QQuailConvWindow::setupToolbar()
     toolbar->addAction(a);
 	a->setEnabled(false);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(send()));
 
 	/* Separator */
@@ -1167,11 +1167,6 @@ QQuailConvWindow::setupToolbar()
 	connect(userListToggle, SIGNAL(toggled(bool)),
 			this, SLOT(userListToggled(bool)));
 
-	/* Add some whitespace. */
-	label = new QLabel(toolbar);
-	label->setText("");
-//	toolbar->setStretchableWidget(label);
-
 	/* Now we're going to construct the toolbar on the right. */
 	toolbar->addSeparator();
 
@@ -1181,7 +1176,7 @@ QQuailConvWindow::setupToolbar()
                     this);
     toolbar->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(showBlist()));
 
 	/* Accounts */
@@ -1190,12 +1185,13 @@ QQuailConvWindow::setupToolbar()
                     this);
     toolbar->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
 	button = new QQuailConvButton(toolbar, "conversations");
     button->setChecked(true);
+    this->addToolBar(toolbar);
 }
 
 /**************************************************************************

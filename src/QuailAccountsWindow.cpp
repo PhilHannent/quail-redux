@@ -30,9 +30,8 @@
 #include <libpurple/prpl.h>
 #include <libpurple/signals.h>
 
-//TODO: Add back the resource file
-//#include <qpe/resource.h>
 #include <QAction>
+#include <QDebug>
 #include <QLabel>
 #include <QLayout>
 #include <QListView>
@@ -45,6 +44,7 @@
 QQuailAccountItem::QQuailAccountItem(int index)
     : account(NULL), index(index), pulseTimer(0)
 {
+    qDebug() << "QQuailAccountItem::QQuailAccountItem";
 }
 
 QQuailAccountItem::~QQuailAccountItem()
@@ -55,6 +55,7 @@ QQuailAccountItem::~QQuailAccountItem()
 void
 QQuailAccountItem::startPulse(QPixmap onlinePixmap)
 {
+    qDebug() << "QQuailAccountItem::startPulse";
 	stopPulse();
 
 	pulseGrey = true;
@@ -74,6 +75,7 @@ QQuailAccountItem::startPulse(QPixmap onlinePixmap)
 void
 QQuailAccountItem::stopPulse()
 {
+    qDebug() << "QQuailAccountItem::stopPulse";
 	if (pulseTimer == NULL)
 		return;
 
@@ -87,12 +89,14 @@ QQuailAccountItem::stopPulse()
 void
 QQuailAccountItem::setAccount(PurpleAccount *account)
 {
+    qDebug() << "QQuailAccountItem::setAccount";
 	this->account = account;
 }
 
 PurpleAccount *
 QQuailAccountItem::getAccount() const
 {
+    qDebug() << "QQuailAccountItem::getAccount";
 	return account;
 }
 
@@ -142,6 +146,7 @@ signedOffCb(PurpleConnection *gc, QQuailAccountsWindow *win)
 QQuailAccountsWindow::QQuailAccountsWindow(QMainWindow *parent)
 	: QMainWindow(), parentMainWindow(parent)
 {
+    qDebug() << "QQuailAccountsWindow::QQuailAccountsWindow";
 	buildInterface();
 
 	purple_signal_connect(purple_connections_get_handle(), "signed-on",
@@ -209,6 +214,7 @@ QQuailAccountsWindow::accountSignedOff(PurpleAccount *account)
 void
 QQuailAccountsWindow::buildInterface()
 {
+    qDebug() << "QQuailAccountsWindow::buildInterface";
 	setupToolbar();
 
 	/* Create the accounts view */
@@ -227,6 +233,7 @@ QQuailAccountsWindow::buildInterface()
 void
 QQuailAccountsWindow::setupToolbar()
 {
+    qDebug() << "QQuailAccountsWindow::setupToolbar";
 	QAction *a;
 	QLabel *label;
 	QToolButton *button;
@@ -239,7 +246,7 @@ QQuailAccountsWindow::setupToolbar()
                     tr("New Account"), this);
     toolbar->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(newAccount()));
 
 	/* Edit */
@@ -250,7 +257,7 @@ QQuailAccountsWindow::setupToolbar()
     toolbar->addAction(a);
     a->setEnabled(false);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(editAccount()));
 
 	/* Delete */
@@ -261,7 +268,7 @@ QQuailAccountsWindow::setupToolbar()
     toolbar->addAction(a);
     a->setEnabled(false);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(deleteAccount()));
 
 	/* Separator */
@@ -275,7 +282,7 @@ QQuailAccountsWindow::setupToolbar()
     toolbar->addAction(a);
 
 	a->setEnabled(false);
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(connectToAccount()));
 
 	/* Disconnect */
@@ -286,7 +293,7 @@ QQuailAccountsWindow::setupToolbar()
     toolbar->addAction(a);
 
 	a->setEnabled(false);
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(disconnectFromAccount()));
 
 
@@ -304,7 +311,7 @@ QQuailAccountsWindow::setupToolbar()
                     this);
     toolbar->addAction(a);
 
-	connect(a, SIGNAL(activated()),
+    connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(showBlist()));
 
 	/* Accounts */
@@ -320,11 +327,13 @@ QQuailAccountsWindow::setupToolbar()
 
 	/* Conversations */
 	button = new QQuailConvButton(toolbar, "conversations");
+    this->addToolBar(toolbar);
 }
 
 void
 QQuailAccountsWindow::loadAccounts()
 {
+    qDebug() << "QQuailAccountsWindow::loadAccounts";
 	GList *l;
 	int index;
 
@@ -362,6 +371,7 @@ QQuailAccountsWindow::loadAccounts()
 void
 QQuailAccountsWindow::newAccount()
 {
+    qDebug() << "QQuailAccountsWindow::newAccount";
 	QQuailAccountEditor *editor;
 
     editor = new QQuailAccountEditor(NULL, this, "");
@@ -373,6 +383,7 @@ QQuailAccountsWindow::newAccount()
 void
 QQuailAccountsWindow::editAccount()
 {
+    qDebug() << "QQuailAccountsWindow::editAccount";
 	QQuailAccountEditor *editor;
     QQuailAccountItem *item;
 
@@ -387,6 +398,7 @@ QQuailAccountsWindow::editAccount()
 void
 QQuailAccountsWindow::deleteAccount()
 {
+    qDebug() << "QQuailAccountsWindow::deleteAccount";
     QQuailAccountItem *item;
 
     item = (QQuailAccountItem *)accountsWidget->currentItem();
@@ -404,6 +416,7 @@ QQuailAccountsWindow::deleteAccount()
 void
 QQuailAccountsWindow::connectToAccount()
 {
+    qDebug() << "QQuailAccountsWindow::connectToAccount";
     connectButton->setEnabled(false);
 
     QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
@@ -416,6 +429,7 @@ QQuailAccountsWindow::connectToAccount()
 void
 QQuailAccountsWindow::disconnectFromAccount()
 {
+    qDebug() << "QQuailAccountsWindow::disconnectFromAccount";
     QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
 
 	purple_account_disconnect(item->getAccount());
@@ -424,18 +438,21 @@ QQuailAccountsWindow::disconnectFromAccount()
 void
 QQuailAccountsWindow::showBlist()
 {
+    qDebug() << "QQuailAccountsWindow::showBlist";
 	qQuailGetMainWindow()->showBlistWindow();
 }
 
 void
 QQuailAccountsWindow::accountsToggled(bool)
 {
+    qDebug() << "QQuailAccountsWindow::accountsToggled";
     accountsButton->setChecked(true);
 }
 
 void
 QQuailAccountsWindow::accountSelected()
 {
+    qDebug() << "QQuailAccountsWindow::accountSelected";
     QTableWidgetItem *item = accountsWidget->currentItem();
     QQuailAccountItem *accountItem = (QQuailAccountItem *)item;
 	PurpleAccount *account;
@@ -470,6 +487,7 @@ QQuailAccountsWindow::resizeEvent(QResizeEvent *)
 QQuailAccountItem *
 QQuailAccountsWindow::getItemFromAccount(PurpleAccount *account)
 {
+    qDebug() << "QQuailAccountsWindow::getItemFromAccount";
     QQuailAccountItem *gitem;
 
 	if (account == NULL)
@@ -490,6 +508,7 @@ static void
 qQuailConnConnectProgress(PurpleConnection *gc, const char *text,
 						 size_t step, size_t step_count)
 {
+    qDebug() << "QQuailAccountsWindow::qQuailConnConnectProgress";
 	QQuailConnectionMeters *meters;
 	QQuailConnectionMeter *meter;
 
@@ -505,6 +524,7 @@ qQuailConnConnectProgress(PurpleConnection *gc, const char *text,
 static void
 qQuailConnConnected(PurpleConnection *gc)
 {
+    qDebug() << "QQuailAccountsWindow::qQuailConnConnected";
 	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QQuailConnectionMeter *meter;
 
@@ -517,6 +537,7 @@ qQuailConnConnected(PurpleConnection *gc)
 static void
 qQuailConnDisconnected(PurpleConnection *gc)
 {
+    qDebug() << "QQuailAccountsWindow::qQuailConnDisconnected";
 	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QQuailConnectionMeter *meter;
 
@@ -529,6 +550,7 @@ qQuailConnDisconnected(PurpleConnection *gc)
 static void
 qQuailConnNotice(PurpleConnection *gc, const char *text)
 {
+    qDebug() << "QQuailAccountsWindow::qQuailConnNotice";
 	/* XXX */
 	gc = NULL;
 	text = NULL;
@@ -546,5 +568,6 @@ static PurpleConnectionUiOps connUiOps =
 PurpleConnectionUiOps *
 qQuailGetConnectionUiOps()
 {
+    qDebug() << "QQuailAccountsWindow::qQuailGetConnectionUiOps";
 	return &connUiOps;
 }

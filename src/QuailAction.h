@@ -64,8 +64,8 @@ class QQuailAction : public QAction
 	private:
 		void setupSignals()
 		{
-			connect(this, SIGNAL(activated()), this, SLOT(activatedSlot()));
-			connect(this, SIGNAL(activated()), this, SLOT(activated2Slot()));
+            connect(this, SIGNAL(triggered(bool)), this, SLOT(activatedSlot()));
+            connect(this, SIGNAL(triggered(bool)), this, SLOT(activated2Slot()));
 		}
 
 	private:
