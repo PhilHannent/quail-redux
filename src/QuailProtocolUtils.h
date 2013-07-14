@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_PROTOCOL_UTILS_H_
-#define _QGAIM_PROTOCOL_UTILS_H_
+#ifndef _QUAIL_PROTOCOL_UTILS_H_
+#define _QUAIL_PROTOCOL_UTILS_H_
 
 #include <QVariant>
 
@@ -42,4 +42,4 @@ class QQuailProtocolUtils
         static QPixmap getProtocolIcon(const QString &protoName);
 };
 
-#endif /* _QGAIM_PROTOCOL_UTILS_H_ */
+#endif /* _QUAIL_PROTOCOL_UTILS_H_ */

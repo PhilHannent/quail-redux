@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_MAIN_WINDOW_H_
-#define _QGAIM_MAIN_WINDOW_H_
+#ifndef _QUAIL_MAIN_WINDOW_H_
+#define _QUAIL_MAIN_WINDOW_H_
 
 #include <QMainWindow>
 #include <QStackedWidget>
@@ -80,4 +80,4 @@ class QQuailMainWindow : public QMainWindow
 
 QQuailMainWindow *qQuailGetMainWindow();
 
-#endif /* _QGAIM_MAIN_WINDOW_H_ */
+#endif /* _QUAIL_MAIN_WINDOW_H_ */

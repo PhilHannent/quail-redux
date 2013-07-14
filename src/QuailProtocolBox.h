@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_PROTOCOL_BOX_H_
-#define _QGAIM_PROTOCOL_BOX_H_
+#ifndef _QUAIL_PROTOCOL_BOX_H_
+#define _QUAIL_PROTOCOL_BOX_H_
 
 #include <QVariant>
 #include <QComboBox>
@@ -41,4 +41,4 @@ class QQuailProtocolBox : public QComboBox
 		void buildMenu(QString protocolId);
 };
 
-#endif /* _QGAIM_PROTOCOL_BOX_H_ */
+#endif /* _QUAIL_PROTOCOL_BOX_H_ */

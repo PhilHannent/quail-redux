@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_BASE_H_
-#define _QGAIM_BASE_H_
+#ifndef _QUAIL_BASE_H_
+#define _QUAIL_BASE_H_
 
 #ifdef LOCAL_COMPILE
 # define DATA_PREFIX "./data/"
@@ -27,4 +27,4 @@
 # define DATA_PREFIX "/opt/QtPalmtop/share/gaim/"
 #endif
 
-#endif /* _QGAIM_BASE_H_ */
+#endif /* _QUAIL_BASE_H_ */

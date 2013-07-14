@@ -18,12 +18,12 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_DEBUG_WIN_H_
-#define _QGAIM_DEBUG_WIN_H_
+#ifndef _QUAIL_DEBUG_WIN_H_
+#define _QUAIL_DEBUG_WIN_H_
 
 #include <libpurple/debug.h>
 
 PurpleDebugUiOps *qQuailGetDebugUiOps(void);
 
-#endif /* _QGAIM_DEBUG_WIN_H_ */
+#endif /* _QUAIL_DEBUG_WIN_H_ */
 

@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_CONNECTION_METER_H_
-#define _QGAIM_CONNECTION_METER_H_
+#ifndef _QUAIL_CONNECTION_METER_H_
+#define _QUAIL_CONNECTION_METER_H_
 
 #include <QHBoxLayout>
 #include <QList>
@@ -81,4 +81,4 @@ class QQuailConnectionMeters : public QWidget
         QVBoxLayout *vbox;
 };
 
-#endif /* _QGAIM_CONNECTION_METER_H_ */
+#endif /* _QUAIL_CONNECTION_METER_H_ */

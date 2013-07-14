@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_DIALOGS_H_
-#define _QGAIM_DIALOGS_H_
+#ifndef _QUAIL_DIALOGS_H_
+#define _QUAIL_DIALOGS_H_
 
 #include <libpurple/account.h>
 
@@ -141,4 +141,4 @@ class QQuailJoinChatDialog : public QDialog
         QList<QWidget*> widgets;
 };
 
-#endif /* _QGAIM_DIALOGS_H_ */
+#endif /* _QUAIL_DIALOGS_H_ */

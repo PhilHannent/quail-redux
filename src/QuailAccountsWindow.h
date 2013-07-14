@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_ACCOUNTS_WINDOW_H_
-#define _QGAIM_ACCOUNTS_WINDOW_H_
+#ifndef _QUAIL_ACCOUNTS_WINDOW_H_
+#define _QUAIL_ACCOUNTS_WINDOW_H_
 
 #include <libpurple/prpl.h>
 
@@ -116,4 +116,4 @@ class QQuailAccountsWindow : public QMainWindow
 
 PurpleConnectionUiOps *qQuailGetConnectionUiOps();
 
-#endif /* _QGAIM_ACCOUNTS_WINDOW_H_ */
+#endif /* _QUAIL_ACCOUNTS_WINDOW_H_ */

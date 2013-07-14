@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_ACTION_H_
-#define _QGAIM_ACTION_H_
+#ifndef _QUAIL_ACTION_H_
+#define _QUAIL_ACTION_H_
 
 #include <QAction>
 
@@ -72,4 +72,4 @@ class QQuailAction : public QAction
 		void *userData, *userData2;
 };
 
-#endif /* _QGAIM_ACTION_H_ */
+#endif /* _QUAIL_ACTION_H_ */

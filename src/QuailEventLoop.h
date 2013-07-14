@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_EVENT_LOOP_H_
-#define _QGAIM_EVENT_LOOP_H_
+#ifndef _QUAIL_EVENT_LOOP_H_
+#define _QUAIL_EVENT_LOOP_H_
 
 #include <libpurple/eventloop.h>
 
@@ -78,4 +78,4 @@ void qQuailEventLoopInit(void);
  */
 void qQuailEventLoopUninit(void);
 
-#endif /* _QGAIM_EVENT_LOOP_H_ */
+#endif /* _QUAIL_EVENT_LOOP_H_ */
