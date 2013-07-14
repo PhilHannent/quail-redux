@@ -19,8 +19,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_MULTI_LINE_EDIT_H_
-#define _QGAIM_MULTI_LINE_EDIT_H_
+#ifndef _QUAIL_MULTI_LINE_EDIT_H_
+#define _QUAIL_MULTI_LINE_EDIT_H_
 
 #include <QTextEdit>
 
@@ -45,4 +45,4 @@ class QQuailMultiLineEdit : public QTextEdit
 		int index;
 };
 
-#endif /* _QGAIM_MULTI_LINE_EDIT_H_ */
+#endif /* _QUAIL_MULTI_LINE_EDIT_H_ */

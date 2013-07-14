@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_NOTIFY_H_
-#define _QGAIM_NOTIFY_H_
+#ifndef _QUAIL_NOTIFY_H_
+#define _QUAIL_NOTIFY_H_
 
 #include <libpurple/notify.h>
 
@@ -34,4 +34,4 @@ void qQuailNotifyUserStop(void);
 
 void qQuailNotifyInit(void);
 
-#endif /* _QGAIM_NOTIFY_H_ */
+#endif /* _QUAIL_NOTIFY_H_ */

@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_INPUT_DIALOG_H_
-#define _QGAIM_INPUT_DIALOG_H_
+#ifndef _QUAIL_INPUT_DIALOG_H_
+#define _QUAIL_INPUT_DIALOG_H_
 
 #include <QDialog>
 
@@ -58,4 +58,4 @@ class QQuailInputDialog : public QDialog
 };
 
 
-#endif /* _QGAIM_INPUT_DIALOG_H_ */
+#endif /* _QUAIL_INPUT_DIALOG_H_ */

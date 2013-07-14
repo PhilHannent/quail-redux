@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_ACCOUNT_EDITOR_H_
-#define _QGAIM_ACCOUNT_EDITOR_H_
+#ifndef _QUAIL_ACCOUNT_EDITOR_H_
+#define _QUAIL_ACCOUNT_EDITOR_H_
 
 #include <libpurple/account.h>
 #include <libpurple/plugin.h>
@@ -120,4 +120,4 @@ class QQuailAccountEditor : public QDialog
 		QLineEdit *proxyPassword;
 };
 
-#endif /* _QGAIM_ACCOUNT_EDITOR_H_ */
+#endif /* _QUAIL_ACCOUNT_EDITOR_H_ */

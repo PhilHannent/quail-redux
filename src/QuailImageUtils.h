@@ -20,8 +20,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_IMAGE_UTILS_H_
-#define _QGAIM_IMAGE_UTILS_H_
+#ifndef _QUAIL_IMAGE_UTILS_H_
+#define _QUAIL_IMAGE_UTILS_H_
 
 #include <QPixmap>
 #include <QImage>
@@ -39,4 +39,4 @@ class QQuailImageUtils
 								 QImage &lower);
 };
 
-#endif /* _QGAIM_IMAGE_UTILS_H_ */
+#endif /* _QUAIL_IMAGE_UTILS_H_ */

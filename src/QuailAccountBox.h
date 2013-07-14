@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_ACCOUNT_BOX_H_
-#define _QGAIM_ACCOUNT_BOX_H_
+#ifndef _QUAIL_ACCOUNT_BOX_H_
+#define _QUAIL_ACCOUNT_BOX_H_
 
 #include <QComboBox>
 
@@ -48,4 +48,4 @@ class QQuailAccountBox : public QComboBox
 		bool showAll;
 };
 
-#endif /* _QGAIM_ACCOUNT_BOX_H_ */
+#endif /* _QUAIL_ACCOUNT_BOX_H_ */

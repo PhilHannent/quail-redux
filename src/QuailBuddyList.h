@@ -18,8 +18,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#ifndef _QGAIM_BUDDY_LIST_H_
-#define _QGAIM_BUDDY_LIST_H_
+#ifndef _QUAIL_BUDDY_LIST_H_
+#define _QUAIL_BUDDY_LIST_H_
 
 #include <libpurple/account.h>
 #include <libpurple/blist.h>
@@ -151,4 +151,4 @@ class QQuailBuddyList : public QListWidget
 		QTimer *saveTimer;
 };
 
-#endif /* _QGAIM_BUDDY_LIST_H_ */
+#endif /* _QUAIL_BUDDY_LIST_H_ */
