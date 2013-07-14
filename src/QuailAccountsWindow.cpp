@@ -319,7 +319,8 @@ QQuailAccountsWindow::setupToolbar()
 			this, SLOT(accountsToggled(bool)));
 
 	/* Conversations */
-	button = new QQuailConvButton(toolbar, "conversations");
+    button = new QQuailConvButton(toolbar);
+    toolbar->addWidget(button);
     this->addToolBar(toolbar);
 }
 

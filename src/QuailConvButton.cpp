@@ -27,7 +27,7 @@
 #include <libpurple/debug.h>
 #include <libpurple/signals.h>
 
-//#include <qpe/resource.h>
+#include <QDebug>
 #include <QMenu>
 
 static void
@@ -43,23 +43,27 @@ delConvCb(char *, QQuailConvButton *button)
 		button->setEnabled(false);
 }
 
-QQuailConvButton::QQuailConvButton(QWidget *parent, const char *name)
+QQuailConvButton::QQuailConvButton(QWidget *parent)
     : QToolButton(parent), convs(NULL)
 {
-	setAutoRaise(true);
+    qDebug() << "QQuailConvButton::QQuailConvButton";
     setIcon(QIcon(QPixmap(":/data/images/actions/conversations.png")));
 
-    menu = new QMenu();
+    menu = new QMenu(this);
 
     setMenu(menu);
 
 	connect(menu, SIGNAL(aboutToShow()),
 			this, SLOT(generateMenu()));
-	connect(menu, SIGNAL(activated(int)),
-			this, SLOT(convActivated(int)));
+    qDebug() << "QQuailConvButton::QQuailConvButton.1";
+
+    connect(menu, SIGNAL(triggered(QAction*)),
+            this, SLOT(convActivated(QAction*)));
+    qDebug() << "QQuailConvButton::QQuailConvButton.2";
 
 	connect(this, SIGNAL(clicked()),
 			this, SLOT(buttonClicked()));
+    qDebug() << "QQuailConvButton::QQuailConvButton.3";
 
 	purple_signal_connect(purple_conversations_get_handle(),
 						"conversation-created",
@@ -70,6 +74,8 @@ QQuailConvButton::QQuailConvButton(QWidget *parent, const char *name)
 
 	if (purple_get_conversations() == NULL)
 		setEnabled(false);
+    qDebug() << "QQuailConvButton::QQuailConvButton.end";
+
 }
 
 QQuailConvButton::~QQuailConvButton()
@@ -135,12 +141,12 @@ QQuailConvButton::generateMenu()
 }
 
 void
-QQuailConvButton::convActivated(int id)
+QQuailConvButton::convActivated(QAction *action)
 {
     PurpleConversation *conv;
     QQuailConvWindow *win;
 
-	conv = convs[id];
+    conv = convs[action->data().toInt()];
 
 	if (g_list_find(purple_get_conversations(), conv) == NULL)
 	{

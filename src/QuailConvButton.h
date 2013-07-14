@@ -35,12 +35,12 @@ class QQuailConvButton : public QToolButton
 	Q_OBJECT
 
 	public:
-		QQuailConvButton(QWidget *parent = NULL, const char *name = NULL);
+        QQuailConvButton(QWidget *parent = NULL);
 		~QQuailConvButton();
 
 	protected slots:
 		void generateMenu();
-		void convActivated(int id);
+        void convActivated(QAction *id);
 		void buttonClicked();
 
 	private:

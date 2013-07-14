@@ -564,7 +564,7 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
 /**************************************************************************
  * QQuailBuddyList
  **************************************************************************/
-QQuailBuddyList::QQuailBuddyList(QWidget *parent, const char *name)
+QQuailBuddyList::QQuailBuddyList(QWidget *parent)
     : QListWidget(parent)
 {
     qDebug() << "QQuailBuddyList::QQuailBuddyList";

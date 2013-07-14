@@ -25,7 +25,6 @@
 #include "QuailDialogs.h"
 #include "QuailPrefsDialog.h"
 #include "QuailMainWindow.h"
-#include "base.h"
 
 #include <libpurple/debug.h>
 //TODO: Find the replacement for multi.h
@@ -78,7 +77,7 @@ QQuailBListWindow::buildInterface()
 	buildToolBar();
 
 	/* Setup the buddy list */
-	buddylist = new QQuailBuddyList(this, "BuddyList");
+    buddylist = new QQuailBuddyList(this);
 
     connect(buddylist, SIGNAL(currentChanged(QListWidgetItem *)),
             this, SLOT(nodeChanged(QListWidgetItem *)));
@@ -114,13 +113,13 @@ QQuailBListWindow::buildToolBar()
 	QAction *a;
 	QToolButton *button;
 	toolbar = new QToolBar(this);
-    toolbar->setMovable(false);
+    toolbar->setMovable(true);
 	/* IM */
     imButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-im.png")),
                     tr("Send IM"),
                     this);
     toolbar->addAction(imButton);
-    imButton->setEnabled(false);
+    imButton->setEnabled(true);
 
     connect(imButton, SIGNAL(triggered(bool)),
 			this, SLOT(openImSlot()));
@@ -128,7 +127,7 @@ QQuailBListWindow::buildToolBar()
 	/* Chat */
     chatButton = new QAction(newChatIconSet, tr("Open Chat"), this);
     toolbar->addAction(chatButton);
-    chatButton->setEnabled(false);
+    chatButton->setEnabled(true);
 
     connect(chatButton, SIGNAL(triggered(bool)),
 			this, SLOT(openChatSlot()));
@@ -139,7 +138,8 @@ QQuailBListWindow::buildToolBar()
     button = new QToolButton(toolbar);
 	button->setAutoRaise(true);
     button->setIcon(QIcon(QPixmap(":/data/images/actions/add.png")));
-	button->setEnabled(false);
+    button->setEnabled(true);
+    button->setText(tr("Add..."));
 	addButton = button;
 
     addMenu = new QMenu(button);
@@ -173,7 +173,7 @@ QQuailBListWindow::buildToolBar()
                                tr("Remove"),
                                this);
     toolbar->addAction(removeButton);
-    removeButton->setEnabled(false);
+    removeButton->setEnabled(true);
     connect(removeButton, SIGNAL(triggered(bool)),
 			this, SLOT(showRemoveBuddy()));
 
@@ -184,6 +184,7 @@ QQuailBListWindow::buildToolBar()
     toolbar->addWidget(button);
 	button->setAutoRaise(true);
     button->setIcon(QIcon(QPixmap(":/data/images/actions/settings.png")));
+    button->setText(tr("Settings"));
 
     settingsMenu = new QMenu(this);
     button->setMenu(settingsMenu);
@@ -227,7 +228,9 @@ QQuailBListWindow::buildToolBar()
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
-	button = new QQuailConvButton(toolbar, "conversations");
+    button = new QQuailConvButton(toolbar);
+    toolbar->addWidget(button);
+
     this->addToolBar(toolbar);
     qDebug() << "QQuailBListWindow::buildToolBar.end";
 }
@@ -283,6 +286,7 @@ QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 void
 QQuailBListWindow::accountSignedOff(PurpleAccount *)
 {
+    qDebug() << "QQuailBListWindow::accountSignedOff";
 	if (purple_connections_get_all() == NULL)
 	{
 		imButton->setEnabled(false);
@@ -295,12 +299,14 @@ QQuailBListWindow::accountSignedOff(PurpleAccount *)
 void
 QQuailBListWindow::updateNode(PurpleBlistNode *node)
 {
+    qDebug() << "QQuailBListWindow::updateNode";
 	buddylist->updateNode(node);
 }
 
 void
 QQuailBListWindow::reloadList()
 {
+    qDebug() << "QQuailBListWindow::reloadList";
 	buddylist->reload(true);
 }
 
@@ -310,6 +316,7 @@ QQuailBListWindow::reloadList()
 void
 QQuailBListWindow::nodeChanged(QListWidgetItem *_item)
 {
+    qDebug() << "QQuailBListWindow::nodeChanged";
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
 
@@ -350,6 +357,7 @@ QQuailBListWindow::nodeChanged(QListWidgetItem *_item)
 void
 QQuailBListWindow::doubleClickList(QListWidgetItem *_item)
 {
+    qDebug() << "QQuailBListWindow::doubleClickList";
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
 
@@ -365,6 +373,7 @@ QQuailBListWindow::doubleClickList(QListWidgetItem *_item)
 void
 QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 {
+    qDebug() << "QQuailBListWindow::showAddBuddy";
 	QQuailAddBuddyDialog *dialog;
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
@@ -400,6 +409,7 @@ QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 void
 QQuailBListWindow::showAddBuddy()
 {
+    qDebug() << "QQuailBListWindow::showAddBuddy";
 	showAddBuddy(NULL);
 }
 

@@ -80,7 +80,7 @@ class QQuailBListWindow : public QMainWindow
 		void openImSlot(PurpleBuddy *buddy);
 		void openImSlot();
 		void openChatSlot(PurpleChat *chat);
-		void openChatSlot();
+		void openChatSlot();        
 
 	private:
 		void buildInterface();

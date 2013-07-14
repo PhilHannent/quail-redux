@@ -21,11 +21,14 @@
  */
 #include "QuailMainWindow.h"
 
+#include <QAction>
 #include <QApplication>
+#include <QCloseEvent>
 #include <QDebug>
 #include <QDesktopWidget>
-#include <QCloseEvent>
+#include <QMenu>
 #include <QTimer>
+#include <QToolBar>
 #include <QVariant>
 #include <QVBoxLayout>
 
@@ -38,12 +41,12 @@
 #include <libpurple/plugin.h>
 
 #include "QuailConnectionMeter.h"
+#include "QuailConvButton.h"
 #include "QuailConvWindow.h"
 #include "QuailDebugWindow.h"
 #include "QuailEventLoop.h"
 #include "QuailNotify.h"
 #include "QuailRequest.h"
-#include "base.h"
 
 static QQuailMainWindow *mainWin = NULL;
 
@@ -142,6 +145,8 @@ QQuailMainWindow::buildInterface()
     qDebug() << "QQuailMainWindow::buildInterface()";
     QVBoxLayout *vbox = new QVBoxLayout(this);
     qDebug() << "QQuailMainWindow::buildInterface().1";
+    toolbar = new QToolBar(this);
+    this->addToolBar(toolbar);
 
     widgetStack = new QStackedWidget(this);
     vbox->addWidget(widgetStack);
@@ -149,9 +154,150 @@ QQuailMainWindow::buildInterface()
 
 	/* Create the connection meters box. */
     meters = new QQuailConnectionMeters();
+    updateGlobalToolBar();
     vbox->addWidget(meters);
 
     setCentralWidget(widgetStack);
+}
+
+void
+QQuailMainWindow::updateGlobalToolBar()
+{
+    qDebug() << "QQuailMainWindow::addGlobalToolBar()";
+    QAction *a;
+    QToolButton *button;
+    toolbar->setMovable(true);
+    /* IM */
+    imButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-im.png")),
+                    tr("Send IM"),
+                    this);
+    toolbar->addAction(imButton);
+    imButton->setEnabled(true);
+    connect(imButton, SIGNAL(triggered(bool)),
+            this, SIGNAL(signalImButton(bool)));
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().1";
+    /* Chat */
+    chatButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-chat.png")),
+                             tr("Open Chat"),
+                             this);
+    toolbar->addAction(chatButton);
+    chatButton->setEnabled(true);
+    connect(chatButton, SIGNAL(triggered(bool)),
+            this, SIGNAL(signalChatButton(bool)));
+
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().2";
+    toolbar->addSeparator();
+
+    /* Add */
+    button = new QToolButton(toolbar);
+    button->setAutoRaise(true);
+    button->setIcon(QIcon(QPixmap(":/data/images/actions/add.png")));
+    button->setEnabled(true);
+    button->setText(tr("Add..."));
+    addButton = button;
+
+    addMenu = new QMenu(button);
+    button->setMenu(addMenu);
+    toolbar->addWidget(addButton);
+
+    /* Add Buddy */
+    addBuddyButton = new QAction(QIcon(QPixmap(":/data/images/actions/user.png")),
+                                 tr("Add Buddy"),
+                                 this);
+    addMenu->addAction(addBuddyButton);
+    connect(addBuddyButton, SIGNAL(triggered(bool)),
+            this, SIGNAL(signalShowAddBuddy(bool)));
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().3";
+
+    /* Add Chat */
+    addChatButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-chat.png")),
+                                tr("Add Chat"),
+                                this);
+    addMenu->addAction(addChatButton);
+    connect(addChatButton, SIGNAL(triggered(bool)),
+            this, SIGNAL(signalShowAddChat(bool)));
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().4";
+
+    /* Add Group */
+    addGroupButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-group.png")),
+                                 tr("Add Group"),
+                                 this);
+    addMenu->addAction(addGroupButton);
+    connect(addGroupButton, SIGNAL(triggered(bool)),
+            this, SIGNAL(signalShowAddGroup(bool)));
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().5";
+
+    /* Remove */
+    removeButton = new QAction(QIcon(QPixmap(":/data/images/actions/remove.png")),
+                               tr("Remove"),
+                               this);
+    toolbar->addAction(removeButton);
+    removeButton->setEnabled(true);
+    connect(removeButton, SIGNAL(triggered(bool)),
+            this, SIGNAL(signalShowRemoveBuddy(bool)));
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().6";
+
+    toolbar->addSeparator();
+
+    /* Settings menu */
+    button = new QToolButton(this);
+    toolbar->addWidget(button);
+    button->setAutoRaise(true);
+    button->setIcon(QIcon(QPixmap(":/data/images/actions/settings.png")));
+    button->setText(tr("Settings"));
+
+    settingsMenu = new QMenu(this);
+    button->setMenu(settingsMenu);
+
+    /* Show Offline Buddies */
+    showOfflineButton = new QAction(QIcon(QPixmap(":/data/images/actions/offline_buddies.png")),
+                                    tr("Show Offline Buddies"),
+                                    this);
+    showOfflineButton->setChecked(purple_prefs_get_bool("/quail/blist/show_offline_buddies"));
+    settingsMenu->addAction(showOfflineButton);
+    connect(showOfflineButton, SIGNAL(toggled(bool)),
+            this, SIGNAL(signalShowOfflineBuddys(bool)));
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().7";
+
+    /* Separator */
+    settingsMenu->addSeparator();
+
+    /* Preferences */
+    a = new QAction(tr("Preferences"), this);
+    settingsMenu->addAction(a);
+    connect(a, SIGNAL(triggered(bool)),
+            this, SIGNAL(signalShowPrefs(bool)));
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().8";
+
+    /* Now we're going to construct the toolbar on the right. */
+    //toolbar->addSeparator();
+
+    /* Buddy List */
+    blistButton = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
+                              tr("Buddy List"),
+                              this);
+    blistButton->setChecked(true);
+    toolbar->addAction(blistButton);
+    connect(blistButton, SIGNAL(toggled(bool)),
+            this, SIGNAL(signalShowBuddyList(bool)));
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().9";
+
+    /* Accounts */
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
+                    tr("Accounts"),
+                    this);
+    toolbar->addAction(a);
+    connect(a, SIGNAL(triggered(bool)),
+            this, SIGNAL(signalShowAccounts(bool)));
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().10";
+
+    /* Conversations */
+    button = new QQuailConvButton(this);
+    toolbar->addWidget(button);
+
+    this->addToolBar(toolbar);
+    qDebug() << "QQuailMainWindow::addGlobalToolBar().end";
+
 }
 
 void
