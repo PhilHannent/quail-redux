@@ -52,6 +52,7 @@ static QQuailMainWindow *mainWin = NULL;
 static void
 qQuailPrefsInit(void)
 {
+    qDebug() << "QQuailMainWindow::qQuailPrefsInit";
     purple_prefs_add_none("/quail");
     purple_prefs_add_none("/quail/blist");
     purple_prefs_add_bool("/quail/blist/show_offline_buddies", false);
@@ -69,12 +70,14 @@ qQuailPrefsInit(void)
 static void
 qQuailCoreDebugInit(void)
 {
+    qDebug() << "QQuailMainWindow::qQuailCoreDebugInit";
 	purple_debug_set_ui_ops(qQuailGetDebugUiOps());
 }
 
 static void
 qQuailCoreUiInit(void)
 {
+    qDebug() << "QQuailMainWindow::qQuailCoreUiInit";
 	purple_blist_set_ui_ops(qQuailGetBlistUiOps());
 	purple_connections_set_ui_ops(qQuailGetConnectionUiOps());
     //purple_conversations_set_win_ui_ops(qQuailGetConvWindowUiOps());
@@ -85,6 +88,7 @@ qQuailCoreUiInit(void)
 static void
 qQuailCoreQuit(void)
 {
+    qDebug() << "QQuailMainWindow::qQuailCoreQuit";
 	exit(0);
 }
 

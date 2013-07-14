@@ -45,13 +45,14 @@
 QQuailBListItem::QQuailBListItem(QListWidget *parent, PurpleBlistNode *node)
     : QListWidgetItem(parent), node(node), expanded(false), dirty(true)
 {
+    qDebug() << "QQuailBListItem::QQuailBListItem";
 	init();
 }
 
 //QQuailBListItem::QQuailBListItem(QListWidgetItem *parent, PurpleBlistNode *node)
 //    : QListWidgetItem(parent), node(node), expanded(false), dirty(true)
 //{
-//	init();
+//    init();
 //}
 
 QQuailBListItem::~QQuailBListItem()
@@ -69,6 +70,7 @@ QQuailBListItem::getBlistNode() const
 void
 QQuailBListItem::updateInfo()
 {
+    qDebug() << "QQuailBListItem::updateInfo";
 //	QQuailPixmapSize pixmapSize;
 
 //    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
@@ -204,6 +206,7 @@ void
 QQuailBListItem::paintCell(QPainter *p, const QPalette &cg, int column,
 						  int width, int align)
 {
+    qDebug() << "QQuailBListItem::paintCell";
 //    QListWidget *lv = this->listWidget();
 //	const QPixmap *icon = pixmap(column);
 
@@ -240,6 +243,7 @@ void
 QQuailBListItem::paintBranches(QPainter *p, const QPalette &cg,
                               int width, int x, int height)
 {
+    qDebug() << "QQuailBListItem::paintBranches";
 //    if (PURPLE_BLIST_NODE_IS_CHAT(node) || PURPLE_BLIST_NODE_IS_BUDDY(node))
 //	{
 //		p->fillRect(0, 0, width, height, QBrush(cg.base()));
@@ -270,7 +274,8 @@ void
 QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 							   int width, int align, int lmarg, int itMarg)
 {
-	PurpleBuddy *buddy;
+    qDebug() << "QQuailBListItem::paintBuddyInfo";
+    PurpleBuddy *buddy;
 	PurpleContact *contact = NULL;
 
     if (PURPLE_BLIST_NODE_IS_BUDDY(node))
@@ -415,7 +420,8 @@ void
 QQuailBListItem::paintGroupInfo(QPainter *p, const QPalette &, int column,
 							   int width, int align, int lmarg, int itMarg)
 {
-	if (column > 0)
+    qDebug() << "QQuailBListItem::paintGroupInfo";
+    if (column > 0)
 		return;
 
 	PurpleGroup *group = (PurpleGroup *)getBlistNode();
@@ -454,7 +460,8 @@ QQuailBListItem::paintGroupInfo(QPainter *p, const QPalette &, int column,
 QPixmap
 QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
 {
-	QImage statusImage;
+    qDebug() << "QQuailBuddyList::getBuddyStatusIcon";
+    QImage statusImage;
 	QImage emblemImage;
 	QPixmap statusPixmap;
 	const char *protoName = NULL;
@@ -661,6 +668,7 @@ QQuailBuddyList::reload(bool remove)
 PurpleBuddy *
 QQuailBuddyList::getSelectedBuddy() const
 {
+    qDebug() << "QQuailBuddyList::getSelectedBuddy";
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
 	PurpleBuddy *buddy = NULL;
@@ -683,7 +691,8 @@ void
 QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 								  bool asContact)
 {
-	PurplePlugin *prpl = NULL;
+    qDebug() << "QQuailBuddyList::populateBuddyMenu";
+    PurplePlugin *prpl = NULL;
 	PurplePluginProtocolInfo *prplInfo = NULL;
     QQuailAction *a;
 
@@ -811,6 +820,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 void
 QQuailBuddyList::populateContactMenu(PurpleContact *contact, QMenu *menu)
 {
+    qDebug() << "QQuailBuddyList::populateContactMenu";
 	PurplePlugin *prpl = NULL;
 	PurplePluginProtocolInfo *prplInfo = NULL;
 	QAction *a;
@@ -843,6 +853,7 @@ QQuailBuddyList::populateContactMenu(PurpleContact *contact, QMenu *menu)
 void
 QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
 {
+    qDebug() << "QQuailBuddyList::populateChatMenu";
 	PurplePlugin *prpl = NULL;
 	PurplePluginProtocolInfo *prplInfo = NULL;
 	QAction *a;
@@ -895,6 +906,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
 void
 QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
 {
+    qDebug() << "QQuailBuddyList::populateGroupMenu";
 	QAction *a;
 
 	/* Add a Buddy */
@@ -946,6 +958,7 @@ QQuailBuddyList::resizeEvent(QResizeEvent *)
 void
 QQuailBuddyList::nodeExpandedSlot(QListWidgetItem *_item)
 {
+    qDebug() << "QQuailBuddyList::nodeExpandedSlot";
 	QQuailBListItem *item = (QQuailBListItem *)_item;
 	PurpleBlistNode *node;
 
@@ -967,6 +980,7 @@ QQuailBuddyList::nodeExpandedSlot(QListWidgetItem *_item)
 void
 QQuailBuddyList::nodeCollapsedSlot(QListWidgetItem *_item)
 {
+    qDebug() << "QQuailBuddyList::nodeCollapsedSlot";
 	QQuailBListItem *item = (QQuailBListItem *)_item;
 	PurpleBlistNode *node;
 
@@ -988,12 +1002,13 @@ QQuailBuddyList::nodeCollapsedSlot(QListWidgetItem *_item)
 void
 QQuailBuddyList::collapseContactSlot()
 {
-//	collapseContactSlot((QQuailBListItem *)selectedItem());
+    collapseContactSlot((QQuailBListItem *)currentItem());
 }
 
 void
 QQuailBuddyList::collapseContactSlot(QQuailBListItem *item)
 {
+    qDebug() << "QQuailBuddyList::collapseContactSlot";
 	PurpleBlistNode *node;
 
 	g_return_if_fail(item != NULL);
@@ -1014,12 +1029,13 @@ QQuailBuddyList::collapseContactSlot(QQuailBListItem *item)
 void
 QQuailBuddyList::expandContactSlot()
 {
-//	expandContactSlot((QQuailBListItem *)selectedItem());
+    expandContactSlot((QQuailBListItem *)currentItem());
 }
 
 void
 QQuailBuddyList::expandContactSlot(QQuailBListItem *item)
 {
+    qDebug() << "QQuailBuddyList::expandContactSlot";
 	PurpleBlistNode *node, *child;
 
 	g_return_if_fail(item != NULL);
@@ -1052,7 +1068,8 @@ void
 QQuailBuddyList::showContextMenuSlot(QListWidgetItem *_item,
 									const QPoint &point, int)
 {
-	QQuailBListItem *item = (QQuailBListItem *)_item;
+    qDebug() << "QQuailBuddyList::showContextMenuSlot";
+    QQuailBListItem *item = (QQuailBListItem *)_item;
     QMenu *menu = NULL;
 	PurpleBlistNode *node;
 
@@ -1102,6 +1119,7 @@ QQuailBuddyList::showContextMenuSlot(QListWidgetItem *_item,
 void
 QQuailBuddyList::addBuddySlot()
 {
+    qDebug() << "QQuailBuddyList::addBuddySlot";
 	PurpleBlistNode *node;
 	QQuailBListItem *item;
 
@@ -1119,11 +1137,12 @@ QQuailBuddyList::addBuddySlot()
 void
 QQuailBuddyList::addChatSlot()
 {
+    qDebug() << "QQuailBuddyList::addChatSlot";
 	PurpleBlistNode *node;
 	QQuailBListItem *item;
 
-//	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
-//		return;
+    if ((item = (QQuailBListItem *)currentItem()) == NULL)
+        return;
 
 	node = item->getBlistNode();
 
@@ -1136,11 +1155,12 @@ QQuailBuddyList::addChatSlot()
 void
 QQuailBuddyList::removeGroupSlot()
 {
-	PurpleBlistNode *node;
+    qDebug() << "QQuailBuddyList::removeGroupSlot";
+    PurpleBlistNode *node;
 	QQuailBListItem *item;
 
-//	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
-//		return;
+    if ((item = (QQuailBListItem *)currentItem()) == NULL)
+        return;
 
 	node = item->getBlistNode();
 
@@ -1153,6 +1173,7 @@ QQuailBuddyList::removeGroupSlot()
 static void
 renameGroupCb(PurpleGroup *group, const char *newName)
 {
+    qDebug() << "QQuailBuddyList::renameGroupCb";
 	purple_blist_rename_group(group, newName);
 //	purple_blist_save();
 }
@@ -1160,12 +1181,13 @@ renameGroupCb(PurpleGroup *group, const char *newName)
 void
 QQuailBuddyList::renameGroupSlot()
 {
+    qDebug() << "QQuailBuddyList::renameGroupSlot";
 	PurpleBlistNode *node;
 	QQuailBListItem *item;
 	PurpleGroup *group;
 
-//	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
-//		return;
+    if ((item = (QQuailBListItem *)currentItem()) == NULL)
+        return;
 
 	node = item->getBlistNode();
 
@@ -1185,6 +1207,7 @@ QQuailBuddyList::renameGroupSlot()
 void
 QQuailBuddyList::userInfoSlot(void *data)
 {
+    qDebug() << "QQuailBuddyList::userInfoSlot";
 	PurpleBuddy *buddy = (PurpleBuddy *)data;
 
 	serv_get_info(purple_account_get_connection(buddy->account), buddy->name);
@@ -1193,12 +1216,14 @@ QQuailBuddyList::userInfoSlot(void *data)
 void
 QQuailBuddyList::sendImSlot(void *data)
 {
+    qDebug() << "QQuailBuddyList::sendImSlot";
 	emit openIm((PurpleBuddy *)data);
 }
 
 void
 QQuailBuddyList::protoActionSlot(void *data1, void *data2)
 {
+    qDebug() << "QQuailBuddyList::protoActionSlot";
 	PurpleBuddy *buddy = (PurpleBuddy *)data1;
 //	struct proto_buddy_menu *pbm = (struct proto_buddy_menu *)data2;
 
@@ -1209,6 +1234,7 @@ QQuailBuddyList::protoActionSlot(void *data1, void *data2)
 static void
 aliasBuddyCb(PurpleBuddy *buddy, const char *newAlias)
 {
+    qDebug() << "QQuailBuddyList::aliasBuddyCb";
 	purple_blist_alias_buddy(buddy, newAlias);
 //	purple_blist_save();
 }
@@ -1216,6 +1242,7 @@ aliasBuddyCb(PurpleBuddy *buddy, const char *newAlias)
 void
 QQuailBuddyList::aliasBuddySlot(void *data)
 {
+    qDebug() << "QQuailBuddyList::aliasBuddySlot";
 	PurpleBuddy *buddy = (PurpleBuddy *)data;
 
 //	purple_request_input(NULL, tr("Alias Buddy"),
@@ -1229,17 +1256,19 @@ QQuailBuddyList::aliasBuddySlot(void *data)
 void
 QQuailBuddyList::removeBuddySlot(void *data)
 {
-	emit removeBuddy((PurpleBuddy *)data);
+    qDebug() << "QQuailBuddyList::removeBuddySlot";
+    emit removeBuddy((PurpleBuddy *)data);
 }
 
 void
 QQuailBuddyList::removeContactSlot()
 {
-	PurpleBlistNode *node;
+    qDebug() << "QQuailBuddyList::removeContactSlot";
+    PurpleBlistNode *node;
 	QQuailBListItem *item;
 
-//	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
-//		return;
+    if ((item = (QQuailBListItem *)currentItem()) == NULL)
+        return;
 
 	node = item->getBlistNode();
 
@@ -1252,11 +1281,12 @@ QQuailBuddyList::removeContactSlot()
 void
 QQuailBuddyList::joinChatSlot()
 {
-	PurpleBlistNode *node;
+    qDebug() << "QQuailBuddyList::joinChatSlot";
+    PurpleBlistNode *node;
 	QQuailBListItem *item;
 
-//	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
-//		return;
+    if ((item = (QQuailBListItem *)currentItem()) == NULL)
+        return;
 
 	node = item->getBlistNode();
 
@@ -1269,11 +1299,12 @@ QQuailBuddyList::joinChatSlot()
 void
 QQuailBuddyList::autoJoinChatSlot(bool on)
 {
-	PurpleBlistNode *node;
+    qDebug() << "QQuailBuddyList::autoJoinChatSlot";
+    PurpleBlistNode *node;
 	QQuailBListItem *item;
 
-//	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
-//		return;
+    if ((item = (QQuailBListItem *)currentItem()) == NULL)
+        return;
 
 	node = item->getBlistNode();
 
@@ -1287,11 +1318,12 @@ QQuailBuddyList::autoJoinChatSlot(bool on)
 void
 QQuailBuddyList::removeChatSlot()
 {
-	PurpleBlistNode *node;
+    qDebug() << "QQuailBuddyList::autoJoinChatSlot";
+    PurpleBlistNode *node;
 	QQuailBListItem *item;
 
-//	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
-//		return;
+    if ((item = (QQuailBListItem *)currentItem()) == NULL)
+        return;
 
 	node = item->getBlistNode();
 
@@ -1304,6 +1336,7 @@ QQuailBuddyList::removeChatSlot()
 static void
 aliasChatCb(PurpleChat *chat, const char *newAlias)
 {
+    qDebug() << "QQuailBuddyList::aliasChatCb";
 	purple_blist_alias_chat(chat, newAlias);
 //	purple_blist_save();
 }
@@ -1311,12 +1344,13 @@ aliasChatCb(PurpleChat *chat, const char *newAlias)
 void
 QQuailBuddyList::aliasChatSlot()
 {
-	PurpleBlistNode *node;
+    qDebug() << "QQuailBuddyList::aliasChatSlot";
+    PurpleBlistNode *node;
 	QQuailBListItem *item;
 	PurpleChat *chat;
 
-//	if ((item = (QQuailBListItem *)selectedItem()) == NULL)
-//		return;
+    if ((item = (QQuailBListItem *)currentItem()) == NULL)
+        return;
 
 	node = item->getBlistNode();
 
@@ -1336,7 +1370,8 @@ QQuailBuddyList::aliasChatSlot()
 void
 QQuailBuddyList::addGroup(PurpleBlistNode *node)
 {
-	QQuailBListItem *item = new QQuailBListItem(this, node);
+    qDebug() << "QQuailBuddyList::addGroup";
+    QQuailBListItem *item = new QQuailBListItem(this, node);
 	node->ui_data = item;
 
 //	item->setExpandable(true);
@@ -1345,7 +1380,8 @@ QQuailBuddyList::addGroup(PurpleBlistNode *node)
 void
 QQuailBuddyList::updateGroup(PurpleBlistNode *node)
 {
-	PurpleGroup *group;
+    qDebug() << "QQuailBuddyList::updateGroup";
+    PurpleGroup *group;
 	QQuailBListItem *item;
 
     g_return_if_fail(PURPLE_BLIST_NODE_IS_GROUP(node));
@@ -1376,7 +1412,8 @@ QQuailBuddyList::updateGroup(PurpleBlistNode *node)
 void
 QQuailBuddyList::updateContact(PurpleBlistNode *node)
 {
-	PurpleContact *contact;
+    qDebug() << "QQuailBuddyList::updateContact";
+    PurpleContact *contact;
 	PurpleBuddy *buddy;
 	QQuailBListItem *item;
 
@@ -1408,7 +1445,8 @@ QQuailBuddyList::updateContact(PurpleBlistNode *node)
 void
 QQuailBuddyList::updateBuddy(PurpleBlistNode *node)
 {
-	PurpleContact *contact;
+    qDebug() << "QQuailBuddyList::updateBuddy";
+    PurpleContact *contact;
 	PurpleBuddy *buddy;
 	QQuailBListItem *item;
 
@@ -1446,7 +1484,8 @@ QQuailBuddyList::updateBuddy(PurpleBlistNode *node)
 void
 QQuailBuddyList::updateChat(PurpleBlistNode *node)
 {
-	PurpleChat *chat;
+    qDebug() << "QQuailBuddyList::updateChat";
+    PurpleChat *chat;
 	QQuailBListItem *item;
 
     g_return_if_fail(PURPLE_BLIST_NODE_IS_CHAT(node));
