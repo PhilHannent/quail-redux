@@ -33,8 +33,6 @@
 #include <libpurple/request.h>
 #include <libpurple/signals.h>
 
-//#include <qpe/resource.h>
-
 #include <QAction>
 #include <QDebug>
 #include <QLabel>
@@ -248,7 +246,8 @@ QQuailBListWindow::getBlist() const
 void
 QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 {
-	PurpleBlistNode *gnode, *cnode;
+    qDebug() << "QQuailBListWindow::accountSignedOn";
+    PurpleBlistNode *gnode, *cnode;
 
 	chatButton->setEnabled(true);
 	addButton->setEnabled(true);
@@ -284,7 +283,8 @@ QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 void
 QQuailBListWindow::accountSignedOff(PurpleAccount *)
 {
-	if (purple_connections_get_all() == NULL)
+    qDebug() << "QQuailBListWindow::accountSignedOff";
+    if (purple_connections_get_all() == NULL)
 	{
 		imButton->setEnabled(false);
 		chatButton->setEnabled(false);
@@ -296,13 +296,15 @@ QQuailBListWindow::accountSignedOff(PurpleAccount *)
 void
 QQuailBListWindow::updateNode(PurpleBlistNode *node)
 {
-	buddylist->updateNode(node);
+    qDebug() << "QQuailBListWindow::updateNode";
+    buddylist->updateNode(node);
 }
 
 void
 QQuailBListWindow::reloadList()
 {
-	buddylist->reload(true);
+    qDebug() << "QQuailBListWindow::reloadList";
+    buddylist->reload(true);
 }
 
 /**************************************************************************
@@ -311,7 +313,8 @@ QQuailBListWindow::reloadList()
 void
 QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item)
 {
-	QQuailBListItem *item;
+    qDebug() << "QQuailBListWindow::nodeChanged";
+    QQuailBListItem *item;
 	PurpleBlistNode *node;
 
 	if (_item == NULL)
@@ -351,7 +354,8 @@ QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item)
 void
 QQuailBListWindow::doubleClickList(QTreeWidgetItem *_item)
 {
-	QQuailBListItem *item;
+    qDebug() << "QQuailBListWindow::doubleClickList";
+    QQuailBListItem *item;
 	PurpleBlistNode *node;
 
 	item = (QQuailBListItem *)_item;
@@ -366,7 +370,8 @@ QQuailBListWindow::doubleClickList(QTreeWidgetItem *_item)
 void
 QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 {
-	QQuailAddBuddyDialog *dialog;
+    qDebug() << "QQuailBListWindow::showAddBuddy";
+    QQuailAddBuddyDialog *dialog;
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
 
@@ -705,7 +710,7 @@ QQuailBListWindow::showPreferencesSlot()
     qDebug() << "QQuailBListWindow::showPreferencesSlot()";
 	QQuailPrefsDialog *prefsDialog = new QQuailPrefsDialog();
 
-	prefsDialog->showMaximized();
+    prefsDialog->show();
 }
 
 void
@@ -842,9 +847,10 @@ qQuailBlistNewList(PurpleBuddyList *blist)
 }
 
 static void
-qQuailBlistNewNode(PurpleBlistNode *)
+qQuailBlistNewNode(PurpleBlistNode * node)
 {
-    qDebug() << "QQuailBListWindow::qQuailBlistNewNode()";
+    //qDebug() << "QQuailBListWindow::qQuailBlistNewNode()";
+    /* This is meant to happen in the BuddyList update functions */
 }
 
 static void
@@ -874,7 +880,7 @@ qQuailBlistRemove(PurpleBuddyList *blist, PurpleBlistNode *node)
 
 	if (item != NULL)
 	{
-//		parent = (QQuailBListItem *)item->parent();
+        parent = (QQuailBListItem *)item->parent();
 
 		delete item;
 

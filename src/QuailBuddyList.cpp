@@ -43,13 +43,14 @@
 QQuailBListItem::QQuailBListItem(QTreeWidget *parent, PurpleBlistNode *node)
     : QTreeWidgetItem(parent), node(node), expanded(false), dirty(true)
 {
-    qDebug() << "QQuailBListItem::QQuailBListItem";
+    qDebug() << "QQuailBListItem::QQuailBListItem::Added to TreeWidget";
 	init();
 }
 
 QQuailBListItem::QQuailBListItem(QTreeWidgetItem *parent, PurpleBlistNode *node)
     : QTreeWidgetItem(parent), node(node), expanded(false), dirty(true)
 {
+    qDebug() << "QQuailBListItem::QQuailBListItem::Added to TreeWidgetItem";
     init();
 }
 
@@ -555,7 +556,8 @@ QQuailBuddyList::getBlist() const
 void
 QQuailBuddyList::updateNode(PurpleBlistNode *node)
 {
-	switch (node->type)
+    qDebug() << "QQuailBuddyList::updateNode()";
+    switch (node->type)
 	{
         case PURPLE_BLIST_GROUP_NODE:   updateGroup(node);   break;
         case PURPLE_BLIST_CONTACT_NODE: updateContact(node); break;
@@ -1324,7 +1326,7 @@ QQuailBuddyList::addGroup(PurpleBlistNode *node)
 void
 QQuailBuddyList::updateGroup(PurpleBlistNode *node)
 {
-    qDebug() << "QQuailBuddyList::updateGroup";
+    qDebug() << "QQuailBuddyList::updateGroup" << node;
     PurpleGroup *group;
 	QQuailBListItem *item;
 
@@ -1337,8 +1339,10 @@ QQuailBuddyList::updateGroup(PurpleBlistNode *node)
         purple_prefs_get_bool("/quail/blist/show_offline_buddies") ||
 		purple_blist_get_group_online_count(group) > 0)
 	{
+        qDebug() << "QQuailBuddyList::updateGroup.1";
 		if (item == NULL)
 		{
+            qDebug() << "QQuailBuddyList::updateGroup.1";
 			addGroup(node);
 			item = (QQuailBListItem *)node->ui_data;
 		}
@@ -1348,9 +1352,11 @@ QQuailBuddyList::updateGroup(PurpleBlistNode *node)
 	}
 	else
 	{
+        qDebug() << "QQuailBuddyList::updateGroup.3";
 		if (item != NULL)
 			delete item;
 	}
+    qDebug() << "QQuailBuddyList::updateGroup.end";
 }
 
 void
@@ -1368,22 +1374,34 @@ QQuailBuddyList::updateContact(PurpleBlistNode *node)
 	item    = (QQuailBListItem *)node->ui_data;
 	contact = (PurpleContact *)node;
 	buddy   = purple_contact_get_priority_buddy(contact);
-    qDebug() << "QQuailBuddyList::updateContact" << buddy->name;
-    if (buddy != NULL &&
-         (PURPLE_BUDDY_IS_ONLINE(buddy)) &&
-         (purple_account_is_connected(buddy->account) &&
-          purple_prefs_get_bool("/quail/blist/show_offline_buddies")))
+    qDebug() << "QQuailBuddyList::updateContact:1:" << buddy->name;
+    qDebug() << "QQuailBuddyList::updateContact:2:" << (buddy != NULL);
+    qDebug() << "QQuailBuddyList::updateContact:3:" << PURPLE_BUDDY_IS_ONLINE(buddy);
+    qDebug() << "QQuailBuddyList::updateContact:4:" << purple_account_is_connected(buddy->account);
+    qDebug() << "QQuailBuddyList::updateContact:4:" << purple_prefs_get_bool("/quail/blist/show_offline_buddies");
+    if ((buddy != NULL) &&
+         (PURPLE_BUDDY_IS_ONLINE(buddy) ||
+          (purple_prefs_get_bool("/quail/blist/show_offline_buddies"))))
     {
+        qDebug() << "QQuailBuddyList::updateContact.1";
         if (item == NULL)
         {
+            qDebug() << "QQuailBuddyList::updateContact.2";
             node->ui_data = item = new QQuailBListItem(
                 (QQuailBListItem *)(node->parent->ui_data), node);
         }
         else
+        {
+            qDebug() << "QQuailBuddyList::updateContact.2";
             item->updateInfo();
+        }
     }
     else if (item != NULL)
+    {
+        qDebug() << "QQuailBuddyList::updateContact.3";
         delete item;
+    }
+    qDebug() << "QQuailBuddyList::updateContact.end";
 }
 
 void
@@ -1402,6 +1420,7 @@ QQuailBuddyList::updateBuddy(PurpleBlistNode *node)
 		(node->parent->ui_data != NULL &&
 		 !((QQuailBListItem *)node->parent->ui_data)->isExpanded()))
 	{
+        qDebug() << "QQuailBuddyList::updateBuddy.no ui_data";
 		return;
 	}
 
