@@ -73,7 +73,7 @@ class QQuailBuddyList : public QListWidget
         static QPixmap getBuddyStatusIcon(PurpleBlistNode *node);
 
 	public:
-        QQuailBuddyList(QWidget *parent = NULL);
+		QQuailBuddyList(QWidget *parent = NULL, const char *name = NULL);
 		virtual ~QQuailBuddyList();
 
         void setBlist(PurpleBuddyList *list);

@@ -78,9 +78,9 @@ class QQuailBListWindow : public QMainWindow
 		void showAccountsWindow();
 		void blistToggled(bool state);
 		void openImSlot(PurpleBuddy *buddy);
-        void openImSlot();
+		void openImSlot();
 		void openChatSlot(PurpleChat *chat);
-        void openChatSlot();
+		void openChatSlot();
 
 	private:
 		void buildInterface();

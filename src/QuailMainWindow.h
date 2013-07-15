@@ -62,18 +62,6 @@ class QQuailMainWindow : public QMainWindow
 		void showBlistWindow();
 		void showAccountsWindow();
 
-    signals:
-        void signalImButton(bool bTriggered);
-        void signalChatButton(bool bTriggered);
-        void signalShowAddBuddy(bool bTriggered);
-        void signalShowAddChat(bool bTriggered);
-        void signalShowAddGroup(bool bTriggered);
-        void signalShowRemoveBuddy(bool bTriggered);
-        void signalShowOfflineBuddys(bool bTriggered);
-        void signalShowPrefs(bool bTriggered);
-        void signalShowBuddyList(bool bTriggered);
-        void signalShowAccounts(bool bTriggered);
-
 	protected:
 		void buildInterface();
 		void initCore();
@@ -85,31 +73,10 @@ class QQuailMainWindow : public QMainWindow
 		QQuailAccountsWindow *accountsWin;
 		QQuailBListWindow *blistWin;
 		QQuailConnectionMeters *meters;
-        QToolBar *toolbar;
+
         QQuailConversation *lastConvWin;
 
 		int nextConvWinId;
-        QAction *imButton;
-        QAction *chatButton;
-        QAction *infoButton;
-        QAction *awayButton;
-
-        QAction *addBuddyButton;
-        QAction *addChatButton;
-        QAction *addGroupButton;
-        QAction *removeButton;
-
-        QAction *showOfflineButton;
-
-        QAction *blistButton;
-
-        QMenu *addMenu;
-        QMenu *settingsMenu;
-        QMenu *convsMenu;
-
-        QToolButton *addButton;
-
-        void updateGlobalToolBar();
 };
 
 QQuailMainWindow *qQuailGetMainWindow();

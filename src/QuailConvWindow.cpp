@@ -1054,7 +1054,7 @@ QQuailConvWindow::buildInterface()
 {
 	setupToolbar();
 
-    tabs = new QQuailTabWidget(this);
+	tabs = new QQuailTabWidget(this, "conv tabs");
 
 	connect(tabs, SIGNAL(currentChanged(QWidget *)),
 			this, SLOT(tabChanged(QWidget *)));
@@ -1066,6 +1066,7 @@ void
 QQuailConvWindow::setupToolbar()
 {
 	QToolButton *button;
+	QLabel *label;
 	QAction *a;
 
 //	setToolBarsMovable(false);
@@ -1188,8 +1189,7 @@ QQuailConvWindow::setupToolbar()
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
-    button = new QQuailConvButton(toolbar);
-    toolbar->addWidget(button);
+	button = new QQuailConvButton(toolbar, "conversations");
     button->setChecked(true);
     this->addToolBar(toolbar);
 }

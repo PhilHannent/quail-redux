@@ -22,7 +22,7 @@
 #include "QuailTabWidget.h"
 #include "QuailTabBar.h"
 
-QQuailTabWidget::QQuailTabWidget(QWidget *parent)
+QQuailTabWidget::QQuailTabWidget(QWidget *parent, const char *name)
     : QTabWidget(parent)
 {
     setTabBar(new QQuailTabBar(this));
