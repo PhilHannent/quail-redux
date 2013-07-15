@@ -43,7 +43,6 @@
 #include "QuailEventLoop.h"
 #include "QuailNotify.h"
 #include "QuailRequest.h"
-#include "base.h"
 
 static QQuailMainWindow *mainWin = NULL;
 

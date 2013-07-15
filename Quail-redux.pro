@@ -117,10 +117,10 @@ win32-g++ {
     LIBS += -L"C:\dev\win32-dev\gtk-2.24.10\lib"
     LIBS += -L"C:\dev\pidgin-main\libpurple"
     LIBS += -L"C:\dev\pidgin-main\libpurple"
-    LIBS += -L"C:\Qt\Qt5.1.0-mingw32\5.1.0-beta1\mingw47_32\lib"
-    LIBS += -L"C:\Qt\Qt5.1.0-mingw32\5.1.0-beta1\mingw47_32\bin"
+    LIBS += -L"C:\Qt\5.1.0\mingw48_32\lib"
+    #LIBS += -L"C:\Qt\5.1.0\mingw32\5.1.0-beta1\mingw47_32\bin"
 
-    RC_FILE = resource.rc
+    #RC_FILE = resource.rc
 
         LIBS        += -llibpurple
 }

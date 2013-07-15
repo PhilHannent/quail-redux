@@ -30,12 +30,8 @@
 #include <libpurple/request.h>
 #include <libpurple/server.h>
 
-//#include <qpe/qpeapplication.h>
-//#include <qpe/resource.h>
-
 #include <QAction>
 #include <QDebug>
-//#include <qheader.h>
 #include <QMenu>
 #include <QTimer>
 
@@ -43,18 +39,18 @@
 /**************************************************************************
  * QQuailBListItem
  **************************************************************************/
-QQuailBListItem::QQuailBListItem(QListWidget *parent, PurpleBlistNode *node)
-    : QListWidgetItem(parent), node(node), expanded(false), dirty(true)
+QQuailBListItem::QQuailBListItem(QTreeWidget *parent, PurpleBlistNode *node)
+    : QTreeWidgetItem(parent), node(node), expanded(false), dirty(true)
 {
     qDebug() << "QQuailBListItem::QQuailBListItem";
 	init();
 }
 
-//QQuailBListItem::QQuailBListItem(QListWidgetItem *parent, PurpleBlistNode *node)
-//    : QListWidgetItem(parent), node(node), expanded(false), dirty(true)
-//{
-//    init();
-//}
+QQuailBListItem::QQuailBListItem(QTreeWidgetItem *parent, PurpleBlistNode *node)
+    : QTreeWidgetItem(parent), node(node), expanded(false), dirty(true)
+{
+    init();
+}
 
 QQuailBListItem::~QQuailBListItem()
 {
@@ -72,12 +68,6 @@ void
 QQuailBListItem::updateInfo()
 {
     qDebug() << "QQuailBListItem::updateInfo";
-//	QQuailPixmapSize pixmapSize;
-
-//    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
-//		pixmapSize = QGAIM_PIXMAP_LARGE;
-//	else
-//		pixmapSize = QGAIM_PIXMAP_SMALL;
 
 	dirty = true;
 
@@ -93,7 +83,7 @@ QQuailBListItem::updateInfo()
 
 		if (isExpanded())
 		{
-            setIcon(QPixmap(":/quail.png"));
+            setIcon(0, QIcon(QPixmap(":/quail.png")));
 		}
 		else
 		{
@@ -139,11 +129,11 @@ QQuailBListItem::updateInfo()
 
 			}
 
-            //setPixmap(QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy));
-            //setText(1, text);
+            setIcon(0, QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy));
+            setToolTip(1, text);
 		}
-
-        //setText(0, purple_get_buddy_alias(buddy));
+        setText(1, buddy->server_alias);
+        //setText(1, purple_get_buddy_alias(buddy));
 	}
     else if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 	{
@@ -190,7 +180,7 @@ QQuailBListItem::updateInfo()
             }
         }
 
-        setIcon(QQuailBuddyList::getBuddyStatusIcon(node));
+        setIcon(0, QIcon(QQuailBuddyList::getBuddyStatusIcon(node)));
         //setText(0, purple_get_buddy_alias(buddy));
         //setText(1, text);
 	}
@@ -198,7 +188,7 @@ QQuailBListItem::updateInfo()
 	{
 		PurpleChat *chat = (PurpleChat *)node;
 
-        setIcon(QQuailProtocolUtils::getProtocolIcon(chat->account));
+        setIcon(0, QIcon(QQuailProtocolUtils::getProtocolIcon(chat->account)));
         //setText(0, purple_chat_get_display_name(chat));
 	}
 }
@@ -208,7 +198,7 @@ QQuailBListItem::paintCell(QPainter *p, const QPalette &cg, int column,
 						  int width, int align)
 {
     qDebug() << "QQuailBListItem::paintCell";
-//    QListWidget *lv = this->listWidget();
+//    QTreeWidget *lv = this->listWidget();
 //	const QPixmap *icon = pixmap(column);
 
 //	p->fillRect(0, 0, width, height(), cg.base());
@@ -235,7 +225,7 @@ QQuailBListItem::paintCell(QPainter *p, const QPalette &cg, int column,
 //    else if (PURPLE_BLIST_NODE_IS_GROUP(node))
 //		paintGroupInfo(p, cg, column, width, align, lmarg, itMarg);
 //	else
-//        QListWidgetItem::paintCell(p, cg, column, width, align);
+//        QTreeWidgetItem::paintCell(p, cg, column, width, align);
 
 	dirty = false;
 }
@@ -250,7 +240,7 @@ QQuailBListItem::paintBranches(QPainter *p, const QPalette &cg,
 //		p->fillRect(0, 0, width, height, QBrush(cg.base()));
 //	}
 //	else
-//        return QListWidgetItem::paintBranches(p, cg, width, x, height);
+//        return QTreeWidgetItem::paintBranches(p, cg, width, x, height);
 }
 
 void
@@ -400,7 +390,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 //                _cg.setColor(QPalette::Text, cg.dark());
 //			}
 
-//            QListWidgetItem::paintCell(p, _cg, column, width, align);
+//            QTreeWidgetItem::paintCell(p, _cg, column, width, align);
 		}
 	}
 	else
@@ -413,7 +403,7 @@ QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
 //            _cg.setColor(QPalette::Text, cg.dark());
 //		}
 
-//        QListWidgetItem::paintCell(p, _cg, column, width, align);
+//        QTreeWidgetItem::paintCell(p, _cg, column, width, align);
 	}
 }
 
@@ -565,7 +555,7 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
  * QQuailBuddyList
  **************************************************************************/
 QQuailBuddyList::QQuailBuddyList(QWidget *parent, const char *name)
-    : QListWidget(parent)
+    : QTreeWidget(parent)
 {
     qDebug() << "QQuailBuddyList::QQuailBuddyList";
 //	addColumn(tr("Buddy"), -1);
@@ -578,13 +568,13 @@ QQuailBuddyList::QQuailBuddyList(QWidget *parent, const char *name)
 
 //	header()->hide();
 
-    connect(this, SIGNAL(expanded(QListWidgetItem *)),
-            this, SLOT(nodeExpandedSlot(QListWidgetItem *)));
-    connect(this, SIGNAL(collapsed(QListWidgetItem *)),
-            this, SLOT(nodeCollapsedSlot(QListWidgetItem *)));
-    connect(this, SIGNAL(rightButtonPressed(QListWidgetItem *,
+    connect(this, SIGNAL(expanded(QTreeWidgetItem *)),
+            this, SLOT(nodeExpandedSlot(QTreeWidgetItem *)));
+    connect(this, SIGNAL(collapsed(QTreeWidgetItem *)),
+            this, SLOT(nodeCollapsedSlot(QTreeWidgetItem *)));
+    connect(this, SIGNAL(rightButtonPressed(QTreeWidgetItem *,
 											const QPoint &, int)),
-            this, SLOT(showContextMenuSlot(QListWidgetItem *,
+            this, SLOT(showContextMenuSlot(QTreeWidgetItem *,
 										   const QPoint &, int)));
 
 	saveTimer = new QTimer(this);
@@ -957,7 +947,7 @@ QQuailBuddyList::resizeEvent(QResizeEvent *)
 }
 
 void
-QQuailBuddyList::nodeExpandedSlot(QListWidgetItem *_item)
+QQuailBuddyList::nodeExpandedSlot(QTreeWidgetItem *_item)
 {
     qDebug() << "QQuailBuddyList::nodeExpandedSlot";
 	QQuailBListItem *item = (QQuailBListItem *)_item;
@@ -979,7 +969,7 @@ QQuailBuddyList::nodeExpandedSlot(QListWidgetItem *_item)
 }
 
 void
-QQuailBuddyList::nodeCollapsedSlot(QListWidgetItem *_item)
+QQuailBuddyList::nodeCollapsedSlot(QTreeWidgetItem *_item)
 {
     qDebug() << "QQuailBuddyList::nodeCollapsedSlot";
 	QQuailBListItem *item = (QQuailBListItem *)_item;
@@ -1066,7 +1056,7 @@ QQuailBuddyList::saveBlistSlot()
 }
 
 void
-QQuailBuddyList::showContextMenuSlot(QListWidgetItem *_item,
+QQuailBuddyList::showContextMenuSlot(QTreeWidgetItem *_item,
 									const QPoint &point, int)
 {
     qDebug() << "QQuailBuddyList::showContextMenuSlot";

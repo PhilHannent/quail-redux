@@ -25,7 +25,6 @@
 #include "QuailDialogs.h"
 #include "QuailPrefsDialog.h"
 #include "QuailMainWindow.h"
-#include "base.h"
 
 #include <libpurple/debug.h>
 //TODO: Find the replacement for multi.h
@@ -308,7 +307,7 @@ QQuailBListWindow::reloadList()
  * Slots
  **************************************************************************/
 void
-QQuailBListWindow::nodeChanged(QListWidgetItem *_item)
+QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item)
 {
 	QQuailBListItem *item;
 	PurpleBlistNode *node;
@@ -348,7 +347,7 @@ QQuailBListWindow::nodeChanged(QListWidgetItem *_item)
 }
 
 void
-QQuailBListWindow::doubleClickList(QListWidgetItem *_item)
+QQuailBListWindow::doubleClickList(QTreeWidgetItem *_item)
 {
 	QQuailBListItem *item;
 	PurpleBlistNode *node;

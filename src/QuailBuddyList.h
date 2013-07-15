@@ -25,15 +25,15 @@
 #include <libpurple/account.h>
 #include <libpurple/blist.h>
 
-#include <QListWidget>
+#include <QTreeWidget>
 
 #include "QuailImageUtils.h"
 
-class QQuailBListItem : public QListWidgetItem
+class QQuailBListItem : public QTreeWidgetItem
 {
 	public:
-        QQuailBListItem(QListWidget *parent, PurpleBlistNode *node);
-//        QQuailBListItem(QListWidgetItem *parent, PurpleBlistNode *node);
+        QQuailBListItem(QTreeWidget *parent, PurpleBlistNode *node);
+        QQuailBListItem(QTreeWidgetItem *parent, PurpleBlistNode *node);
 		~QQuailBListItem();
 
 		PurpleBlistNode *getBlistNode() const;
@@ -65,7 +65,7 @@ class QQuailBListItem : public QListWidgetItem
 		int textY1, textY2;
 };
 
-class QQuailBuddyList : public QListWidget
+class QQuailBuddyList : public QTreeWidget
 {
 	Q_OBJECT
 
@@ -105,15 +105,15 @@ class QQuailBuddyList : public QListWidget
 	protected slots:
 		void resizeEvent(QResizeEvent *event);
 
-        void nodeExpandedSlot(QListWidgetItem *item);
-        void nodeCollapsedSlot(QListWidgetItem *item);
+        void nodeExpandedSlot(QTreeWidgetItem *item);
+        void nodeCollapsedSlot(QTreeWidgetItem *item);
 		void collapseContactSlot();
 		void collapseContactSlot(QQuailBListItem *item);
 		void expandContactSlot();
 		void expandContactSlot(QQuailBListItem *item);
 		void saveBlistSlot();
 
-        void showContextMenuSlot(QListWidgetItem *item, const QPoint &point,
+        void showContextMenuSlot(QTreeWidgetItem *item, const QPoint &point,
 								 int col);
 
 		/* Group menu slots */

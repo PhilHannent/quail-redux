@@ -56,9 +56,9 @@ class QQuailBListWindow : public QMainWindow
 		void reloadList();
 
 	protected slots:
-        void nodeChanged(QListWidgetItem *item);
+        void nodeChanged(QTreeWidgetItem *item);
 
-        void doubleClickList(QListWidgetItem *item);
+        void doubleClickList(QTreeWidgetItem *item);
 
 		void showAddBuddy(PurpleGroup *group);
 		void showAddBuddy();
