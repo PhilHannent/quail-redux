@@ -140,6 +140,7 @@ QQuailBListWindow::buildToolBar()
     button->setIcon(QIcon(QPixmap(":/data/images/actions/add.png")));
 	button->setEnabled(false);
 	addButton = button;
+    toolbar->addWidget(addButton);
 
     addMenu = new QMenu(button);
     button->setMenu(addMenu);
@@ -227,6 +228,7 @@ QQuailBListWindow::buildToolBar()
 
 	/* Conversations */
 	button = new QQuailConvButton(toolbar, "conversations");
+    toolbar->addWidget(button);
     this->addToolBar(toolbar);
     qDebug() << "QQuailBListWindow::buildToolBar.end";
 }

@@ -39,13 +39,6 @@ class QQuailBListItem : public QTreeWidgetItem
 		PurpleBlistNode *getBlistNode() const;
 
 		void updateInfo();
-
-        void paintCell(QPainter *p, const QPalette &cg, int column,
-					   int width, int align);
-
-        void paintBranches(QPainter *p, const QPalette &cg,
-                           int width, int y, int height);
-
 		void setExpanded(bool expanded);
 		bool isExpanded() const;
 
