@@ -31,6 +31,7 @@
 #include <libpurple/signals.h>
 
 #include <QAction>
+#include <QCheckBox>
 #include <QDebug>
 #include <QLabel>
 #include <QLayout>
@@ -354,7 +355,6 @@ QQuailAccountsWindow::loadAccounts()
         QQuailAccountItem *itemUserName = new QQuailAccountItem(index);
         itemUserName->setText(purple_account_get_username(account));
         itemUserName->setAccount(account);
-        accountsWidget->setItem(accountsWidget->rowCount(), 0, itemUserName);
 
         QQuailAccountItem *itemProtocol = new QQuailAccountItem(index);
         itemProtocol->setText(QQuailProtocolUtils::getProtocolName(protocolId));
@@ -365,7 +365,19 @@ QQuailAccountsWindow::loadAccounts()
         else
             itemProtocol->setIcon(QQuailImageUtils::greyPixmap(protocolIcon));
 
-        accountsWidget->setItem(accountsWidget->rowCount(), 1, itemProtocol);
+        QCheckBox *itemEnabled = new QCheckBox(this);
+//        itemEnabled
+
+        QQuailAccountItem *itemStatus = new QQuailAccountItem(index);
+        itemStatus->setAccount(account);
+        itemStatus->setText(tr("Unknown"));
+
+
+        accountsWidget->setItem(accountsWidget->rowCount(), 0, itemProtocol);
+        accountsWidget->setItem(accountsWidget->rowCount(), 1, itemUserName);
+        accountsWidget->setCellWidget(accountsWidget->rowCount(), 2, itemEnabled);
+        accountsWidget->setItem(accountsWidget->rowCount(), 3, itemStatus);
+
 
 	}
 }

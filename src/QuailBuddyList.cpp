@@ -138,6 +138,7 @@ QQuailBListItem::updateInfo()
             qDebug() << "QQuailBListItem::updateInfo.Contact.3";
             setIcon(0, QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy));
             setToolTip(1, text);
+            //setIcon(2, QImage::fromData(((PurpleBuddyIcon*)purple_buddy_get_icon(buddy))));
 		}
         qDebug() << "QQuailBListItem::updateInfo.Contact.1:" << buddy->server_alias;
         setText(1, getAlias(buddy));
@@ -191,6 +192,7 @@ QQuailBListItem::updateInfo()
         qDebug() << "QQuailBListItem::updateInfo.Buddy.1" << buddy->server_alias;
         setIcon(0, QIcon(QQuailBuddyList::getBuddyStatusIcon(node)));
         setText(1, getAlias(buddy));
+        //setIcon(2, purple_buddy_get_icon(buddy));
         //setText(1, text);
 	}
     else if (PURPLE_BLIST_NODE_IS_CHAT(node))

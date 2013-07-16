@@ -26,12 +26,9 @@
 
 #include <QPixmap>
 
-QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
-								 const char *name)
+QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent)
     : QComboBox(parent), showAll(showAll)
 {
-    //TODO: Find out if name is required
-    Q_UNUSED(name)
 
 	if (showAll)
 		buildMenu((PurpleAccount *)purple_accounts_get_all()->data);
@@ -46,11 +43,9 @@ QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent,
 }
 
 QQuailAccountBox::QQuailAccountBox(PurpleAccount *account, bool showAll,
-								 QWidget *parent, const char *name)
+                                 QWidget *parent)
     : QComboBox(parent), showAll(showAll)
 {
-    //TODO: Find out if the name is required
-    Q_UNUSED(name)
 	buildMenu(account);
 }
 

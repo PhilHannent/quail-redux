@@ -31,10 +31,9 @@ class QQuailAccountBox : public QComboBox
 	Q_OBJECT
 
 	public:
-		QQuailAccountBox(bool showAll = false, QWidget *parent = NULL,
-						const char *name = NULL);
+        QQuailAccountBox(bool showAll = false, QWidget *parent = NULL);
 		QQuailAccountBox(PurpleAccount *account, bool showAll = false,
-						QWidget *parent = NULL, const char *name = NULL);
+                        QWidget *parent = NULL);
 
 		void setCurrentAccount(PurpleAccount *account);
 		PurpleAccount *getCurrentAccount() const;
