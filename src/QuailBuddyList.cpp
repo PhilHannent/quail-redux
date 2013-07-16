@@ -201,6 +201,12 @@ QQuailBListItem::updateInfo()
         setIcon(0, QIcon(QQuailProtocolUtils::getProtocolIcon(chat->account)));
         setText(1, chat->alias);
 	}
+    else if (PURPLE_BLIST_NODE_IS_GROUP(node))
+    {
+        qDebug() << "QQuailBListItem::updateInfo.Group";
+        PurpleGroup *group = (PurpleGroup *)node;
+        setText(1, group->name);
+    }
 }
 
 QString
@@ -1339,7 +1345,6 @@ QQuailBuddyList::addGroup(PurpleBlistNode *node)
     QQuailBListItem *item = new QQuailBListItem(this, node);
 	node->ui_data = item;
 
-//	item->setExpandable(true);
 }
 
 void
@@ -1366,8 +1371,8 @@ QQuailBuddyList::updateGroup(PurpleBlistNode *node)
 			item = (QQuailBListItem *)node->ui_data;
 		}
 
-//		if (!purple_blist_node_get_bool(node, "collapsed"))
-//			item->setOpen(true);
+        if (!purple_blist_node_get_bool(node, "collapsed"))
+            item->setExpanded(true);
 	}
 	else
 	{
