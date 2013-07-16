@@ -219,9 +219,14 @@ QQuailAccountsWindow::buildInterface()
 
 	/* Create the accounts view */
     accountsWidget = new QTableWidget(this);
-    accountsWidget->setColumnCount(2);
-    accountsWidget->horizontalHeaderItem(0)->setText(tr("Username"));
-    accountsWidget->horizontalHeaderItem(1)->setText(tr("Protocol"));
+    accountsWidget->setColumnCount(4);
+    accountsWidget->setRowCount(1);
+    QStringList horzHeaders;
+    horzHeaders << tr("Network")
+                << tr("Username")
+                << tr("Enabled")
+                << tr("Status");
+    accountsWidget->setHorizontalHeaderLabels( horzHeaders );
     accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     connect(accountsWidget, SIGNAL(itemSelectionChanged()),
@@ -235,7 +240,7 @@ QQuailAccountsWindow::setupToolbar()
 {
     qDebug() << "QQuailAccountsWindow::setupToolbar";
 	QAction *a;
-	QToolButton *button;
+    QToolButton *button;
 
 	toolbar = new QToolBar(this);
     toolbar->setMovable(false);
@@ -319,7 +324,8 @@ QQuailAccountsWindow::setupToolbar()
 			this, SLOT(accountsToggled(bool)));
 
 	/* Conversations */
-	button = new QQuailConvButton(toolbar, "conversations");
+    button = new QQuailConvButton(toolbar);
+    toolbar->addWidget(button);
     this->addToolBar(toolbar);
 }
 
@@ -547,6 +553,8 @@ static void
 qQuailConnNotice(PurpleConnection *gc, const char *text)
 {
     qDebug() << "QQuailAccountsWindow::qQuailConnNotice";
+    Q_UNUSED(gc)
+    Q_UNUSED(text)
 	/* XXX */
 	gc = NULL;
 	text = NULL;
@@ -573,3 +581,4 @@ qQuailGetConnectionUiOps()
     qDebug() << "QQuailAccountsWindow::qQuailGetConnectionUiOps";
 	return &connUiOps;
 }
+

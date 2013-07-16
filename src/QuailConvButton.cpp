@@ -27,7 +27,6 @@
 #include <libpurple/debug.h>
 #include <libpurple/signals.h>
 
-//#include <qpe/resource.h>
 #include <QMenu>
 
 static void
@@ -43,7 +42,7 @@ delConvCb(char *, QQuailConvButton *button)
 		button->setEnabled(false);
 }
 
-QQuailConvButton::QQuailConvButton(QWidget *parent, const char *name)
+QQuailConvButton::QQuailConvButton(QWidget *parent)
     : QToolButton(parent), convs(NULL)
 {
 	setAutoRaise(true);

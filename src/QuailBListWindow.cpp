@@ -225,7 +225,7 @@ QQuailBListWindow::buildToolBar()
 			this, SLOT(showAccountsWindow()));
 
 	/* Conversations */
-	button = new QQuailConvButton(toolbar, "conversations");
+    button = new QQuailConvButton(toolbar);
     toolbar->addWidget(button);
     this->addToolBar(toolbar);
     qDebug() << "QQuailBListWindow::buildToolBar.end";
