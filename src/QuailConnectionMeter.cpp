@@ -131,10 +131,10 @@ QQuailConnectionMeter *
 QQuailConnectionMeters::findMeter(PurpleConnection *gc)
 {
     qDebug() << "QQuailConnectionMeters::findMeter";
-    for (int i = 0; i < meters.size(); ++i)
+    foreach (QQuailConnectionMeter* meter, meters)
 	{
-        if (meters.at(i)->getConnection() == gc)
-            return meters.at(i);
+        if (meter->getConnection() == gc)
+            return meter;
 	}
 
     return 0;

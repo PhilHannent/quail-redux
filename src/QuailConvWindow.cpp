@@ -366,11 +366,7 @@ QQuailConvChat::addUsers(GList *users)
 void
 QQuailConvChat::renameUser(const char *oldName, const char *newName)
 {
-    QListWidgetItem *item;
-
-    for (item = userList->firstChild();
-         item != NULL;
-         item = item->nextSibling())
+    foreach (QListWidgetItem *item , userList->findItems("*", Qt::MatchWildcard))
     {
         if (item->text() == oldName)
         {
@@ -383,18 +379,14 @@ QQuailConvChat::renameUser(const char *oldName, const char *newName)
 void
 QQuailConvChat::removeUser(const char *user)
 {
-    QListWidgetItem *item;
-
-//	for (item = userList->firstChild();
-//		 item != NULL;
-//		 item = item->nextSibling())
-//	{
-//		if (item->text(1) == user)
-//		{
-//			delete item;
-//			break;
-//		}
-//	}
+    foreach (QListWidgetItem *item , userList->findItems("*", Qt::MatchWildcard))
+    {
+        if (item->text() == user)
+        {
+            delete item;
+            break;
+        }
+    }
 }
 
 void
