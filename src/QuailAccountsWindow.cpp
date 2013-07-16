@@ -219,13 +219,13 @@ QQuailAccountsWindow::buildInterface()
 
 	/* Create the accounts view */
     accountsWidget = new QTableWidget(this);
-    accountsWidget->setColumnCount(4);
     accountsWidget->setRowCount(1);
     QStringList horzHeaders;
     horzHeaders << tr("Network")
                 << tr("Username")
                 << tr("Enabled")
                 << tr("Status");
+    accountsWidget->setColumnCount(horzHeaders.size());
     accountsWidget->setHorizontalHeaderLabels( horzHeaders );
     accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 

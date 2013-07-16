@@ -56,8 +56,7 @@ class QQuailConversation : public QWidget
 	Q_OBJECT
 
 	public:
-        QQuailConversation(PurpleConversation *conv, QWidget *parent = NULL,
-                          const char *name = NULL, Qt::WindowFlags fl = 0);
+        QQuailConversation(PurpleConversation *conv, QWidget *parent = NULL);
 		virtual ~QQuailConversation();
 
         void setConversation(PurpleConversation *conv);
@@ -94,8 +93,7 @@ class QQuailConvChat : public QQuailConversation
 	Q_OBJECT
 
 	public:
-        QQuailConvChat(PurpleConversation *conv, QWidget *parent = NULL,
-                  const char *name = NULL, Qt::WindowFlags fl = 0);
+        QQuailConvChat(PurpleConversation *conv, QWidget *parent = NULL);
 		virtual ~QQuailConvChat();
 
 		void write(const char *who, const char *message,
@@ -133,8 +131,7 @@ class QQuailConvIm : public QQuailConversation
 	Q_OBJECT
 
 	public:
-        QQuailConvIm(PurpleConversation *conv, QWidget *parent = NULL,
-                const char *name = NULL, Qt::WindowFlags fl = 0);
+        QQuailConvIm(PurpleConversation *conv, QWidget *parent = NULL);
 		virtual ~QQuailConvIm();
 
 		void write(const char *who, const char *message,

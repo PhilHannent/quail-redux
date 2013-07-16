@@ -57,8 +57,7 @@
  * QQuailConversation
  **************************************************************************/
 QQuailConversation::QQuailConversation(PurpleConversation *conv,
-									 QWidget *parent, const char *name,
-                                     Qt::WindowFlags fl)
+                                     QWidget *parent)
     : QWidget(parent), conv(conv), text(NULL), notifying(false)
 {
 }
@@ -210,8 +209,9 @@ QQuailConversation::updated(PurpleConvUpdateType type)
 	{
 		purple_conversation_autoset_title(conv);
 
-        if (purple_conversation_get_type(conv) == PURPLE_CONV_TYPE_IM)
-			; /* Update buddy icon. */
+//        if (purple_conversation_get_type(conv) == PURPLE_CONV_TYPE_IM) {
+//			; /* Update buddy icon. */
+//        }
 
 		updateTabIcon();
 	}
@@ -228,7 +228,7 @@ QQuailConversation::updated(PurpleConvUpdateType type)
              type == PURPLE_CONV_UPDATE_REMOVE)
 	{
 //        QQuailConvWindow *win = purple_conversation_get_window(conv);
-//		QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+//        PurpleConvWindow *qwin = (PurpleConvWindow *)win->ui_data;
 
 //		qwin->updateAddRemoveButton();
 	}
@@ -325,9 +325,8 @@ QQuailConversation::updateTabIcon()
 /**************************************************************************
  * QQuailConvChat
  **************************************************************************/
-QQuailConvChat::QQuailConvChat(PurpleConversation *conv, QWidget *parent,
-                     const char *name, Qt::WindowFlags fl)
-    : QQuailConversation(conv, parent, name, fl), chat(PURPLE_CONV_CHAT(conv))
+QQuailConvChat::QQuailConvChat(PurpleConversation *conv, QWidget *parent)
+    : QQuailConversation(conv, parent), chat(PURPLE_CONV_CHAT(conv))
 {
 	buildInterface();
 }
@@ -369,16 +368,16 @@ QQuailConvChat::renameUser(const char *oldName, const char *newName)
 {
     QListWidgetItem *item;
 
-//	for (item = userList->firstChild();
-//		 item != NULL;
-//		 item = item->nextSibling())
-//	{
-//		if (item->text(1) == oldName)
-//		{
-//			item->setText(newName);
-//			break;
-//		}
-//	}
+    for (item = userList->firstChild();
+         item != NULL;
+         item = item->nextSibling())
+    {
+        if (item->text() == oldName)
+        {
+            item->setText(newName);
+            break;
+        }
+    }
 }
 
 void
@@ -539,9 +538,8 @@ QQuailConvChat::updated(PurpleConvUpdateType type)
 /**************************************************************************
  * QQuailConvIm
  **************************************************************************/
-QQuailConvIm::QQuailConvIm(PurpleConversation *conv, QWidget *parent,
-                 const char *name, Qt::WindowFlags fl)
-    : QQuailConversation(conv, parent, name, fl), im(PURPLE_CONV_IM(conv))
+QQuailConvIm::QQuailConvIm(PurpleConversation *conv, QWidget *parent)
+    : QQuailConversation(conv, parent), im(PURPLE_CONV_IM(conv))
 {
 	buildInterface();
 }
