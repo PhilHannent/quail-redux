@@ -29,22 +29,20 @@ class QQuailAction : public QAction
 	Q_OBJECT
 
 	public:
-		QQuailAction(QObject *parent = NULL, const char *name = NULL,
-					bool toggle = false, void *data = NULL)
+        QQuailAction(QObject *parent = NULL,
+                    void *data = NULL)
             : QAction(parent), userData(data)
         { setupSignals();}
 
         QQuailAction(const QString &text, const QIcon &icon,
-					const QString &menuText, int accel, QObject *parent,
-					const char *name = NULL, bool toggle = false,
+                    QObject *parent,
 					void *data = NULL)
             : QAction(icon, text, parent),
 			  userData(data)
 		{ setupSignals(); }
 
-		QQuailAction(const QString &text, const QString &menuText, int accel,
-					QObject *parent, const char *name = NULL,
-					bool toggle = false, void *data = NULL)
+        QQuailAction(const QString &text, QObject *parent,
+                     void *data = NULL)
             : QAction(text, parent),
 			  userData(data)
 		{ setupSignals(); }

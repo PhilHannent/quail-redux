@@ -726,7 +726,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 	/* Alias */
 	a = new QQuailAction(tr("Alias"),
                         QIcon(QPixmap(":/data/images/actions/alias.png")),
-						QString::null, 0, this, 0, false, buddy);
+                        this, buddy);
     menu->addAction(a);
 
 	connect(a, SIGNAL(activated(void *)),
@@ -735,7 +735,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 	/* Remove */
 	a = new QQuailAction(tr("Remove"),
                         QIcon(QPixmap(":/data/images/actions/remove.png")),
-						QString::null, 0, this, 0, false, buddy);
+                        this, buddy);
     menu->addAction(a);
 
 	connect(a, SIGNAL(activated(void *)),
@@ -751,7 +751,7 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 		/* Expand */
 		a = new QQuailAction(tr("Expand"),
                             QIcon(QPixmap(":/data/images/actions/expand.png")),
-							QString::null, 0, this, 0);
+                            this);
         menu->addAction(a);
 
         connect(a, SIGNAL(triggered(bool)),
