@@ -220,9 +220,8 @@ QQuailAccountsWindow::buildInterface()
 	/* Create the accounts view */
     accountsWidget = new QTableWidget(this);
     accountsWidget->setColumnCount(2);
-    accountsWidget->insertRow(1);
-    accountsWidget->setItem(0,0, new QTableWidgetItem(tr("Screenname")));
-    accountsWidget->setItem(0,0, new QTableWidgetItem(tr("Protocol")));
+    accountsWidget->horizontalHeaderItem(0)->setText(tr("Username"));
+    accountsWidget->horizontalHeaderItem(1)->setText(tr("Protocol"));
     accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     connect(accountsWidget, SIGNAL(itemSelectionChanged()),
