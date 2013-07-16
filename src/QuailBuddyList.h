@@ -56,6 +56,8 @@ class QQuailBListItem : public QTreeWidgetItem
 		bool dirty;
 		QString topText, bottomText;
 		int textY1, textY2;
+
+        QString getAlias(PurpleBuddy *buddy);
 };
 
 class QQuailBuddyList : public QTreeWidget
@@ -66,7 +68,7 @@ class QQuailBuddyList : public QTreeWidget
         static QPixmap getBuddyStatusIcon(PurpleBlistNode *node);
 
 	public:
-		QQuailBuddyList(QWidget *parent = NULL, const char *name = NULL);
+        QQuailBuddyList(QWidget *parent = NULL);
 		virtual ~QQuailBuddyList();
 
         void setBlist(PurpleBuddyList *list);

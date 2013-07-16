@@ -75,6 +75,7 @@ QQuailBListItem::updateInfo()
 
     if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 	{
+        qDebug() << "QQuailBListItem::updateInfo.Contact";
 		PurpleContact *contact = (PurpleContact *)node;
 		PurpleBuddy *buddy = purple_contact_get_priority_buddy(contact);
         PurplePresence *presence = purple_buddy_get_presence(buddy);
@@ -83,12 +84,16 @@ QQuailBListItem::updateInfo()
 		if (buddy == NULL)
 			return;
 
+
+        qDebug() << "QQuailBListItem::updateInfo.Contact.1";
+
 		if (isExpanded())
 		{
             setIcon(0, QIcon(QPixmap(":/quail.png")));
 		}
 		else
 		{
+            qDebug() << "QQuailBListItem::updateInfo.Contact.2";
             QString text("");
 
 //			if (buddy->evil > 0)
@@ -130,15 +135,17 @@ QQuailBListItem::updateInfo()
                 }
 
 			}
-
+            qDebug() << "QQuailBListItem::updateInfo.Contact.3";
             setIcon(0, QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy));
             setToolTip(1, text);
 		}
-        setText(1, buddy->server_alias);
+        qDebug() << "QQuailBListItem::updateInfo.Contact.1:" << buddy->server_alias;
+        setText(1, getAlias(buddy));
         //setText(1, purple_get_buddy_alias(buddy));
 	}
     else if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 	{
+        qDebug() << "QQuailBListItem::updateInfo.Buddy";
 		PurpleBuddy *buddy = (PurpleBuddy *)node;
         PurplePresence *presence = purple_buddy_get_presence(buddy);
 		QString text = "";
@@ -181,18 +188,30 @@ QQuailBListItem::updateInfo()
                 }
             }
         }
-
+        qDebug() << "QQuailBListItem::updateInfo.Buddy.1" << buddy->server_alias;
         setIcon(0, QIcon(QQuailBuddyList::getBuddyStatusIcon(node)));
-        setText(1, buddy->server_alias);
+        setText(1, getAlias(buddy));
         //setText(1, text);
 	}
     else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 	{
+        qDebug() << "QQuailBListItem::updateInfo.Chat";
 		PurpleChat *chat = (PurpleChat *)node;
 
         setIcon(0, QIcon(QQuailProtocolUtils::getProtocolIcon(chat->account)));
-        //setText(0, purple_chat_get_display_name(chat));
+        setText(1, chat->alias);
 	}
+}
+
+QString
+QQuailBListItem::getAlias(PurpleBuddy *buddy)
+{
+    if(!QString(buddy->alias).isEmpty())
+        return QString(buddy->alias);
+    else if(!QString(buddy->server_alias).isEmpty())
+        return QString(buddy->server_alias);
+
+    return QString(buddy->name);
 }
 
 void
@@ -506,11 +525,11 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
 /**************************************************************************
  * QQuailBuddyList
  **************************************************************************/
-QQuailBuddyList::QQuailBuddyList(QWidget *parent, const char *name)
+QQuailBuddyList::QQuailBuddyList(QWidget *parent)
     : QTreeWidget(parent)
 {
     qDebug() << "QQuailBuddyList::QQuailBuddyList";
-
+    setColumnCount(3);
 //	addColumn(tr("Buddy"), -1);
 //	addColumn(tr("Idle"), 50);
 

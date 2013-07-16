@@ -75,7 +75,7 @@ QQuailBListWindow::buildInterface()
 	buildToolBar();
 
 	/* Setup the buddy list */
-	buddylist = new QQuailBuddyList(this, "BuddyList");
+    buddylist = new QQuailBuddyList(this);
 
     connect(buddylist, SIGNAL(currentChanged(QListWidgetItem *)),
             this, SLOT(nodeChanged(QListWidgetItem *)));
