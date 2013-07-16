@@ -219,6 +219,7 @@ QQuailAccountsWindow::buildInterface()
 
 	/* Create the accounts view */
     accountsWidget = new QTableWidget(this);
+    accountsWidget->setColumnCount(2);
     accountsWidget->insertRow(1);
     accountsWidget->setItem(0,0, new QTableWidgetItem(tr("Screenname")));
     accountsWidget->setItem(0,0, new QTableWidgetItem(tr("Protocol")));
@@ -339,6 +340,9 @@ QQuailAccountsWindow::loadAccounts()
 		QPixmap protocolIcon;
 		PurpleAccount *account = (PurpleAccount *)l->data;
 		QString protocolId = purple_account_get_protocol_id(account);
+        qDebug() << "QQuailAccountsWindow::loadAccounts" << protocolId;
+        qDebug() << "QQuailAccountsWindow::loadAccounts" << account->alias;
+        qDebug() << "QQuailAccountsWindow::loadAccounts" << purple_account_get_username(account);
 
         accountsWidget->insertRow(accountsWidget->rowCount());
 
