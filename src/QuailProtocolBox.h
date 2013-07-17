@@ -32,9 +32,8 @@ class QQuailProtocolBox : public QComboBox
 	Q_OBJECT
 
 	public:
-		QQuailProtocolBox(QWidget *parent = NULL, const char *name = NULL);
-		QQuailProtocolBox(QString protocolId, QWidget *parent = NULL,
-						 const char *name = NULL);
+        QQuailProtocolBox(QWidget *parent = NULL);
+        QQuailProtocolBox(QString protocolId, QWidget *parent = NULL);
 
 		void setCurrentProtocol(QString protocolId);
 

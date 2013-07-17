@@ -388,10 +388,10 @@ QQuailAccountsWindow::newAccount()
     qDebug() << "QQuailAccountsWindow::newAccount";
 	QQuailAccountEditor *editor;
 
-    editor = new QQuailAccountEditor(NULL, this, "");
+    editor = new QQuailAccountEditor(NULL, this, tr("New Account"));
 	editor->setAccountsWindow(this);
 
-	editor->showMaximized();
+    editor->show();
 }
 
 void
@@ -403,10 +403,10 @@ QQuailAccountsWindow::editAccount()
 
     item = (QQuailAccountItem *)accountsWidget->currentItem();
 
-    editor = new QQuailAccountEditor(item->getAccount(), this, "");
+    editor = new QQuailAccountEditor(item->getAccount(), this, tr("Edit Account"));
 	editor->setAccountsWindow(this);
 
-	editor->showMaximized();
+    editor->show();
 }
 
 void

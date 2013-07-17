@@ -42,9 +42,8 @@
 
 QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
                                          QWidget *parent,
-                                         const char *name,
-                                         Qt::WindowFlags fl)
-    : QDialog(parent, fl), account(account), plugin(NULL),
+                                         QString name)
+    : QDialog(parent), account(account), plugin(NULL),
 	  prplInfo(NULL), accountsWin(NULL), userSplitEntries(NULL),
       protocolOptEntries(NULL), newProxyType(PURPLE_PROXY_USE_GLOBAL)
 {
@@ -175,18 +174,18 @@ QQuailAccountEditor::buildAccountTab()
 
 	buildUserOpts(grid, frame, row);
 
-	/* Add a spacer. */
-    spacer = new QLabel("");
-    vbox->addWidget(spacer, 1);
+//	/* Add a spacer. */
+//    spacer = new QLabel("");
+//    vbox->addWidget(spacer, 1);
 
 	/* Add the hbox */
     hbox = new QHBoxLayout(this);
     hbox->addLayout(vbox);
 	hbox->setSpacing(5);
 
-	/* Add a spacer to the hbox. */
-    spacer = new QLabel("");
-    hbox->addWidget(spacer, 1);
+//	/* Add a spacer to the hbox. */
+//    spacer = new QLabel("");
+//    hbox->addWidget(spacer, 1);
 
 	/* Add the register button. */
     registerButton = new QPushButton(tr("Register Account"));
@@ -270,7 +269,7 @@ QQuailAccountEditor::buildProtocolTab()
 
                     check = new QCheckBox(this);
                     check->setText(purple_account_option_get_text(option));
-                    grid->addWidget(check, row, row, 1, 2);
+                    grid->addWidget(check, row, 0, 1, 2);
 					row++;
 
 					protocolOptEntries =
@@ -350,27 +349,30 @@ QQuailAccountEditor::buildProxyTab()
 {
     qDebug() << "QQuailAccountEditor::buildProxyTab";
     QVBoxLayout *vbox;
-	QWidget *spacer;
 	QGridLayout *grid;
 	QWidget *frame;
     PurpleProxyInfo *proxyInfo;
 	int row = 0;
+    proxyWidget = new QWidget(this);
 	/* Create the main vbox */
     proxyBox = vbox = new QVBoxLayout(this);
+    qDebug() << "QQuailAccountEditor::buildProxyTab.1a";
     proxyWidget->setLayout(proxyBox);
+    qDebug() << "QQuailAccountEditor::buildProxyTab.1b";
     vbox->setSpacing(5);
-
+    qDebug() << "QQuailAccountEditor::buildProxyTab.1c";
     frame = new QFrame(this);
     vbox->addWidget(frame);
     grid = new QGridLayout(frame);
 	grid->setSpacing(5);
+    qDebug() << "QQuailAccountEditor::buildProxyTab.2";
 
 	/* Proxy Type */
 	grid->addWidget(new QLabel(tr("Proxy Type:"), frame), row, 0);
     proxyDropDown = new QComboBox(frame);
 	grid->addWidget(proxyDropDown, row++, 1);
 	row++;
-
+    qDebug() << "QQuailAccountEditor::buildProxyTab.3";
 	/* Connect the signal */
 	connect(proxyDropDown, SIGNAL(activated(int)),
 			this, SLOT(proxyTypeChanged(int)));
@@ -381,32 +383,27 @@ QQuailAccountEditor::buildProxyTab()
     proxyDropDown->addItem(tr("HTTP"));
     proxyDropDown->addItem(tr("SOCKS 4"));
     proxyDropDown->addItem(tr("SOCKS 5"));
-
+    qDebug() << "QQuailAccountEditor::buildProxyTab.4";
 	/* Host */
 	grid->addWidget(new QLabel(tr("Host:"), frame), row, 0);
 	proxyHost = new QLineEdit(frame);
 	grid->addWidget(proxyHost, row++, 1);
-
+    qDebug() << "QQuailAccountEditor::buildProxyTab.5";
 	/* Port */
 	grid->addWidget(new QLabel(tr("Port:"), frame), row, 0);
 	proxyPort = new QLineEdit(frame);
 	grid->addWidget(proxyPort, row++, 1);
-
+    qDebug() << "QQuailAccountEditor::buildProxyTab.6";
 	/* Username */
 	grid->addWidget(new QLabel(tr("Username:"), frame), row, 0);
 	proxyUsername = new QLineEdit(frame);
 	grid->addWidget(proxyUsername, row++, 1);
-
+    qDebug() << "QQuailAccountEditor::buildProxyTab.7";
 	/* Password */
 	grid->addWidget(new QLabel(tr("Password:"), frame), row, 0);
 	proxyPassword = new QLineEdit(frame);
 	grid->addWidget(proxyPassword, row++, 1);
-
-	/* Add a spacer. */
-    spacer = new QLabel("");
-    vbox->addWidget(spacer);
-	vbox->setStretchFactor(spacer, 1);
-
+    qDebug() << "QQuailAccountEditor::buildProxyTab.8";
 	/* Set the values for everything. */
 	if (account != NULL &&
 		(proxyInfo = purple_account_get_proxy_info(account)) != NULL)
@@ -438,7 +435,7 @@ QQuailAccountEditor::buildProxyTab()
 		proxyUsername->setReadOnly(true);
 		proxyPassword->setReadOnly(true);
 	}
-
+    qDebug() << "QQuailAccountEditor::buildProxyTab.end";
     return proxyWidget;
 }
 
@@ -453,7 +450,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	/* Protocol */
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
-	protocolList = new QQuailProtocolBox(parent, "protocol combo");
+    protocolList = new QQuailProtocolBox(parent);
 	protocolList->setCurrentProtocol(protocolId);
 
 	grid->addWidget(protocolList, row++, 1);
@@ -550,7 +547,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	/* Remember Password */
 	rememberPassCheck = new QCheckBox(tr("Remember Password"), parent);
-    grid->addWidget(rememberPassCheck, row, row, 1, 2);
+    grid->addWidget(rememberPassCheck, row, 0, 1, 2);
 	row++;
 
 	if (account != NULL)
@@ -561,7 +558,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	/* Auto-Login */
 	autoLoginCheck = new QCheckBox(tr("Auto-Login"), parent);
-    grid->addWidget(autoLoginCheck, row, row, 1, 2);
+    grid->addWidget(autoLoginCheck, row, 0, 1, 2);
 	row++;
 
 	if (account != NULL)
@@ -588,7 +585,9 @@ QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
     qDebug() << "QQuailAccountEditor::buildUserOpts";
 	/* New mail notifications */
 	mailNotificationCheck = new QCheckBox(tr("New Mail Notifications"), parent);
-    grid->addWidget(mailNotificationCheck, row, row, 1, 2);
+    qDebug() << "QQuailAccountEditor::buildUserOpts.1";
+    grid->addWidget(mailNotificationCheck, row, 0, 1, 2);
+    qDebug() << "QQuailAccountEditor::buildUserOpts.2";
 	row++;
 
 	/* TODO: Buddy Icon support */
@@ -596,9 +595,10 @@ QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 	if (account != NULL)
 		mailNotificationCheck->setChecked(
 				purple_account_get_check_mail(account));
-
+    qDebug() << "QQuailAccountEditor::buildUserOpts.3";
 	if (prplInfo != NULL && !(prplInfo->options & OPT_PROTO_MAIL_CHECK))
 		mailNotificationCheck->hide();
+    qDebug() << "QQuailAccountEditor::buildUserOpts.end";
 }
 
 void

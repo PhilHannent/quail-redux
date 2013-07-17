@@ -51,8 +51,7 @@ class QQuailAccountEditor : public QDialog
 	public:
 		QQuailAccountEditor(PurpleAccount *account = NULL,
                             QWidget *parent = NULL,
-                            const char *name = NULL,
-                            Qt::WindowFlags fl = 0);
+                            QString name = "");
 		~QQuailAccountEditor();
 
 		void setAccountsWindow(QQuailAccountsWindow *accountsWin);

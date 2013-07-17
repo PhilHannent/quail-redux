@@ -21,14 +21,9 @@
  */
 #include "QuailProtocolUtils.h"
 
-//#include <qpe/resource.h>
 #include <QMap>
 #include <QObject>
 #include <QPixmap>
-
-//static QMap<QPixmap> largePixmaps;
-//static QMap<QPixmap> smallPixmaps;
-//static QMap<QPixmap> menuPixmaps;
 
 QString
 QQuailProtocolUtils::getProtocolName(QString protocolId)

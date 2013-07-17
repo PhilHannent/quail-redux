@@ -26,7 +26,7 @@
 
 #include <QPixmap>
 
-QQuailProtocolBox::QQuailProtocolBox(QWidget *parent, const char *name)
+QQuailProtocolBox::QQuailProtocolBox(QWidget *parent)
     : QComboBox(parent)
 {
 	GList *protocols;
@@ -42,8 +42,7 @@ QQuailProtocolBox::QQuailProtocolBox(QWidget *parent, const char *name)
 	}
 }
 
-QQuailProtocolBox::QQuailProtocolBox(QString protocolId, QWidget *parent,
-								   const char *name)
+QQuailProtocolBox::QQuailProtocolBox(QString protocolId, QWidget *parent)
     : QComboBox(parent)
 {
 	buildMenu(protocolId);
