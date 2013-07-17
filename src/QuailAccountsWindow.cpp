@@ -220,16 +220,15 @@ QQuailAccountsWindow::buildInterface()
 
 	/* Create the accounts view */
     accountsWidget = new QTableWidget(this);
-    accountsWidget->setRowCount(1);
     QStringList horzHeaders;
-    horzHeaders << tr("Network")
-                << tr("Username")
-                << tr("Enabled")
-                << tr("Status");
+    horzHeaders << tr("Username") << tr("Network");
+//    horzHeaders << tr("Network")
+//                << tr("Username")
+//                << tr("Enabled")
+//                << tr("Status");
     accountsWidget->setColumnCount(horzHeaders.size());
     accountsWidget->setHorizontalHeaderLabels( horzHeaders );
     accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-
     connect(accountsWidget, SIGNAL(itemSelectionChanged()),
             this, SLOT(accountSelected()));
 
@@ -337,7 +336,7 @@ QQuailAccountsWindow::loadAccounts()
 	GList *l;
 	int index;
 
-    accountsWidget->clear();
+    //accountsWidget->clear();
 
 	for (l = purple_accounts_get_all(), index = 0;
 		 l != NULL;
@@ -350,7 +349,7 @@ QQuailAccountsWindow::loadAccounts()
         qDebug() << "QQuailAccountsWindow::loadAccounts" << account->alias;
         qDebug() << "QQuailAccountsWindow::loadAccounts" << purple_account_get_username(account);
 
-        accountsWidget->insertRow(accountsWidget->rowCount());
+        accountsWidget->insertRow(index);
 
         QQuailAccountItem *itemUserName = new QQuailAccountItem(index);
         itemUserName->setText(purple_account_get_username(account));
@@ -359,27 +358,28 @@ QQuailAccountsWindow::loadAccounts()
         QQuailAccountItem *itemProtocol = new QQuailAccountItem(index);
         itemProtocol->setText(QQuailProtocolUtils::getProtocolName(protocolId));
         itemProtocol->setAccount(account);
+        //itemProtocol->setSizeHint();
         protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
         if (purple_account_is_connected(account))
             itemProtocol->setIcon(protocolIcon);
         else
             itemProtocol->setIcon(QQuailImageUtils::greyPixmap(protocolIcon));
 
-        QCheckBox *itemEnabled = new QCheckBox(this);
-//        itemEnabled
+//        QQuailAccountCheckBox *itemEnabled = new QQuailAccountCheckBox(index);
+//        itemEnabled->setAccount(account);
 
-        QQuailAccountItem *itemStatus = new QQuailAccountItem(index);
-        itemStatus->setAccount(account);
-        itemStatus->setText(tr("Unknown"));
+//        QQuailAccountItem *itemStatus = new QQuailAccountItem(index);
+//        itemStatus->setAccount(account);
+//        itemStatus->setText(tr("Unknown"));
 
-
-        accountsWidget->setItem(accountsWidget->rowCount(), 0, itemProtocol);
-        accountsWidget->setItem(accountsWidget->rowCount(), 1, itemUserName);
-        accountsWidget->setCellWidget(accountsWidget->rowCount(), 2, itemEnabled);
-        accountsWidget->setItem(accountsWidget->rowCount(), 3, itemStatus);
+        accountsWidget->setItem(index, 0, itemUserName);
+        accountsWidget->setItem(index, 1, itemProtocol);
+//        accountsWidget->setCellWidget(index, 2, itemEnabled);
+//        accountsWidget->setItem(index, 3, itemStatus);
 
 
 	}
+    accountsWidget->resizeColumnsToContents();
 }
 
 void
@@ -493,9 +493,9 @@ QQuailAccountsWindow::accountSelected()
 void
 QQuailAccountsWindow::resizeEvent(QResizeEvent *)
 {
-    accountsWidget->setColumnWidth(1, (accountsWidget->width()) / 4);
-    accountsWidget->setColumnWidth(0, accountsWidget->width() - 20 -
-                                 accountsWidget->columnWidth(1));
+    accountsWidget->setColumnWidth(1, ((accountsWidget->width()) / 4) -2);
+    accountsWidget->setColumnWidth(0, (accountsWidget->width() - 20 -
+                                 accountsWidget->columnWidth(1)) - 2);
 }
 
 QQuailAccountItem *

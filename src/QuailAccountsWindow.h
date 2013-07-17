@@ -24,10 +24,11 @@
 
 #include <libpurple/prpl.h>
 
-#include <QVariant>
-#include <QWidget>
+#include <QCheckBox>
 #include <QMainWindow>
 #include <QTableWidget>
+#include <QVariant>
+#include <QWidget>
 
 class QAction;
 class QPixmap;
@@ -63,6 +64,29 @@ class QQuailAccountItem : public QObject, public QTableWidgetItem
 		float pulseStep;
 		QPixmap *pulseOrigPixmap;
 };
+
+class QQuailAccountCheckBox : public QCheckBox
+{
+    Q_OBJECT
+
+    public:
+        QQuailAccountCheckBox(int index)
+            { m_index = index; }
+        ~QQuailAccountCheckBox()
+            { }
+
+        void setAccount(PurpleAccount *account)
+            { m_account = account; }
+        PurpleAccount *getAccount() const
+            { return m_account; }
+
+        //virtual QString key(int column, bool ascending) const;
+
+    private:
+        PurpleAccount *m_account;
+        int m_index;
+};
+
 
 class QQuailAccountsWindow : public QMainWindow
 {

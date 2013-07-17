@@ -1,14 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>data/images/protocols/aim.png</file>
-        <file>data/images/protocols/gadu-gadu.png</file>
-        <file>data/images/protocols/icq.png</file>
-        <file>data/images/protocols/irc.png</file>
-        <file>data/images/protocols/jabber.png</file>
-        <file>data/images/protocols/msn.png</file>
-        <file>data/images/protocols/napster.png</file>
-        <file>data/images/protocols/trepia.png</file>
-        <file>data/images/protocols/yahoo.png</file>
         <file>data/images/status/activebuddy.png</file>
         <file>data/images/status/admin.png</file>
         <file>data/images/status/aol.png</file>
@@ -61,5 +52,20 @@
         <file>data/images/actions/userlist.png</file>
         <file>data/images/actions/warn.png</file>
         <file>data/images/logo.png</file>
+        <file>data/images/protocols/aim.svg</file>
+        <file>data/images/protocols/bonjour.svg</file>
+        <file>data/images/protocols/gadu-gadu.svg</file>
+        <file>data/images/protocols/google-talk.svg</file>
+        <file>data/images/protocols/icq.svg</file>
+        <file>data/images/protocols/irc.svg</file>
+        <file>data/images/protocols/jabber.svg</file>
+        <file>data/images/protocols/meanwhile.svg</file>
+        <file>data/images/protocols/msn.svg</file>
+        <file>data/images/protocols/mxit.svg</file>
+        <file>data/images/protocols/novell.svg</file>
+        <file>data/images/protocols/silc.svg</file>
+        <file>data/images/protocols/simple.svg</file>
+        <file>data/images/protocols/yahoo.svg</file>
+        <file>data/images/protocols/zephyr.svg</file>
     </qresource>
 </RCC>

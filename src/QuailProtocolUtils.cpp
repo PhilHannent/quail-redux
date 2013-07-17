@@ -81,5 +81,5 @@ QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account)
 QPixmap
 QQuailProtocolUtils::getProtocolIcon(const QString &protoName)
 {
-    return QPixmap(":/data/images/protocols/" + protoName + ".png");
+    return QPixmap(":/data/images/protocols/" + protoName + ".svg");
 }
