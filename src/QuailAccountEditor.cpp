@@ -30,9 +30,10 @@
 
 #include <QCheckBox>
 #include <QComboBox>
-#include <QLayout>
+#include <QDebug>
 #include <QGroupBox>
 #include <QLabel>
+#include <QLayout>
 #include <QLineEdit>
 #include <QPixmap>
 #include <QPushButton>
@@ -47,11 +48,14 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
 	  prplInfo(NULL), accountsWin(NULL), userSplitEntries(NULL),
       protocolOptEntries(NULL), newProxyType(PURPLE_PROXY_USE_GLOBAL)
 {
+    qDebug() << "QQuailAccountEditor::QQuailAccountEditor";
     setWindowTitle(name);
 	if (account == NULL)
 	{
+        qDebug() << "QQuailAccountEditor::QQuailAccountEditor.1";
 		if (purple_plugins_get_protocols() != NULL)
 		{
+            qDebug() << "QQuailAccountEditor::QQuailAccountEditor.1a";
 			plugin = (PurplePlugin *)purple_plugins_get_protocols()->data;
 
             prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
@@ -61,6 +65,7 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
 	}
 	else
 	{
+        qDebug() << "QQuailAccountEditor::QQuailAccountEditor.2";
 		protocolId = purple_account_get_protocol_id(account);
 
         if ((plugin = purple_plugins_find_with_id(protocolId.toLatin1())) != NULL)
@@ -82,12 +87,14 @@ QQuailAccountEditor::~QQuailAccountEditor()
 void
 QQuailAccountEditor::setAccountsWindow(QQuailAccountsWindow *accountsWin)
 {
+    qDebug() << "QQuailAccountEditor::setAccountsWindow";
 	this->accountsWin = accountsWin;
 }
 
 void
 QQuailAccountEditor::buildInterface()
 {
+    qDebug() << "QQuailAccountEditor::buildInterface";
 	if (account == NULL)
         setWindowTitle(tr("Add Account"));
 	else
@@ -103,6 +110,7 @@ QQuailAccountEditor::buildInterface()
 void
 QQuailAccountEditor::buildTabs()
 {
+    qDebug() << "QQuailAccountEditor::buildTabs";
 	QWidget *widget;
 
 	tabList.clear();
@@ -135,6 +143,7 @@ QQuailAccountEditor::buildTabs()
 QWidget *
 QQuailAccountEditor::buildAccountTab()
 {
+    qDebug() << "QQuailAccountEditor::buildAccountTab";
 	/* QFrame *sep; */
     QVBoxLayout *vbox;
     QHBoxLayout *hbox;
@@ -208,6 +217,7 @@ QQuailAccountEditor::buildAccountTab()
 QWidget *
 QQuailAccountEditor::buildProtocolTab()
 {
+    qDebug() << "QQuailAccountEditor::buildProtocolTab";
     QVBoxLayout *vbox;
 	QFrame *frame;
 	QWidget *spacer;
@@ -338,6 +348,7 @@ QQuailAccountEditor::buildProtocolTab()
 QWidget *
 QQuailAccountEditor::buildProxyTab()
 {
+    qDebug() << "QQuailAccountEditor::buildProxyTab";
     QVBoxLayout *vbox;
 	QWidget *spacer;
 	QGridLayout *grid;
@@ -435,6 +446,7 @@ void
 QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 								   int &row)
 {
+    qDebug() << "QQuailAccountEditor::buildLoginOpts";
 	QLineEdit *entry;
 	QString username;
 	GList *userSplits = NULL, *l, *l2;
@@ -573,6 +585,7 @@ void
 QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 								  int &row)
 {
+    qDebug() << "QQuailAccountEditor::buildUserOpts";
 	/* New mail notifications */
 	mailNotificationCheck = new QCheckBox(tr("New Mail Notifications"), parent);
     grid->addWidget(mailNotificationCheck, row, row, 1, 2);
@@ -591,6 +604,7 @@ QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 void
 QQuailAccountEditor::proxyTypeChanged(int index)
 {
+    qDebug() << "QQuailAccountEditor::proxyTypeChanged";
     newProxyType = (PurpleProxyType)(index - 1);
 
     if (newProxyType == PURPLE_PROXY_USE_GLOBAL ||
@@ -613,6 +627,7 @@ QQuailAccountEditor::proxyTypeChanged(int index)
 void
 QQuailAccountEditor::protocolChanged(int index)
 {
+    qDebug() << "QQuailAccountEditor::protocolChanged";
 	GList *l;
 
 	l = g_list_nth(purple_plugins_get_protocols(), index);
@@ -645,6 +660,7 @@ QQuailAccountEditor::protocolChanged(int index)
 void
 QQuailAccountEditor::registerClicked()
 {
+    qDebug() << "QQuailAccountEditor::registerClicked";
 	purple_account_register(account);
 
 	registerButton->setEnabled(false);
@@ -653,6 +669,7 @@ QQuailAccountEditor::registerClicked()
 void
 QQuailAccountEditor::accept()
 {
+    qDebug() << "QQuailAccountEditor::accept";
 	QString str, username;
 	GList *l, *l2;
 	bool newAccount = (account == NULL);
