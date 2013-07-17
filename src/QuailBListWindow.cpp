@@ -395,7 +395,7 @@ QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 		}
 	}
 
-    dialog = new QQuailAddBuddyDialog(this, "");
+    dialog = new QQuailAddBuddyDialog(this);
 
 	if (group != NULL)
 		dialog->setGroup(group->name);
@@ -437,7 +437,7 @@ QQuailBListWindow::showAddChat(PurpleGroup *group)
 		}
 	}
 
-    dialog = new QQuailAddChatDialog(this, "");
+    dialog = new QQuailAddChatDialog(this);
 
 	if (group != NULL)
 		dialog->setGroup(group->name);
@@ -501,13 +501,13 @@ removeContactCb(PurpleContact *contact)
 {
     qDebug() << "QQuailBListWindow::removeContactCb()";
 	PurpleBlistNode *bnode, *cnode;
-	PurpleGroup *group;
+//	PurpleGroup *group;
 
 	if (contact == NULL)
 		return;
 
 	cnode = (PurpleBlistNode *)contact;
-	group = (PurpleGroup *)cnode->parent;
+//	group = (PurpleGroup *)cnode->parent;
 
 	for (bnode = cnode->child; bnode != NULL; bnode = bnode->next)
 	{
@@ -721,7 +721,7 @@ QQuailBListWindow::showAccountsWindow()
 }
 
 void
-QQuailBListWindow::blistToggled(bool bTriggered)
+QQuailBListWindow::blistToggled(bool )
 {
     qDebug() << "QQuailBListWindow::blistToggled()";
     //TODO: Check to see if this should toggle
@@ -737,11 +737,11 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 
 	if (buddy != NULL)
 	{
-        PurpleConversation *conv;
-        QQuailConvWindow *win;
+//        PurpleConversation *conv;
+//        QQuailConvWindow *win;
 
-        conv = purple_conversation_new(PURPLE_CONV_TYPE_IM, buddy->account,
-									 buddy->name);
+//        conv = purple_conversation_new(PURPLE_CONV_TYPE_IM, buddy->account,
+//									 buddy->name);
 
 //		win = purple_conversation_get_window(conv);
 //        win->raise();
@@ -756,7 +756,7 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 
 		dialog = new QQuailNewImDialog(this);
 
-		dialog->showMaximized();
+        dialog->show();
 	}
 }
 
@@ -795,9 +795,9 @@ QQuailBListWindow::openChatSlot(PurpleChat *chat)
 	{
 		QQuailJoinChatDialog *dialog;
 
-        dialog = new QQuailJoinChatDialog(this, "");
+        dialog = new QQuailJoinChatDialog(this);
 
-		dialog->showMaximized();
+        dialog->show();
 	}
 }
 
@@ -847,7 +847,7 @@ qQuailBlistNewList(PurpleBuddyList *blist)
 }
 
 static void
-qQuailBlistNewNode(PurpleBlistNode * node)
+qQuailBlistNewNode(PurpleBlistNode * )
 {
     //qDebug() << "QQuailBListWindow::qQuailBlistNewNode()";
     /* This is meant to happen in the BuddyList update functions */

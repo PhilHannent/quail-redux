@@ -31,9 +31,7 @@
 /**************************************************************************
  * QQuailConnectionProgressBar
  **************************************************************************/
-QQuailConnectionProgressBar::QQuailConnectionProgressBar(QWidget *parent,
-													   const char *name,
-                                                       Qt::WindowFlags fl)
+QQuailConnectionProgressBar::QQuailConnectionProgressBar(QWidget *parent)
     : QProgressBar(parent)
 {
 }
@@ -42,8 +40,7 @@ QQuailConnectionProgressBar::QQuailConnectionProgressBar(QWidget *parent,
  * QQuailConnectionMeter
  **************************************************************************/
 QQuailConnectionMeter::QQuailConnectionMeter(PurpleConnection *gc,
-										   QWidget *parent,
-                                           const char *name, Qt::WindowFlags fl)
+                                           QWidget *parent)
     : QWidget(parent), gc(gc)
 {
     qDebug() << "QQuailConnectionMeter::QQuailConnectionMeter";
@@ -70,7 +67,7 @@ QQuailConnectionMeter::~QQuailConnectionMeter()
 }
 
 void
-QQuailConnectionMeter::update(QString, int progress, int totalSteps)
+QQuailConnectionMeter::update(QString, int progress, int /*totalSteps*/)
 {
     qDebug() << "QQuailConnectionMeter::update";
     progressBar->setValue(progress);
@@ -88,9 +85,8 @@ QQuailConnectionMeter::getConnection() const
 /**************************************************************************
  * QQuailConnectionMeters
  **************************************************************************/
-QQuailConnectionMeters::QQuailConnectionMeters(QWidget *parent,
-                                             const char *name, Qt::WindowFlags fl)
-    : QWidget(parent, fl)
+QQuailConnectionMeters::QQuailConnectionMeters(QWidget *parent)
+    : QWidget(parent)
 {
     qDebug() << "QQuailConnectionMeters::QQuailConnectionMeters";
     vbox = new QVBoxLayout(this);

@@ -24,7 +24,7 @@
 #include <QEvent>
 #include <QKeyEvent>
 
-QQuailMultiLineEdit::QQuailMultiLineEdit(QWidget *parent, const char *name)
+QQuailMultiLineEdit::QQuailMultiLineEdit(QWidget *parent)
     : QTextEdit(parent), historyEnabled(false)
 {
 	index = -1;

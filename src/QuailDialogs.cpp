@@ -40,8 +40,7 @@
 /**************************************************************************
  * QQuailAddBuddyDialog
  **************************************************************************/
-QQuailAddBuddyDialog::QQuailAddBuddyDialog(QWidget *parent, const char *name,
-                                         Qt::WindowFlags fl)
+QQuailAddBuddyDialog::QQuailAddBuddyDialog(QWidget *parent)
     : QDialog(parent)
 {
 	buildInterface();
@@ -79,11 +78,11 @@ QQuailAddBuddyDialog::buildInterface()
 	QLabel *label;
 	QLabel *spacer;
     QVBoxLayout *vbox;
-	QVBoxLayout *layout;
+//	QVBoxLayout *layout;
 
     setWindowTitle(tr("Add Buddy"));
 
-	layout = new QVBoxLayout(this);
+    //layout = new QVBoxLayout(this);
 
     vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
@@ -153,13 +152,13 @@ QQuailAddBuddyDialog::populateGroupCombo()
 void
 QQuailAddBuddyDialog::accept()
 {
-    PurpleConversation *conv;
-	QString screenname = screenNameEntry->text();
-	QString alias = aliasEntry->text();
-	QString group = groupCombo->currentText();
-	PurpleAccount *account;
-	PurpleBuddy *b;
-	PurpleGroup *g;
+//    PurpleConversation *conv;
+    QString screenname = screenNameEntry->text();
+//	QString alias = aliasEntry->text();
+//	QString group = groupCombo->currentText();
+//	PurpleAccount *account;
+//	PurpleBuddy *b;
+//	PurpleGroup *g;
 
 	if (screenname.isEmpty())
 	{
@@ -176,12 +175,12 @@ QQuailAddBuddyDialog::accept()
 //		purple_blist_add_group(g, NULL);
 //	}
 
-	account = accountCombo->getCurrentAccount();
+//	account = accountCombo->getCurrentAccount();
 
-    b = purple_buddy_new(account, screenname.toStdString().c_str(),
-                       (alias.isEmpty() ? NULL : (const char *)alias.toStdString().c_str()));
+//    b = purple_buddy_new(account, screenname.toStdString().c_str(),
+//                       (alias.isEmpty() ? NULL : (const char *)alias.toStdString().c_str()));
 
-	purple_blist_add_buddy(b, NULL, g, NULL);
+    //purple_blist_add_buddy(b, NULL, g, NULL);
 //	serv_add_buddy(purple_account_get_connection(account), screenname, g);
 
 //	if (conv != NULL)
@@ -196,8 +195,7 @@ QQuailAddBuddyDialog::accept()
 /**************************************************************************
  * QQuailAddChatDialog
  **************************************************************************/
-QQuailAddChatDialog::QQuailAddChatDialog(QWidget *parent, const char *name,
-                                       Qt::WindowFlags fl)
+QQuailAddChatDialog::QQuailAddChatDialog(QWidget *parent)
     : QDialog(parent)
 {
 	buildInterface();
@@ -227,11 +225,11 @@ QQuailAddChatDialog::buildInterface()
 	QLabel *label;
 	QLabel *spacer;
     QVBoxLayout *vbox;
-	QVBoxLayout *layout;
+//	QVBoxLayout *layout;
 
     setWindowTitle(tr("Add Chat"));
 
-	layout = new QVBoxLayout(this);
+//	layout = new QVBoxLayout(this);
 
     vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
@@ -441,8 +439,7 @@ QQuailAddChatDialog::accept()
 /**************************************************************************
  * QQuailNewImDialog
  **************************************************************************/
-QQuailNewImDialog::QQuailNewImDialog(QWidget *parent, const char *name,
-                                   Qt::WindowFlags fl)
+QQuailNewImDialog::QQuailNewImDialog(QWidget *parent)
     : QDialog(parent)
 {
 	buildInterface();
@@ -468,11 +465,8 @@ QQuailNewImDialog::buildInterface()
 	QLabel *label;
 	QLabel *spacer;
     QVBoxLayout *vbox;
-	QVBoxLayout *layout;
 
     setWindowTitle(tr("New Message"));
-
-	layout = new QVBoxLayout(this);
 
     vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
@@ -507,13 +501,13 @@ void
 QQuailNewImDialog::accept()
 {
 	QString screenname = screenNameEntry->text();
-	PurpleAccount *account;
-    PurpleConversation *conv;
+//	PurpleAccount *account;
+//    PurpleConversation *conv;
 
 	if (screenname.isEmpty())
 		return;
 
-	account = accountCombo->getCurrentAccount();
+//	account = accountCombo->getCurrentAccount();
 
 //	conv = purple_find_conversation(screenname);
 
@@ -533,8 +527,7 @@ QQuailNewImDialog::accept()
 /**************************************************************************
  * QQuailJoinChatDialog
  **************************************************************************/
-QQuailJoinChatDialog::QQuailJoinChatDialog(QWidget *parent, const char *name,
-                                         Qt::WindowFlags fl)
+QQuailJoinChatDialog::QQuailJoinChatDialog(QWidget *parent)
     : QDialog(parent)
 {
 	buildInterface();
@@ -551,12 +544,8 @@ QQuailJoinChatDialog::buildInterface()
 {
 	QLabel *spacer;
     QVBoxLayout *vbox;
-	QVBoxLayout *layout;
 
     setWindowTitle(tr("Join Chat"));
-
-	layout = new QVBoxLayout(this);
-//	layout->setAutoAdd(true);
 
     vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
@@ -677,7 +666,7 @@ QQuailJoinChatDialog::accept()
 
 		if (pce->is_int)
 		{
-			QSpinBox *spinbox = (QSpinBox *)widget;
+//			QSpinBox *spinbox = (QSpinBox *)widget;
 
 //			g_hash_table_replace(components,
 //                                 g_strdup(pce->identifier),
@@ -685,7 +674,7 @@ QQuailJoinChatDialog::accept()
 		}
 		else
 		{
-			QLineEdit *edit = (QLineEdit *)widget;
+//			QLineEdit *edit = (QLineEdit *)widget;
 
 //			g_hash_table_replace(components,
 //								 g_strdup(pce->identifier),

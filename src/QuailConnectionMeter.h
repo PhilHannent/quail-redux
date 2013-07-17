@@ -36,8 +36,7 @@ class QQuailConnectionProgressBar : public QProgressBar
 	Q_OBJECT
 
 	public:
-		QQuailConnectionProgressBar(QWidget *parent = NULL,
-                                   const char *name = NULL, Qt::WindowFlags fl = 0);
+        QQuailConnectionProgressBar(QWidget *parent = NULL);
 
 		bool setIndicator(QString &str, int progress, int totalSteps);
 };
@@ -47,8 +46,7 @@ class QQuailConnectionMeter : public QWidget
 	Q_OBJECT
 
 	public:
-		QQuailConnectionMeter(PurpleConnection *gc, QWidget *parent = NULL,
-                             const char *name = NULL, Qt::WindowFlags fl = 0);
+        QQuailConnectionMeter(PurpleConnection *gc, QWidget *parent = NULL);
 		virtual ~QQuailConnectionMeter();
 
 		void update(QString str, int totalSteps, int progress);
@@ -66,8 +64,7 @@ class QQuailConnectionMeters : public QWidget
 	Q_OBJECT
 
 	public:
-		QQuailConnectionMeters(QWidget *parent = NULL,
-                              const char *name = NULL, Qt::WindowFlags fl = 0);
+        QQuailConnectionMeters(QWidget *parent = NULL);
 		virtual ~QQuailConnectionMeters();
 
 		void addMeter(QQuailConnectionMeter *meter);

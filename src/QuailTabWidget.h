@@ -29,7 +29,7 @@ class QQuailTabWidget : public QTabWidget
 	Q_OBJECT
 
 	public:
-		QQuailTabWidget(QWidget *parent = NULL, const char *name = NULL);
+        QQuailTabWidget(QWidget *parent = NULL);
 
 		void setCurrentIndex(int index);
 		int getCurrentIndex() const;

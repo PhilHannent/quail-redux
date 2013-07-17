@@ -33,11 +33,11 @@
 static void *
 qQuailRequestInput(const char *title, const char *primary,
                    const char *secondary, const char *default_value,
-                   gboolean multiline, gboolean masked, gchar *hint,
+                   gboolean multiline, gboolean masked, gchar */*hint*/,
                    const char *ok_text, GCallback ok_cb,
                    const char *cancel_text, GCallback cancel_cb,
-                   PurpleAccount *account, const char *who,
-                   PurpleConversation *conv, void *user_data)
+                   PurpleAccount */*account*/, const char */*who*/,
+                   PurpleConversation */*conv*/, void *user_data)
 {
 	QString message;
 	QString newTitle;
@@ -64,8 +64,7 @@ qQuailRequestInput(const char *title, const char *primary,
 	else
 		newTitle = title;
 
-	dialog = new QQuailInputDialog(multiline, qQuailGetMainWindow(),
-								  "input request", true);
+    dialog = new QQuailInputDialog(multiline, qQuailGetMainWindow());
     dialog->setWindowTitle(newTitle);
 	dialog->setInfoText(message);
 
@@ -99,9 +98,9 @@ qQuailRequestInput(const char *title, const char *primary,
 
 static void *
 qQuailRequestAction(const char *title, const char *primary,
-                    const char *secondary, int default_action,
-                    PurpleAccount *account, const char *who,
-                    PurpleConversation *conv, void *user_data,
+                    const char *secondary, int /*default_action*/,
+                    PurpleAccount */*account*/, const char */*who*/,
+                    PurpleConversation */*conv*/, void *user_data,
                     size_t action_count, va_list actions)
 {
 	QMessageBox *msgbox;

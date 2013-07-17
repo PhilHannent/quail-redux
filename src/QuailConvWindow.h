@@ -40,7 +40,6 @@ class QTabWidget;
 /**
  * Unseen text states.
  */
-//TODO: Surely this should be in libpurple's conversation.h
 typedef enum
 {
     QUAIL_UNSEEN_NONE,   /**< No unseen text in the conversation. */

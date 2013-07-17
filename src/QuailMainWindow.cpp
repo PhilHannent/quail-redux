@@ -80,9 +80,9 @@ qQuailCoreUiInit(void)
     qDebug() << "QQuailMainWindow::qQuailCoreUiInit";
 	purple_blist_set_ui_ops(qQuailGetBlistUiOps());
 	purple_connections_set_ui_ops(qQuailGetConnectionUiOps());
-    //purple_conversations_set_win_ui_ops(qQuailGetConvWindowUiOps());
+    purple_conversations_set_ui_ops(qQuailGetConvWindowUiOps());
 	purple_notify_set_ui_ops(qQuailGetNotifyUiOps());
-    //purple_request_set_ui_ops(qQuailGetRequestUiOps());
+    purple_request_set_ui_ops(qQuailGetRequestUiOps());
 }
 
 static void
@@ -97,7 +97,11 @@ static PurpleCoreUiOps coreOps =
 	qQuailPrefsInit,
 	qQuailCoreDebugInit,
 	qQuailCoreUiInit,
-	qQuailCoreQuit
+    qQuailCoreQuit,
+    NULL, /* get_ui_info */
+    NULL,
+    NULL,
+    NULL
 };
 
 static PurpleCoreUiOps *
@@ -110,7 +114,7 @@ qQuailGetCoreUiOps()
 /**************************************************************************
  * QQuailMainWindow
  **************************************************************************/
-QQuailMainWindow::QQuailMainWindow(QWidget *parent, const char *name, Qt::WindowFlags fl)
+QQuailMainWindow::QQuailMainWindow(QWidget *parent)
     : QMainWindow(parent),
 	  accountsWin(NULL), blistWin(NULL), nextConvWinId(0)
 {
@@ -157,7 +161,7 @@ void
 QQuailMainWindow::initCore()
 {
     qDebug() << "QQuailMainWindow::initCore()";
-	char *plugin_search_paths[1];
+    char *path;
 
 	purple_core_set_ui_ops(qQuailGetCoreUiOps());
 	purple_eventloop_set_ui_ops(qQuailGetEventLoopUiOps());
@@ -167,15 +171,8 @@ QQuailMainWindow::initCore()
                   "Please report this!\n");
 	}
 
-#ifdef LOCAL_COMPILE
-	plugin_search_paths[0] = "/opt/Qtopia/lib/gaim";
-#else
-    plugin_search_paths[0] = "/usr/lib/libpurple";
-#endif
-
-//	purple_plugins_set_search_paths(sizeof(plugin_search_paths) /
-//								  sizeof(*plugin_search_paths),
-//								  plugin_search_paths);
+    path = g_build_filename(purple_user_dir(), "plugins", NULL);
+    purple_plugins_add_search_path(path);
 
 	purple_plugins_probe(NULL);
 
@@ -196,7 +193,7 @@ QQuailMainWindow::closeEvent(QCloseEvent *event)
 	{
 		/* This had better be a conversation window... */
 
-		QQuailConvWindow *qwin = (QQuailConvWindow *)visibleWidget;
+        //QQuailConvWindow *qwin = (QQuailConvWindow *)visibleWidget;
 
         //purple_conv_window_destroy(qwin->getConvWindow());
 
@@ -224,11 +221,11 @@ QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
 }
 
 void
-QQuailMainWindow::removeConversationWindow(QQuailConversation *win)
+QQuailMainWindow::removeConversationWindow(QQuailConversation */*win*/)
 {
     qDebug() << "QQuailMainWindow::removeConversationWindow()";
-    GList *l;
-    QQuailConversation *newWin = NULL;
+//    GList *l;
+//    QQuailConversation *newWin = NULL;
 
 //    l = g_list_find(purple_get_windows(), win->getConvWindow());
 

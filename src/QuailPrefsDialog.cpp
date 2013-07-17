@@ -40,8 +40,8 @@
 /**************************************************************************
  * QQuailBlistPrefPage
  **************************************************************************/
-QQuailBlistPrefPage::QQuailBlistPrefPage(QWidget *parent, const char *name)
-	: QQuailPrefPage(parent, name)
+QQuailBlistPrefPage::QQuailBlistPrefPage(QWidget *parent)
+    : QQuailPrefPage(parent)
 {
 	buildInterface();
 }
@@ -123,8 +123,8 @@ QQuailBlistPrefPage::buildInterface()
 /**************************************************************************
  * QQuailConvPrefPage
  **************************************************************************/
-QQuailConvPrefPage::QQuailConvPrefPage(QWidget *parent, const char *name)
-	: QQuailPrefPage(parent, name)
+QQuailConvPrefPage::QQuailConvPrefPage(QWidget *parent)
+    : QQuailPrefPage(parent)
 {
 }
 
@@ -142,8 +142,8 @@ QQuailConvPrefPage::buildInterface()
 /**************************************************************************
  * QQuailNotifyPrefPage
  **************************************************************************/
-QQuailNotifyPrefPage::QQuailNotifyPrefPage(QWidget *parent, const char *name)
-	: QQuailPrefPage(parent, name)
+QQuailNotifyPrefPage::QQuailNotifyPrefPage(QWidget *parent)
+    : QQuailPrefPage(parent)
 {
 	buildInterface();
 }
@@ -178,7 +178,7 @@ void
 QQuailNotifyPrefPage::buildInterface()
 {
     qDebug() << "QQuailNotifyPrefPage::buildInterface()";
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    //QVBoxLayout *layout = new QVBoxLayout(this);
     QGroupBox *groupBox;
 
 //	layout->setAutoAdd(true);
@@ -230,8 +230,8 @@ QQuailNotifyPrefPage::buildInterface()
 /**************************************************************************
  * QQuailAwayPrefPage
  **************************************************************************/
-QQuailAwayPrefPage::QQuailAwayPrefPage(QWidget *parent, const char *name)
-	: QQuailPrefPage(parent, name)
+QQuailAwayPrefPage::QQuailAwayPrefPage(QWidget *parent)
+    : QQuailPrefPage(parent)
 {
     qDebug() << "QQuailAwayPrefPage::QQuailAwayPrefPage()";
 }
@@ -250,8 +250,8 @@ QQuailAwayPrefPage::buildInterface()
 /**************************************************************************
  * QQuailProxyPrefPage
  **************************************************************************/
-QQuailProxyPrefPage::QQuailProxyPrefPage(QWidget *parent, const char *name)
-	: QQuailPrefPage(parent, name)
+QQuailProxyPrefPage::QQuailProxyPrefPage(QWidget *parent)
+    : QQuailPrefPage(parent)
 {
     qDebug() << "QQuailProxyPrefPage::QQuailProxyPrefPage()";
 }
@@ -270,8 +270,8 @@ QQuailProxyPrefPage::buildInterface()
 /**************************************************************************
  * QQuailPluginPrefPage
  **************************************************************************/
-QQuailPluginPrefPage::QQuailPluginPrefPage(QWidget *parent, const char *name)
-	: QQuailPrefPage(parent, name)
+QQuailPluginPrefPage::QQuailPluginPrefPage(QWidget *parent)
+    : QQuailPrefPage(parent)
 {
     qDebug() << "QQuailPluginPrefPage::QQuailPluginPrefPage()";
 }
@@ -291,8 +291,7 @@ QQuailPluginPrefPage::buildInterface()
 /**************************************************************************
  * QQuailPrefsDialog
  **************************************************************************/
-QQuailPrefsDialog::QQuailPrefsDialog(QWidget *parent, const char *name,
-                                   Qt::WindowFlags fl)
+QQuailPrefsDialog::QQuailPrefsDialog(QWidget *parent)
     : QDialog(parent)
 {
     qDebug() << "QQuailPrefsDialog::QQuailPrefsDialog()";
@@ -316,13 +315,13 @@ QQuailPrefsDialog::buildInterface()
 
     tabs = new QTabWidget();
     layout->addWidget(tabs);
-	blistPage    = new QQuailBlistPrefPage(this,  "blist page");
-	notifyPage   = new QQuailNotifyPrefPage(this, "notify page");
+    blistPage    = new QQuailBlistPrefPage(this);
+    notifyPage   = new QQuailNotifyPrefPage(this);
 #if 0
-	convPage     = new QQuailConvPrefPage(this,   "conv page");
-	awayIdlePage = new QQuailAwayPrefPage(this,   "awayIdle page");
-	proxyPage    = new QQuailProxyPrefPage(this,  "proxy page");
-	pluginPage   = new QQuailPluginPrefPage(this, "plugin page");
+    convPage     = new QQuailConvPrefPage(this);
+    awayIdlePage = new QQuailAwayPrefPage(this);
+    proxyPage    = new QQuailProxyPrefPage(this);
+    pluginPage   = new QQuailPluginPrefPage(this);
 #endif
 
     tabs->addTab(blistPage, tr("Buddy List"));

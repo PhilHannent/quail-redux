@@ -146,7 +146,6 @@ QQuailAccountEditor::buildAccountTab()
 	/* QFrame *sep; */
     QVBoxLayout *vbox;
     QHBoxLayout *hbox;
-	QWidget *spacer;
 	QGridLayout *grid;
 	QWidget *frame;
 	int row = 0;
@@ -219,7 +218,6 @@ QQuailAccountEditor::buildProtocolTab()
     qDebug() << "QQuailAccountEditor::buildProtocolTab";
     QVBoxLayout *vbox;
 	QFrame *frame;
-	QWidget *spacer;
 	QGridLayout *grid;
 	QCheckBox *check;
 	QLineEdit *entry;
@@ -228,7 +226,6 @@ QQuailAccountEditor::buildProtocolTab()
 	int row = 0;
 	QString strValue;
 	int intValue;
-    bool boolValue = false;
 
     protocolWidget = new QWidget(this);
 	/* Create the main vbox */
@@ -259,11 +256,10 @@ QQuailAccountEditor::buildProtocolTab()
 					if (account == NULL ||
 						protocolId != purple_account_get_protocol_id(account))
 					{
-						boolValue =
-							purple_account_option_get_default_bool(option);
+                        purple_account_option_get_default_bool(option);
 					}
 					else
-						boolValue = purple_account_get_bool(account,
+                        purple_account_get_bool(account,
 								purple_account_option_get_setting(option),
 								purple_account_option_get_default_bool(option));
 
@@ -335,11 +331,6 @@ QQuailAccountEditor::buildProtocolTab()
 			}
 		}
 	}
-
-	/* Add a spacer. */
-    spacer = new QLabel("");
-    vbox->addWidget(spacer);
-	vbox->setStretchFactor(spacer, 1);
 
     return protocolWidget;
 }

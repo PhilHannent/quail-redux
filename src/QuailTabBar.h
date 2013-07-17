@@ -35,7 +35,7 @@ class QQuailTabBar : public QTabBar
         QQuailTabBar(QWidget *parent = NULL);
 
 		void setTabColor(int id, const QColor &color);
-		const QColor &getTabColor(int id) const;
+        const QColor getTabColor(int id) const;
 
 		void setCurrentIndex(int index);
 		int getCurrentIndex();
@@ -44,9 +44,9 @@ class QQuailTabBar : public QTabBar
 
         virtual int insertTab(QWidget *tab, int index = -1);
 
-	protected:
-		virtual void paintLabel(QPainter *painter, const QRect &rect,
-                                QWidget *tab, bool hasFocus) const;
+//	protected:
+//		virtual void paintLabel(QPainter *painter, const QRect &rect,
+//                                QWidget *tab, bool hasFocus) const;
 
 	protected:
 		QMap<int, QColor> colors;

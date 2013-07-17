@@ -32,7 +32,7 @@ class QQuailPrefPage : public QWidget
 	Q_OBJECT
 
 	public:
-		QQuailPrefPage(QWidget *parent = 0, const char *name = 0)
+        QQuailPrefPage(QWidget *parent = 0)
             : QWidget(parent), dirty(false) { }
 
 		void setDirty(bool dirty) { this->dirty = dirty; }
@@ -49,7 +49,7 @@ class QQuailBlistPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-		QQuailBlistPrefPage(QWidget *parent = 0, const char *name = 0);
+        QQuailBlistPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -69,7 +69,7 @@ class QQuailConvPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-		QQuailConvPrefPage(QWidget *parent = 0, const char *name = 0);
+        QQuailConvPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -82,7 +82,7 @@ class QQuailNotifyPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-		QQuailNotifyPrefPage(QWidget *parent = 0, const char *name = 0);
+        QQuailNotifyPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -101,7 +101,7 @@ class QQuailAwayPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-		QQuailAwayPrefPage(QWidget *parent = 0, const char *name = 0);
+        QQuailAwayPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -114,7 +114,7 @@ class QQuailProxyPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-		QQuailProxyPrefPage(QWidget *parent = 0, const char *name = 0);
+        QQuailProxyPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -127,7 +127,7 @@ class QQuailPluginPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-		QQuailPluginPrefPage(QWidget *parent = 0, const char *name = 0);
+        QQuailPluginPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -140,8 +140,7 @@ class QQuailPrefsDialog : public QDialog
 	Q_OBJECT
 
 	public:
-		QQuailPrefsDialog(QWidget *parent = NULL, const char *name = NULL,
-                         Qt::WindowFlags fl = 0);
+        QQuailPrefsDialog(QWidget *parent = NULL);
 		~QQuailPrefsDialog();
 
 		virtual void accept();

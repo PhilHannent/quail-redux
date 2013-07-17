@@ -32,7 +32,7 @@ QQuailTabBar::QQuailTabBar(QWidget *parent)
 }
 
 void
-QQuailTabBar::setTabColor(int id, const QColor &color)
+QQuailTabBar::setTabColor(int /*id*/, const QColor &/*color*/)
 {
 //    QWidget *t = this->tabAt(id);
 
@@ -44,17 +44,19 @@ QQuailTabBar::setTabColor(int id, const QColor &color)
 //	}
 }
 
-const QColor &
-QQuailTabBar::getTabColor(int id) const
+const QColor
+QQuailTabBar::getTabColor(int /*id*/) const
 {
+    QColor color(Qt::black);
 //	if (colors.contains(id))
 //		return colors[id];
 
 //	return colorGroup().foreground();
+    return color;
 }
 
 void
-QQuailTabBar::setCurrentIndex(int index)
+QQuailTabBar::setCurrentIndex(int /*index*/)
 {
     //setCurrentIndex(tabList()->at(index));
 }
@@ -63,6 +65,7 @@ int
 QQuailTabBar::getCurrentIndex()
 {
     //return tabList()->find(tab(currentIndex()));
+    return 0;
 }
 
 int
@@ -71,42 +74,43 @@ QQuailTabBar::getLastId() const
 	return lastId;
 }
 
-void
-QQuailTabBar::paintLabel(QPainter *p, const QRect &rect,
-                        QWidget *tab, bool hasFocus) const
-{
-	QRect r = rect;
+//void
+//QQuailTabBar::paintLabel(QPainter *p, const QRect &rect,
+//                        QWidget *tab, bool hasFocus) const
+//{
+//	QRect r = rect;
 
-//	if (tab->iconSet())
-//	{
-//        QIcon::Mode mode = ((tab->isEnabled() && isEnabled())
-//                               ? QIcon::Normal : QIcon::Disabled);
+////	if (tab->iconSet())
+////	{
+////        QIcon::Mode mode = ((tab->isEnabled() && isEnabled())
+////                               ? QIcon::Normal : QIcon::Disabled);
 
-//        if (mode == QIcon::Normal && hasFocus)
-//            mode = QIcon::Active;
+////        if (mode == QIcon::Normal && hasFocus)
+////            mode = QIcon::Active;
 
-//        QPixmap pixmap = tab->iconSet()->pixmap(QIcon::Small, mode);
+////        QPixmap pixmap = tab->iconSet()->pixmap(QIcon::Small, mode);
 
-//		int pixw = pixmap.width();
-//		int pixh = pixmap.height();
+////		int pixw = pixmap.width();
+////		int pixh = pixmap.height();
 
-//		r.setLeft(r.left() + pixw + 2);
+////		r.setLeft(r.left() + pixw + 2);
 
-//		p->drawPixmap(rect.left() + 2,
-//					  rect.center().y() - pixh / 2,
-//					  pixmap);
-//	}
+////		p->drawPixmap(rect.left() + 2,
+////					  rect.center().y() - pixh / 2,
+////					  pixmap);
+////	}
 
-//	p->setPen(colors[tab->id]);
-//	p->drawText(r, AlignCenter | ShowPrefix, tab->label);
-}
+////	p->setPen(colors[tab->id]);
+////	p->drawText(r, AlignCenter | ShowPrefix, tab->label);
+//}
 
 int
-QQuailTabBar::insertTab(QWidget *tab, int index)
+QQuailTabBar::insertTab(QWidget */*tab*/, int /*index*/)
 {
 //    int id = this->addTab(tab, index);
 
 //	lastId = id;
 
 //	return id;
+    return 0;
 }

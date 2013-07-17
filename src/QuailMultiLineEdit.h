@@ -30,7 +30,7 @@ class QQuailMultiLineEdit : public QTextEdit
 	Q_OBJECT
 
 	public:
-		QQuailMultiLineEdit(QWidget *parent = NULL, const char *name = NULL);
+        QQuailMultiLineEdit(QWidget *parent = NULL);
 
 		void setHistoryEnabled(bool enabled);
 		bool isHistoryEnabled() const;

@@ -137,7 +137,7 @@ void
 QQuailConvButton::convActivated(int id)
 {
     PurpleConversation *conv;
-    QQuailConvWindow *win;
+    //QQuailConvWindow *win;
 
 	conv = convs[id];
 
@@ -160,7 +160,7 @@ QQuailConvButton::convActivated(int id)
 void
 QQuailConvButton::buttonClicked()
 {
-    QQuailConversation *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
+    //QQuailConversation *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
 
 //	if (lastWin != NULL)
 //		purple_conv_window_raise(lastWin);

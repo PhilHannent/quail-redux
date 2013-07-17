@@ -240,188 +240,188 @@ QQuailBListItem::init()
 	updateInfo();
 }
 
-void
-QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
-							   int width, int align, int lmarg, int itMarg)
-{
-    qDebug() << "QQuailBListItem::paintBuddyInfo";
-    PurpleBuddy *buddy;
-	PurpleContact *contact = NULL;
+//void
+//QQuailBListItem::paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
+//							   int width, int align, int lmarg, int itMarg)
+//{
+//    qDebug() << "QQuailBListItem::paintBuddyInfo";
+//    PurpleBuddy *buddy;
+//	PurpleContact *contact = NULL;
 
-    if (PURPLE_BLIST_NODE_IS_BUDDY(node))
-		buddy = (PurpleBuddy *)node;
-	else
-	{
-		contact = (PurpleContact *)node;
-		buddy = purple_contact_get_priority_buddy(contact);
-	}
+//    if (PURPLE_BLIST_NODE_IS_BUDDY(node))
+//		buddy = (PurpleBuddy *)node;
+//	else
+//	{
+//		contact = (PurpleContact *)node;
+//		buddy = purple_contact_get_priority_buddy(contact);
+//	}
 
-    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
-	{
-		if (column > 0)
-			return;
+//    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
+//	{
+//		if (column > 0)
+//			return;
 
-		if (!isExpanded())
-		{
-			if (dirty)
-			{
-				PurplePlugin *prpl = NULL;
-				PurplePluginProtocolInfo *prplInfo = NULL;
-				QRect topRect, bottomRect;
-				QString statusText;
-				QString idleTime;
-				QString warning;
-
-				prpl = purple_plugins_find_with_id(
-					purple_account_get_protocol_id(buddy->account));
-
-				if (prpl != NULL)
-                    prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
-
-				if (prpl != NULL && prplInfo->status_text != NULL &&
-					purple_account_get_connection(buddy->account) != NULL)
-				{
-					char *tmp = prplInfo->status_text(buddy);
-
-					if (tmp != NULL)
-					{
-						g_strdelimit(tmp, "\n", ' ');
-
-						statusText = QString(tmp) + " ";
-
-						g_free(tmp);
-					}
-				}
-
-                if (!isExpanded() &&
-                    purple_prefs_get_bool("/quail/blist/show_idle_times"))
-				{
-					time_t t;
-					int ihrs, imin;
-
-					time(&t);
-//					ihrs = (t - buddy->idle) / 3600;
-//					imin = ((t - buddy->idle) / 60) % 60;
-
-//					if (ihrs)
-//					{
-//                        idleTime = tr("Idle (%1h%2m) ").args( ihrs, imin);
-//					}
-//					else
-//                        idleTime = tr("Idle (%1m) ").arg(imin);
-				}
-
-//				if (!isExpanded() && buddy->evil > 0 &&
-//                    purple_prefs_get_bool("/quail/blist/show_warning_levels"))
-//				{
-//                    warning = tr("Warned (%1%) ").arg(buddy->evil);
-//				}
-
-                if (!PURPLE_BUDDY_IS_ONLINE(buddy) && statusText.isEmpty())
-					statusText = QObject::tr("Offline ");
-
-				if (contact != NULL && !isExpanded() && contact->alias != NULL)
-					topText = contact->alias;
-				else
-                    topText = purple_contact_get_alias(contact);
-
-				bottomText = statusText + idleTime + warning;
-
-				/* Get the top rect info. */
-//				topRect = p->boundingRect(lmarg, 0, width - lmarg - itMarg,
-//										  height(), align | AlignVCenter,
-//										  topText);
-
-//				if (!bottomText.isEmpty())
-//				{
-//					bottomRect = p->boundingRect(lmarg, 0,
-//												 width - lmarg - itMarg,
-//												 height(),
-//												 align | AlignVCenter,
-//												 bottomText);
-//				}
-
-//				textY1 = (height() - topRect.height() -
-//						  bottomRect.height() - 2) / 2;
-//				textY2 = textY1 + topRect.height() + 2;
-			}
-
-//			if (buddy->idle > 0 &&
-//                purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
-//			{
-//				p->setPen(cg.dark());
-//			}
-
-//			p->drawText(lmarg, textY1, width - lmarg - itMarg, height(),
-//						align, topText);
-
-//			p->setPen(cg.dark());
-//			p->drawText(lmarg, textY2, width - lmarg - itMarg, height(),
-//						align, bottomText);
-		}
-		else
-		{
-            QPalette _cg(cg);
-
-//			if (buddy->idle > 0 &&
-//                purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
-//			{
-//                _cg.setColor(QPalette::Text, cg.dark());
-//			}
-
-//            QTreeWidgetItem::paintCell(p, _cg, column, width, align);
-		}
-	}
-	else
-	{
-        QPalette _cg(cg);
-
-//		if (buddy->idle > 0 &&
-//            purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
+//		if (!isExpanded())
 //		{
-//            _cg.setColor(QPalette::Text, cg.dark());
+//			if (dirty)
+//			{
+//				PurplePlugin *prpl = NULL;
+//				PurplePluginProtocolInfo *prplInfo = NULL;
+//				QRect topRect, bottomRect;
+//				QString statusText;
+//				QString idleTime;
+//				QString warning;
+
+//				prpl = purple_plugins_find_with_id(
+//					purple_account_get_protocol_id(buddy->account));
+
+//				if (prpl != NULL)
+//                    prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
+
+//				if (prpl != NULL && prplInfo->status_text != NULL &&
+//					purple_account_get_connection(buddy->account) != NULL)
+//				{
+//					char *tmp = prplInfo->status_text(buddy);
+
+//					if (tmp != NULL)
+//					{
+//						g_strdelimit(tmp, "\n", ' ');
+
+//						statusText = QString(tmp) + " ";
+
+//						g_free(tmp);
+//					}
+//				}
+
+//                if (!isExpanded() &&
+//                    purple_prefs_get_bool("/quail/blist/show_idle_times"))
+//				{
+//					time_t t;
+////					int ihrs, imin;
+
+//					time(&t);
+////					ihrs = (t - buddy->idle) / 3600;
+////					imin = ((t - buddy->idle) / 60) % 60;
+
+////					if (ihrs)
+////					{
+////                        idleTime = tr("Idle (%1h%2m) ").args( ihrs, imin);
+////					}
+////					else
+////                        idleTime = tr("Idle (%1m) ").arg(imin);
+//				}
+
+////				if (!isExpanded() && buddy->evil > 0 &&
+////                    purple_prefs_get_bool("/quail/blist/show_warning_levels"))
+////				{
+////                    warning = tr("Warned (%1%) ").arg(buddy->evil);
+////				}
+
+//                if (!PURPLE_BUDDY_IS_ONLINE(buddy) && statusText.isEmpty())
+//					statusText = QObject::tr("Offline ");
+
+//				if (contact != NULL && !isExpanded() && contact->alias != NULL)
+//					topText = contact->alias;
+//				else
+//                    topText = purple_contact_get_alias(contact);
+
+//				bottomText = statusText + idleTime + warning;
+
+//				/* Get the top rect info. */
+////				topRect = p->boundingRect(lmarg, 0, width - lmarg - itMarg,
+////										  height(), align | AlignVCenter,
+////										  topText);
+
+////				if (!bottomText.isEmpty())
+////				{
+////					bottomRect = p->boundingRect(lmarg, 0,
+////												 width - lmarg - itMarg,
+////												 height(),
+////												 align | AlignVCenter,
+////												 bottomText);
+////				}
+
+////				textY1 = (height() - topRect.height() -
+////						  bottomRect.height() - 2) / 2;
+////				textY2 = textY1 + topRect.height() + 2;
+//			}
+
+////			if (buddy->idle > 0 &&
+////                purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
+////			{
+////				p->setPen(cg.dark());
+////			}
+
+////			p->drawText(lmarg, textY1, width - lmarg - itMarg, height(),
+////						align, topText);
+
+////			p->setPen(cg.dark());
+////			p->drawText(lmarg, textY2, width - lmarg - itMarg, height(),
+////						align, bottomText);
 //		}
+//		else
+//		{
+//            QPalette _cg(cg);
 
-//        QTreeWidgetItem::paintCell(p, _cg, column, width, align);
-	}
-}
+////			if (buddy->idle > 0 &&
+////                purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
+////			{
+////                _cg.setColor(QPalette::Text, cg.dark());
+////			}
 
-void
-QQuailBListItem::paintGroupInfo(QPainter *p, const QPalette &, int column,
-							   int width, int align, int lmarg, int itMarg)
-{
-    qDebug() << "QQuailBListItem::paintGroupInfo";
-    if (column > 0)
-		return;
+////            QTreeWidgetItem::paintCell(p, _cg, column, width, align);
+//		}
+//	}
+//	else
+//	{
+//        QPalette _cg(cg);
 
-	PurpleGroup *group = (PurpleGroup *)getBlistNode();
-	QString groupName, detail;
-//	QFont f = p->font();
+////		if (buddy->idle > 0 &&
+////            purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
+////		{
+////            _cg.setColor(QPalette::Text, cg.dark());
+////		}
 
-	groupName = group->name;
+////        QTreeWidgetItem::paintCell(p, _cg, column, width, align);
+//	}
+//}
 
-    if (purple_prefs_get_bool("/quail/blist/show_group_count"))
-	{
-		groupName += " ";
-		detail = QString("(%1/%2)").arg(
-			purple_blist_get_group_online_count(group)).arg(
-			purple_blist_get_group_size(group, FALSE));
-	}
+//void
+//QQuailBListItem::paintGroupInfo(QPainter *p, const QPalette &, int column,
+//							   int width, int align, int lmarg, int itMarg)
+//{
+//    qDebug() << "QQuailBListItem::paintGroupInfo";
+//    if (column > 0)
+//		return;
 
-//	f.setBold(true);
-//	p->setFont(f);
-//	p->drawText(lmarg, 0, width - lmarg - itMarg, height(),
-//				align | AlignVCenter, groupName);
+//	PurpleGroup *group = (PurpleGroup *)getBlistNode();
+//	QString groupName, detail;
+////	QFont f = p->font();
 
-//	QRect r = p->boundingRect(lmarg, 0, width - lmarg - itMarg,
-//							  height(),
-//							  align | AlignVCenter, groupName);
+//	groupName = group->name;
 
-//	f.setBold(false);
-//	p->setFont(f);
-//	p->drawText(lmarg + r.right(), 0, width - lmarg - itMarg, height(),
-//				align | AlignVCenter, detail);
-}
+//    if (purple_prefs_get_bool("/quail/blist/show_group_count"))
+//	{
+//		groupName += " ";
+//		detail = QString("(%1/%2)").arg(
+//			purple_blist_get_group_online_count(group)).arg(
+//			purple_blist_get_group_size(group, FALSE));
+//	}
+
+////	f.setBold(true);
+////	p->setFont(f);
+////	p->drawText(lmarg, 0, width - lmarg - itMarg, height(),
+////				align | AlignVCenter, groupName);
+
+////	QRect r = p->boundingRect(lmarg, 0, width - lmarg - itMarg,
+////							  height(),
+////							  align | AlignVCenter, groupName);
+
+////	f.setBold(false);
+////	p->setFont(f);
+////	p->drawText(lmarg + r.right(), 0, width - lmarg - itMarg, height(),
+////				align | AlignVCenter, detail);
+//}
 
 
 /**************************************************************************
@@ -682,10 +682,10 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 //                             tr("Get Information"),
 //                             this);
 //        a->setData(QVariant(buddy));
-        menu->addAction(a);
+//        menu->addAction(a);
 
-		connect(a, SIGNAL(activated(void *)),
-				this, SLOT(userInfoSlot(void *)));
+//		connect(a, SIGNAL(activated(void *)),
+//				this, SLOT(userInfoSlot(void *)));
 	}
 
 	/* IM */
@@ -693,10 +693,10 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 //                         tr("IM"),
 //                         this);
 //    a->setData(buddy);
-    menu->addAction(a);
+//    menu->addAction(a);
 
-	connect(a, SIGNAL(activated(void *)),
-			this, SLOT(sendImSlot(void *)));
+//	connect(a, SIGNAL(activated(void *)),
+//			this, SLOT(sendImSlot(void *)));
 
 	/* Put in the protocol-specific actions */
 //	if (prplInfo != NULL && prplInfo->buddy_menu != NULL)
@@ -791,18 +791,18 @@ QQuailBuddyList::populateBuddyMenu(PurpleBuddy *buddy, QMenu *menu,
 }
 
 void
-QQuailBuddyList::populateContactMenu(PurpleContact *contact, QMenu *menu)
+QQuailBuddyList::populateContactMenu(PurpleContact */*contact*/, QMenu *menu)
 {
     qDebug() << "QQuailBuddyList::populateContactMenu";
-	PurplePlugin *prpl = NULL;
-    PurplePluginProtocolInfo *prplInfo = NULL;
+//	PurplePlugin *prpl = NULL;
+    //PurplePluginProtocolInfo *prplInfo = NULL;
 	QAction *a;
 
-	prpl = purple_plugins_find_with_id(purple_account_get_protocol_id(
-			purple_contact_get_priority_buddy(contact)->account));
+//	prpl = purple_plugins_find_with_id(purple_account_get_protocol_id(
+//			purple_contact_get_priority_buddy(contact)->account));
 
-	if (prpl != NULL)
-        prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
+//	if (prpl != NULL)
+//        prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	/* Collapse */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/collapse.png")),
@@ -827,15 +827,15 @@ void
 QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
 {
     qDebug() << "QQuailBuddyList::populateChatMenu";
-	PurplePlugin *prpl = NULL;
-    PurplePluginProtocolInfo *prplInfo = NULL;
+    //PurplePlugin *prpl = NULL;
+    //PurplePluginProtocolInfo *prplInfo = NULL;
 	QAction *a;
 
-	prpl = purple_plugins_find_with_id(
-		purple_account_get_protocol_id(chat->account));
+//	prpl = purple_plugins_find_with_id(
+//		purple_account_get_protocol_id(chat->account));
 
-	if (prpl != NULL)
-        prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
+//	if (prpl != NULL)
+//        prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	/* Join Chat */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/join_chat.png"))
@@ -1143,13 +1143,13 @@ QQuailBuddyList::removeGroupSlot()
 	emit removeGroup((PurpleGroup *)node);
 }
 
-static void
-renameGroupCb(PurpleGroup *group, const char *newName)
-{
-    qDebug() << "QQuailBuddyList::renameGroupCb";
-	purple_blist_rename_group(group, newName);
-//	purple_blist_save();
-}
+//static void
+//renameGroupCb(PurpleGroup *group, const char *newName)
+//{
+//    qDebug() << "QQuailBuddyList::renameGroupCb";
+//	purple_blist_rename_group(group, newName);
+////	purple_blist_save();
+//}
 
 void
 QQuailBuddyList::renameGroupSlot()
@@ -1157,7 +1157,7 @@ QQuailBuddyList::renameGroupSlot()
     qDebug() << "QQuailBuddyList::renameGroupSlot";
 	PurpleBlistNode *node;
 	QQuailBListItem *item;
-	PurpleGroup *group;
+//	PurpleGroup *group;
 
     if ((item = (QQuailBListItem *)currentItem()) == NULL)
         return;
@@ -1167,7 +1167,7 @@ QQuailBuddyList::renameGroupSlot()
     if (!PURPLE_BLIST_NODE_IS_GROUP(node))
 		return;
 
-	group = (PurpleGroup *)node;
+//	group = (PurpleGroup *)node;
 
 //	purple_request_input(NULL, tr("Rename Group"),
 //					   tr("Rename Group"),
@@ -1194,29 +1194,29 @@ QQuailBuddyList::sendImSlot(void *data)
 }
 
 void
-QQuailBuddyList::protoActionSlot(void *data1, void *data2)
+QQuailBuddyList::protoActionSlot(void * /*data1*/, void * /*data2*/)
 {
     qDebug() << "QQuailBuddyList::protoActionSlot";
-	PurpleBuddy *buddy = (PurpleBuddy *)data1;
+//	PurpleBuddy *buddy = (PurpleBuddy *)data1;
 //	struct proto_buddy_menu *pbm = (struct proto_buddy_menu *)data2;
 
 //	if (pbm->callback != NULL)
 //		pbm->callback(pbm->gc, buddy->name);
 }
 
-static void
-aliasBuddyCb(PurpleBuddy *buddy, const char *newAlias)
-{
-    qDebug() << "QQuailBuddyList::aliasBuddyCb";
-	purple_blist_alias_buddy(buddy, newAlias);
-//	purple_blist_save();
-}
+//static void
+//aliasBuddyCb(PurpleBuddy *buddy, const char *newAlias)
+//{
+//    qDebug() << "QQuailBuddyList::aliasBuddyCb";
+//	purple_blist_alias_buddy(buddy, newAlias);
+////	purple_blist_save();
+//}
 
 void
-QQuailBuddyList::aliasBuddySlot(void *data)
+QQuailBuddyList::aliasBuddySlot(void */*data*/)
 {
     qDebug() << "QQuailBuddyList::aliasBuddySlot";
-	PurpleBuddy *buddy = (PurpleBuddy *)data;
+//	PurpleBuddy *buddy = (PurpleBuddy *)data;
 
 //	purple_request_input(NULL, tr("Alias Buddy"),
 //			tr("Please enter an aliased name for %1.").arg(buddy->name),
@@ -1306,13 +1306,13 @@ QQuailBuddyList::removeChatSlot()
 	emit removeChat((PurpleChat *)node);
 }
 
-static void
-aliasChatCb(PurpleChat *chat, const char *newAlias)
-{
-    qDebug() << "QQuailBuddyList::aliasChatCb";
-	purple_blist_alias_chat(chat, newAlias);
-//	purple_blist_save();
-}
+//static void
+//aliasChatCb(PurpleChat *chat, const char *newAlias)
+//{
+//    qDebug() << "QQuailBuddyList::aliasChatCb";
+//	purple_blist_alias_chat(chat, newAlias);
+////	purple_blist_save();
+//}
 
 void
 QQuailBuddyList::aliasChatSlot()
@@ -1320,7 +1320,7 @@ QQuailBuddyList::aliasChatSlot()
     qDebug() << "QQuailBuddyList::aliasChatSlot";
     PurpleBlistNode *node;
 	QQuailBListItem *item;
-	PurpleChat *chat;
+//	PurpleChat *chat;
 
     if ((item = (QQuailBListItem *)currentItem()) == NULL)
         return;
@@ -1330,7 +1330,7 @@ QQuailBuddyList::aliasChatSlot()
     if (!PURPLE_BLIST_NODE_IS_CHAT(node))
 		return;
 
-	chat = (PurpleChat *)node;
+//	chat = (PurpleChat *)node;
 
 //	purple_request_input(NULL, tr("Alias Chat"),
 //					   tr("Please enter an aliased name for this chat."),

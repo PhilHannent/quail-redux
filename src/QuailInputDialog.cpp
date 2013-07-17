@@ -29,8 +29,7 @@
 #include <QSignalMapper>
 #include <QHBoxLayout>
 
-QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent,
-                                   const char *name, bool modal, Qt::WindowFlags fl)
+QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent)
     : QDialog(parent), multiline(multiline), masked(false)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -77,7 +76,7 @@ QQuailInputDialog::setMasked(bool masked)
 
 	if (multiline)
 	{
-        QTextEdit *mlEntry = (QTextEdit *)entry;
+//        QTextEdit *mlEntry = (QTextEdit *)entry;
 
 //		mlEntry->setEchoMode(masked
 //                             ? QTextEdit::Password

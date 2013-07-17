@@ -45,10 +45,10 @@ class QQuailBListItem : public QTreeWidgetItem
 	protected:
 		void init();
 
-        void paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
-							int width, int align, int lmarg, int itMarg);
-        void paintGroupInfo(QPainter *p, const QPalette &cg, int column,
-							int width, int align, int lmarg, int itMarg);
+//        void paintBuddyInfo(QPainter *p, const QPalette &cg, int column,
+//							int width, int align, int lmarg, int itMarg);
+//        void paintGroupInfo(QPainter *p, const QPalette &cg, int column,
+//							int width, int align, int lmarg, int itMarg);
 
 	private:
 		PurpleBlistNode *node;

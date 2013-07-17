@@ -29,19 +29,15 @@
 #include <QMessageBox>
 #include <QTextEdit>
 
-//#include <opie/odevice.h>
-
-//using namespace Opie;
-
 static int notifyActiveCount = 0;
 
 /**************************************************************************
  * UI operations
  **************************************************************************/
-static void *qQuailNotifyEmails(size_t count, gboolean detailed,
-							   const char **subjects, const char **froms,
-							   const char **tos, const char **urls,
-							   GCallback cb, void *userData);
+//static void *qQuailNotifyEmails(size_t count, gboolean detailed,
+//							   const char **subjects, const char **froms,
+//							   const char **tos, const char **urls,
+//							   GCallback cb, void *userData);
 
 static void *
 qQuailNotifyMessage(PurpleNotifyMsgType type, const char *title,
@@ -92,51 +88,51 @@ qQuailNotifyMessage(PurpleNotifyMsgType type, const char *title,
 	return NULL;
 }
 
-static void *
-qQuailNotifyEmail(PurpleConnection *gc,
-                  const char *subject, const char *from,
-                  const char *to, const char *url)
-{
-//    return qQuailNotifyEmails(gc,
-//							 (subject == NULL ? NULL : &subject),
-//							 (from    == NULL ? NULL : &from),
-//							 (to      == NULL ? NULL : &to),
+//static void *
+//qQuailNotifyEmail(PurpleConnection *gc,
+//                  const char *subject, const char *from,
+//                  const char *to, const char *url)
+//{
+//    return qQuailNotifyEmails(gc, 1, FALSE,
+//                             (subject == NULL ? NULL : &subject),
+//                             (from    == NULL ? NULL : &from),
+//                             (to      == NULL ? NULL : &to),
 //                             (url     == NULL ? NULL : &url));
-}
+//}
 
-static void *
-qQuailNotifyEmails(PurpleConnection *gc,
-                   size_t count, gboolean detailed,
-                   const char **subjects, const char **froms,
-                   const char **tos, const char **urls)
-{
-	QString str, title;
+//static void *
+//qQuailNotifyEmails(PurpleConnection *gc,
+//                   size_t count, gboolean detailed,
+//                   const char **subjects, const char **froms,
+//                   const char **tos, const char **urls)
+//{
+//	QString str, title;
 
-    //title = tr("You have new mail!");
-    title = "You have new mail!";
+//    //title = tr("You have new mail!");
+//    title = "You have new mail!";
 
-	str = "<p>";
+//	str = "<p>";
 
-	if (count == 1)
-        str += QString("%1 has 1 new e-mail.").arg(*tos);
-	else
-        str += QString("%1 has %2 new e-mails.").arg(*tos, count);
+//	if (count == 1)
+//        str += QString("%1 has 1 new e-mail.").arg(*tos);
+//	else
+//        str += QString("%1 has %2 new e-mails.").arg(*tos, count);
 
-	str += "</p>";
+//	str += "</p>";
 
-	if (count == 1)
-	{
-		if (froms != NULL)
-            str += QString("<p>From: %1</p>").arg(*froms);
+//	if (count == 1)
+//	{
+//		if (froms != NULL)
+//            str += QString("<p>From: %1</p>").arg(*froms);
 
-		if (subjects != NULL)
-            str += QString("<p>Subject: %1</p>").arg(*subjects);
-	}
+//		if (subjects != NULL)
+//            str += QString("<p>Subject: %1</p>").arg(*subjects);
+//	}
 
-	QMessageBox::information(NULL, title, str);
+//	QMessageBox::information(NULL, title, str);
 
-	return NULL;
-}
+//	return NULL;
+//}
 
 static void *
 qQuailNotifyFormatted(const char *title, const char *primary,
@@ -201,8 +197,8 @@ qQuailNotifyFormatted(const char *title, const char *primary,
 static PurpleNotifyUiOps notifyOps =
 {
 	qQuailNotifyMessage,
-	qQuailNotifyEmail,
-	qQuailNotifyEmails,
+    NULL /*qQuailNotifyEmail*/,
+    NULL /*qQuailNotifyEmails*/,
     qQuailNotifyFormatted,
 
     NULL, /* searchresults */

@@ -132,14 +132,28 @@ QQuailAccountItem::updatePulse()
 static void
 signedOnCb(PurpleConnection *gc, QQuailAccountsWindow *win)
 {
+    qDebug() << "QQuailAccountsWindow::signedOnCb";
 	win->accountSignedOn(purple_connection_get_account(gc));
 }
 
 static void
 signedOffCb(PurpleConnection *gc, QQuailAccountsWindow *win)
 {
+    qDebug() << "QQuailAccountsWindow::signedOffCb";
 	win->accountSignedOff(purple_connection_get_account(gc));
 }
+
+//static void
+//account_abled_cb(PurpleAccount *account, gpointer user_data)
+//{
+//    if (GPOINTER_TO_INT(user_data)) {
+
+
+//    } else {
+
+
+//    }
+//}
 
 /**************************************************************************
  * QQuailAccountsWindow
@@ -154,6 +168,11 @@ QQuailAccountsWindow::QQuailAccountsWindow(QMainWindow *parent)
                         this, PURPLE_CALLBACK(signedOnCb), this);
 	purple_signal_connect(purple_connections_get_handle(), "signed-off",
                         this, PURPLE_CALLBACK(signedOffCb), this);
+
+//    purple_signal_connect(purple_accounts_get_handle(), "account-disabled",
+//                        this, PURPLE_CALLBACK(account_abled_cb), GINT_TO_POINTER(FALSE));
+//    purple_signal_connect(purple_accounts_get_handle(), "account-enabled",
+//                        this, PURPLE_CALLBACK(account_abled_cb), GINT_TO_POINTER(TRUE));
 
 	loadAccounts();
 }
@@ -434,10 +453,13 @@ QQuailAccountsWindow::connectToAccount()
     connectButton->setEnabled(false);
 
     QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
+    PurpleAccount *account = item->getAccount();
 
-	item->startPulse(QQuailProtocolUtils::getProtocolIcon(item->getAccount()));
+    item->startPulse(QQuailProtocolUtils::getProtocolIcon(account));
 
-	purple_account_connect(item->getAccount());
+    //purple_account_set_enabled(account, UI_ID, TRUE);
+    purple_account_connect(account);
+    qDebug() << "QQuailAccountsWindow::connectToAccount.end";
 }
 
 void
@@ -572,6 +594,17 @@ qQuailConnNotice(PurpleConnection *gc, const char *text)
 	text = NULL;
 }
 
+static void
+qQuailConnectionReportDisconnectReason(PurpleConnection *gc,
+                                       PurpleConnectionError reason,
+                                       const char *text)
+{
+    Q_UNUSED(gc)
+    qDebug() << "QQuailAccountsWindow::qQuailConnectionReportDisconnectReason";
+    qDebug() << reason;
+    qDebug() << text;
+}
+
 static PurpleConnectionUiOps connUiOps =
 {
     qQuailConnConnectProgress, /*connect_progress*/
@@ -581,7 +614,7 @@ static PurpleConnectionUiOps connUiOps =
     NULL, /*report_disconnect */
     NULL, /* network_connected*/
     NULL, /* network_disconnected*/
-    NULL, /* report_disconnect_reason*/
+    qQuailConnectionReportDisconnectReason, /* report_disconnect_reason*/
     NULL,
     NULL,
     NULL

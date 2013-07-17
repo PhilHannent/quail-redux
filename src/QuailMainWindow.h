@@ -42,8 +42,7 @@ class QQuailMainWindow : public QMainWindow
         static QString appName() { return QString::fromLatin1(APP_NAME); }
 
 	public:
-		QQuailMainWindow(QWidget *parent = 0, const char *name = 0,
-                        Qt::WindowFlags fl = 0);
+        QQuailMainWindow(QWidget *parent = 0);
 		~QQuailMainWindow();
 
         void addConversationWindow(PurpleConversation *win);
