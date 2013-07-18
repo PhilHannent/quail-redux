@@ -45,7 +45,6 @@
 QQuailAccountItem::QQuailAccountItem(int index)
     : account(NULL), index(index), pulseTimer(0)
 {
-    qDebug() << "QQuailAccountItem::QQuailAccountItem";
 }
 
 QQuailAccountItem::~QQuailAccountItem()
@@ -90,14 +89,12 @@ QQuailAccountItem::stopPulse()
 void
 QQuailAccountItem::setAccount(PurpleAccount *account)
 {
-    qDebug() << "QQuailAccountItem::setAccount";
 	this->account = account;
 }
 
 PurpleAccount *
 QQuailAccountItem::getAccount() const
 {
-    qDebug() << "QQuailAccountItem::getAccount";
 	return account;
 }
 

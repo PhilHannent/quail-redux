@@ -61,10 +61,10 @@ QQuailInputNotifier::QQuailInputNotifier(int fd,
 	: QObject(), func(func), userData(userData), readNotifier(NULL),
 	  writeNotifier(NULL)
 {
-    qDebug() << "QQuailInputNotifier::QQuailInputNotifier";
+    //qDebug() << "QQuailInputNotifier::QQuailInputNotifier";
     if (cond & PURPLE_INPUT_READ)
 	{
-        qDebug() << "QQuailInputNotifier::QQuailInputNotifier::READ";
+        //qDebug() << "QQuailInputNotifier::QQuailInputNotifier::READ";
 		readNotifier = new QSocketNotifier(fd, QSocketNotifier::Read);
 
 		connect(readNotifier, SIGNAL(activated(int)),
@@ -73,7 +73,7 @@ QQuailInputNotifier::QQuailInputNotifier(int fd,
 
     if (cond & PURPLE_INPUT_WRITE)
 	{
-        qDebug() << "QQuailInputNotifier::QQuailInputNotifier::WRITE";
+        //qDebug() << "QQuailInputNotifier::QQuailInputNotifier::WRITE";
 		writeNotifier = new QSocketNotifier(fd, QSocketNotifier::Write);
 
 		connect(writeNotifier, SIGNAL(activated(int)),
@@ -93,7 +93,7 @@ QQuailInputNotifier::~QQuailInputNotifier()
 void
 QQuailInputNotifier::ioInvoke(int fd)
 {
-    qDebug() << "QQuailInputNotifier::ioInvoke";
+    //qDebug() << "QQuailInputNotifier::ioInvoke";
 	int cond = 0;
 
 	if (readNotifier != NULL)
@@ -109,7 +109,7 @@ QQuailInputNotifier::ioInvoke(int fd)
 static guint
 qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 {
-    qDebug() << "QQuailInputNotifier::qQuailTimeoutAdd";
+    //qDebug() << "QQuailInputNotifier::qQuailTimeoutAdd";
 	QQuailSourceInfo *info = new QQuailSourceInfo;
 
 	info->handle = nextSourceId++;
@@ -125,7 +125,7 @@ qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 static gboolean
 qQuailTimeoutRemove(guint handle)
 {
-    qDebug() << "QQuailInputNotifier::qQuailTimeoutRemove";
+    //qDebug() << "QQuailInputNotifier::qQuailTimeoutRemove";
 	qQuailSourceRemove(handle);
 
 	return 0;
@@ -137,7 +137,7 @@ qQuailInputAdd(int fd,
                PurpleInputFunction func,
                gpointer userData)
 {
-    qDebug() << "QQuailInputNotifier::qQuailInputAdd";
+    //qDebug() << "QQuailInputNotifier::qQuailInputAdd";
 	QQuailSourceInfo *info = new QQuailSourceInfo;
 
 	info->handle = nextSourceId++;
@@ -152,7 +152,7 @@ qQuailInputAdd(int fd,
 static gboolean
 qQuailSourceRemove(guint handle)
 {
-    qDebug() << "QQuailInputNotifier::qQuailSourceRemove";
+    //qDebug() << "QQuailInputNotifier::qQuailSourceRemove";
 	QQuailSourceInfo *info;
 
     info = sources.value(handle);
@@ -174,7 +174,7 @@ qQuailSourceRemove(guint handle)
 static int
 qQuailInputGetError(int /*fd*/, int */*error*/)
 {
-    qDebug() << "QQuailInputNotifier::qQuailInputGetError";
+    //qDebug() << "QQuailInputNotifier::qQuailInputGetError";
     return 0;
 }
 

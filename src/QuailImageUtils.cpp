@@ -113,31 +113,31 @@ QQuailImageUtils::saturate(QImage &image, float value)
 }
 
 QPixmap &
-QQuailImageUtils::greyPixmap(QPixmap &pixmap)
+QQuailImageUtils::greyPixmap(QPixmap &pixmap, QString name)
 {
-	QImage image;
+    QPixmap newPixmap;
+    if (!QPixmapCache::find(name, newPixmap)) {
+        QImage image = pixmap.toImage();
 
-    image = pixmap.toImage();
+        greyImage(image);
 
-	greyImage(image);
-
-	pixmap.convertFromImage(image);
-
-	return pixmap;
+        newPixmap.convertFromImage(image);
+    }
+    return newPixmap;
 }
 
 QPixmap &
-QQuailImageUtils::saturate(QPixmap &pixmap, float value)
+QQuailImageUtils::saturate(QPixmap &pixmap, float value, QString name)
 {
-	QImage image;
+    QPixmap newPixmap;
+    if (!QPixmapCache::find(name, newPixmap)) {
+        QImage image = pixmap.toImage();
 
-    image = pixmap.toImage();
+        saturate(image, value);
 
-	saturate(image, value);
-
-	pixmap.convertFromImage(image);
-
-	return pixmap;
+        newPixmap.convertFromImage(image);
+    }
+    return newPixmap;
 }
 
 void

@@ -70,14 +70,12 @@ qQuailPrefsInit(void)
 static void
 qQuailCoreDebugInit(void)
 {
-    qDebug() << "QQuailMainWindow::qQuailCoreDebugInit";
 	purple_debug_set_ui_ops(qQuailGetDebugUiOps());
 }
 
 static void
 qQuailCoreUiInit(void)
 {
-    qDebug() << "QQuailMainWindow::qQuailCoreUiInit";
 	purple_blist_set_ui_ops(qQuailGetBlistUiOps());
 	purple_connections_set_ui_ops(qQuailGetConnectionUiOps());
     purple_conversations_set_ui_ops(qQuailGetConvWindowUiOps());
@@ -88,7 +86,6 @@ qQuailCoreUiInit(void)
 static void
 qQuailCoreQuit(void)
 {
-    qDebug() << "QQuailMainWindow::qQuailCoreQuit";
 	exit(0);
 }
 
@@ -142,9 +139,7 @@ QQuailMainWindow::~QQuailMainWindow()
 void
 QQuailMainWindow::buildInterface()
 {
-    qDebug() << "QQuailMainWindow::buildInterface()";
     QVBoxLayout *vbox = new QVBoxLayout(this);
-    qDebug() << "QQuailMainWindow::buildInterface().1";
 
     widgetStack = new QStackedWidget(this);
     vbox->addWidget(widgetStack);
@@ -160,7 +155,6 @@ QQuailMainWindow::buildInterface()
 void
 QQuailMainWindow::initCore()
 {
-    qDebug() << "QQuailMainWindow::initCore()";
     char *path;
 
 	purple_core_set_ui_ops(qQuailGetCoreUiOps());
@@ -254,14 +248,12 @@ QQuailMainWindow::removeConversationWindow(QQuailConversation */*win*/)
 QQuailBListWindow *
 QQuailMainWindow::getBlistWindow() const
 {
-    qDebug() << "QQuailMainWindow::getBlistWindow()";
     return blistWin;
 }
 
 QQuailAccountsWindow *
 QQuailMainWindow::getAccountsWindow() const
 {
-    qDebug() << "QQuailMainWindow::getAccountsWindow()";
     return accountsWin;
 }
 
@@ -293,7 +285,6 @@ QQuailMainWindow::getMeters() const
 void
 QQuailMainWindow::showBlistWindow()
 {
-    qDebug() << "QQuailMainWindow::showBlistWindow()";
     if (blistWin == NULL)
 	{
 		blistWin = new QQuailBListWindow(this);
@@ -307,7 +298,6 @@ QQuailMainWindow::showBlistWindow()
 void
 QQuailMainWindow::showAccountsWindow()
 {
-    qDebug() << "QQuailMainWindow::showAccountsWindow()";
     if (accountsWin == NULL)
 	{
 		accountsWin = new QQuailAccountsWindow(this);

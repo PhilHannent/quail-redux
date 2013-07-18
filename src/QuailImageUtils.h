@@ -33,8 +33,8 @@ class QQuailImageUtils
 		static QImage &greyImage(QImage &image);
 		static QImage &desaturate(QImage &image, float value);
 		static QImage &saturate(QImage &image, float value);
-		static QPixmap &greyPixmap(QPixmap &pixmap);
-		static QPixmap &saturate(QPixmap &pixmap, float value);
+        static QPixmap &greyPixmap(QPixmap &pixmap, QString name);
+        static QPixmap &saturate(QPixmap &pixmap, float value, QString name);
 
         static void blendOnLower(int x, int y, QImage &upper,
 								 QImage &lower);
