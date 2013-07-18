@@ -43,7 +43,7 @@
 #include <QToolButton>
 
 QQuailAccountItem::QQuailAccountItem(int index)
-    : account(NULL), index(index), pulseTimer(0)
+    : account(NULL), index(index), pulseTimer(0), pulseOrigPixmapName("")
 {
 }
 
@@ -113,7 +113,7 @@ QQuailAccountItem::updatePulse()
 {
 	QPixmap tempPixmap(*pulseOrigPixmap);
 
-    setIcon(QQuailImageUtils::saturate(tempPixmap, pulseStep));
+    setIcon(QQuailImageUtils::saturate(tempPixmap, pulseStep, pulseOrigPixmapName));
 
 	if (pulseGrey)
 		pulseStep += 0.20;
@@ -223,8 +223,8 @@ QQuailAccountsWindow::accountSignedOff(PurpleAccount *account)
 	if (item != NULL)
 	{
 		QPixmap protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
-
-        item->setIcon(QQuailImageUtils::greyPixmap(protocolIcon));
+        QString protocolIconName = QQuailProtocolUtils::getProtocolIconName(account);
+        item->setIcon(QQuailImageUtils::greyPixmap(protocolIcon, protocolIconName));
 	}
 }
 
@@ -359,6 +359,7 @@ QQuailAccountsWindow::loadAccounts()
 		 l = l->next, index++)
 	{
 		QPixmap protocolIcon;
+        QString protocolIconName;
 		PurpleAccount *account = (PurpleAccount *)l->data;
 		QString protocolId = purple_account_get_protocol_id(account);
         qDebug() << "QQuailAccountsWindow::loadAccounts" << protocolId;
@@ -376,23 +377,18 @@ QQuailAccountsWindow::loadAccounts()
         itemProtocol->setAccount(account);
         //itemProtocol->setSizeHint();
         protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
+        protocolIconName = QQuailProtocolUtils::getProtocolIconName(account);
         if (purple_account_is_connected(account))
             itemProtocol->setIcon(protocolIcon);
         else
-            itemProtocol->setIcon(QQuailImageUtils::greyPixmap(protocolIcon));
+            itemProtocol->setIcon(QQuailImageUtils::greyPixmap(protocolIcon,
+                                                               protocolIconName));
 
 //        QQuailAccountCheckBox *itemEnabled = new QQuailAccountCheckBox(index);
 //        itemEnabled->setAccount(account);
 
-//        QQuailAccountItem *itemStatus = new QQuailAccountItem(index);
-//        itemStatus->setAccount(account);
-//        itemStatus->setText(tr("Unknown"));
-
         accountsWidget->setItem(index, 0, itemUserName);
         accountsWidget->setItem(index, 1, itemProtocol);
-//        accountsWidget->setCellWidget(index, 2, itemEnabled);
-//        accountsWidget->setItem(index, 3, itemStatus);
-
 
 	}
     accountsWidget->resizeColumnsToContents();

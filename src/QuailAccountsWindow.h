@@ -63,6 +63,7 @@ class QQuailAccountItem : public QObject, public QTableWidgetItem
 		bool pulseGrey;
 		float pulseStep;
 		QPixmap *pulseOrigPixmap;
+        QString pulseOrigPixmapName;
 };
 
 class QQuailAccountCheckBox : public QCheckBox

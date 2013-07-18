@@ -37,10 +37,12 @@ class QQuailProtocolUtils
 	public:
 		static QString getProtocolName(QString protocolId);
         static QPixmap getProtocolIcon(PurpleAccount *account);
+        static QString getProtocolIconName(PurpleAccount *account);
         static QPixmap getProtocolIcon(const PurplePlugin *plugin);
 
 	protected:
         static QPixmap getProtocolIcon(const QString &protoName);
+        static QString getProtocolIconName(const QString &protoName);
 };
 
 #endif /* _QUAIL_PROTOCOL_UTILS_H_ */

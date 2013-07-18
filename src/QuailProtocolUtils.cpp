@@ -73,8 +73,37 @@ QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account)
     return getProtocolIcon(prplInfo->list_icon(account, NULL));
 }
 
+QString
+QQuailProtocolUtils::getProtocolIconName(PurpleAccount *account)
+{
+    PurplePluginProtocolInfo *prplInfo = NULL;
+    PurplePlugin *prpl;
+
+    if (account == NULL)
+        return QString("");
+
+    prpl = purple_plugins_find_with_id(purple_account_get_protocol_id(account));
+
+    if (prpl == NULL)
+        return QString("");
+
+    prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
+
+    if (prplInfo->list_icon == NULL)
+        return QString("");
+
+    return getProtocolIconName(prplInfo->list_icon(account, NULL));
+}
+
+
 QPixmap
 QQuailProtocolUtils::getProtocolIcon(const QString &protoName)
 {
-    return QPixmap(":/data/images/protocols/" + protoName + ".svg");
+    return QPixmap(getProtocolIconName(protoName));
+}
+
+QString
+QQuailProtocolUtils::getProtocolIconName(const QString &protoName)
+{
+    return QString(":/data/images/protocols/" + protoName + ".svg");
 }
