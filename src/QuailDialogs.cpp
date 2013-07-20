@@ -150,13 +150,13 @@ QQuailAddBuddyDialog::populateGroupCombo()
 void
 QQuailAddBuddyDialog::accept()
 {
-//    PurpleConversation *conv;
+    PurpleConversation *conv;
     QString screenname = screenNameEntry->text();
-//	QString alias = aliasEntry->text();
-//	QString group = groupCombo->currentText();
-//	PurpleAccount *account;
-//	PurpleBuddy *b;
-//	PurpleGroup *g;
+    QString alias = aliasEntry->text();
+    QString group = groupCombo->currentText();
+    PurpleAccount *account;
+    PurpleBuddy *b;
+    PurpleGroup *g;
 
 	if (screenname.isEmpty())
 	{
@@ -167,24 +167,25 @@ QQuailAddBuddyDialog::accept()
 		return;
 	}
 
-//	conv = purple_find_conversation(screenname);
+    account = accountCombo->getCurrentAccount();
+    conv = purple_find_conversation_with_account(PURPLE_CONV_TYPE_UNKNOWN,
+                                                 screenname.toStdString().c_str(),
+                                                 account);
 
-//	if ((g = purple_find_group(group)) == NULL)
-//	{
-//		g = purple_group_new(group);
-//		purple_blist_add_group(g, NULL);
-//	}
 
-//	account = accountCombo->getCurrentAccount();
+    if ((g = purple_find_group(group.toStdString().c_str())) == NULL)
+    {
+        g = purple_group_new(group.toStdString().c_str());
+        purple_blist_add_group(g, NULL);
+    }
 
-//    b = purple_buddy_new(account, screenname.toStdString().c_str(),
-//                       (alias.isEmpty() ? NULL : (const char *)alias.toStdString().c_str()));
+    b = purple_buddy_new(account, screenname.toStdString().c_str(),
+                       (alias.isEmpty() ? NULL : (const char *)alias.toStdString().c_str()));
 
-    //purple_blist_add_buddy(b, NULL, g, NULL);
-//	serv_add_buddy(purple_account_get_connection(account), screenname, g);
+    purple_blist_add_buddy(b, NULL, g, NULL);
 
-//	if (conv != NULL)
-//		purple_conversation_update(conv, GAIM_CONV_UPDATE_ADD);
+    if (conv != NULL)
+        purple_conversation_update(conv, PURPLE_CONV_UPDATE_ADD);
 
 
 	QDialog::accept();
@@ -336,10 +337,10 @@ QQuailAddChatDialog::rebuildWidgetsFrame()
 		}
 		else
 		{
-//			QLineEdit *edit = new QLineEdit(pce->def, widgetsFrame);
-//			grid->addWidget(edit, row, 1);
-//			widgets.append(edit);
-//			edit->show();
+            QLineEdit *edit = new QLineEdit(pce->identifier, widgetsFrame);
+            grid->addWidget(edit, row, 1);
+            widgets.append(edit);
+            edit->show();
 		}
 
 		g_free(pce);
@@ -653,19 +654,19 @@ QQuailJoinChatDialog::accept()
 
 		if (pce->is_int)
 		{
-//			QSpinBox *spinbox = (QSpinBox *)widget;
+            QSpinBox *spinbox = (QSpinBox *)widget;
 
-//			g_hash_table_replace(components,
-//                                 g_strdup(pce->identifier),
-//                                 g_strdup(spinbox->text().trimmed()));
+            g_hash_table_replace(components,
+                                 g_strdup(pce->identifier),
+                                 g_strdup(spinbox->text().trimmed().toStdString().c_str()));
 		}
 		else
 		{
-//			QLineEdit *edit = (QLineEdit *)widget;
+            QLineEdit *edit = (QLineEdit *)widget;
 
-//			g_hash_table_replace(components,
-//								 g_strdup(pce->identifier),
-//                                 g_strdup(edit->text()));
+            g_hash_table_replace(components,
+                                 g_strdup(pce->identifier),
+                                 g_strdup(edit->text().toStdString().c_str()));
 		}
 
 		g_free(pce);
