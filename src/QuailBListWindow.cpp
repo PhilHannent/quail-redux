@@ -76,11 +76,15 @@ QQuailBListWindow::buildInterface()
 
 	/* Setup the buddy list */
     buddylist = new QQuailBuddyList(this);
+    connect(buddylist, SIGNAL(itemClicked(QTreeWidgetItem*,int)),
+            this, SLOT(nodeChanged(QTreeWidgetItem*, int)));
 
-    connect(buddylist, SIGNAL(currentChanged(QListWidgetItem *)),
-            this, SLOT(nodeChanged(QListWidgetItem *)));
-    connect(buddylist, SIGNAL(doubleClicked(QListWidgetItem *)),
-            this, SLOT(doubleClickList(QListWidgetItem *)));
+    connect(buddylist, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem*)),
+            this, SLOT(nodeChanged(QTreeWidgetItem *)));
+
+    connect(buddylist, SIGNAL(doubleClicked(QListWidgetItem *, int)),
+            this, SLOT(doubleClickList(QListWidgetItem *, int)));
+
 	connect(buddylist, SIGNAL(openIm(PurpleBuddy *)),
 			this, SLOT(openImSlot(PurpleBuddy *)));
 
@@ -311,7 +315,14 @@ QQuailBListWindow::reloadList()
  * Slots
  **************************************************************************/
 void
-QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item)
+QQuailBListWindow::currentNodeChanged(QTreeWidgetItem *item,
+                                      QTreeWidgetItem */*prevItem*/)
+{
+    nodeChanged(item, 0);
+}
+
+void
+QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item, int /*col*/)
 {
     qDebug() << "QQuailBListWindow::nodeChanged";
     QQuailBListItem *item;
@@ -352,7 +363,7 @@ QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item)
 }
 
 void
-QQuailBListWindow::doubleClickList(QTreeWidgetItem *_item)
+QQuailBListWindow::doubleClickList(QTreeWidgetItem *_item, int /*col*/)
 {
     qDebug() << "QQuailBListWindow::doubleClickList";
     QQuailBListItem *item;
@@ -528,8 +539,6 @@ removeChatCb(PurpleChat *chat)
 {
     qDebug() << "QQuailBListWindow::removeChatCb()";
 	purple_blist_remove_chat(chat);
-    //TODO: See if this is required any more
-    //purple_blist_save();
 }
 
 static void
@@ -580,8 +589,6 @@ removeGroupCb(PurpleGroup *group)
 	}
 
 	purple_blist_remove_group(group);
-    //TODO: See if this is required any more
-    //purple_blist_save();
 }
 
 void
@@ -775,30 +782,35 @@ QQuailBListWindow::openChatSlot(PurpleChat *chat)
 
 	if (chat == NULL)
 	{
+        qDebug() << "QQuailBListWindow::openChatSlot().1";
         item = (QQuailBListItem *)buddylist->currentItem();
 
 		if (item != NULL)
 		{
+            qDebug() << "QQuailBListWindow::openChatSlot().2";
 			node = item->getBlistNode();
 
             if (PURPLE_BLIST_NODE_IS_CHAT(node))
 				chat = (PurpleChat *)node;
 		}
 	}
-
+    qDebug() << "QQuailBListWindow::openChatSlot().3";
 	if (chat != NULL)
 	{
+        qDebug() << "QQuailBListWindow::openChatSlot().4";
 		serv_join_chat(purple_account_get_connection(chat->account),
 					   chat->components);
 	}
 	else
 	{
+        qDebug() << "QQuailBListWindow::openChatSlot().5";
 		QQuailJoinChatDialog *dialog;
 
         dialog = new QQuailJoinChatDialog(this);
 
         dialog->show();
 	}
+    qDebug() << "QQuailBListWindow::openChatSlot().end";
 }
 
 void

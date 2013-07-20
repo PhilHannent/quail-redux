@@ -150,6 +150,7 @@ QQuailAddBuddyDialog::populateGroupCombo()
 void
 QQuailAddBuddyDialog::accept()
 {
+    qDebug() << "QQuailAddBuddyDialog::accept()";
     PurpleConversation *conv;
     QString screenname = screenNameEntry->text();
     QString alias = aliasEntry->text();
@@ -365,7 +366,8 @@ QQuailAddChatDialog::accountChanged(int)
 void
 QQuailAddChatDialog::accept()
 {
-	PurpleConnection *gc;
+    qDebug() << "QQuailAddChatDialog::accept()";
+    PurpleConnection *gc;
 	PurpleChat *chat;
 	PurpleGroup *group;
 	GList *chatInfoList, *l;
@@ -529,6 +531,7 @@ QQuailNewImDialog::accept()
 QQuailJoinChatDialog::QQuailJoinChatDialog(QWidget *parent)
     : QDialog(parent)
 {
+
 	buildInterface();
 }
 
@@ -566,6 +569,18 @@ QQuailJoinChatDialog::buildInterface()
 			this, SLOT(accountChanged(int)));
 
 	rebuildWidgetsFrame();
+
+    QHBoxLayout *hbox = new QHBoxLayout(this);
+    okButton = new QPushButton(this);
+    okButton->setText(tr("Join"));
+    connect(okButton, SIGNAL(released()), this, SLOT(accept()));
+    hbox->addWidget(okButton);
+
+    cancelButton = new QPushButton(this);
+    cancelButton->setText(tr("Cancel"));
+    connect(cancelButton, SIGNAL(released()), this, SLOT(close()));
+    hbox->addWidget(cancelButton);
+    vbox->addLayout(hbox);
 }
 
 void
@@ -631,7 +646,8 @@ QQuailJoinChatDialog::accountChanged(int)
 void
 QQuailJoinChatDialog::accept()
 {
-	PurpleConnection *gc;
+    qDebug() << "QQuailJoinChatDialog::accept()";
+    PurpleConnection *gc;
 	GHashTable *components;
 	QWidget *widget;
 	GList *chatInfoList, *l;

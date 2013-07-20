@@ -136,6 +136,8 @@ class QQuailJoinChatDialog : public QDialog
 		QFrame *widgetsFrame;
         QList<QWidget*> labels;
         QList<QWidget*> widgets;
+        QPushButton *okButton;
+        QPushButton *cancelButton;
 };
 
 #endif /* _QUAIL_DIALOGS_H_ */
