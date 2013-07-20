@@ -33,17 +33,14 @@
 #include <libpurple/debug.h>
 #include <libpurple/prefs.h>
 
-//#include <qpe/resource.h>
-//#include <qpe/qpeapplication.h>
-
 #include <QAction>
-#include <QPushButton>
-//#include <qheader.h>
+#include <QDebug>
 #include <QLabel>
 #include <QLayout>
 #include <QListView>
 #include <QMessageBox>
 #include <QMenu>
+#include <QPushButton>
 #include <QSplitter>
 #include <QTabWidget>
 #include <QTextEdit>
@@ -853,9 +850,10 @@ QQuailConvWindow::getId() const
 }
 
 void
-QQuailConvWindow::tabChanged(QWidget *widget)
+QQuailConvWindow::tabChanged(int widgetId)
 {
-	QQuailConversation *qconv = (QQuailConversation *)widget;
+    qDebug() << "QQuailConvWindow::tabChanged";
+    QQuailConversation *qconv = (QQuailConversation *)this->getTabs()->widget(widgetId);
     PurpleConversation *conv = qconv->getConversation();
 	PurpleAccount *account = purple_conversation_get_account(conv);
 	PurplePlugin *prpl;
@@ -1047,8 +1045,8 @@ QQuailConvWindow::buildInterface()
 
     tabs = new QQuailTabWidget(this);
 
-	connect(tabs, SIGNAL(currentChanged(QWidget *)),
-			this, SLOT(tabChanged(QWidget *)));
+    connect(tabs, SIGNAL(currentChanged(int)),
+            this, SLOT(tabChanged(int)));
 
 	setCentralWidget(tabs);
 }

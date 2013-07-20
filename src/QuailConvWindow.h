@@ -179,7 +179,7 @@ class QQuailConvWindow : public QMainWindow
 		int getId() const;
 
 	protected slots:
-		void tabChanged(QWidget *widget);
+        void tabChanged(int widget);
 
 	protected:
 		virtual void destroy(bool destroyWindow = TRUE,

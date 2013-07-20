@@ -27,6 +27,7 @@
 #include <libpurple/debug.h>
 #include <libpurple/signals.h>
 
+#include <QDebug>
 #include <QMenu>
 
 static void
@@ -45,17 +46,18 @@ delConvCb(char *, QQuailConvButton *button)
 QQuailConvButton::QQuailConvButton(QWidget *parent)
     : QToolButton(parent), convs(NULL)
 {
+    qDebug() << "QQuailConvButton::QQuailConvButton()";
 	setAutoRaise(true);
     setIcon(QIcon(QPixmap(":/data/images/actions/conversations.png")));
 
-    menu = new QMenu();
+    menu = new QMenu(this);
 
     setMenu(menu);
 
 	connect(menu, SIGNAL(aboutToShow()),
 			this, SLOT(generateMenu()));
-	connect(menu, SIGNAL(activated(int)),
-			this, SLOT(convActivated(int)));
+    connect(menu, SIGNAL(triggered(QAction*)),
+            this, SLOT(convActivated(QAction*)));
 
 	connect(this, SIGNAL(clicked()),
 			this, SLOT(buttonClicked()));
@@ -89,6 +91,7 @@ QQuailConvButton::~QQuailConvButton()
 void
 QQuailConvButton::generateMenu()
 {
+    qDebug() << "QQuailConvButton::generateMenu()";
     PurpleConversation *conv;
 	GList *l;
 	size_t size;
@@ -110,6 +113,8 @@ QQuailConvButton::generateMenu()
 	{
 		PurpleAccount *account;
 		PurpleBuddy *buddy;
+        QAction *a = new QAction(menu);
+        a->setData(QVariant(i));
 
         conv = (PurpleConversation *)l->data;
 		account = purple_conversation_get_account(conv);
@@ -118,28 +123,27 @@ QQuailConvButton::generateMenu()
 
 		if (buddy == NULL)
 		{
-//            menu->addAction(
-//                QQuailProtocolUtils::getProtocolIcon(account),
-//				purple_conversation_get_title(conv), i);
+            a->setIcon(QQuailProtocolUtils::getProtocolIcon(account));
 		}
 		else
 		{
-//            menu->addAction(
-//                QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy),
-//				purple_conversation_get_title(conv), i);
+            a->setIcon(QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy));
 		}
+        a->setText(purple_conversation_get_title(conv));
+        menu->addAction(a);
 
 		convs[i] = conv;
 	}
 }
 
 void
-QQuailConvButton::convActivated(int id)
+QQuailConvButton::convActivated(QAction *id)
 {
+    qDebug() << "QQuailConvButton::convActivated()";
     PurpleConversation *conv;
     //QQuailConvWindow *win;
 
-	conv = convs[id];
+    conv = convs[id->data().toInt()];
 
 	if (g_list_find(purple_get_conversations(), conv) == NULL)
 	{
@@ -147,19 +151,22 @@ QQuailConvButton::convActivated(int id)
 		 * The conversation was somehow removed since this menu was
 		 * created.
 		 */
+        qDebug() << "QQuailConvButton::convActivated().1";
 		return;
 
 	}
 
 //	win = purple_conversation_get_window(conv);
-
+    purple_conversation_present(conv);
 //	purple_conv_window_switch_conversation(win, purple_conversation_get_index(conv));
 //	purple_conv_window_raise(win);
+    qDebug() << "QQuailConvButton::convActivated().end";
 }
 
 void
 QQuailConvButton::buttonClicked()
 {
+    qDebug() << "QQuailConvButton::buttonClicked()";
     //QQuailConversation *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
 
 //	if (lastWin != NULL)

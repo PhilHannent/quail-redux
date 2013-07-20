@@ -744,27 +744,31 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 
 	if (buddy != NULL)
 	{
-//        PurpleConversation *conv;
+        qDebug() << "QQuailBListWindow::openImSlot().1";
+        PurpleConversation *conv;
 //        QQuailConvWindow *win;
 
-//        conv = purple_conversation_new(PURPLE_CONV_TYPE_IM, buddy->account,
-//									 buddy->name);
+        conv = purple_conversation_new(PURPLE_CONV_TYPE_IM, buddy->account,
+                                     buddy->name);
 
-//		win = purple_conversation_get_window(conv);
+        purple_conversation_present(conv);
+//        win = purple_conversation_get_window(conv);
 //        win->raise();
-//		purple_conv_window_raise(win);
+//        purple_conv_window_raise(win);
 
-//		purple_conv_window_switch_conversation(win,
-//				purple_conversation_get_index(conv));
+//        purple_conv_window_switch_conversation(win,
+//                purple_conversation_get_index(conv));
 	}
 	else
 	{
+        qDebug() << "QQuailBListWindow::openImSlot().1";
 		QQuailNewImDialog *dialog;
 
 		dialog = new QQuailNewImDialog(this);
 
         dialog->show();
 	}
+    qDebug() << "QQuailBListWindow::openImSlot().end";
 }
 
 void

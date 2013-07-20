@@ -40,7 +40,7 @@ class QQuailConvButton : public QToolButton
 
 	protected slots:
 		void generateMenu();
-		void convActivated(int id);
+        void convActivated(QAction *id);
 		void buttonClicked();
 
 	private:

@@ -200,6 +200,7 @@ QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
 {
     qDebug() << "QQuailMainWindow::addConversationWindow()";
     PurpleConversationType conv_type = purple_conversation_get_type(conv);
+    QQuailConvWindow *qwin;
     QQuailConversation *win;
 
     if (conv_type == PURPLE_CONV_TYPE_IM) {
@@ -209,9 +210,10 @@ QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
     }
 
     conv->ui_data = win;
-    //win->setId(nextConvWinId++);
+    qwin = new QQuailConvWindow(win, this);
+    qwin->setId(nextConvWinId++);
 
-    getWidgetStack()->addWidget(win);
+    getWidgetStack()->addWidget(qwin);
 }
 
 void
