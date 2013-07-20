@@ -49,7 +49,8 @@ HEADERS = \
         src/QuailProtocolUtils.h \
         src/QuailRequest.h \
         src/QuailTabBar.h \
-        src/QuailTabWidget.h
+        src/QuailTabWidget.h \
+    src/global.h
 
 
 SOURCES = \
@@ -99,7 +100,6 @@ linux-g++* {
 	INCLUDEPATH += /usr/include/glib-2.0 \
 		/usr/lib/glib-2.0/include \
 		/usr/include/libpurple \
-		../pidgin-main/libpurple \
 		/usr/lib/x86_64-linux-gnu/glib-2.0/include
 
 	LIBS += /usr/lib/libpurple.so

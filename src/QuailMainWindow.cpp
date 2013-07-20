@@ -146,7 +146,7 @@ QQuailMainWindow::buildInterface()
 	vbox->setStretchFactor(widgetStack, 1);
 
 	/* Create the connection meters box. */
-    meters = new QQuailConnectionMeters();
+    meters = new QQuailConnectionMeters(this);
     vbox->addWidget(meters);
 
     setCentralWidget(widgetStack);

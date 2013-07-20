@@ -21,14 +21,15 @@
  */
 #include "QuailDialogs.h"
 #include "QuailAccountBox.h"
+#include "global.h"
 
 #include <libpurple/blist.h>
 #include <libpurple/conversation.h>
-//#include <libpurple/multi.h>
 #include <libpurple/notify.h>
 #include <libpurple/prpl.h>
 
 #include <QComboBox>
+#include <QDebug>
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
@@ -78,11 +79,8 @@ QQuailAddBuddyDialog::buildInterface()
 	QLabel *label;
 	QLabel *spacer;
     QVBoxLayout *vbox;
-//	QVBoxLayout *layout;
 
     setWindowTitle(tr("Add Buddy"));
-
-    //layout = new QVBoxLayout(this);
 
     vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
@@ -162,8 +160,10 @@ QQuailAddBuddyDialog::accept()
 
 	if (screenname.isEmpty())
 	{
-//		purple_notify_error(this, tr("Add Buddy"),
-//						  tr("You must specify a screen name to add."), NULL);
+        purple_notify_error(this,
+                            NULL,
+                            tr("Add Buddy").toStdString().c_str(),
+                            tr("You must specify a screen name to add.").toStdString().c_str());
 		return;
 	}
 
@@ -186,7 +186,6 @@ QQuailAddBuddyDialog::accept()
 //	if (conv != NULL)
 //		purple_conversation_update(conv, GAIM_CONV_UPDATE_ADD);
 
-//	purple_blist_save();
 
 	QDialog::accept();
 }
@@ -225,11 +224,8 @@ QQuailAddChatDialog::buildInterface()
 	QLabel *label;
 	QLabel *spacer;
     QVBoxLayout *vbox;
-//	QVBoxLayout *layout;
 
     setWindowTitle(tr("Add Chat"));
-
-//	layout = new QVBoxLayout(this);
 
     vbox = new QVBoxLayout(this);
 	vbox->setSpacing(5);
@@ -240,10 +236,8 @@ QQuailAddChatDialog::buildInterface()
                           "to your buddy list.</p>"));
 
     vbox->addWidget(label);
-//	labels.setAutoDelete(true);
-//	widgets.setAutoDelete(true);
 
-    widgetsFrame = new QFrame();
+    widgetsFrame = new QFrame(this);
     vbox->addWidget(widgetsFrame);
     grid = new QGridLayout();
     widgetsFrame->setLayout(grid);
@@ -429,7 +423,6 @@ QQuailAddChatDialog::accept()
 	if (chat != NULL)
 	{
 		purple_blist_add_chat(chat, group, NULL);
-        //purple_blist_save();
 	}
 
 	QDialog::accept();
@@ -500,26 +493,31 @@ QQuailNewImDialog::buildInterface()
 void
 QQuailNewImDialog::accept()
 {
+    qDebug() << "QQuailNewImDialog::accept()";
 	QString screenname = screenNameEntry->text();
-//	PurpleAccount *account;
-//    PurpleConversation *conv;
+    PurpleAccount *account;
+    PurpleConversation *conv;
 
 	if (screenname.isEmpty())
 		return;
 
-//	account = accountCombo->getCurrentAccount();
+    account = accountCombo->getCurrentAccount();
 
-//	conv = purple_find_conversation(screenname);
+    conv = purple_find_conversation_with_account(PURPLE_CONV_TYPE_IM,
+                                                 screenname.toStdString().c_str(),
+                                                 account);
 
-//	if (conv == NULL)
-//        conv = purple_conversation_new(PURPLE_CONV_IM, account, screenname);
-//	else
-//	{
-//		purple_conv_window_raise(purple_conversation_get_window(conv));
+    if (conv == NULL)
+        conv = purple_conversation_new(PURPLE_CONV_TYPE_IM,
+                                       account,
+                                       screenname.toStdString().c_str());
+    else
+    {
+        purple_conversation_present(conv);
 
-//		if (account)
-//			purple_conversation_set_account(conv, account);
-//	}
+        if (account)
+            purple_conversation_set_account(conv, account);
+    }
 
 	QDialog::accept();
 }
@@ -542,7 +540,6 @@ QQuailJoinChatDialog::setAccount(PurpleAccount *account)
 void
 QQuailJoinChatDialog::buildInterface()
 {
-	QLabel *spacer;
     QVBoxLayout *vbox;
 
     setWindowTitle(tr("Join Chat"));
@@ -558,9 +555,6 @@ QQuailJoinChatDialog::buildInterface()
     widgetsFrame->setLayout(grid);
 	grid->setSpacing(5);
 
-//	labels.setAutoDelete(true);
-//	widgets.setAutoDelete(true);
-
 	/* Account */
 	grid->addWidget(new QLabel(tr("Join Chat As:"), widgetsFrame), 0, 0);
     accountCombo = new QQuailAccountBox(false, widgetsFrame);
@@ -569,11 +563,6 @@ QQuailJoinChatDialog::buildInterface()
 	/* Connect the signal */
 	connect(accountCombo, SIGNAL(activated(int)),
 			this, SLOT(accountChanged(int)));
-
-	/* Add a spacer. */
-    spacer = new QLabel();
-    vbox->addWidget(spacer);
-	vbox->setStretchFactor(spacer, 1);
 
 	rebuildWidgetsFrame();
 }
@@ -597,8 +586,7 @@ QQuailJoinChatDialog::rebuildWidgetsFrame()
 	for (l = chatInfoList, row = 1; l != NULL; l = l->next, row++)
 	{
 		pce = (struct proto_chat_entry *)l->data;
-
-		label = new QLabel(tr(pce->label), widgetsFrame);
+        label = new QLabel(stripUnderscores(pce->label), widgetsFrame);
 		grid->addWidget(label, row, 0);
 		labels.append(label);
 		label->show();
@@ -617,9 +605,8 @@ QQuailJoinChatDialog::rebuildWidgetsFrame()
 		}
 		else
 		{
-            //QLineEdit *edit = new QLineEdit(pce->def, widgetsFrame);
             QLineEdit *edit = new QLineEdit(widgetsFrame);
-            edit->setText(pce->label);
+            edit->setText("");
 
 			grid->addWidget(edit, row, 1);
 
