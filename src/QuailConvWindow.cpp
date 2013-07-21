@@ -205,7 +205,7 @@ QQuailConversation::updated(PurpleConvUpdateType type)
     if (type == PURPLE_CONV_UPDATE_ACCOUNT)
 	{
 		purple_conversation_autoset_title(conv);
-
+//TODO: Update the buddy icon
 //        if (purple_conversation_get_type(conv) == PURPLE_CONV_TYPE_IM) {
 //			; /* Update buddy icon. */
 //        }
@@ -224,10 +224,8 @@ QQuailConversation::updated(PurpleConvUpdateType type)
     else if (type == PURPLE_CONV_UPDATE_ADD ||
              type == PURPLE_CONV_UPDATE_REMOVE)
 	{
-//        QQuailConvWindow *win = purple_conversation_get_window(conv);
-//        PurpleConvWindow *qwin = (PurpleConvWindow *)win->ui_data;
-
-//		qwin->updateAddRemoveButton();
+        QQuailConvWindow *qwin = (QQuailConvWindow *)conv->ui_data;
+        qwin->updateAddRemoveButton();
 	}
 }
 
@@ -294,29 +292,28 @@ QQuailConversation::stripFontFace(const QString &str)
 void
 QQuailConversation::updateTabIcon()
 {
-//	QQuailConvWindow *qwin;
-//    QQuailConvWindow *win;
+    QQuailConvWindow *qwin;
 	PurpleAccount *account;
 	PurpleBuddy *b;
 
-//	win = purple_conversation_get_window(conv);
-//	qwin = (QQuailConvWindow *)win->ui_data;
+    qwin = (QQuailConvWindow *)conv->ui_data;
 	account = purple_conversation_get_account(conv);
 
 	b = purple_find_buddy(account, purple_conversation_get_name(conv));
 
 	if (b == NULL)
 	{
-//		qwin->getTabs()->changeTab(this,
-//            QQuailProtocolUtils::getProtocolIcon(account),
-//			purple_conversation_get_title(conv));
+        qwin->getTabs()->setTabIcon(this->getTabId(),
+                                    QQuailProtocolUtils::getProtocolIcon(account));
 	}
 	else
 	{
-//		qwin->getTabs()->changeTab(this,
-//				QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)b),
-//				purple_conversation_get_title(conv));
+        qwin->getTabs()->setTabIcon(this->getTabId(),
+                                    QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)b));
 	}
+    qwin->getTabs()->setTabText(this->getTabId(),
+                                purple_conversation_get_title(conv));
+
 }
 
 /**************************************************************************
@@ -472,9 +469,9 @@ void
 QQuailConvChat::updateTyping()
 {
 //    QQuailConvWindow *win = purple_conversation_get_window(conv);
-//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+    QQuailConvWindow *qwin = (QQuailConvWindow *)conv->ui_data;
 
-//	qwin->setSendEnabled(entry->text().length() > 1);
+    qwin->setSendEnabled(entry->toPlainText().length() > 1);
 }
 
 void
