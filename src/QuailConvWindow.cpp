@@ -37,7 +37,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QLayout>
-#include <QListView>
+#include <QListWidget>
 #include <QMessageBox>
 #include <QMenu>
 #include <QPushButton>
@@ -339,15 +339,19 @@ QQuailConvChat::write(const char *who, const char *message,
 void
 QQuailConvChat::addUser(const char *user)
 {
-    QListWidgetItem *item = new QListWidgetItem(userList);
-
-	if (purple_conv_chat_is_user_ignored(chat, user))
-        item->setText("X"); /* XXX */
-	else
-        item->setText(" ");
-
+    QListWidgetItem *item = new QListWidgetItem();
     item->setText(user);
+
+    //TODO: Set the chat status icon
+//	if (purple_conv_chat_is_user_ignored(chat, user))
+//        item->setText("X"); /* XXX */
+//	else
+//        item->setText(" ");
+    //item->setIcon(QIcon());
+
+
     userList->addItem(item);
+
 }
 
 void
@@ -393,26 +397,28 @@ QQuailConvChat::removeUsers(GList *users)
 void
 QQuailConvChat::buildInterface()
 {
-//	QGridLayout *l = new QGridLayout(this, 2, 1, 5, 5);
+    QGridLayout *l = new QGridLayout(this);
 
-//	text  = new QTextView(this);
+    text  = new QTextEdit(this);
 
-//	entry = new QQuailMultiLineEdit(this);
-//	entry->setHistoryEnabled(true);
-//	entry->setFixedVisibleLines(3);
+    entry = new QQuailMultiLineEdit(this);
+    entry->setHistoryEnabled(true);
+    entry->setFixedHeight(3);
 
-//	userList = new QListView(this);
-//	userList->addColumn(tr("Ignored"), 5);
-//	userList->addColumn(tr("User"), -1);
-//	userList->setAllColumnsShowFocus(true);
-//	userList->setRootIsDecorated(false);
-//	userList->header()->hide();
-//	userList->setSorting(1);
+    /* For chats */
+    userList = new QListWidget(this);
+//    QStringList horzHeaders;
+//    horzHeaders << tr("Status Icon") << tr("User");
+//    userList->setColumnCount(horzHeaders.size());
+//    userList->setHorizontalHeaderLabels( horzHeaders );
+//    userList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //userList->header()->hide();
+    //userList->setSorting(1);
 	userList->hide();
 
-//	l->addWidget(text,  0, 0);
-//	l->addWidget(userList,  0, 1);
-//    l->addWidget(entry, 1, 1, 0, 1);
+    l->addWidget(text,  0, 0);
+    l->addWidget(userList,  0, 1);
+    l->addWidget(entry, 1, 1, 0, 1);
 
 	connect(entry, SIGNAL(returnPressed()),
 			this, SLOT(returnPressed()));
@@ -596,16 +602,13 @@ QQuailConvIm::updated(PurpleConvUpdateType type)
 void
 QQuailConvIm::buildInterface()
 {
-//	QGridLayout *l = new QGridLayout(this, 2, 1, 5, 5);
+    QVBoxLayout *l = new QVBoxLayout(this);
 
     text  = new QTextEdit(this);
     entry = new QQuailMultiLineEdit(this);
-//	entry->setWordWrap(QMultiLineEdit::WidgetWidth);
-//	entry->setHistoryEnabled(true);
-//	entry->setFixedVisibleLines(3);
 
-//	l->addWidget(text,  0, 0);
-//	l->addWidget(entry, 1, 0);
+    l->addWidget(text);
+    l->addWidget(entry);
 
 	connect(entry, SIGNAL(returnPressed()),
 			this, SLOT(returnPressed()));
@@ -856,7 +859,7 @@ QQuailConvWindow::tabChanged(int widgetId)
 	PurplePlugin *prpl;
 	PurplePluginProtocolInfo *prplInfo = NULL;
 
-//    purple_conversation_set_unseen(conv, QUAIL_UNSEEN_NONE);
+    //purple_conversation_set_unseen(conv, QUAIL_UNSEEN_NONE);
 
 	if (conv != NULL)
         qQuailGetMainWindow()->setWindowTitle(purple_conversation_get_title(conv));

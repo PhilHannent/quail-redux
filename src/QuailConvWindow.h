@@ -22,11 +22,8 @@
 #ifndef _QUAIL_CONV_WIN_H_
 #define _QUAIL_CONV_WIN_H_
 
-#include <QListWidget>
 #include <QMainWindow>
-#include <QTextEdit>
 #include <QToolButton>
-#include <QVariant>
 #include <QWidget>
 
 #include <libpurple/conversation.h>
@@ -34,9 +31,9 @@
 class QAction;
 class QQuailMultiLineEdit;
 class QQuailTabWidget;
-class QListView;
+class QListWidget;
 class QTabWidget;
-
+class QTextEdit;
 /**
  * Unseen text states.
  */
@@ -203,7 +200,6 @@ class QQuailConvWindow : public QMainWindow
 		QMainWindow *parentMainWindow;
 
         QQuailConversation *win;
-        QList<QQuailConversation*> quail_convsations;
 
 		int convWinId;
 
