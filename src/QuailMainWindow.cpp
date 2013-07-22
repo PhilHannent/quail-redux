@@ -28,6 +28,8 @@
 #include <QTimer>
 #include <QVariant>
 #include <QVBoxLayout>
+#include <QToolBar>
+#include <QAction>
 
 #include <libpurple/prefs.h>
 #include <libpurple/conversation.h>
@@ -113,7 +115,7 @@ qQuailGetCoreUiOps()
  **************************************************************************/
 QQuailMainWindow::QQuailMainWindow(QWidget *parent)
     : QMainWindow(parent),
-	  accountsWin(NULL), blistWin(NULL), nextConvWinId(0)
+      accountsWin(NULL), blistWin(NULL), nextConvWinId(0), convWin(0)
 {
     qDebug() << "QQuailMainWindow";
 	mainWin = this;
@@ -139,15 +141,12 @@ QQuailMainWindow::~QQuailMainWindow()
 void
 QQuailMainWindow::buildInterface()
 {
-    QVBoxLayout *vbox = new QVBoxLayout(this);
-
     widgetStack = new QStackedWidget(this);
-    vbox->addWidget(widgetStack);
-	vbox->setStretchFactor(widgetStack, 1);
 
 	/* Create the connection meters box. */
     meters = new QQuailConnectionMeters(this);
-    vbox->addWidget(meters);
+    widgetStack->addWidget(meters);
+//    vbox->addWidget(meters);
 
     setCentralWidget(widgetStack);
 }
@@ -199,21 +198,27 @@ void
 QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
 {
     qDebug() << "QQuailMainWindow::addConversationWindow()";
-    PurpleConversationType conv_type = purple_conversation_get_type(conv);
-    QQuailConvWindow *qwin;
-    QQuailConversation *win;
+//    PurpleConversationType conv_type = purple_conversation_get_type(conv);
+//    //QQuailConvWindow *qwin;
+//    QQuailConversation *win;
 
-    if (conv_type == PURPLE_CONV_TYPE_IM) {
-        win = new QQuailConvIm(conv, this);
-    } else if (conv_type == PURPLE_CONV_TYPE_CHAT) {
-        win = new QQuailConvChat(conv, this);
+//    if (conv_type == PURPLE_CONV_TYPE_IM) {
+//        win = new QQuailConvIm(conv, this);
+//    } else if (conv_type == PURPLE_CONV_TYPE_CHAT) {
+//        win = new QQuailConvChat(conv, this);
+//    }
+
+//    conv->ui_data = win;
+    if (convWin == 0)
+    {
+        convWin = new QQuailConvWindow(this);
+        getWidgetStack()->addWidget(convWin);
+        //qwin = new QQuailConvWindow(win, this);
+        //qwin->setId(nextConvWinId++);
     }
-
-    conv->ui_data = win;
-    qwin = new QQuailConvWindow(win, this);
-    qwin->setId(nextConvWinId++);
-
-    getWidgetStack()->addWidget(qwin);
+    convWin->addConversation(conv);
+    getWidgetStack()->setCurrentWidget(convWin);
+    qDebug() << "QQuailMainWindow::addConversationWindow().end";
 }
 
 void

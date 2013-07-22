@@ -65,42 +65,42 @@ QQuailMultiLineEdit::keyPressEvent(QKeyEvent *event)
 {
 	int key = event->key();
 
-	if (historyEnabled)
-	{
-        if (key == Qt::Key_Up)
-		{
-			if (history.count() > 0 &&
-				index < (signed int)history.count() - 1)
-			{
-				index++;
-				setText(history[index]);
-			}
-		}
-        else if (key == Qt::Key_Down)
-		{
-			if (history.count() > 0 && index > 0)
-			{
-				index--;
-				setText(history[index]);
-			}
+    if (historyEnabled)
+    {
+        if (historyEnabled && key == Qt::Key_Up)
+        {
+            if (history.count() > 0 &&
+                index < (signed int)history.count() - 1)
+            {
+                index++;
+                setText(history[index]);
+            }
+        }
+        else if (historyEnabled && key == Qt::Key_Down)
+        {
+            if (history.count() > 0 && index > 0)
+            {
+                index--;
+                setText(history[index]);
+            }
 
-			if (index == 0)
-			{
-				index = -1;
-				setText("");
-			}
-		}
+            if (index == 0)
+            {
+                index = -1;
+                setText("");
+            }
+        }
         else if (key == Qt::Key_Return)
-		{
+        {
             history.prepend(this->toPlainText());
-			index = -1;
-		}
+            index = -1;
+        }
         else if (key == Qt::Key_Tab)
-		{
-			/* TODO Tab completion */
-			return;
-		}
-	}
+        {
+            /* TODO Tab completion */
+            return;
+        }
+    }
 
     QTextEdit::keyPressEvent(event);
 }

@@ -72,7 +72,7 @@ class QQuailMainWindow : public QMainWindow
 		QQuailAccountsWindow *accountsWin;
 		QQuailBListWindow *blistWin;
 		QQuailConnectionMeters *meters;
-
+        QQuailConvWindow *convWin;
         QQuailConversation *lastConvWin;
 
 		int nextConvWinId;

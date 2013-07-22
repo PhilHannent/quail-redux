@@ -259,7 +259,7 @@ QQuailAccountsWindow::setupToolbar()
     QToolButton *button;
 
 	toolbar = new QToolBar(this);
-    toolbar->setMovable(false);
+    //toolbar->setMovable(false);
 
 	/* New */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/new.png")),

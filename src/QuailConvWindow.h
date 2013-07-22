@@ -155,11 +155,11 @@ class QQuailConvWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-        QQuailConvWindow(QQuailConversation *win, QMainWindow *parent);
+        QQuailConvWindow(QMainWindow *parent);
 		~QQuailConvWindow();
 
-        void setConvWindow(QQuailConversation *win);
-        QQuailConversation *getConvWindow() const;
+//        void setConvWindow(QQuailConversation *win);
+//        QQuailConversation *getConvWindow() const;
 
 		void switchConversation(unsigned int index);
         void addConversation(PurpleConversation *conv);
@@ -172,8 +172,8 @@ class QQuailConvWindow : public QMainWindow
 
 		QQuailTabWidget *getTabs() const;
 
-		void setId(int id);
-		int getId() const;
+//		void setId(int id);
+//		int getId() const;
 
 	protected slots:
         void tabChanged(int widget);
@@ -199,9 +199,9 @@ class QQuailConvWindow : public QMainWindow
 	private:
 		QMainWindow *parentMainWindow;
 
-        QQuailConversation *win;
+        //QQuailConversation *win;
 
-		int convWinId;
+        //int convWinId;
 
 		QToolBar *toolbar;
 		QQuailTabWidget *tabs;

@@ -115,7 +115,7 @@ QQuailBListWindow::buildToolBar()
 	QAction *a;
 	QToolButton *button;
 	toolbar = new QToolBar(this);
-    toolbar->setMovable(false);
+    //toolbar->setMovable(false);
 	/* IM */
     imButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-im.png")),
                     tr("Send IM"),
