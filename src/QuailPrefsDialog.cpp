@@ -293,10 +293,10 @@ QQuailPrefsDialog::buildInterface()
     tabs->addTab(blistPage, tr("Buddy List"));
     tabs->addTab(notifyPage, tr("Notification"));
 #if 0
-	tabs->addTab(convPage,     "gaim/16x16/conversations", tr("Conversations"));
-	tabs->addTab(awayIdlePage, "gaim/16x16/away",          tr("Away/Idle"));
-	tabs->addTab(proxyPage,    "gaim/16x16/network",       tr("Proxy"));
-	tabs->addTab(pluginPage,   "gaim/16x16/connect",       tr("Plugins"));
+    tabs->addTab(convPage, tr("Conversations"));
+    tabs->addTab(awayIdlePage, tr("Away/Idle"));
+    tabs->addTab(proxyPage, tr("Proxy"));
+    tabs->addTab(pluginPage, tr("Plugins"));
 #endif
 
     tabs->setCurrentIndex(0);
