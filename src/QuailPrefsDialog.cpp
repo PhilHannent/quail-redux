@@ -305,10 +305,6 @@ QQuailPrefsDialog::buildInterface()
 void
 QQuailPrefsDialog::accept()
 {
-//	OWait wait(this);
-
-//	wait.show();
-
 	blistPage->accept();
 	notifyPage->accept();
 #if 0
@@ -318,15 +314,10 @@ QQuailPrefsDialog::accept()
 	pluginPage->accept();
 #endif
 
-    //QDialog::accept();
-
-//	wait.hide();
 }
 
 void
 QQuailPrefsDialog::done(int /*r*/)
 {
-    //QDialog::done(r);
-
 	close();
 }
