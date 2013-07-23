@@ -20,6 +20,7 @@
  * MA  02111-1307  USA
  */
 #include "QuailPrefsDialog.h"
+#include "QuailBListWindow.h"
 #include "QuailMainWindow.h"
 
 #include <libpurple/debug.h>
@@ -27,15 +28,13 @@
 
 #include <QDebug>
 #include <QCheckBox>
-#include <QLabel>
-#include <qlayout.h>
-#include <QVBoxLayout>
 #include <QGroupBox>
+#include <QLabel>
+#include <QLayout>
+#include <QTabWidget>
+#include <QVBoxLayout>
 
-//#include <opie/otabwidget.h>
-//#include <opie/owait.h>
-
-//#include <qpe/resource.h>
+//TODO: Changes need to apply instantly or we have a button
 
 /**************************************************************************
  * QQuailBlistPrefPage
@@ -292,7 +291,7 @@ QQuailPluginPrefPage::buildInterface()
  * QQuailPrefsDialog
  **************************************************************************/
 QQuailPrefsDialog::QQuailPrefsDialog(QWidget *parent)
-    : QDialog(parent)
+    : QWidget(parent)
 {
     qDebug() << "QQuailPrefsDialog::QQuailPrefsDialog()";
 	buildInterface();
@@ -352,15 +351,15 @@ QQuailPrefsDialog::accept()
 	pluginPage->accept();
 #endif
 
-	QDialog::accept();
+    //QDialog::accept();
 
 //	wait.hide();
 }
 
 void
-QQuailPrefsDialog::done(int r)
+QQuailPrefsDialog::done(int /*r*/)
 {
-	QDialog::done(r);
+    //QDialog::done(r);
 
 	close();
 }

@@ -74,7 +74,6 @@ class QQuailBListWindow : public QMainWindow
 		void showConfirmRemoveGroup(PurpleGroup *group);
 
 		void showOfflineBuddies(bool on);
-		void showPreferencesSlot();
 
 		void blistToggled(bool state);
 		void openImSlot(PurpleBuddy *buddy);

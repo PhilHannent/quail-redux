@@ -27,12 +27,12 @@
 
 #include <libpurple/conversation.h>
 
-#include "QuailBListWindow.h"
-
 class QQuailAccountsWindow;
+class QQuailBListWindow;
 class QQuailConnectionMeters;
 class QQuailConvWindow;
 class QQuailConversation;
+class QQuailPrefsDialog;
 
 class QQuailMainWindow : public QMainWindow
 {
@@ -61,6 +61,7 @@ class QQuailMainWindow : public QMainWindow
 		void showBlistWindow();
 		void showAccountsWindow();
         void showConvWindow();
+        void showPrefWindow();
 
 	protected:
 		void buildInterface();
@@ -75,6 +76,7 @@ class QQuailMainWindow : public QMainWindow
 		QQuailConnectionMeters *meters;
         QQuailConvWindow *convWin;
         QQuailConversation *lastConvWin;
+        QQuailPrefsDialog *prefWin;
 
 		int nextConvWinId;
 };

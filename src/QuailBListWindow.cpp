@@ -23,12 +23,9 @@
 #include "QuailConvButton.h"
 #include "QuailConvWindow.h"
 #include "QuailDialogs.h"
-#include "QuailPrefsDialog.h"
 #include "QuailMainWindow.h"
 
 #include <libpurple/debug.h>
-//TODO: Find the replacement for multi.h
-//#include <libpurple/multi.h>
 #include <libpurple/prefs.h>
 #include <libpurple/request.h>
 #include <libpurple/signals.h>
@@ -233,7 +230,7 @@ QQuailBListWindow::buildToolBar()
     a = new QAction(tr("Preferences"), this);
     settingsMenu->addAction(a);
     connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(showPreferencesSlot()));
+            parentMainWindow, SLOT(showPrefWindow()));
 
     this->addToolBar(toolbar);
     qDebug() << "QQuailBListWindow::buildToolBar.end";
@@ -713,15 +710,6 @@ QQuailBListWindow::showOfflineBuddies(bool on)
     purple_prefs_set_bool("/quail/blist/show_offline_buddies", on);
 
 	buddylist->reload(true);
-}
-
-void
-QQuailBListWindow::showPreferencesSlot()
-{
-    qDebug() << "QQuailBListWindow::showPreferencesSlot()";
-	QQuailPrefsDialog *prefsDialog = new QQuailPrefsDialog();
-
-    prefsDialog->show();
 }
 
 void

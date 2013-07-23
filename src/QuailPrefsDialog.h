@@ -135,7 +135,7 @@ class QQuailPluginPrefPage : public QQuailPrefPage
 		void buildInterface();
 };
 
-class QQuailPrefsDialog : public QDialog
+class QQuailPrefsDialog : public QWidget
 {
 	Q_OBJECT
 

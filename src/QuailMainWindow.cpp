@@ -39,11 +39,13 @@
 #include <libpurple/pounce.h>
 #include <libpurple/plugin.h>
 
+#include "QuailBListWindow.h"
 #include "QuailConnectionMeter.h"
 #include "QuailConvWindow.h"
 #include "QuailDebugWindow.h"
 #include "QuailEventLoop.h"
 #include "QuailNotify.h"
+#include "QuailPrefsDialog.h"
 #include "QuailRequest.h"
 
 static QQuailMainWindow *mainWin = NULL;
@@ -115,7 +117,12 @@ qQuailGetCoreUiOps()
  **************************************************************************/
 QQuailMainWindow::QQuailMainWindow(QWidget *parent)
     : QMainWindow(parent),
-      accountsWin(NULL), blistWin(NULL), convWin(0), nextConvWinId(0)
+      accountsWin(NULL),
+      blistWin(NULL),
+      convWin(0),
+      lastConvWin(0),
+      prefWin(0),
+      nextConvWinId(0)
 {
     qDebug() << "QQuailMainWindow";
 	mainWin = this;
@@ -318,11 +325,26 @@ QQuailMainWindow::showAccountsWindow()
 void
 QQuailMainWindow::showConvWindow()
 {
-    if (convWin == NULL)
+    if (convWin == 0)
         return;
 
     setWindowTitle(tr("Conversations"));
     widgetStack->setCurrentWidget(convWin);
+}
+
+void
+QQuailMainWindow::showPrefWindow()
+{
+    qDebug() << "QQuailMainWindow::showPrefWindow()";
+    if (prefWin == 0)
+    {
+        qDebug() << "QQuailMainWindow::showPrefWindow().1";
+        prefWin = new QQuailPrefsDialog(this);
+        widgetStack->addWidget(prefWin);
+    }
+    setWindowTitle(tr("Preferences"));
+    widgetStack->setCurrentWidget(prefWin);
+    qDebug() << "QQuailMainWindow::showPrefWindow().end";
 }
 
 QQuailMainWindow *
