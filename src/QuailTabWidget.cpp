@@ -21,11 +21,22 @@
  */
 #include "QuailTabWidget.h"
 #include "QuailTabBar.h"
+#include "QuailConvWindow.h"
+
+#include <QDebug>
 
 QQuailTabWidget::QQuailTabWidget(QWidget *parent)
     : QTabWidget(parent)
 {
     setTabBar(new QQuailTabBar(this));
+    connect(this, SIGNAL(currentChanged(int)),
+            parent, SLOT(tabChanged(int)));
+
+    connect(parent, SIGNAL(signalSendMessage()),
+            this, SLOT(slotSendMessage()));
+
+    connect(this, SIGNAL(signalSendEnabled(bool)),
+            parent, SLOT(slotSendEnabled(bool)));
 }
 
 void
@@ -50,4 +61,19 @@ int
 QQuailTabWidget::getLastId() const
 {
 	return ((QQuailTabBar *)tabBar())->getLastId();
+}
+
+void
+QQuailTabWidget::slotSendEnabled(bool bEnabled)
+{
+    qDebug() << "QQuailTabWidget::slotSendEnabled(bool bEnabled)";
+    emit signalSendEnabled(bEnabled);
+}
+
+void
+QQuailTabWidget::slotSendMessage()
+{
+    qDebug() << "QQuailTabWidget::slotSendMessage()";
+    QQuailConversation* qconv = (QQuailConversation*)this->currentWidget();
+    qconv->send();
 }

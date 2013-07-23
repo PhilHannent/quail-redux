@@ -37,6 +37,13 @@ class QQuailTabWidget : public QTabWidget
 		void setTabColor(int index, const QColor &color);
 
 		int getLastId() const;
+
+    public slots:
+        void slotSendMessage();
+        void slotSendEnabled(bool bEnabled);
+
+    signals:
+        void signalSendEnabled(bool bEnabled);
 };
 
 #endif /* _QUAIL_TAB_WIDGET_H_ */

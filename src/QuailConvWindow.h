@@ -52,7 +52,7 @@ class QQuailConversation : public QWidget
 	Q_OBJECT
 
 	public:
-        QQuailConversation(PurpleConversation *conv, QWidget *parent = NULL);
+        QQuailConversation(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
 		virtual ~QQuailConversation();
 
         void setConversation(PurpleConversation *conv);
@@ -76,6 +76,9 @@ class QQuailConversation : public QWidget
 
 		void updateTabIcon();
 
+    signals:
+        void signalSendEnabled(bool bEnabled);
+
 	protected:
         PurpleConversation *conv;
         QTextEdit *text;
@@ -89,7 +92,7 @@ class QQuailConvChat : public QQuailConversation
 	Q_OBJECT
 
 	public:
-        QQuailConvChat(PurpleConversation *conv, QWidget *parent = NULL);
+        QQuailConvChat(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
 		virtual ~QQuailConvChat();
 
 		void write(const char *who, const char *message,
@@ -127,7 +130,7 @@ class QQuailConvIm : public QQuailConversation
 	Q_OBJECT
 
 	public:
-        QQuailConvIm(PurpleConversation *conv, QWidget *parent = NULL);
+        QQuailConvIm(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
 		virtual ~QQuailConvIm();
 
 		void write(const char *who, const char *message,
@@ -168,12 +171,11 @@ class QQuailConvWindow : public QMainWindow
 		int getActiveIndex() const;
 
 		void updateAddRemoveButton();
-		void setSendEnabled(bool enabled);
 
 		QQuailTabWidget *getTabs() const;
 
-//		void setId(int id);
-//		int getId() const;
+    public slots:
+        void slotSendEnabled(bool enabled);
 
 	protected slots:
         void tabChanged(int widget);
@@ -192,11 +194,13 @@ class QQuailConvWindow : public QMainWindow
 		void userListToggled(bool on);
 		void showBlist();
 
+    signals:
+        void signalSendMessage();
+
 	private:
 		void buildInterface();
 		void setupToolbar();
 
-	private:
 		QMainWindow *parentMainWindow;
 
         //QQuailConversation *win;

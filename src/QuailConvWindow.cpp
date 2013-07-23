@@ -54,10 +54,12 @@
  * QQuailConversation
  **************************************************************************/
 QQuailConversation::QQuailConversation(PurpleConversation *conv,
-                                     QWidget *parent)
+                                     QQuailTabWidget *parent)
     : QWidget(parent), conv(conv), text(NULL), notifying(false)
 {
     qDebug() << "QQuailConversation::QQuailConversation()";
+    connect(this, SIGNAL(signalSendEnabled(bool)),
+            parent, SIGNAL(signalSendEnabled(bool)));
 }
 
 QQuailConversation::~QQuailConversation()
@@ -325,7 +327,7 @@ QQuailConversation::updateTabIcon()
 /**************************************************************************
  * QQuailConvChat
  **************************************************************************/
-QQuailConvChat::QQuailConvChat(PurpleConversation *conv, QWidget *parent)
+QQuailConvChat::QQuailConvChat(PurpleConversation *conv, QQuailTabWidget *parent)
     : QQuailConversation(conv, parent), chat(PURPLE_CONV_CHAT(conv))
 {
     qDebug() << "QQuailConvChat::QQuailConvChat()";
@@ -493,9 +495,11 @@ QQuailConvChat::updateTyping()
 {
     qDebug() << "QQuailConvChat::updateTyping()";
 //    QQuailConvWindow *win = purple_conversation_get_window(conv);
-    QQuailConvWindow *qwin = (QQuailConvWindow *)conv->ui_data;
+    //QQuailConvWindow *qwin = (QQuailConvWindow *)conv->ui_data;
 
-    qwin->setSendEnabled(entry->toPlainText().length() > 1);
+    //qwin->setSendEnabled(entry->toPlainText().length() > 1);
+    emit signalSendEnabled(entry->toPlainText().length() > 1);
+
 }
 
 void
@@ -549,7 +553,7 @@ QQuailConvChat::updated(PurpleConvUpdateType type)
 /**************************************************************************
  * QQuailConvIm
  **************************************************************************/
-QQuailConvIm::QQuailConvIm(PurpleConversation *conv, QWidget *parent)
+QQuailConvIm::QQuailConvIm(PurpleConversation *conv, QQuailTabWidget *parent)
     : QQuailConversation(conv, parent), im(PURPLE_CONV_IM(conv))
 {
     qDebug() << "QQuailConvIm::QQuailConvIm()";
@@ -676,14 +680,15 @@ void
 QQuailConvIm::updateTyping()
 {
     qDebug() << "QQuailConvIm::updateTyping()";
-//    QQuailConvWindow *win = purple_conversation_get_window(conv);
-//	QQuailConvWindow *qwin = (QQuailConvWindow *)win->ui_data;
+    //QQuailConvWindow *win = purple_conversation_get_window(conv);
+    QQuailConvIm *qwin = (QQuailConvIm *)conv->ui_data;
     size_t length = entry->toPlainText().length();
 
-//	qwin->setSendEnabled(length > 0);
+    //qwin->setSendEnabled(length > 0);
+    emit signalSendEnabled(length > 1);
 
-	if (!purple_prefs_get_bool("/core/conversations/im/send_typing"))
-		return;
+//	if (!purple_prefs_get_bool("/core/conversations/im/send_typing"))
+//		return;
 
 //	if (purple_conv_im_get_type_again_timeout(im))
 //		purple_conv_im_stop_type_again_timeout(im);
@@ -767,7 +772,7 @@ QQuailConvWindow::addConversation(PurpleConversation *conv)
     else if (type == PURPLE_CONV_TYPE_CHAT)
     {
         qDebug() << "QQuailConvWindow::addConversation().2";
-        qconv = new QQuailConvChat(conv);
+        qconv = new QQuailConvChat(conv, tabs);
     }
 	else
     {
@@ -866,7 +871,7 @@ QQuailConvWindow::updateAddRemoveButton()
 }
 
 void
-QQuailConvWindow::setSendEnabled(bool enabled)
+QQuailConvWindow::slotSendEnabled(bool enabled)
 {
     qDebug() << "QQuailConvWindow::setSendEnabled()";
 	sendButton->setEnabled(enabled);
@@ -1042,6 +1047,7 @@ void
 QQuailConvWindow::send()
 {
     qDebug() << "QQuailConvWindow::send()";
+    emit signalSendMessage();
 //    PurpleConversation *conv;
 //	QQuailConversation *qconv;
 
@@ -1091,9 +1097,6 @@ QQuailConvWindow::buildInterface()
 	setupToolbar();
 
     tabs = new QQuailTabWidget(this);
-
-    connect(tabs, SIGNAL(currentChanged(int)),
-            this, SLOT(tabChanged(int)));
 
 	setCentralWidget(tabs);
 }

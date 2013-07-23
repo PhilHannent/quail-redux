@@ -889,7 +889,7 @@ qQuailBlistUpdate(PurpleBuddyList *blist, PurpleBlistNode *node)
 static void
 qQuailBlistRemove(PurpleBuddyList *blist, PurpleBlistNode *node)
 {
-    qDebug() << "QQuailBListWindow::qQuailBlistRemove()";
+    //qDebug() << "QQuailBListWindow::qQuailBlistRemove()";
 	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
 	QQuailBListItem *item = (QQuailBListItem *)node->ui_data;
 	QQuailBListItem *parent;
