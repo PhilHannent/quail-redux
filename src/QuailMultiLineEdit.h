@@ -40,6 +40,9 @@ class QQuailMultiLineEdit : public QTextEdit
 	protected:
 		void keyPressEvent(QKeyEvent *event);
 
+    signals:
+        void returnPressed();
+
 	protected:
 		bool historyEnabled;
 		QStringList history;

@@ -43,6 +43,9 @@ class QQuailConvButton : public QToolButton
         void convActivated(QAction *id);
 		void buttonClicked();
 
+    signals:
+        void signalShowConvWindow();
+
 	private:
         QMenu *menu;
         PurpleConversation **convs;

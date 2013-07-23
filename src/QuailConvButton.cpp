@@ -109,7 +109,9 @@ QQuailConvButton::generateMenu()
 
     convs = new PurpleConversation*[size];
 
-	for (l = purple_get_conversations(), i = 0; l != NULL; l = l->next, i++)
+    for (l = purple_get_conversations(), i = 0;
+         l != NULL;
+         l = l->next, i++)
 	{
 		PurpleAccount *account;
 		PurpleBuddy *buddy;
@@ -168,7 +170,7 @@ QQuailConvButton::buttonClicked()
 {
     qDebug() << "QQuailConvButton::buttonClicked()";
     //QQuailConversation *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
-
+    emit signalShowConvWindow();
 //	if (lastWin != NULL)
 //		purple_conv_window_raise(lastWin);
 }

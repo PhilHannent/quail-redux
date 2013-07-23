@@ -52,7 +52,8 @@ class QQuailConversation : public QWidget
 	Q_OBJECT
 
 	public:
-        QQuailConversation(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
+        QQuailConversation(PurpleConversation *conv,
+                           QQuailTabWidget *parent = NULL);
 		virtual ~QQuailConversation();
 
         void setConversation(PurpleConversation *conv);
@@ -190,9 +191,7 @@ class QQuailConvWindow : public QMainWindow
 		void addRemoveBuddySlot();
 		void userInfoSlot();
 		void send();
-		void showAccountsWindow();
 		void userListToggled(bool on);
-		void showBlist();
 
     signals:
         void signalSendMessage();

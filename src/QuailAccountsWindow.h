@@ -115,8 +115,6 @@ class QQuailAccountsWindow : public QMainWindow
 		void connectToAccount();
 		void disconnectFromAccount();
 
-		void showBlist();
-
 		void accountsToggled(bool state);
         void accountSelected();
 

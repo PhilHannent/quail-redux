@@ -76,7 +76,6 @@ class QQuailBListWindow : public QMainWindow
 		void showOfflineBuddies(bool on);
 		void showPreferencesSlot();
 
-		void showAccountsWindow();
 		void blistToggled(bool state);
 		void openImSlot(PurpleBuddy *buddy);
 		void openImSlot();

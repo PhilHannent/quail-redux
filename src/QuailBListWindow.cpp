@@ -116,7 +116,36 @@ QQuailBListWindow::buildToolBar()
 	QToolButton *button;
 	toolbar = new QToolBar(this);
     //toolbar->setMovable(false);
-	/* IM */
+
+    /* Buddy List */
+    blistButton = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
+                              tr("Buddy List"),
+                              this);
+    blistButton->setChecked(true);
+    toolbar->addAction(blistButton);
+    connect(blistButton, SIGNAL(toggled(bool)),
+            this, SLOT(blistToggled(bool)));
+
+    /* Accounts */
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
+                    tr("Accounts"),
+                    this);
+    toolbar->addAction(a);
+    connect(a, SIGNAL(triggered(bool)),
+            parentMainWindow, SLOT(showAccountsWindow()));
+
+    /* Conversations */
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/conversations.png")),
+                    tr("Conversations"),
+                    this);
+    toolbar->addAction(a);
+    connect(a, SIGNAL(triggered(bool)),
+            parentMainWindow, SLOT(showConvWindow()));
+
+    /* Now we're going to construct the toolbar on the right. */
+    toolbar->addSeparator();
+
+    /* IM */
     imButton = new QAction(QIcon(QPixmap(":/data/images/actions/new-im.png")),
                     tr("Send IM"),
                     this);
@@ -140,13 +169,12 @@ QQuailBListWindow::buildToolBar()
     button = new QToolButton(toolbar);
 	button->setAutoRaise(true);
     button->setIcon(QIcon(QPixmap(":/data/images/actions/add.png")));
-	button->setEnabled(false);
+    button->setEnabled(true);
 	addButton = button;
     toolbar->addWidget(addButton);
 
     addMenu = new QMenu(button);
     button->setMenu(addMenu);
-    //button->setPopupDelay(0);
 
 	/* Add Buddy */
     addBuddyButton = new QAction(QIcon(QPixmap(":/data/images/actions/user.png")),
@@ -175,7 +203,7 @@ QQuailBListWindow::buildToolBar()
                                tr("Remove"),
                                this);
     toolbar->addAction(removeButton);
-    removeButton->setEnabled(false);
+    removeButton->setEnabled(true);
     connect(removeButton, SIGNAL(triggered(bool)),
 			this, SLOT(showRemoveBuddy()));
 
@@ -183,12 +211,11 @@ QQuailBListWindow::buildToolBar()
 
 	/* Settings menu */
     button = new QToolButton(this);
-    toolbar->addWidget(button);
 	button->setAutoRaise(true);
     button->setIcon(QIcon(QPixmap(":/data/images/actions/settings.png")));
-
     settingsMenu = new QMenu(this);
     button->setMenu(settingsMenu);
+    toolbar->addWidget(button);
 
 	/* Show Offline Buddies */
     showOfflineButton = new QAction(QIcon(QPixmap(":/data/images/actions/offline_buddies.png")),
@@ -208,29 +235,6 @@ QQuailBListWindow::buildToolBar()
     connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(showPreferencesSlot()));
 
-	/* Now we're going to construct the toolbar on the right. */
-    //toolbar->addSeparator();
-
-	/* Buddy List */
-    blistButton = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
-                              tr("Buddy List"),
-                              this);
-    blistButton->setChecked(true);
-    toolbar->addAction(blistButton);
-	connect(blistButton, SIGNAL(toggled(bool)),
-			this, SLOT(blistToggled(bool)));
-
-	/* Accounts */
-    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
-                    tr("Accounts"),
-                    this);
-    toolbar->addAction(a);
-    connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(showAccountsWindow()));
-
-	/* Conversations */
-    button = new QQuailConvButton(toolbar);
-    toolbar->addWidget(button);
     this->addToolBar(toolbar);
     qDebug() << "QQuailBListWindow::buildToolBar.end";
 }
@@ -718,13 +722,6 @@ QQuailBListWindow::showPreferencesSlot()
 	QQuailPrefsDialog *prefsDialog = new QQuailPrefsDialog();
 
     prefsDialog->show();
-}
-
-void
-QQuailBListWindow::showAccountsWindow()
-{
-    qDebug() << "QQuailBListWindow::showAccountsWindow()";
-	qQuailGetMainWindow()->showAccountsWindow();
 }
 
 void

@@ -419,7 +419,9 @@ QQuailConvChat::buildInterface()
 
     entry = new QQuailMultiLineEdit(this);
     entry->setHistoryEnabled(true);
-    entry->setFixedHeight(3);
+    QFontMetrics m (entry->font()) ;
+    int RowHeight = m.lineSpacing() ;
+    entry->setFixedHeight(2 * RowHeight) ;
 
     /* For chats */
     userList = new QListWidget(this);
@@ -633,6 +635,9 @@ QQuailConvIm::buildInterface()
 
     text  = new QTextEdit(this);
     entry = new QQuailMultiLineEdit(this);
+    QFontMetrics m (entry->font()) ;
+    int RowHeight = m.lineSpacing() ;
+    entry->setFixedHeight(2 * RowHeight) ;
 
     l->addWidget(text);
     l->addWidget(entry);
@@ -681,7 +686,7 @@ QQuailConvIm::updateTyping()
 {
     qDebug() << "QQuailConvIm::updateTyping()";
     //QQuailConvWindow *win = purple_conversation_get_window(conv);
-    QQuailConvIm *qwin = (QQuailConvIm *)conv->ui_data;
+    //QQuailConvIm *qwin = (QQuailConvIm *)conv->ui_data;
     size_t length = entry->toPlainText().length();
 
     //qwin->setSendEnabled(length > 0);
@@ -815,9 +820,10 @@ QQuailConvWindow::removeConversation(PurpleConversation *conv)
 {
     qDebug() << "QQuailConvWindow::removeConversation()";
 	/* NOTE: This deletes conv->ui_data. Find out what to do here. */
-//	tabs->removePage((QQuailConversation *)conv->ui_data);
-
-	conv->ui_data = NULL;
+    QQuailConversation *win = (QQuailConversation *)conv->ui_data;
+    tabs->removeTab(win->getTabId());
+    win->deleteLater();
+    //conv->ui_data = NULL;
 }
 
 void
@@ -882,18 +888,6 @@ QQuailConvWindow::getTabs() const
 {
 	return tabs;
 }
-
-//void
-//QQuailConvWindow::setId(int id)
-//{
-//	convWinId = id;
-//}
-
-//int
-//QQuailConvWindow::getId() const
-//{
-//	return convWinId;
-//}
 
 void
 QQuailConvWindow::tabChanged(int widgetId)
@@ -1001,6 +995,7 @@ QQuailConvWindow::closeConv()
 void
 QQuailConvWindow::addRemoveBuddySlot()
 {
+    qDebug() << "QQuailConvWindow::addRemoveBuddySlot";
 //    PurpleConversation *conv = purple_conv_window_get_active_conversation(win);
 //    PurpleAccount *account = purple_conversation_get_account(conv);
 //    const char *name = purple_conversation_get_name(conv);
@@ -1059,13 +1054,6 @@ QQuailConvWindow::send()
 }
 
 void
-QQuailConvWindow::showAccountsWindow()
-{
-    qDebug() << "QQuailConvWindow::showAccountsWindow()";
-	qQuailGetMainWindow()->showAccountsWindow();
-}
-
-void
 QQuailConvWindow::userListToggled(bool /*on*/)
 {
     qDebug() << "QQuailConvWindow::userListToggled()";
@@ -1081,13 +1069,6 @@ QQuailConvWindow::userListToggled(bool /*on*/)
 //	qchat = (QQuailConvChat *)conv->ui_data;
 
 //	qchat->setShowUserList(on);
-}
-
-void
-QQuailConvWindow::showBlist()
-{
-    qDebug() << "QQuailConvWindow::showBlist()";
-	qQuailGetMainWindow()->showBlistWindow();
 }
 
 void
@@ -1112,6 +1093,35 @@ QQuailConvWindow::setupToolbar()
 
 	toolbar = new QToolBar(this);
 
+    /* Buddy List */
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
+                    tr("Buddy List"),
+                    this);
+    toolbar->addAction(a);
+
+    connect(a, SIGNAL(triggered(bool)),
+            parentMainWindow, SLOT(showBlistWindow()));
+
+    /* Accounts */
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
+                    tr("Accounts"),
+                    this);
+    toolbar->addAction(a);
+
+    connect(a, SIGNAL(triggered(bool)),
+            parentMainWindow, SLOT(showAccountsWindow()));
+
+    /* Conversations */
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/conversations.png")),
+                    tr("Conversations"),
+                    this);
+    toolbar->addAction(a);
+    connect(a, SIGNAL(triggered(bool)),
+            parentMainWindow, SLOT(showConvWindow()));
+
+    /* Now we're going to construct the toolbar on the right. */
+    toolbar->addSeparator();
+
 	/* Close Conversation */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/close_conv.png")),
                     tr("Close"),
@@ -1130,7 +1140,7 @@ QQuailConvWindow::setupToolbar()
     userMenuButton = button;
 	button->setAutoRaise(true);
     button->setIcon(QIcon(QPixmap(":/data/images/actions/user.png")));
-	button->setEnabled(false);
+    button->setEnabled(true);
 
     userMenu = new QMenu(button);
     button->setMenu(userMenu);
@@ -1141,7 +1151,7 @@ QQuailConvWindow::setupToolbar()
                     this);
 	warnButton = a;
     userMenu->addAction(a);
-	a->setEnabled(false);
+    a->setEnabled(true);
 
 	/* Block */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/block.png")),
@@ -1149,7 +1159,7 @@ QQuailConvWindow::setupToolbar()
                     this);
 	blockButton = a;
     userMenu->addAction(a);
-    a->setEnabled(false);
+    a->setEnabled(true);
 
 	/* Add */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/add.png")),
@@ -1167,7 +1177,7 @@ QQuailConvWindow::setupToolbar()
                     this);
 	infoButton = a;
     userMenu->addAction(a);
-	a->setEnabled(false);
+    a->setEnabled(true);
 
     connect(infoButton, SIGNAL(triggered(bool)),
 			this, SLOT(userInfoSlot()));
@@ -1177,7 +1187,7 @@ QQuailConvWindow::setupToolbar()
                     tr("Formatting"),
                     this);
     userMenu->addAction(a);
-    a->setEnabled(false);
+    a->setEnabled(true);
 
 	/* Separator */
 	toolbar->addSeparator();
@@ -1206,31 +1216,6 @@ QQuailConvWindow::setupToolbar()
 	connect(userListToggle, SIGNAL(toggled(bool)),
 			this, SLOT(userListToggled(bool)));
 
-	/* Now we're going to construct the toolbar on the right. */
-	toolbar->addSeparator();
-
-	/* Buddy List */
-    a = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
-                    tr("Buddy List"),
-                    this);
-    toolbar->addAction(a);
-
-    connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(showBlist()));
-
-	/* Accounts */
-    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
-                    tr("Accounts"),
-                    this);
-    toolbar->addAction(a);
-
-    connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(showAccountsWindow()));
-
-	/* Conversations */
-    button = new QQuailConvButton(toolbar);
-    button->setChecked(true);
-    toolbar->addWidget(button);
     this->addToolBar(toolbar);
 }
 

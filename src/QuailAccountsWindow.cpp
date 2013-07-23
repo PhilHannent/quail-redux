@@ -238,10 +238,6 @@ QQuailAccountsWindow::buildInterface()
     accountsWidget = new QTableWidget(this);
     QStringList horzHeaders;
     horzHeaders << tr("Username") << tr("Network");
-//    horzHeaders << tr("Network")
-//                << tr("Username")
-//                << tr("Enabled")
-//                << tr("Status");
     accountsWidget->setColumnCount(horzHeaders.size());
     accountsWidget->setHorizontalHeaderLabels( horzHeaders );
     accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -256,10 +252,40 @@ QQuailAccountsWindow::setupToolbar()
 {
     qDebug() << "QQuailAccountsWindow::setupToolbar";
 	QAction *a;
-    QToolButton *button;
 
 	toolbar = new QToolBar(this);
     //toolbar->setMovable(false);
+
+    /* Buddy List */
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
+                    tr("Buddy List"),
+                    this);
+    toolbar->addAction(a);
+
+    connect(a, SIGNAL(triggered(bool)),
+            parentMainWindow, SLOT(showBlistWindow()));
+
+    /* Accounts */
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
+                    tr("Accounts"),
+                    this);
+    a->setEnabled(true);
+    accountsButton = a;
+    toolbar->addAction(a);
+
+    connect(a, SIGNAL(toggled(bool)),
+            this, SLOT(accountsToggled(bool)));
+
+    /* Conversations */
+    a = new QAction(QIcon(QPixmap(":/data/images/actions/conversations.png")),
+                    tr("Conversations"),
+                    this);
+    toolbar->addAction(a);
+    connect(a, SIGNAL(triggered(bool)),
+            parentMainWindow, SLOT(showConvWindow()));
+
+    /* Now we're going to construct the toolbar on the right. */
+    toolbar->addSeparator();
 
 	/* New */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/new.png")),
@@ -316,32 +342,6 @@ QQuailAccountsWindow::setupToolbar()
     connect(a, SIGNAL(triggered(bool)),
 			this, SLOT(disconnectFromAccount()));
 
-	/* Now we're going to construct the toolbar on the right. */
-	toolbar->addSeparator();
-
-	/* Buddy List */
-    a = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
-                    tr("Buddy List"),
-                    this);
-    toolbar->addAction(a);
-
-    connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(showBlist()));
-
-	/* Accounts */
-    a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
-                    tr("Accounts"),
-                    this);
-    a->setEnabled(true);
-	accountsButton = a;
-    toolbar->addAction(a);
-
-	connect(a, SIGNAL(toggled(bool)),
-			this, SLOT(accountsToggled(bool)));
-
-	/* Conversations */
-    button = new QQuailConvButton(toolbar);
-    toolbar->addWidget(button);
     this->addToolBar(toolbar);
 }
 
@@ -462,13 +462,6 @@ QQuailAccountsWindow::disconnectFromAccount()
     QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
 
 	purple_account_disconnect(item->getAccount());
-}
-
-void
-QQuailAccountsWindow::showBlist()
-{
-    qDebug() << "QQuailAccountsWindow::showBlist";
-	qQuailGetMainWindow()->showBlistWindow();
 }
 
 void

@@ -115,7 +115,7 @@ qQuailGetCoreUiOps()
  **************************************************************************/
 QQuailMainWindow::QQuailMainWindow(QWidget *parent)
     : QMainWindow(parent),
-      accountsWin(NULL), blistWin(NULL), nextConvWinId(0), convWin(0)
+      accountsWin(NULL), blistWin(NULL), convWin(0), nextConvWinId(0)
 {
     qDebug() << "QQuailMainWindow";
 	mainWin = this;
@@ -313,6 +313,16 @@ QQuailMainWindow::showAccountsWindow()
 
     setWindowTitle(tr("Accounts"));
     widgetStack->setCurrentWidget(accountsWin);
+}
+
+void
+QQuailMainWindow::showConvWindow()
+{
+    if (convWin == NULL)
+        return;
+
+    setWindowTitle(tr("Conversations"));
+    widgetStack->setCurrentWidget(convWin);
 }
 
 QQuailMainWindow *

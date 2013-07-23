@@ -60,6 +60,7 @@ class QQuailMainWindow : public QMainWindow
 	public slots:
 		void showBlistWindow();
 		void showAccountsWindow();
+        void showConvWindow();
 
 	protected:
 		void buildInterface();
