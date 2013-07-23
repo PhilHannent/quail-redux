@@ -86,37 +86,34 @@ QQuailBlistPrefPage::buildInterface()
 
 	/* Show large icons */
     largeIcons = new QCheckBox(tr("Show large icons"), this);
-
+    layout->addWidget(largeIcons);
     if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
 		largeIcons->setChecked(true);
 
 	/* Show idle times */
     idleTimes = new QCheckBox(tr("Show idle times"), this);
-
+    layout->addWidget(idleTimes);
     if (purple_prefs_get_bool("/quail/blist/show_idle_times"))
 		idleTimes->setChecked(true);
 
 	/* Show warning levels */
     showWarnings = new QCheckBox(tr("Show warning levels"), this);
-
+    layout->addWidget(showWarnings);
     if (purple_prefs_get_bool("/quail/blist/show_warning_levels"))
 		showWarnings->setChecked(true);
 
 	/* Show numbers in groups */
     groupCount = new QCheckBox(tr("Show numbers in groups"), this);
-
+    layout->addWidget(groupCount);
     if (purple_prefs_get_bool("/quail/blist/show_group_count"))
 		groupCount->setChecked(true);
 
 	/* Dim idle buddies */
     dimIdle = new QCheckBox(tr("Dim idle buddies"), this);
-
+    layout->addWidget(dimIdle);
     if (purple_prefs_get_bool("/quail/blist/dim_idle_buddies"))
 		dimIdle->setChecked(true);
 
-	/* Spacer */
-	QLabel *spacer = new QLabel("", this);
-	layout->setStretchFactor(spacer, 1);
 }
 
 /**************************************************************************
@@ -177,52 +174,23 @@ void
 QQuailNotifyPrefPage::buildInterface()
 {
     qDebug() << "QQuailNotifyPrefPage::buildInterface()";
-    //QVBoxLayout *layout = new QVBoxLayout(this);
-    QGroupBox *groupBox;
-
-//	layout->setAutoAdd(true);
 
     QVBoxLayout *vbox = new QVBoxLayout(this);
 	vbox->setSpacing(6);
 	vbox->setMargin(6);
 
-	/* Notify On groupbox */
-    groupBox = new QGroupBox(tr("Notify On"));
-    vbox->addWidget(groupBox);
 	/* Incoming IMs */
-	incomingIm = new QCheckBox(tr("Incoming IMs"),
-                               groupBox);
-
+    incomingIm = new QCheckBox(tr("Incoming IMs"));
+    vbox->addWidget(incomingIm);
     if (purple_prefs_get_bool("/quail/notify/incoming_im"))
 		incomingIm->setChecked(true);
 
 	/* Incoming Chats */
-	incomingChat = new QCheckBox(tr("Incoming chat messages"),
-                                 groupBox);
-
+    incomingChat = new QCheckBox(tr("Incoming chat messages"));
+    vbox->addWidget(incomingChat);
     if (purple_prefs_get_bool("/quail/notify/incoming_chat"))
 		incomingChat->setChecked(true);
 
-	/* Notify Using groupbox */
-    groupBox = new QGroupBox(tr("Notify Using"));
-    vbox->addWidget(groupBox);
-
-	/* Buzzer */
-    useBuzzer = new QCheckBox(tr("Buzzer"), groupBox);
-
-    if (purple_prefs_get_bool("/quail/notify/use_buzzer"))
-		useBuzzer->setChecked(true);
-
-	/* LED */
-    useLed = new QCheckBox(tr("LED"), groupBox);
-
-    if (purple_prefs_get_bool("/quail/notify/use_led"))
-		useLed->setChecked(true);
-
-	/* Spacer */
-    QLabel *spacer = new QLabel("");
-    vbox->addWidget(spacer);
-	vbox->setStretchFactor(spacer, 1);
 }
 
 
@@ -310,7 +278,6 @@ QQuailPrefsDialog::buildInterface()
     setWindowTitle(tr("Preferences"));
 
 	layout = new QVBoxLayout(this);
-    //layout->setAutoAdd(true);
 
     tabs = new QTabWidget();
     layout->addWidget(tabs);
