@@ -167,6 +167,7 @@ QQuailBListWindow::buildToolBar()
 	button->setAutoRaise(true);
     button->setIcon(QIcon(QPixmap(":/data/images/actions/add.png")));
     button->setEnabled(true);
+    button->setPopupMode(QToolButton::InstantPopup);
 	addButton = button;
     toolbar->addWidget(addButton);
 
@@ -207,11 +208,12 @@ QQuailBListWindow::buildToolBar()
 	toolbar->addSeparator();
 
 	/* Settings menu */
-    button = new QToolButton(this);
-	button->setAutoRaise(true);
+    button = new QToolButton(toolbar);
+    button->setAutoRaise(true);
     button->setIcon(QIcon(QPixmap(":/data/images/actions/settings.png")));
     settingsMenu = new QMenu(this);
     button->setMenu(settingsMenu);
+    button->setPopupMode(QToolButton::InstantPopup);
     toolbar->addWidget(button);
 
 	/* Show Offline Buddies */

@@ -1135,7 +1135,8 @@ QQuailConvWindow::setupToolbar()
 	toolbar->addSeparator();
 
 	/* Person actions */
-    button = new QToolButton(this);
+    button = new QToolButton(toolbar);
+    button->setPopupMode(QToolButton::InstantPopup);
     toolbar->addWidget(button);
     userMenuButton = button;
 	button->setAutoRaise(true);
