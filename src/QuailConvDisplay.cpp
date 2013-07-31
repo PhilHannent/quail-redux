@@ -8,12 +8,12 @@ QuailConvDisplay::QuailConvDisplay(QWidget *parent) :
 {
     qDebug() << "QuailConvDisplay::QuailConvDisplay";
     QString css(".leftEntry { color:blue; }\n.rightEntry { color:red; text-align:right}\n ");
-    QString javaScript("function addRow(data) { var t = document.getElementById('convTable\'); r = t.insertRow(t.rows.length); r.innerHTML = data; }");
-    QString htmlHead("<html><head><style>");
+    QString javaScript("function addRow(data)\n { var t = document.getElementById('convTable\');\n r = t.insertRow(t.rows.length);\n r.innerHTML = data;\n alert(); }");
+    QString htmlHead("<html><head><style>body { background-color: green; }\n ");
 
     setHtml(htmlHead +
             css +
-            "</style><script>" + javaScript +
+            "</style><script type=\"text/javascript\">" + javaScript +
             "</script></head><body><table id=\"convTable\"></table></body></html>");
 }
 
@@ -37,4 +37,6 @@ QuailConvDisplay::slotAddMessage(bool bLeftAligned, QString sHtml)
 
     QWebFrame *frame = this->page()->mainFrame();
     frame->evaluateJavaScript("addRow('" + newMessage + "');");
+    qDebug() << frame->toHtml();
+
 }

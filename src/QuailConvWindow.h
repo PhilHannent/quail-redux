@@ -85,7 +85,7 @@ class QQuailConversation : public QWidget
 
 	protected:
         PurpleConversation *conv;
-        QuailConvDisplay *text;
+        QuailConvDisplay *textDisplay;
 		QQuailMultiLineEdit *entry;
 		int tabId;
 		bool notifying;
