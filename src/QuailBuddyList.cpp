@@ -237,8 +237,6 @@ QQuailBListItem::isExpanded() const
 void
 QQuailBListItem::init()
 {
-    //setStyleSheet("");
-    //setStyleSheet("QTreeWidget::item{ height: 50px; background: yellow;}");
 	updateInfo();
 }
 

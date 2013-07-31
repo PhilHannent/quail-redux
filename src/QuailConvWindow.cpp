@@ -22,6 +22,7 @@
 #include "QuailBuddyList.h"
 #include "QuailConvWindow.h"
 #include "QuailConvButton.h"
+#include "QuailConvDisplay.h"
 #include "QuailDialogs.h"
 #include "QuailMultiLineEdit.h"
 #include "QuailNotify.h"
@@ -164,7 +165,7 @@ QQuailConversation::write(const char *who, const char *message,
 		g_free(newMessage);
 	}
 
-    text->setText(text->toPlainText() + txt);
+    text->slotAddMessage(true, txt);
     //text->verticalScrollBar()->setValue(text->verticalScrollBar()->maxValue());
 
     if (flags & PURPLE_MESSAGE_RECV)
@@ -415,7 +416,7 @@ QQuailConvChat::buildInterface()
     qDebug() << "QQuailConvChat::buildInterface()";
     QGridLayout *l = new QGridLayout(this);
 
-    text  = new QTextEdit(this);
+    text  = new QuailConvDisplay(this);
 
     entry = new QQuailMultiLineEdit(this);
     entry->setHistoryEnabled(true);
@@ -633,7 +634,7 @@ QQuailConvIm::buildInterface()
     qDebug() << "QQuailConvIm::buildInterface()";
     QVBoxLayout *l = new QVBoxLayout(this);
 
-    text  = new QTextEdit(this);
+    text  = new QuailConvDisplay(this);
     entry = new QQuailMultiLineEdit(this);
     QFontMetrics m (entry->font()) ;
     int RowHeight = m.lineSpacing() ;
