@@ -35,6 +35,7 @@
 #include <QMenu>
 #include <QTimer>
 
+#define BUDDY_ICON_SIZE 20
 
 /**************************************************************************
  * QQuailBListItem
@@ -236,7 +237,19 @@ QQuailBListItem::isExpanded() const
 void
 QQuailBListItem::init()
 {
+    //setStyleSheet("");
+    //setStyleSheet("QTreeWidget::item{ height: 50px; background: yellow;}");
 	updateInfo();
+}
+
+QSize
+QQuailBListItem::sizeHint ( int column ) const
+{
+    qDebug() << "QQuailBListItem::sizeHint";
+    if (column == 0 || column == 2)
+        return QSize(50, 50);
+    else
+        return QSize(100,50);
 }
 
 //void
@@ -536,16 +549,19 @@ QQuailBuddyList::QQuailBuddyList(QWidget *parent)
     : QTreeWidget(parent)
 {
     qDebug() << "QQuailBuddyList::QQuailBuddyList";
-    setColumnCount(3);
-//	addColumn(tr("Buddy"), -1);
-//	addColumn(tr("Idle"), 50);
+    //header()->hide();
 
-//	setColumnAlignment(1, AlignRight);
+    QStringList horzHeaders;
+    horzHeaders << tr("Status") << tr("Name") << tr("Icon");
+    setColumnCount(horzHeaders.size());
+    setColumnWidth(0, BUDDY_ICON_SIZE);
+    setColumnWidth(1, this->width() - (BUDDY_ICON_SIZE *2));
+    setColumnWidth(2, BUDDY_ICON_SIZE);
+    setHeaderLabels( horzHeaders );
 
-//	setAllColumnsShowFocus(TRUE);
-//	setRootIsDecorated(true);
-
-    header()->hide();
+    setUniformRowHeights(false);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setStyleSheet("QTreeWidget#treeWidget::item { height: " + QString(BUDDY_ICON_SIZE) + "px; }");
 
     connect(this, SIGNAL(expanded(QTreeWidgetItem *)),
             this, SLOT(nodeExpandedSlot(QTreeWidgetItem *)));
@@ -918,12 +934,10 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
 void
 QQuailBuddyList::resizeEvent(QResizeEvent *)
 {
-//    if (purple_prefs_get_bool("/quail/blist/show_large_icons"))
-//		setColumnWidth(1, 0);
-//	else
-//		setColumnWidth(1, width() / 4);
-
-//	setColumnWidth(0, width() - 20 - columnWidth(1) - columnWidth(2));
+    qDebug() << "QQuailBuddyList::resizeEvent";
+    setColumnWidth(0, BUDDY_ICON_SIZE);
+    setColumnWidth(1, this->width() - (BUDDY_ICON_SIZE *4));
+    setColumnWidth(2, BUDDY_ICON_SIZE);
 }
 
 void
@@ -1413,6 +1427,7 @@ QQuailBuddyList::updateContact(PurpleBlistNode *node)
 //            qDebug() << "QQuailBuddyList::updateContact.2";
             node->ui_data = item = new QQuailBListItem(
                 (QQuailBListItem *)(node->parent->ui_data), node);
+            item->setSizeHint(0, QSize(this->width(), 50));
         }
         else
         {
