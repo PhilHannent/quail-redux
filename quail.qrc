@@ -67,5 +67,6 @@
         <file>data/images/protocols/simple.svg</file>
         <file>data/images/protocols/yahoo.svg</file>
         <file>data/images/protocols/zephyr.svg</file>
+        <file>conv.html</file>
     </qresource>
 </RCC>
