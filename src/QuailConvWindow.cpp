@@ -22,6 +22,7 @@
 #include "QuailBuddyList.h"
 #include "QuailConvWindow.h"
 #include "QuailConvButton.h"
+#include "QuailConvDisplay.h"
 #include "QuailDialogs.h"
 #include "QuailMultiLineEdit.h"
 #include "QuailNotify.h"
@@ -55,7 +56,7 @@
  **************************************************************************/
 QQuailConversation::QQuailConversation(PurpleConversation *conv,
                                      QQuailTabWidget *parent)
-    : QWidget(parent), conv(conv), text(NULL), notifying(false)
+    : QWidget(parent), conv(conv), textDisplay(NULL), notifying(false)
 {
     qDebug() << "QQuailConversation::QQuailConversation()";
     connect(this, SIGNAL(signalSendEnabled(bool)),
@@ -83,7 +84,7 @@ QQuailConversation::write(const char *who, const char *message,
                          PurpleMessageFlags flags, time_t)
 {
     qDebug() << "QQuailConversation::write()";
-	if (text == NULL)
+    if (textDisplay == NULL)
 		return;
 
 	size_t length = strlen(message);
@@ -164,7 +165,7 @@ QQuailConversation::write(const char *who, const char *message,
 		g_free(newMessage);
 	}
 
-    text->setText(text->toPlainText() + txt);
+    textDisplay->slotAddMessage(true, txt);
     //text->verticalScrollBar()->setValue(text->verticalScrollBar()->maxValue());
 
     if (flags & PURPLE_MESSAGE_RECV)
@@ -415,7 +416,7 @@ QQuailConvChat::buildInterface()
     qDebug() << "QQuailConvChat::buildInterface()";
     QGridLayout *l = new QGridLayout(this);
 
-    text  = new QTextEdit(this);
+    textDisplay  = new QuailConvDisplay(this);
 
     entry = new QQuailMultiLineEdit(this);
     entry->setHistoryEnabled(true);
@@ -434,7 +435,7 @@ QQuailConvChat::buildInterface()
     //userList->setSorting(1);
 	userList->hide();
 
-    l->addWidget(text,  0, 0);
+    l->addWidget(textDisplay,  0, 0);
     l->addWidget(userList,  0, 1);
     l->addWidget(entry, 1, 1, 0, 1);
 
@@ -633,13 +634,13 @@ QQuailConvIm::buildInterface()
     qDebug() << "QQuailConvIm::buildInterface()";
     QVBoxLayout *l = new QVBoxLayout(this);
 
-    text  = new QTextEdit(this);
+    textDisplay  = new QuailConvDisplay(this);
     entry = new QQuailMultiLineEdit(this);
     QFontMetrics m (entry->font()) ;
     int RowHeight = m.lineSpacing() ;
     entry->setFixedHeight(2 * RowHeight) ;
 
-    l->addWidget(text);
+    l->addWidget(textDisplay);
     l->addWidget(entry);
 
 	connect(entry, SIGNAL(returnPressed()),
@@ -1135,7 +1136,8 @@ QQuailConvWindow::setupToolbar()
 	toolbar->addSeparator();
 
 	/* Person actions */
-    button = new QToolButton(this);
+    button = new QToolButton(toolbar);
+    button->setPopupMode(QToolButton::InstantPopup);
     toolbar->addWidget(button);
     userMenuButton = button;
 	button->setAutoRaise(true);

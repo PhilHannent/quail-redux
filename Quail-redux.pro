@@ -24,6 +24,7 @@ else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
 
 QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += webkit webkitwidgets
 
 
 HEADERS = \
@@ -50,7 +51,8 @@ HEADERS = \
         src/QuailRequest.h \
         src/QuailTabBar.h \
         src/QuailTabWidget.h \
-    src/global.h
+    src/global.h \
+    src/QuailConvDisplay.h
 
 
 SOURCES = \
@@ -76,7 +78,8 @@ SOURCES = \
         src/QuailRequest.cpp \
         src/QuailTabBar.cpp \
         src/QuailTabWidget.cpp \
-	src/main.cpp
+	src/main.cpp \
+    src/QuailConvDisplay.cpp
 
 
 DISTFILES = \

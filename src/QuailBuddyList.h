@@ -41,6 +41,7 @@ class QQuailBListItem : public QTreeWidgetItem
 		void updateInfo();
 		void setExpanded(bool expanded);
 		bool isExpanded() const;
+        /*reimp*/QSize sizeHint ( int column ) const;
 
 	protected:
 		void init();

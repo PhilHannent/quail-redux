@@ -25,15 +25,18 @@
 #include <QMainWindow>
 #include <QToolButton>
 #include <QWidget>
+#include <QtWebKitWidgets/QWebView>
 
 #include <libpurple/conversation.h>
 
 class QAction;
 class QQuailMultiLineEdit;
 class QQuailTabWidget;
+class QuailConvDisplay;
 class QListWidget;
 class QTabWidget;
 class QTextEdit;
+
 /**
  * Unseen text states.
  */
@@ -82,7 +85,7 @@ class QQuailConversation : public QWidget
 
 	protected:
         PurpleConversation *conv;
-        QTextEdit *text;
+        QuailConvDisplay *textDisplay;
 		QQuailMultiLineEdit *entry;
 		int tabId;
 		bool notifying;
