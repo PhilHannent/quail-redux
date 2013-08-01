@@ -575,9 +575,6 @@ qQuailConnNotice(PurpleConnection *gc, const char *text)
     qDebug() << "QQuailAccountsWindow::qQuailConnNotice";
     Q_UNUSED(gc)
     Q_UNUSED(text)
-	/* XXX */
-	gc = NULL;
-	text = NULL;
 }
 
 static void
