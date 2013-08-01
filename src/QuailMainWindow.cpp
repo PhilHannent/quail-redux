@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QDesktopWidget>
+#include <QDir>
 #include <QCloseEvent>
 #include <QTimer>
 #include <QVariant>
@@ -126,7 +127,8 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent)
 {
     qDebug() << "QQuailMainWindow";
 	mainWin = this;
-
+    QString configPath(QDir::home().path() + "/.quail");
+    purple_util_set_user_dir(configPath.toStdString().c_str());
 	buildInterface();
 
 	initCore();
