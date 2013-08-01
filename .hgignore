@@ -21,3 +21,4 @@ object_script.Quail
 qrc_*.cpp
 *~
 *.orig
+*.cppcheck
