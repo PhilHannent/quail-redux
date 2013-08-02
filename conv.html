@@ -1,0 +1,22 @@
+<html>
+<head>
+<style>
+body { background-color: #92C7C7; }
+.leftEntry { color:blue; }
+.rightEntry { color:red; text-align:right}
+ </style>
+<script type="text/javascript">
+function addRow(data)
+{ 
+	var t = document.getElementById('convTable');
+	r = t.insertRow(t.rows.length);
+ 	r.innerHTML = data;
+	window.scrollTo(0,document.body.scrollHeight);
+}
+</script>
+</head>
+<body>
+<table id="convTable">
+</table>
+</body>
+</html>
