@@ -22,10 +22,13 @@ else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
 #    DEFINES += BUILDDATE=\\\"$$system(date '+%d/%m/%y')\\\"
 #}
 
-QT       += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-QT += webkit webkitwidgets
-
+QT       += core gui webkit
+greaterThan(QT_MAJOR_VERSION, 4) {
+    message("Using QT5")
+    DEFINES += USE_QT5
+    QT += widgets
+    QT += webkitwidgets
+}
 
 HEADERS = \
         src/QuailAccountBox.h \
@@ -117,15 +120,13 @@ win32-g++ {
         c:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
         C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
 
-    LIBS += -L"C:\dev\win32-dev\gtk-2.24.10\lib"
-    LIBS += -L"C:\dev\pidgin-main\libpurple"
-    LIBS += -L"C:\dev\pidgin-main\libpurple"
-    LIBS += -L"C:\Qt\5.1.0\mingw48_32\lib"
-    #LIBS += -L"C:\Qt\5.1.0\mingw32\5.1.0-beta1\mingw47_32\bin"
+    LIBS += -L"C:/dev/win32-dev/gtk-2.24.10/lib"
+    LIBS += -L"C:/dev/pidgin-main/libpurple"
+    LIBS += -L"C:/Qt/5.1.0/mingw48_32/lib"
 
     #RC_FILE = resource.rc
 
-        LIBS        += -llibpurple
+    LIBS        += -llibpurple
 }
 
 LIBS += -lglib-2.0 -lgmodule-2.0
@@ -165,4 +166,5 @@ OTHER_FILES += \
     android/src/org/kde/necessitas/ministro/IMinistroCallback.aidl \
     android/src/org/qtproject/qt5/android/bindings/QtActivity.java \
     android/src/org/qtproject/qt5/android/bindings/QtApplication.java \
-    android/version.xml
+    android/version.xml \
+    TODO.txt

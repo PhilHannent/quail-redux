@@ -25,7 +25,11 @@
 #include <QMainWindow>
 #include <QToolButton>
 #include <QWidget>
+#ifdef USE_QT5
 #include <QtWebKitWidgets/QWebView>
+#else
+#include <QWebView>
+#endif
 
 #include <libpurple/conversation.h>
 
