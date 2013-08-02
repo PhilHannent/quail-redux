@@ -4,6 +4,7 @@ syntax: glob
 obj
 moc
 *.user
+*.pro.user.*
 Quail.exe
 
 .xvpics
