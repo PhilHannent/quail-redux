@@ -1,6 +1,10 @@
-#include "QuailConvDisplay.h"
+﻿#include "QuailConvDisplay.h"
 
+#ifdef USE_QT5
 #include <QtWebKitWidgets/QWebFrame>
+#else
+#include <QWebFrame>
+#endif
 #include <QDebug>
 #include <QFile>
 

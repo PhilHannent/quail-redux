@@ -22,10 +22,13 @@ else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
 #    DEFINES += BUILDDATE=\\\"$$system(date '+%d/%m/%y')\\\"
 #}
 
-QT       += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-QT += webkit webkitwidgets
-
+QT       += core gui webkit
+greaterThan(QT_MAJOR_VERSION, 4) {
+    message("Using QT5")
+    DEFINES += USE_QT5
+    QT += widgets
+    QT += webkitwidgets
+}
 
 HEADERS = \
         src/QuailAccountBox.h \
@@ -95,19 +98,22 @@ DISTFILES = \
 
 linux-g++* {
     message("Using unix")
-        INCLUDEPATH += \
-        ../pidgin-main/libpurple \
-	/usr/include/glib-2.0 \
-	/usr/lib/glib-2.0/include
+    CONFIG += link_pkgconfig
+    PKGCONFIG += libpurple glib-2.0 gmodule-2.0
 
-	INCLUDEPATH += /usr/include/glib-2.0 \
-		/usr/lib/glib-2.0/include \
-		/usr/include/libpurple \
-		/usr/lib/x86_64-linux-gnu/glib-2.0/include
+#    INCLUDEPATH += \
+#        ../pidgin-main/libpurple \
+#	/usr/include/glib-2.0 \
+#	/usr/lib/glib-2.0/include
 
-	LIBS += /usr/lib/libpurple.so
+#    INCLUDEPATH += /usr/include/glib-2.0 \
+#            /usr/lib/glib-2.0/include \
+#            /usr/include/libpurple \
+#            /usr/lib/x86_64-linux-gnu/glib-2.0/include
+
 
 }
+
 win32-g++ {
     message("Using win32")
     INCLUDEPATH += /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
@@ -117,18 +123,14 @@ win32-g++ {
         c:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
         C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
 
-    LIBS += -L"C:\dev\win32-dev\gtk-2.24.10\lib"
-    LIBS += -L"C:\dev\pidgin-main\libpurple"
-    LIBS += -L"C:\dev\pidgin-main\libpurple"
-    LIBS += -L"C:\Qt\5.1.0\mingw48_32\lib"
-    #LIBS += -L"C:\Qt\5.1.0\mingw32\5.1.0-beta1\mingw47_32\bin"
+    LIBS += -L"C:/dev/win32-dev/gtk-2.24.10/lib"
+    LIBS += -L"C:/dev/pidgin-main/libpurple"
+    LIBS += -L"C:/Qt/4.8.5/lib"
 
     #RC_FILE = resource.rc
 
-        LIBS        += -llibpurple
+    LIBS        += -llibpurple -lglib-2.0 -lgmodule-2.0
 }
-
-LIBS += -lglib-2.0 -lgmodule-2.0
 
 
 OBJECTS_DIR = obj
@@ -165,4 +167,5 @@ OTHER_FILES += \
     android/src/org/kde/necessitas/ministro/IMinistroCallback.aidl \
     android/src/org/qtproject/qt5/android/bindings/QtActivity.java \
     android/src/org/qtproject/qt5/android/bindings/QtApplication.java \
-    android/version.xml
+    android/version.xml \
+    TODO.txt

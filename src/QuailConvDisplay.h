@@ -1,7 +1,11 @@
-#ifndef QUAILCONVDISPLAY_H
+﻿#ifndef QUAILCONVDISPLAY_H
 #define QUAILCONVDISPLAY_H
 
+#ifdef USE_QT5
 #include <QtWebKitWidgets/QWebView>
+#else
+#include <QWebView>
+#endif
 
 class QuailConvDisplay : public QWebView
 {
