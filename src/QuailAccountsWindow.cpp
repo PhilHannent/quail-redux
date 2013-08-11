@@ -236,11 +236,6 @@ QQuailAccountsWindow::buildInterface()
 
 	/* Create the accounts view */
     accountsWidget = new QTableWidget(this);
-    QStringList horzHeaders;
-    horzHeaders << tr("Username") << tr("Network");
-    accountsWidget->setColumnCount(horzHeaders.size());
-    accountsWidget->setHorizontalHeaderLabels( horzHeaders );
-    accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     connect(accountsWidget, SIGNAL(itemSelectionChanged()),
             this, SLOT(accountSelected()));
 
@@ -349,12 +344,17 @@ void
 QQuailAccountsWindow::loadAccounts()
 {
     qDebug() << "QQuailAccountsWindow::loadAccounts";
-	GList *l;
-	int index;
+    GList *l;
+    int index;
 
-    //accountsWidget->clear();
+    accountsWidget->clear();
+    QStringList horzHeaders;
+    horzHeaders << tr("Username") << tr("Network");
+    accountsWidget->setColumnCount(horzHeaders.size());
+    accountsWidget->setHorizontalHeaderLabels( horzHeaders );
+    accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-	for (l = purple_accounts_get_all(), index = 0;
+    for (l = purple_accounts_get_all(), index = 0;
 		 l != NULL;
 		 l = l->next, index++)
 	{
@@ -425,13 +425,12 @@ void
 QQuailAccountsWindow::deleteAccount()
 {
     qDebug() << "QQuailAccountsWindow::deleteAccount";
-    QQuailAccountItem *item;
-
-    item = (QQuailAccountItem *)accountsWidget->currentItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
 
 	purple_accounts_remove(item->getAccount());
 
-	delete item;
+    accountsWidget->removeRow(item->row());
+    item->deleteLater();
 
 	connectButton->setEnabled(false);
 	disconnectButton->setEnabled(false);
@@ -476,12 +475,12 @@ QQuailAccountsWindow::accountSelected()
 {
     qDebug() << "QQuailAccountsWindow::accountSelected";
     QTableWidgetItem *item = accountsWidget->currentItem();
-    QQuailAccountItem *accountItem = (QQuailAccountItem *)item;
-	PurpleAccount *account;
-	const char *protocolId;
+    if (!item)
+        return;
 
-	account    = accountItem->getAccount();
-	protocolId = purple_account_get_protocol_id(account);
+    QQuailAccountItem *accountItem = (QQuailAccountItem *)item;
+    PurpleAccount *account = accountItem->getAccount();
+    const char *protocolId = purple_account_get_protocol_id(account);
 
 	if (purple_plugins_find_with_id(protocolId) == NULL)
 	{
@@ -573,8 +572,8 @@ static void
 qQuailConnNotice(PurpleConnection *gc, const char *text)
 {
     qDebug() << "QQuailAccountsWindow::qQuailConnNotice";
+    qDebug() << text;
     Q_UNUSED(gc)
-    Q_UNUSED(text)
 }
 
 static void

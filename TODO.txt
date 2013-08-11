@@ -1,31 +1,35 @@
 ﻿Quails todo's in no particular order
 ===========================================================
 
-1, Enable compile with Qt 4
-2, Include pkg_config in the pro file
-3, Use Aduim's Message Styles for the conversation window
-4, Ability to delete accounts
-5, Add ability to remove accounts
-6, Buddy icons showing up
-7, Buddy status icons showing
-8, Join a chat
-9, Formatting toolbar on the conversation window
-10, Kill off dead code
-11, Rename groups
-12, Rename buddy
-13, Remember group expanded state
-14, Buddy pounces
-15, Sort order on buddy list
-16, Packaging
-17, File transfers
-18, Server room list
-19, Log viewer
-20, Block a user
-21, Remove a block
-22, Connection meters
-23, Buddy list status changer
-24, Tray icon
-25, Tray icon changer
-26, Fix closing from conversation view
-27, Split conversations from the buddy list
-28, Close button on conversation tab
+* Use Aduim's Message Styles for the conversation window
+* Add ability to add accounts
+* Buddy icons showing up
+* Buddy status icons showing
+* Join a chat
+* Formatting toolbar on the conversation window
+* Kill off dead code
+* Rename groups
+* Rename buddy
+* Remember group expanded state
+* Buddy pounces
+* Sort order on buddy list
+* Packaging
+* File transfers
+* Server room list
+* Log viewer
+* Block a user
+* Remove a block
+* Connection meters
+* Buddy list status changer
+* Tray icon
+* Tray icon changer
+* Fix closing from conversation view
+* Split conversations from the buddy list
+* Close button on conversation tab
+
+
+DONE
+===========================================================
+* Enable compile with Qt 4
+* Include pkg_config in the pro file
+* Ability to delete accounts
