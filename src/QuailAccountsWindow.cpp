@@ -49,7 +49,7 @@ QQuailAccountItem::QQuailAccountItem(int index)
 
 QQuailAccountItem::~QQuailAccountItem()
 {
-	stopPulse();
+    //stopPulse();
 }
 
 void
@@ -63,7 +63,7 @@ QQuailAccountItem::startPulse(QPixmap onlinePixmap)
 
 	pulseOrigPixmap = new QPixmap(onlinePixmap);
     if (pulseTimer == 0) {
-        pulseTimer = new QTimer();
+        pulseTimer = new QTimer(this);
         pulseTimer->setSingleShot(false);
 
         connect(pulseTimer, SIGNAL(timeout()),
@@ -76,14 +76,15 @@ void
 QQuailAccountItem::stopPulse()
 {
     qDebug() << "QQuailAccountItem::stopPulse";
-	if (pulseTimer == NULL)
-		return;
-
-	delete pulseTimer;
-	delete pulseOrigPixmap;
-
-	pulseTimer      = NULL;
-	pulseOrigPixmap = NULL;
+    if (pulseTimer == 0)
+        return;
+    qDebug() << "QQuailAccountItem::stopPulse.1";
+    delete pulseOrigPixmap;
+    qDebug() << "QQuailAccountItem::stopPulse.2";
+    pulseOrigPixmap = NULL;
+    qDebug() << "QQuailAccountItem::stopPulse.3";
+    pulseTimer->stop();
+    qDebug() << "QQuailAccountItem::stopPulse.end";
 }
 
 void
@@ -238,7 +239,11 @@ QQuailAccountsWindow::buildInterface()
     accountsWidget = new QTableWidget(this);
     connect(accountsWidget, SIGNAL(itemSelectionChanged()),
             this, SLOT(accountSelected()));
-
+    QStringList horzHeaders;
+    horzHeaders << tr("Username") << tr("Network");
+    accountsWidget->setColumnCount(horzHeaders.size());
+    accountsWidget->setHorizontalHeaderLabels( horzHeaders );
+    accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     setCentralWidget(accountsWidget);
 }
 
@@ -345,14 +350,11 @@ QQuailAccountsWindow::loadAccounts()
 {
     qDebug() << "QQuailAccountsWindow::loadAccounts";
     GList *l;
-    int index;
-
-    accountsWidget->clear();
-    QStringList horzHeaders;
-    horzHeaders << tr("Username") << tr("Network");
-    accountsWidget->setColumnCount(horzHeaders.size());
-    accountsWidget->setHorizontalHeaderLabels( horzHeaders );
-    accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    int index = 0;
+    accountsWidget->setUpdatesEnabled(false);
+    accountsWidget->clearContents();
+    while (accountsWidget->rowCount() > 0)
+        accountsWidget->removeRow(0);
 
     for (l = purple_accounts_get_all(), index = 0;
 		 l != NULL;
@@ -362,6 +364,7 @@ QQuailAccountsWindow::loadAccounts()
         QString protocolIconName;
 		PurpleAccount *account = (PurpleAccount *)l->data;
 		QString protocolId = purple_account_get_protocol_id(account);
+        qDebug() << "QQuailAccountsWindow::loadAccounts" << index;
         qDebug() << "QQuailAccountsWindow::loadAccounts" << protocolId;
         qDebug() << "QQuailAccountsWindow::loadAccounts" << account->alias;
         qDebug() << "QQuailAccountsWindow::loadAccounts" << purple_account_get_username(account);
@@ -375,7 +378,6 @@ QQuailAccountsWindow::loadAccounts()
         QQuailAccountItem *itemProtocol = new QQuailAccountItem(index);
         itemProtocol->setText(QQuailProtocolUtils::getProtocolName(protocolId));
         itemProtocol->setAccount(account);
-        //itemProtocol->setSizeHint();
         protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
         protocolIconName = QQuailProtocolUtils::getProtocolIconName(account);
         if (purple_account_is_connected(account))
@@ -391,7 +393,7 @@ QQuailAccountsWindow::loadAccounts()
         accountsWidget->setItem(index, 1, itemProtocol);
 
 	}
-    accountsWidget->resizeColumnsToContents();
+    accountsWidget->setUpdatesEnabled(true);
 }
 
 void
@@ -429,7 +431,6 @@ QQuailAccountsWindow::deleteAccount()
 	purple_accounts_remove(item->getAccount());
 
     accountsWidget->removeRow(item->row());
-    item->deleteLater();
 
 	connectButton->setEnabled(false);
 	disconnectButton->setEnabled(false);
