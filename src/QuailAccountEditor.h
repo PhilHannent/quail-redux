@@ -33,7 +33,6 @@
 
 class QCheckBox;
 class QComboBox;
-class QQuailAccountsWindow;
 class QQuailProtocolBox;
 class QQuailTabWidget;
 class QGridLayout;
@@ -54,8 +53,6 @@ class QQuailAccountEditor : public QDialog
                             QString name = "");
 		~QQuailAccountEditor();
 
-		void setAccountsWindow(QQuailAccountsWindow *accountsWin);
-
 	protected:
 		virtual void buildInterface();
 		void buildTabs();
@@ -73,14 +70,16 @@ class QQuailAccountEditor : public QDialog
 
 		void registerClicked();
 
-		void accept();
+        void slotAccept();
+        void slotRejected();
+
+    signals:
+        void signalAccountUpdated();
 
 	private:
 		PurpleAccount *account;
 		PurplePlugin *plugin;
 		PurplePluginProtocolInfo *prplInfo;
-
-		QQuailAccountsWindow *accountsWin;
 
 		QString protocolId;
 

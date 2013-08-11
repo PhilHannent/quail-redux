@@ -97,15 +97,11 @@ class QQuailAccountsWindow : public QMainWindow
 		QQuailAccountsWindow(QMainWindow *parent);
 		~QQuailAccountsWindow();
 
-		void updateAccounts();
-
 		void accountSignedOn(PurpleAccount *account);
 		void accountSignedOff(PurpleAccount *account);
 
-	private:
-		void buildInterface();
-		void setupToolbar();
-		void loadAccounts();
+    public slots:
+        void slotUpdateAccounts();
 
 	private slots:
 		void newAccount();
@@ -124,7 +120,10 @@ class QQuailAccountsWindow : public QMainWindow
         QQuailAccountItem *getItemFromAccount(PurpleAccount *account);
 
 	private:
-		QMainWindow *parentMainWindow;
+        void buildInterface();
+        void setupToolbar();
+        void loadAccounts();
+        QMainWindow *parentMainWindow;
 
 		QToolBar *toolbar;
         QMenu *accountMenu;

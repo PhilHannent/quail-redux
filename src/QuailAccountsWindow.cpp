@@ -180,7 +180,7 @@ QQuailAccountsWindow::~QQuailAccountsWindow()
 }
 
 void
-QQuailAccountsWindow::updateAccounts()
+QQuailAccountsWindow::slotUpdateAccounts()
 {
 	loadAccounts();
 }
@@ -401,7 +401,8 @@ QQuailAccountsWindow::newAccount()
 	QQuailAccountEditor *editor;
 
     editor = new QQuailAccountEditor(NULL, this, tr("New Account"));
-	editor->setAccountsWindow(this);
+    connect(editor, SIGNAL(signalAccountUpdated()),
+            this, SLOT(slotUpdateAccounts()));
 
     editor->show();
 }
@@ -410,14 +411,12 @@ void
 QQuailAccountsWindow::editAccount()
 {
     qDebug() << "QQuailAccountsWindow::editAccount";
-	QQuailAccountEditor *editor;
-    QQuailAccountItem *item;
 
-    item = (QQuailAccountItem *)accountsWidget->currentItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
 
-    editor = new QQuailAccountEditor(item->getAccount(), this, tr("Edit Account"));
-	editor->setAccountsWindow(this);
-
+    QQuailAccountEditor *editor = new QQuailAccountEditor(item->getAccount(),
+                                     this,
+                                     tr("Edit Account"));
     editor->show();
 }
 

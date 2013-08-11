@@ -2,7 +2,6 @@
 ===========================================================
 
 * Use Aduim's Message Styles for the conversation window
-* Add ability to add accounts
 * Buddy icons showing up
 * Buddy status icons showing
 * Join a chat
@@ -26,6 +25,7 @@
 * Fix closing from conversation view
 * Split conversations from the buddy list
 * Close button on conversation tab
+* Fix when adding accounts the blank line
 
 
 DONE
@@ -33,3 +33,4 @@ DONE
 * Enable compile with Qt 4
 * Include pkg_config in the pro file
 * Ability to delete accounts
+* Add ability to add accounts

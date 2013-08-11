@@ -20,7 +20,6 @@
  * MA  02111-1307  USA
  */
 #include "QuailAccountEditor.h"
-#include "QuailAccountsWindow.h"
 #include "QuailProtocolBox.h"
 #include "QuailProtocolUtils.h"
 #include "QuailTabWidget.h"
@@ -28,6 +27,7 @@
 #include <libpurple/accountopt.h>
 #include <libpurple/debug.h>
 
+#include <QDialogButtonBox>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDebug>
@@ -44,7 +44,7 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
                                          QWidget *parent,
                                          QString name)
     : QDialog(parent), account(account), plugin(NULL),
-	  prplInfo(NULL), accountsWin(NULL), userSplitEntries(NULL),
+      prplInfo(NULL), userSplitEntries(NULL),
       protocolOptEntries(NULL), newProxyType(PURPLE_PROXY_USE_GLOBAL)
 {
     qDebug() << "QQuailAccountEditor::QQuailAccountEditor";
@@ -84,13 +84,6 @@ QQuailAccountEditor::~QQuailAccountEditor()
 }
 
 void
-QQuailAccountEditor::setAccountsWindow(QQuailAccountsWindow *accountsWin)
-{
-    qDebug() << "QQuailAccountEditor::setAccountsWindow";
-	this->accountsWin = accountsWin;
-}
-
-void
 QQuailAccountEditor::buildInterface()
 {
     qDebug() << "QQuailAccountEditor::buildInterface";
@@ -103,6 +96,14 @@ QQuailAccountEditor::buildInterface()
 
 	tabs = new QQuailTabWidget(this);
     layout->addWidget(tabs);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                     | QDialogButtonBox::Cancel,
+                                                       Qt::Horizontal,
+                                                       this);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotAccept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(slotRejected()));
+    layout->addWidget(buttonBox);
+
 	buildTabs();
 }
 
@@ -173,18 +174,10 @@ QQuailAccountEditor::buildAccountTab()
 
 	buildUserOpts(grid, frame, row);
 
-//	/* Add a spacer. */
-//    spacer = new QLabel("");
-//    vbox->addWidget(spacer, 1);
-
 	/* Add the hbox */
     hbox = new QHBoxLayout(this);
     hbox->addLayout(vbox);
 	hbox->setSpacing(5);
-
-//	/* Add a spacer to the hbox. */
-//    spacer = new QLabel("");
-//    hbox->addWidget(spacer, 1);
 
 	/* Add the register button. */
     registerButton = new QPushButton(tr("Register Account"));
@@ -657,10 +650,17 @@ QQuailAccountEditor::registerClicked()
 	registerButton->setEnabled(false);
 }
 
+
 void
-QQuailAccountEditor::accept()
+QQuailAccountEditor::slotRejected()
 {
-    qDebug() << "QQuailAccountEditor::accept";
+    close();
+}
+
+void
+QQuailAccountEditor::slotAccept()
+{
+    qDebug() << "QQuailAccountEditor::slotAccept";
 	QString str, username;
 	GList *l, *l2;
 	bool newAccount = (account == NULL);
@@ -678,10 +678,8 @@ QQuailAccountEditor::accept()
 		/* Protocol */
         purple_account_set_protocol_id(account, protocolId.toStdString().c_str());
 	}
-
 	/* Clear the existing settings. */
 	purple_account_clear_settings(account);
-
 	/* Alias */
 	str = aliasEntry->text();
 
@@ -689,23 +687,19 @@ QQuailAccountEditor::accept()
         purple_account_set_alias(account, str.toStdString().c_str());
 	else
 		purple_account_set_alias(account, NULL);
-
 	/* Buddy Icon */
 	/* TODO */
 
 	/* Remember Password */
 	purple_account_set_remember_password(account,
 									   rememberPassCheck->isChecked());
-
 	/* Check Mail */
 	if (prplInfo->options & OPT_PROTO_MAIL_CHECK)
 		purple_account_set_check_mail(account,
 									mailNotificationCheck->isChecked());
-
 	/* Auto-Login */
     purple_account_set_enabled(account, UI_ID,
 								autoLoginCheck->isChecked());
-
 	/* Password */
 	str = passwordEntry->text();
 
@@ -716,7 +710,6 @@ QQuailAccountEditor::accept()
 
 	/* Build the username string. */
 	username = screenNameEntry->text();
-
 	for (l = prplInfo->user_splits, l2 = userSplitEntries;
 		 l != NULL && l2 != NULL;
 		 l = l->next, l2 = l2->next)
@@ -739,9 +732,7 @@ QQuailAccountEditor::accept()
 
 		g_free(tmp);
 	}
-
     purple_account_set_username(account, username.toStdString().c_str());
-
 	/* Add the protocol settings */
 	for (l = prplInfo->protocol_options, l2 = protocolOptEntries;
 		 l != NULL && l2 != NULL;
@@ -758,19 +749,22 @@ QQuailAccountEditor::accept()
 
 		type    = purple_account_option_get_type(option);
 		setting = purple_account_option_get_setting(option);
-
 		switch (type)
 		{
             case PURPLE_PREF_STRING:
-				entry = (QLineEdit *)widget;
-				value = entry->text();
-                purple_account_set_string(account,
-                                          setting,
-                                          value.toStdString().c_str());
+                entry = dynamic_cast<QLineEdit *>(widget);
+                if (!entry || entry == NULL) {
+                    qWarning() << "QQuailAccountEditor::slotAccept.MISSING Widget";
+                } else {
+                    value = entry->text();
+                    purple_account_set_string(account,
+                                              setting,
+                                              value.toStdString().c_str());
+                }
 				break;
 
             case PURPLE_PREF_INT:
-				bool ok;
+                bool ok;
 
 				entry = (QLineEdit *)widget;
 				intValue = entry->text().toInt(&ok);
@@ -792,15 +786,12 @@ QQuailAccountEditor::accept()
 				break;
 		}
 	}
-
 	/* Set the proxy information */
     if (newProxyType == PURPLE_PROXY_NONE)
 		purple_account_set_proxy_info(account, NULL);
 	else
 	{
-        PurpleProxyInfo *proxyInfo;
-
-		proxyInfo = purple_account_get_proxy_info(account);
+        PurpleProxyInfo *proxyInfo = purple_account_get_proxy_info(account);
 
 		/* Create the proxy info if it doesn't exist. */
 		if (proxyInfo == NULL)
@@ -825,10 +816,8 @@ QQuailAccountEditor::accept()
 
 		if (!str.isEmpty())
 		{
-			bool ok;
-			int intVal;
-
-			intVal = str.toInt(&ok);
+            bool ok = false;
+            int intVal = str.toInt(&ok);
 
 			if (ok)
 				purple_proxy_info_set_port(proxyInfo, intVal);
@@ -854,12 +843,9 @@ QQuailAccountEditor::accept()
 		else
 			purple_proxy_info_set_password(proxyInfo, NULL);
 	}
-
 	if (newAccount)
 		purple_accounts_add(account);
-
 	QDialog::accept();
 
-	if (accountsWin != NULL)
-		accountsWin->updateAccounts();
+    emit signalAccountUpdated();
 }

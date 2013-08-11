@@ -301,10 +301,11 @@ QQuailPrefsDialog::buildInterface()
 
     tabs->setCurrentIndex(0);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
+                                     | QDialogButtonBox::Cancel,
+                                                       Qt::Horizontal,
+                                                       this);
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotAccept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(slotRejected()));
-    //m_layout->addWidget(buttonBox, iRowNumber,0, 1, 2);
     layout->addWidget(buttonBox);
     connect(this, SIGNAL(signalBListWindow()),
             parentMainWindow, SLOT(showBlistWindow()));
