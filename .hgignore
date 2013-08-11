@@ -5,7 +5,7 @@ obj
 moc
 *.user
 Quail.exe
-
+Quail
 .xvpics
 *.bak
 *.ipk
