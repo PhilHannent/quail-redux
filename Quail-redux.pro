@@ -99,19 +99,7 @@ DISTFILES = \
 linux-g++* {
     message("Using unix")
     CONFIG += link_pkgconfig
-    PKGCONFIG += libpurple glib-2.0 gmodule-2.0
-
-#    INCLUDEPATH += \
-#        ../pidgin-main/libpurple \
-#	/usr/include/glib-2.0 \
-#	/usr/lib/glib-2.0/include
-
-#    INCLUDEPATH += /usr/include/glib-2.0 \
-#            /usr/lib/glib-2.0/include \
-#            /usr/include/libpurple \
-#            /usr/lib/x86_64-linux-gnu/glib-2.0/include
-
-
+    PKGCONFIG += purple glib-2.0 gmodule-2.0
 }
 
 win32-g++ {
