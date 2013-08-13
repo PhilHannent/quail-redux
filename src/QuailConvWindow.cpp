@@ -633,6 +633,7 @@ QQuailConvIm::buildInterface()
 {
     qDebug() << "QQuailConvIm::buildInterface()";
     QVBoxLayout *l = new QVBoxLayout(this);
+    setWindowIcon(QIcon(":/data/images/logo.png"));
 
     textDisplay  = new QuailConvDisplay(this);
     entry = new QQuailMultiLineEdit(this);

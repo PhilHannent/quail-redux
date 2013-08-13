@@ -62,6 +62,7 @@ void
 QQuailBListWindow::buildInterface()
 {
     qDebug() << "QQuailBListWindow::buildInterface";
+    setWindowIcon(QIcon(":/data/images/logo.png"));
     newChatIconSet = QIcon(QPixmap(":/data/images/actions/new-chat.png"));
 
     openChatIconSet = QIcon(QPixmap(":/data/images/actions/chat.png"));

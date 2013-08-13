@@ -26,7 +26,6 @@
 * Close button on conversation tab
 * Add ability to quit from main window other than tray icon
 * Add ability to change status from tray
-* Add Accounts to tray icon
 * Add Preferences to tray icon
 
 DONE
@@ -37,3 +36,4 @@ DONE
 * Add ability to add accounts
 * Fix when adding accounts the blank line
 * Tray icon
+* Add Accounts to tray icon

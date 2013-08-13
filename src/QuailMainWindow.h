@@ -90,6 +90,7 @@ class QQuailMainWindow : public QMainWindow
         QQuailConversation *lastConvWin;
         QQuailPrefsDialog *prefWin;
         QAction *actShowBuddyList;
+        QAction *actShowAccounts;
         QAction *actMinimize;
         QAction *actQuit;
         QMenu *trayIconMenu;

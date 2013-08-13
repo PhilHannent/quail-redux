@@ -171,7 +171,12 @@ QQuailMainWindow::createActions()
     actShowBuddyList = new QAction(this);
     actShowBuddyList->setIcon(QIcon(":/data/images/actions/blist.png"));
     connect(actShowBuddyList, SIGNAL(triggered()),
-            this, SLOT(showNormal()));
+            this, SLOT(showBlistWindow()));
+
+    actShowAccounts = new QAction(this);
+    actShowAccounts->setIcon(QIcon(":/data/images/actions/accounts.png"));
+    connect(actShowAccounts, SIGNAL(triggered()),
+            this, SLOT(showAccountsWindow()));
 
     actMinimize = new QAction(this);
     connect(actMinimize, SIGNAL(triggered()),
@@ -182,17 +187,29 @@ QQuailMainWindow::createActions()
 }
 
 void
+QQuailMainWindow::retranslateUi(QWidget * /*currentForm*/)
+{
+    qDebug() << "QQuailMainWindow::retranslateUi";
+    actShowBuddyList->setText(tr("Show Buddy List"));
+    actShowAccounts->setText(tr("Accounts"));
+    actMinimize->setText(tr("Hide"));
+    actQuit->setText(tr("Quit"));
+}
+
+void
 QQuailMainWindow::createTrayIcon()
 {
-     trayIconMenu = new QMenu(this);
-     trayIconMenu->addAction(actShowBuddyList);
-     trayIconMenu->addAction(actMinimize);
-     trayIconMenu->addSeparator();
-     trayIconMenu->addAction(actQuit);
+    trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(actShowBuddyList);
+    trayIconMenu->addAction(actShowAccounts);
+    trayIconMenu->addAction(actMinimize);
+    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(actQuit);
 
-     trayIcon = new QSystemTrayIcon(this);
-     trayIcon->setContextMenu(trayIconMenu);
-     trayIcon->setIcon(QIcon(":/data/images/logo.png"));
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+    trayIcon->setIcon(QIcon(":/data/images/logo.png"));
+    trayIcon->show();
 }
 
 void
@@ -270,15 +287,6 @@ void QQuailMainWindow::changeEvent(QEvent *event)
     }
 }
 
-
-void
-QQuailMainWindow::retranslateUi(QWidget * /*currentForm*/)
-{
-    qDebug() << "QQuailMainWindow::retranslateUi";
-    actShowBuddyList->setText(tr("Show Buddy List"));
-    actMinimize->setText(tr("Hide"));
-    actQuit->setText(tr("Quit"));
-}
 void
 QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
 {
@@ -385,6 +393,8 @@ QQuailMainWindow::showBlistWindow()
 
     setWindowTitle(tr("Buddy List"));
     widgetStack->setCurrentWidget(blistWin);
+    showNormal();
+    raise();
 }
 
 void
@@ -398,6 +408,8 @@ QQuailMainWindow::showAccountsWindow()
 
     setWindowTitle(tr("Accounts"));
     widgetStack->setCurrentWidget(accountsWin);
+    showNormal();
+    raise();
 }
 
 void
