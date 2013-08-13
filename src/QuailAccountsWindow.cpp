@@ -33,6 +33,7 @@
 #include <QAction>
 #include <QCheckBox>
 #include <QDebug>
+#include <QHeaderView>
 #include <QLabel>
 #include <QLayout>
 #include <QListView>
@@ -53,7 +54,7 @@ QQuailAccountItem::~QQuailAccountItem()
 }
 
 void
-QQuailAccountItem::startPulse(QPixmap onlinePixmap)
+QQuailAccountItem::startPulse(QPixmap onlinePixmap, QString pixmapName)
 {
     qDebug() << "QQuailAccountItem::startPulse";
 	stopPulse();
@@ -62,6 +63,7 @@ QQuailAccountItem::startPulse(QPixmap onlinePixmap)
 	pulseStep = 0;
 
 	pulseOrigPixmap = new QPixmap(onlinePixmap);
+    pulseOrigPixmapName = pixmapName;
     if (pulseTimer == 0) {
         pulseTimer = new QTimer(this);
         pulseTimer->setSingleShot(false);
@@ -78,13 +80,9 @@ QQuailAccountItem::stopPulse()
     qDebug() << "QQuailAccountItem::stopPulse";
     if (pulseTimer == 0)
         return;
-    qDebug() << "QQuailAccountItem::stopPulse.1";
-    delete pulseOrigPixmap;
-    qDebug() << "QQuailAccountItem::stopPulse.2";
-    pulseOrigPixmap = NULL;
-    qDebug() << "QQuailAccountItem::stopPulse.3";
     pulseTimer->stop();
-    qDebug() << "QQuailAccountItem::stopPulse.end";
+    delete pulseOrigPixmap;
+    pulseOrigPixmap = NULL;
 }
 
 void
@@ -112,16 +110,21 @@ QQuailAccountItem::key(int, bool) const
 void
 QQuailAccountItem::updatePulse()
 {
-	QPixmap tempPixmap(*pulseOrigPixmap);
+    qDebug() << "QQuailAccountItem::updatePulse()";
+    QPixmap tempPixmap = pulseOrigPixmap->copy();
 
-    setIcon(QQuailImageUtils::saturate(tempPixmap, pulseStep, pulseOrigPixmapName));
+    if (pulseGrey)
+        pulseStep += 0.20;
+    else
+        pulseStep -= 0.20;
 
-	if (pulseGrey)
-		pulseStep += 0.20;
-	else
-		pulseStep -= 0.20;
+    pulseGrey = (pulseStep <= 0);
 
-	pulseGrey = (pulseStep <= 0);
+    QString pixmapName = pulseOrigPixmapName;
+    if (pulseGrey)
+        pixmapName += "-grey";
+    qDebug() << "QQuailAccountItem::updatePulse().1" << pixmapName;
+    setIcon(QQuailImageUtils::saturate(tempPixmap, pulseStep, pixmapName));
 }
 
 /**************************************************************************
@@ -189,6 +192,7 @@ QQuailAccountsWindow::slotUpdateAccounts()
 void
 QQuailAccountsWindow::accountSignedOn(PurpleAccount *account)
 {
+    qDebug() << "QQuailAccountsWindow::accountSignedOn()";
     QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
 
 	if (item->getAccount() == account)
@@ -202,14 +206,17 @@ QQuailAccountsWindow::accountSignedOn(PurpleAccount *account)
 
 	if (item != NULL)
 	{
+        item = (QQuailAccountItem*)accountsWidget->item( item->row(), xProtocol);
 		item->stopPulse();
         item->setIcon(QQuailProtocolUtils::getProtocolIcon(account));
 	}
+    qDebug() << "QQuailAccountsWindow::accountSignedOn().end";
 }
 
 void
 QQuailAccountsWindow::accountSignedOff(PurpleAccount *account)
 {
+    qDebug() << "QQuailAccountsWindow::accountSignedOff()";
     QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
 
 	if (item->getAccount() == account)
@@ -223,16 +230,19 @@ QQuailAccountsWindow::accountSignedOff(PurpleAccount *account)
 
 	if (item != NULL)
 	{
-		QPixmap protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
-        QString protocolIconName = QQuailProtocolUtils::getProtocolIconName(account);
-        item->setIcon(QQuailImageUtils::greyPixmap(protocolIcon, protocolIconName));
+        QPixmap protIcon = QQuailProtocolUtils::getProtocolIcon(account);
+        QString protIconName = QQuailProtocolUtils::getProtocolIconName(account);
+        item = (QQuailAccountItem*)accountsWidget->item( item->row(), xProtocol);
+        item->setIcon(QQuailImageUtils::greyPixmap(protIcon, protIconName));
 	}
+    qDebug() << "QQuailAccountsWindow::accountSignedOff().end";
 }
 
 void
 QQuailAccountsWindow::buildInterface()
 {
     qDebug() << "QQuailAccountsWindow::buildInterface";
+    setWindowIcon(QIcon(":/data/images/logo.png"));
 	setupToolbar();
 
 	/* Create the accounts view */
@@ -243,7 +253,10 @@ QQuailAccountsWindow::buildInterface()
     horzHeaders << tr("Username") << tr("Network");
     accountsWidget->setColumnCount(horzHeaders.size());
     accountsWidget->setHorizontalHeaderLabels( horzHeaders );
+    accountsWidget->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+    accountsWidget->verticalHeader()->hide();
     accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    accountsWidget->setIconSize(QSize(25,25));
     setCentralWidget(accountsWidget);
 }
 
@@ -389,8 +402,9 @@ QQuailAccountsWindow::loadAccounts()
 //        QQuailAccountCheckBox *itemEnabled = new QQuailAccountCheckBox(index);
 //        itemEnabled->setAccount(account);
 
-        accountsWidget->setItem(index, 0, itemUserName);
-        accountsWidget->setItem(index, 1, itemProtocol);
+        accountsWidget->setItem(index, xUserName, itemUserName);
+        accountsWidget->setItem(index, xProtocol, itemProtocol);
+        //accountsWidget->setItem(index, xEnabled, itemEnabled);
 
 	}
     accountsWidget->setUpdatesEnabled(true);
@@ -447,7 +461,8 @@ QQuailAccountsWindow::connectToAccount()
     QQuailAccountItem *item = (QQuailAccountItem *)accountsWidget->currentItem();
     PurpleAccount *account = item->getAccount();
 
-    item->startPulse(QQuailProtocolUtils::getProtocolIcon(account));
+//    item->startPulse(QQuailProtocolUtils::getProtocolIcon(account),
+//                     QQuailProtocolUtils::getProtocolIconName(account));
 
     //purple_account_set_enabled(account, UI_ID, TRUE);
     purple_account_connect(account);

@@ -21,10 +21,7 @@
  */
 #include "QuailImageUtils.h"
 
-#include <libpurple/debug.h>
-
-#include <glib.h>
-
+#include <QDebug>
 #include <QPixmapCache>
 
 //TODO: Re-implement using Nokia's method https://www.developer.nokia.com/Community/Wiki/Image_editing_techniques_and_algorithms_using_Qt
@@ -114,24 +111,26 @@ QQuailImageUtils::saturate(QImage &image, float value)
 	return image;
 }
 
-QPixmap &
-QQuailImageUtils::greyPixmap(QPixmap &pixmap, QString name)
+QPixmap
+QQuailImageUtils::greyPixmap(QPixmap pixmap, QString name)
 {
-    QPixmap newPixmap = pixmap;
-    if (!QPixmapCache::find(name + "-greyed", pixmap) || name.isEmpty()) {
+    qDebug() << "QQuailImageUtils::greyPixmap:" << name;
+    QPixmap newPixmap = pixmap.copy();
+    if (!QPixmapCache::find(name + "-greyed", newPixmap) || name.isEmpty()) {
         QImage image = newPixmap.toImage();
 
         greyImage(image);
 
-        pixmap.convertFromImage(image);
-        QPixmapCache::insert(name + "-greyed", pixmap);
+        newPixmap.convertFromImage(image);
+        QPixmapCache::insert(name + "-greyed", newPixmap);
     }
-    return pixmap;
+    return newPixmap;
 }
 
-QPixmap &
-QQuailImageUtils::saturate(QPixmap &pixmap, float value, QString name)
+QPixmap
+QQuailImageUtils::saturate(QPixmap pixmap, float value, QString name)
 {
+    qDebug() << "QQuailImageUtils::saturate:" << name;
     QPixmap newPixmap = pixmap;
     if (!QPixmapCache::find(name + QString("-%1").arg(value), pixmap) || name.isEmpty()) {
         QImage image = newPixmap.toImage();

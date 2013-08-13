@@ -37,3 +37,4 @@ DONE
 * Fix when adding accounts the blank line
 * Tray icon
 * Add Accounts to tray icon
+* Account icons now correctly changing colour on connect and disconnect

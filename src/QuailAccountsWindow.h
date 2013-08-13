@@ -45,7 +45,7 @@ class QQuailAccountItem : public QObject, public QTableWidgetItem
         QQuailAccountItem(int index);
         ~QQuailAccountItem();
 
-		void startPulse(QPixmap onlinePixmap);
+        void startPulse(QPixmap onlinePixmap, QString pixmapName);
 		void stopPulse();
 
 		void setAccount(PurpleAccount *account);
@@ -99,6 +99,11 @@ class QQuailAccountsWindow : public QMainWindow
 
 		void accountSignedOn(PurpleAccount *account);
 		void accountSignedOff(PurpleAccount *account);
+
+        enum AccountsWindowColumnOrder {
+            xUserName = 0,
+            xProtocol,
+            xEnabled };
 
     public slots:
         void slotUpdateAccounts();
