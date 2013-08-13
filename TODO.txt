@@ -20,11 +20,14 @@
 * Remove a block
 * Connection meters
 * Buddy list status changer
-* Tray icon
 * Tray icon changer
 * Fix closing from conversation view
 * Split conversations from the buddy list
 * Close button on conversation tab
+* Add ability to quit from main window other than tray icon
+* Add ability to change status from tray
+* Add Accounts to tray icon
+* Add Preferences to tray icon
 
 DONE
 ===========================================================
@@ -33,3 +36,4 @@ DONE
 * Ability to delete accounts
 * Add ability to add accounts
 * Fix when adding accounts the blank line
+* Tray icon

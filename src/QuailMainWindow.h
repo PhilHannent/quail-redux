@@ -23,7 +23,7 @@
 #define _QUAIL_MAIN_WINDOW_H_
 
 #include <QMainWindow>
-#include <QStackedWidget>
+#include <QTranslator>
 
 #include <libpurple/conversation.h>
 
@@ -33,6 +33,10 @@ class QQuailConnectionMeters;
 class QQuailConvWindow;
 class QQuailConversation;
 class QQuailPrefsDialog;
+
+class QMenu;
+class QStackedWidget;
+class QSystemTrayIcon;
 
 class QQuailMainWindow : public QMainWindow
 {
@@ -62,14 +66,22 @@ class QQuailMainWindow : public QMainWindow
 		void showAccountsWindow();
         void showConvWindow();
         void showPrefWindow();
+        void retranslateUi(QWidget * /*currentForm*/);
 
 	protected:
-		void buildInterface();
-		void initCore();
-
 		void closeEvent(QCloseEvent *e);
+        void changeEvent(QEvent *event);
+
+    signals:
+        void signalLanguageCode(QString lang);
 
 	private:
+        void buildInterface();
+        void initCore();
+        void createTrayIcon();
+        void createActions();
+        void switchLanguage();
+
         QStackedWidget *widgetStack;
 		QQuailAccountsWindow *accountsWin;
 		QQuailBListWindow *blistWin;
@@ -77,8 +89,17 @@ class QQuailMainWindow : public QMainWindow
         QQuailConvWindow *convWin;
         QQuailConversation *lastConvWin;
         QQuailPrefsDialog *prefWin;
+        QAction *actShowBuddyList;
+        QAction *actMinimize;
+        QAction *actQuit;
+        QMenu *trayIconMenu;
+        QSystemTrayIcon *trayIcon;
+        int nextConvWinId;
+        QString m_language;
+        QTranslator 	appTranslator;
+        QTranslator 	qtTranslator;
 
-		int nextConvWinId;
+
 };
 
 QQuailMainWindow *qQuailGetMainWindow();

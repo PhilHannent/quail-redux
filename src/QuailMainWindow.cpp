@@ -21,16 +21,19 @@
  */
 #include "QuailMainWindow.h"
 
+#include <QAction>
 #include <QApplication>
+#include <QCloseEvent>
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QDir>
-#include <QCloseEvent>
+#include <QMenu>
+#include <QStackedWidget>
+#include <QSystemTrayIcon>
 #include <QTimer>
 #include <QVariant>
 #include <QVBoxLayout>
 #include <QToolBar>
-#include <QAction>
 
 #include <libpurple/prefs.h>
 #include <libpurple/conversation.h>
@@ -123,23 +126,25 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent)
       convWin(0),
       lastConvWin(0),
       prefWin(0),
-      nextConvWinId(0)
+      nextConvWinId(0),
+      m_language("en")
 {
     qDebug() << "QQuailMainWindow";
 	mainWin = this;
+    setWindowIcon(QIcon(":/data/images/logo.png"));
     QString configPath(QDir::home().path() + "/.quail");
     purple_util_set_user_dir(configPath.toStdString().c_str());
+    createActions();
 	buildInterface();
-
+    createTrayIcon();
 	initCore();
 
-	/* We have to do these separately. Ugh. */
 	showBlistWindow();
-
 	purple_set_blist(purple_blist_new());
 	purple_blist_load();
 
     //purple_accounts_auto_login("quail");
+    retranslateUi(this);
 }
 
 QQuailMainWindow::~QQuailMainWindow()
@@ -158,6 +163,36 @@ QQuailMainWindow::buildInterface()
 //    vbox->addWidget(meters);
 
     setCentralWidget(widgetStack);
+}
+
+void
+QQuailMainWindow::createActions()
+{
+    actShowBuddyList = new QAction(this);
+    actShowBuddyList->setIcon(QIcon(":/data/images/actions/blist.png"));
+    connect(actShowBuddyList, SIGNAL(triggered()),
+            this, SLOT(showNormal()));
+
+    actMinimize = new QAction(this);
+    connect(actMinimize, SIGNAL(triggered()),
+            this, SLOT(hide()));
+    actQuit = new QAction(this);
+    connect(actQuit, SIGNAL(triggered()),
+            qApp, SLOT(quit()));
+}
+
+void
+QQuailMainWindow::createTrayIcon()
+{
+     trayIconMenu = new QMenu(this);
+     trayIconMenu->addAction(actShowBuddyList);
+     trayIconMenu->addAction(actMinimize);
+     trayIconMenu->addSeparator();
+     trayIconMenu->addAction(actQuit);
+
+     trayIcon = new QSystemTrayIcon(this);
+     trayIcon->setContextMenu(trayIconMenu);
+     trayIcon->setIcon(QIcon(":/data/images/logo.png"));
 }
 
 void
@@ -187,22 +222,63 @@ QQuailMainWindow::initCore()
 void
 QQuailMainWindow::closeEvent(QCloseEvent *event)
 {
+    qDebug() << "QQuailMainWindow::closeEvent()";
     QWidget *visibleWidget = widgetStack->currentWidget();
 
-	if (visibleWidget == accountsWin || visibleWidget == blistWin)
-		event->accept();
-	else
+    if (visibleWidget == accountsWin || visibleWidget == blistWin)
+    {
+        hide();
+    }
+    else
 	{
 		/* This had better be a conversation window... */
-
+        //TODO: Fix me
+        qWarning() << "QQuailMainWindow::closeEvent()<<<<<<FIX ME";
         //QQuailConvWindow *qwin = (QQuailConvWindow *)visibleWidget;
-
         //purple_conv_window_destroy(qwin->getConvWindow());
-
-		event->ignore();
 	}
+    event->ignore();
 }
 
+void QQuailMainWindow::switchLanguage()
+{
+    //qDebug() << "MainWindow::switchLanguage()";
+    qApp->removeTranslator(&appTranslator);
+    qApp->removeTranslator(&qtTranslator);
+    emit signalLanguageCode(m_language);
+    if (m_language != "en") {
+        /* After reading the settings the translator should know the language */
+        if (QFile::exists(QApplication::applicationDirPath() + QDir::separator()
+                          + "translations" + QDir::separator() + "quail_" + m_language + ".qm"))
+        {
+            appTranslator.load("quail_" + m_language,
+                QApplication::applicationDirPath() + QDir::separator()
+                        + "translations" + QDir::separator());
+            qtTranslator.load("qt_" + m_language, QApplication::applicationDirPath()
+                + QDir::separator() + "translations" + QDir::separator());
+        }
+        qApp->installTranslator(&appTranslator);
+        qApp->installTranslator(&qtTranslator);
+    }
+    retranslateUi(this);
+}
+
+void QQuailMainWindow::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LocaleChange) {
+        switchLanguage();
+    }
+}
+
+
+void
+QQuailMainWindow::retranslateUi(QWidget * /*currentForm*/)
+{
+    qDebug() << "QQuailMainWindow::retranslateUi";
+    actShowBuddyList->setText(tr("Show Buddy List"));
+    actMinimize->setText(tr("Hide"));
+    actQuit->setText(tr("Quit"));
+}
 void
 QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
 {
