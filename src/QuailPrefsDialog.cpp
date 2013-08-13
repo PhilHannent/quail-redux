@@ -32,14 +32,13 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLayout>
-#include <QMainWindow>
 #include <QTabWidget>
 #include <QVBoxLayout>
 
 /**************************************************************************
  * QQuailBlistPrefPage
  **************************************************************************/
-QQuailBlistPrefPage::QQuailBlistPrefPage(QMainWindow *parent)
+QQuailBlistPrefPage::QQuailBlistPrefPage(QWidget *parent)
     : QQuailPrefPage(parent)
 {
 	buildInterface();
@@ -119,7 +118,7 @@ QQuailBlistPrefPage::buildInterface()
 /**************************************************************************
  * QQuailConvPrefPage
  **************************************************************************/
-QQuailConvPrefPage::QQuailConvPrefPage(QMainWindow *parent)
+QQuailConvPrefPage::QQuailConvPrefPage(QWidget *parent)
     : QQuailPrefPage(parent)
 {
 }
@@ -138,7 +137,7 @@ QQuailConvPrefPage::buildInterface()
 /**************************************************************************
  * QQuailNotifyPrefPage
  **************************************************************************/
-QQuailNotifyPrefPage::QQuailNotifyPrefPage(QMainWindow *parent)
+QQuailNotifyPrefPage::QQuailNotifyPrefPage(QWidget *parent)
     : QQuailPrefPage(parent)
 {
 	buildInterface();
@@ -197,7 +196,7 @@ QQuailNotifyPrefPage::buildInterface()
 /**************************************************************************
  * QQuailAwayPrefPage
  **************************************************************************/
-QQuailAwayPrefPage::QQuailAwayPrefPage(QMainWindow *parent)
+QQuailAwayPrefPage::QQuailAwayPrefPage(QWidget *parent)
     : QQuailPrefPage(parent)
 {
     qDebug() << "QQuailAwayPrefPage::QQuailAwayPrefPage()";
@@ -217,7 +216,7 @@ QQuailAwayPrefPage::buildInterface()
 /**************************************************************************
  * QQuailProxyPrefPage
  **************************************************************************/
-QQuailProxyPrefPage::QQuailProxyPrefPage(QMainWindow *parent)
+QQuailProxyPrefPage::QQuailProxyPrefPage(QWidget *parent)
     : QQuailPrefPage(parent)
 {
     qDebug() << "QQuailProxyPrefPage::QQuailProxyPrefPage()";
@@ -237,7 +236,7 @@ QQuailProxyPrefPage::buildInterface()
 /**************************************************************************
  * QQuailPluginPrefPage
  **************************************************************************/
-QQuailPluginPrefPage::QQuailPluginPrefPage(QMainWindow *parent)
+QQuailPluginPrefPage::QQuailPluginPrefPage(QWidget *parent)
     : QQuailPrefPage(parent)
 {
     qDebug() << "QQuailPluginPrefPage::QQuailPluginPrefPage()";
@@ -258,8 +257,8 @@ QQuailPluginPrefPage::buildInterface()
 /**************************************************************************
  * QQuailPrefsDialog
  **************************************************************************/
-QQuailPrefsDialog::QQuailPrefsDialog(QMainWindow *parent)
-    : QWidget(parent), parentMainWindow(parent)
+QQuailPrefsDialog::QQuailPrefsDialog(QWidget *parent)
+    : QWidget(parent), m_parent(parent)
 {
     qDebug() << "QQuailPrefsDialog::QQuailPrefsDialog()";
 	buildInterface();
@@ -281,8 +280,8 @@ QQuailPrefsDialog::buildInterface()
 
     tabs = new QTabWidget(this);
     layout->addWidget(tabs);
-    blistPage    = new QQuailBlistPrefPage(parentMainWindow);
-    notifyPage   = new QQuailNotifyPrefPage(parentMainWindow);
+    blistPage    = new QQuailBlistPrefPage(this);
+    notifyPage   = new QQuailNotifyPrefPage(this);
 #if 0
     convPage     = new QQuailConvPrefPage(this);
     awayIdlePage = new QQuailAwayPrefPage(this);
@@ -308,7 +307,7 @@ QQuailPrefsDialog::buildInterface()
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(slotRejected()));
     layout->addWidget(buttonBox);
     connect(this, SIGNAL(signalBListWindow()),
-            parentMainWindow, SLOT(showBlistWindow()));
+            m_parent, SLOT(showBlistWindow()));
 
 }
 

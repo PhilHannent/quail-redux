@@ -25,7 +25,6 @@
 #include <QDialog>
 
 class QCheckBox;
-class QMainWindow;
 class QTabWidget;
 
 class QQuailPrefPage : public QWidget
@@ -33,8 +32,8 @@ class QQuailPrefPage : public QWidget
 	Q_OBJECT
 
 	public:
-        QQuailPrefPage(QMainWindow *parent = 0)
-            : QWidget(), dirty(false) { }
+        QQuailPrefPage(QWidget *parent = 0)
+            : QWidget(parent), dirty(false) { }
 
 		void setDirty(bool dirty) { this->dirty = dirty; }
 		bool isDirty() const { return dirty; }
@@ -51,7 +50,7 @@ class QQuailBlistPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-        QQuailBlistPrefPage(QMainWindow *parent = 0);
+        QQuailBlistPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -71,7 +70,7 @@ class QQuailConvPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-        QQuailConvPrefPage(QMainWindow *parent = 0);
+        QQuailConvPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -84,7 +83,7 @@ class QQuailNotifyPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-        QQuailNotifyPrefPage(QMainWindow *parent = 0);
+        QQuailNotifyPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -103,7 +102,7 @@ class QQuailAwayPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-        QQuailAwayPrefPage(QMainWindow *parent = 0);
+        QQuailAwayPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -116,7 +115,7 @@ class QQuailProxyPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-        QQuailProxyPrefPage(QMainWindow *parent = 0);
+        QQuailProxyPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -129,7 +128,7 @@ class QQuailPluginPrefPage : public QQuailPrefPage
 	Q_OBJECT
 
 	public:
-        QQuailPluginPrefPage(QMainWindow *parent = 0);
+        QQuailPluginPrefPage(QWidget *parent = 0);
 
 		void accept();
 
@@ -142,11 +141,8 @@ class QQuailPrefsDialog : public QWidget
 	Q_OBJECT
 
 	public:
-        QQuailPrefsDialog(QMainWindow *parent = NULL);
+        QQuailPrefsDialog(QWidget *parent = 0);
 		~QQuailPrefsDialog();
-
-        //virtual void accept() = 0;
-        //virtual void done(int r);
 
     protected slots:
         void slotAccept();
@@ -159,7 +155,7 @@ class QQuailPrefsDialog : public QWidget
 		void buildInterface();
 
 	private:
-        QMainWindow *parentMainWindow;
+        QWidget *m_parent;
         QTabWidget *tabs;
 
 		QQuailPrefPage *blistPage;
