@@ -250,10 +250,11 @@ QQuailAccountsWindow::buildInterface()
     connect(accountsWidget, SIGNAL(itemSelectionChanged()),
             this, SLOT(accountSelected()));
     QStringList horzHeaders;
-    horzHeaders << tr("Username") << tr("Network");
+    horzHeaders << tr("Account") << tr("Network");
     accountsWidget->setColumnCount(horzHeaders.size());
     accountsWidget->setHorizontalHeaderLabels( horzHeaders );
     accountsWidget->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+    accountsWidget->horizontalHeader()->setHighlightSections(false);
     accountsWidget->verticalHeader()->hide();
     accountsWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     accountsWidget->setIconSize(QSize(25,25));
@@ -516,7 +517,7 @@ void
 QQuailAccountsWindow::resizeEvent(QResizeEvent *)
 {
     accountsWidget->setColumnWidth(1, ((accountsWidget->width()) / 4) -2);
-    accountsWidget->setColumnWidth(0, (accountsWidget->width() - 20 -
+    accountsWidget->setColumnWidth(0, (accountsWidget->width() -
                                  accountsWidget->columnWidth(1)) - 2);
 }
 
