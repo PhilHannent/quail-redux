@@ -27,6 +27,8 @@
 * Add ability to quit from main window other than tray icon
 * Add ability to change status from tray
 * Add Preferences to tray icon
+* Add ability to change status
+* Add recent statuses to the change status menu
 
 DONE
 ===========================================================

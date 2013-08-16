@@ -191,6 +191,7 @@ QQuailMainWindow::createStatusMenu()
 {
     /* Fetch a list of possible states */
     QMenu* returnedMenu = new QMenu(this);
+    returnedMenu->setTitle(tr("Change Status"));
     QActionGroup* agStates = new QActionGroup(this);
     connect(agStates, SIGNAL(triggered(QAction*)), this, SLOT(slotStateChanges(QAction*)));
     QAction* actStatus;
@@ -256,7 +257,30 @@ void
 QQuailMainWindow::slotStateChanges(QAction* act)
 {
     qDebug() << "QQuailMainWindow::slotStateChanges()";
-    Q_UNUSED(act)
+    switch (act->data().toInt())
+    {
+    case QUAIL_ACTION_STATUS_NEW:
+        break;
+    case QUAIL_ACTION_STATUS_SAVED:
+        break;
+    case PURPLE_STATUS_OFFLINE:
+        break;
+    case PURPLE_STATUS_INVISIBLE:
+        break;
+    case PURPLE_STATUS_UNAVAILABLE:
+        break;
+    case PURPLE_STATUS_AWAY:
+        break;
+    case PURPLE_STATUS_AVAILABLE:
+        //    purple_account_set_status(status_box->account, id,
+        //                            TRUE, "message", message, NULL);
+        break;
+    default:
+        /* Must be a custom status */
+        break;
+    }
+
+
 }
 
 void
@@ -276,6 +300,9 @@ QQuailMainWindow::createTrayIcon()
     trayIconMenu->addAction(actShowBuddyList);
     trayIconMenu->addAction(actShowAccounts);
     trayIconMenu->addAction(actMinimize);
+    trayIconMenu->addSeparator();
+    m_statusMenu = createStatusMenu();
+    trayIconMenu->addMenu(m_statusMenu);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(actQuit);
 
