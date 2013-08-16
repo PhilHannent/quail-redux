@@ -27,6 +27,9 @@
 
 #include <libpurple/conversation.h>
 
+#define QUAIL_ACTION_STATUS_NEW 30000
+#define QUAIL_ACTION_STATUS_SAVED 30001
+
 class QQuailAccountsWindow;
 class QQuailBListWindow;
 class QQuailConnectionMeters;
@@ -75,11 +78,16 @@ class QQuailMainWindow : public QMainWindow
     signals:
         void signalLanguageCode(QString lang);
 
+    private slots:
+        void slotStateChanges(QAction*);
+
 	private:
         void buildInterface();
         void initCore();
         void createTrayIcon();
         void createActions();
+        QMenu* createStatusMenu();
+
         void switchLanguage();
 
         QStackedWidget *widgetStack;

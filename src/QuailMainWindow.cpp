@@ -186,6 +186,79 @@ QQuailMainWindow::createActions()
             qApp, SLOT(quit()));
 }
 
+QMenu*
+QQuailMainWindow::createStatusMenu()
+{
+    /* Fetch a list of possible states */
+    QMenu* returnedMenu = new QMenu(this);
+    QActionGroup* agStates = new QActionGroup(this);
+    connect(agStates, SIGNAL(triggered(QAction*)), this, SLOT(slotStateChanges(QAction*)));
+    QAction* actStatus;
+
+    actStatus = new QAction(this);
+    actStatus->setText(tr("Available"));
+    actStatus->setIcon(QIcon(":/data/images/status/available.png"));
+    actStatus->setData(PURPLE_STATUS_AVAILABLE);
+    agStates->addAction(actStatus);
+    returnedMenu->addAction(actStatus);
+
+    actStatus = new QAction(this);
+    actStatus->setText(tr("Away"));
+    actStatus->setIcon(QIcon(":/data/images/status/away.png"));
+    actStatus->setData(PURPLE_STATUS_AWAY);
+    agStates->addAction(actStatus);
+    returnedMenu->addAction(actStatus);
+
+    actStatus = new QAction(this);
+    actStatus->setText(tr("Do not disturb"));
+    actStatus->setIcon(QIcon(":/data/images/status/busy.png"));
+    actStatus->setData(PURPLE_STATUS_UNAVAILABLE);
+    agStates->addAction(actStatus);
+    returnedMenu->addAction(actStatus);
+
+    actStatus = new QAction(this);
+    actStatus->setText(tr("Invisible"));
+    actStatus->setIcon(QIcon(":/data/images/status/invisible.png"));
+    actStatus->setData(PURPLE_STATUS_INVISIBLE);
+    agStates->addAction(actStatus);
+    returnedMenu->addAction(actStatus);
+
+    actStatus = new QAction(this);
+    actStatus->setText(tr("Offline"));
+    actStatus->setIcon(QIcon(":/data/images/status/offline.png"));
+    actStatus->setData(PURPLE_STATUS_OFFLINE);
+    agStates->addAction(actStatus);
+    returnedMenu->addAction(actStatus);
+
+    //returnedMenu->addSeparator();
+    //TODO: Add popular statuses
+
+    returnedMenu->addSeparator();
+
+    actStatus = new QAction(this);
+    actStatus->setText(tr("New..."));
+    //actStatus->setIcon(QIcon(":/data/images/status/offline.png"));
+    actStatus->setData(QUAIL_ACTION_STATUS_NEW);
+    agStates->addAction(actStatus);
+    returnedMenu->addAction(actStatus);
+
+    actStatus = new QAction(this);
+    actStatus->setText(tr("Saved..."));
+    //actStatus->setIcon(QIcon(":/data/images/status/offline.png"));
+    actStatus->setData(QUAIL_ACTION_STATUS_SAVED);
+    agStates->addAction(actStatus);
+    returnedMenu->addAction(actStatus);
+
+    return returnedMenu;
+}
+
+void
+QQuailMainWindow::slotStateChanges(QAction* act)
+{
+    qDebug() << "QQuailMainWindow::slotStateChanges()";
+    Q_UNUSED(act)
+}
+
 void
 QQuailMainWindow::retranslateUi(QWidget * /*currentForm*/)
 {

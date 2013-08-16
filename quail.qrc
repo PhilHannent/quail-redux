@@ -11,8 +11,6 @@
         <file>data/images/status/game.png</file>
         <file>data/images/status/hiptop.png</file>
         <file>data/images/status/invisible.png</file>
-        <file>data/images/status/login.png</file>
-        <file>data/images/status/logout.png</file>
         <file>data/images/status/male.png</file>
         <file>data/images/status/na.png</file>
         <file>data/images/status/notauthorized.png</file>
@@ -68,5 +66,15 @@
         <file>data/images/protocols/yahoo.svg</file>
         <file>data/images/protocols/zephyr.svg</file>
         <file>conv.html</file>
+        <file>data/images/status/available.png</file>
+        <file>data/images/status/away.png</file>
+        <file>data/images/status/busy.png</file>
+        <file>data/images/status/chat.png</file>
+        <file>data/images/status/extended-away.png</file>
+        <file>data/images/status/invisible.png</file>
+        <file>data/images/status/log-in.png</file>
+        <file>data/images/status/log-out.png</file>
+        <file>data/images/status/offline.png</file>
+        <file>data/images/status/person.png</file>
     </qresource>
 </RCC>
