@@ -7,7 +7,7 @@
 * Join a chat
 * Formatting toolbar on the conversation window
 * Kill off dead code
-* Rename groups
+* Rename group
 * Rename buddy
 * Remember group expanded state
 * Buddy pounces

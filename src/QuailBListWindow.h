@@ -27,14 +27,16 @@
 #include <QIcon>
 #include <QMainWindow>
 
-#include "QuailAccountsWindow.h"
-#include "QuailBuddyList.h"
-
 class QAction;
+class QComboBox;
+class QLabel;
 class QMenuBar;
 class QToolBar;
 class QToolButton;
+class QTreeWidgetItem;
+
 class QQuailAccountsWindow;
+class QQuailBuddyList;
 
 class QQuailBListWindow : public QMainWindow
 {
@@ -114,7 +116,9 @@ class QQuailBListWindow : public QMainWindow
         QMenu *settingsMenu;
         QMenu *convsMenu;
 
-		QToolBar *toolbar;
+        QToolBar *toolbar;
+        QComboBox *statusSelector;
+        QLabel *buddyIcon;
 };
 
 PurpleBlistUiOps *qQuailGetBlistUiOps();

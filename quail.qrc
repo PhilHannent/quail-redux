@@ -10,17 +10,14 @@
         <file>data/images/status/freeforchat.png</file>
         <file>data/images/status/game.png</file>
         <file>data/images/status/hiptop.png</file>
-        <file>data/images/status/invisible.png</file>
         <file>data/images/status/male.png</file>
         <file>data/images/status/na.png</file>
         <file>data/images/status/notauthorized.png</file>
         <file>data/images/status/occupied.png</file>
-        <file>data/images/status/offline.png</file>
         <file>data/images/status/wireless.png</file>
         <file>data/images/actions/accounts.png</file>
         <file>data/images/actions/add.png</file>
         <file>data/images/actions/alias.png</file>
-        <file>data/images/actions/away.png</file>
         <file>data/images/actions/blist.png</file>
         <file>data/images/actions/block.png</file>
         <file>data/images/actions/chat.png</file>

@@ -19,7 +19,9 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
+#include "QuailAccountsWindow.h"
 #include "QuailBListWindow.h"
+#include "QuailBuddyList.h"
 #include "QuailConvButton.h"
 #include "QuailConvWindow.h"
 #include "QuailDialogs.h"
@@ -31,6 +33,7 @@
 #include <libpurple/signals.h>
 
 #include <QAction>
+#include <QComboBox>
 #include <QDebug>
 #include <QLabel>
 #include <QLayout>
@@ -41,10 +44,6 @@
 #include <QToolBar>
 #include <QToolButton>
 
-
-/**************************************************************************
- * QQuailBListWindow
- **************************************************************************/
 QQuailBListWindow::QQuailBListWindow(QMainWindow *parent)
 	: QMainWindow(), parentMainWindow(parent), convsMenu(NULL)
 {
@@ -103,7 +102,21 @@ QQuailBListWindow::buildInterface()
 	connect(buddylist, SIGNAL(removeChat(PurpleChat *)),
 			this, SLOT(showConfirmRemoveChat(PurpleChat *)));
 
-	setCentralWidget(buddylist);
+    QVBoxLayout *vbox = new QVBoxLayout(this);
+    vbox->addWidget(buddylist);
+
+    //TODO: Move this to another class
+    QHBoxLayout *hbox = new QHBoxLayout(this);
+    vbox->addLayout(hbox);
+    statusSelector = new QComboBox(this);
+    hbox->addWidget(statusSelector);
+    buddyIcon = new QLabel(this);
+    buddyIcon->setFixedSize(32,32);
+    hbox->addWidget(buddyIcon);
+
+    QWidget *window = new QWidget(this);
+    window->setLayout(vbox);
+    setCentralWidget(window);
 }
 
 void

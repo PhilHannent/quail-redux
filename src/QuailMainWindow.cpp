@@ -43,6 +43,7 @@
 #include <libpurple/pounce.h>
 #include <libpurple/plugin.h>
 
+#include "QuailAccountsWindow.h"
 #include "QuailBListWindow.h"
 #include "QuailConnectionMeter.h"
 #include "QuailConvWindow.h"
