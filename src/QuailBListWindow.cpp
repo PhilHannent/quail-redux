@@ -26,6 +26,7 @@
 #include "QuailConvWindow.h"
 #include "QuailDialogs.h"
 #include "QuailMainWindow.h"
+#include "QuailStatusSelector.h"
 
 #include <libpurple/debug.h>
 #include <libpurple/prefs.h>
@@ -33,11 +34,8 @@
 #include <libpurple/signals.h>
 
 #include <QAction>
-#include <QComboBox>
 #include <QDebug>
-#include <QLabel>
 #include <QLayout>
-#include <QListView>
 #include <QMessageBox>
 #include <QMenu>
 #include <QPushButton>
@@ -104,15 +102,8 @@ QQuailBListWindow::buildInterface()
 
     QVBoxLayout *vbox = new QVBoxLayout(this);
     vbox->addWidget(buddylist);
-
-    //TODO: Move this to another class
-    QHBoxLayout *hbox = new QHBoxLayout(this);
-    vbox->addLayout(hbox);
-    statusSelector = new QComboBox(this);
-    hbox->addWidget(statusSelector);
-    buddyIcon = new QLabel(this);
-    buddyIcon->setFixedSize(32,32);
-    hbox->addWidget(buddyIcon);
+    QuailStatusSelector *statusSelector = new QuailStatusSelector(this);
+    vbox->addWidget(statusSelector);
 
     QWidget *window = new QWidget(this);
     window->setLayout(vbox);

@@ -28,8 +28,6 @@
 #include <QMainWindow>
 
 class QAction;
-class QComboBox;
-class QLabel;
 class QMenuBar;
 class QToolBar;
 class QToolButton;
@@ -117,8 +115,6 @@ class QQuailBListWindow : public QMainWindow
         QMenu *convsMenu;
 
         QToolBar *toolbar;
-        QComboBox *statusSelector;
-        QLabel *buddyIcon;
 };
 
 PurpleBlistUiOps *qQuailGetBlistUiOps();

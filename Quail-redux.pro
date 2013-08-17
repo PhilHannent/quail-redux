@@ -55,7 +55,8 @@ HEADERS = \
         src/QuailTabBar.h \
         src/QuailTabWidget.h \
     src/global.h \
-    src/QuailConvDisplay.h
+    src/QuailConvDisplay.h \
+    src/QuailStatusSelector.h
 
 
 SOURCES = \
@@ -82,7 +83,8 @@ SOURCES = \
         src/QuailTabBar.cpp \
         src/QuailTabWidget.cpp \
 	src/main.cpp \
-    src/QuailConvDisplay.cpp
+    src/QuailConvDisplay.cpp \
+    src/QuailStatusSelector.cpp
 
 
 DISTFILES = \

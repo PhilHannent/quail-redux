@@ -69,7 +69,7 @@ QQuailBListItem::getBlistNode() const
 void
 QQuailBListItem::updateInfo()
 {
-    //qDebug() << "QQuailBListItem::updateInfo";
+    qDebug() << "QQuailBListItem::updateInfo";
 
 	dirty = true;
 
@@ -85,15 +85,15 @@ QQuailBListItem::updateInfo()
 			return;
 
 
-        //qDebug() << "QQuailBListItem::updateInfo.Contact.1";
+        qDebug() << "QQuailBListItem::updateInfo.Contact.1";
 
 		if (isExpanded())
 		{
-            setIcon(0, QIcon(QPixmap(":/quail.png")));
+            setIcon(0, QIcon(QPixmap(":/data/images/logo.png")));
 		}
 		else
 		{
-            //qDebug() << "QQuailBListItem::updateInfo.Contact.2";
+            qDebug() << "QQuailBListItem::updateInfo.Contact.2";
             QString text("");
 
 //			if (buddy->evil > 0)
@@ -135,7 +135,7 @@ QQuailBListItem::updateInfo()
                 }
 
 			}
-            //qDebug() << "QQuailBListItem::updateInfo.Contact.3";
+            qDebug() << "QQuailBListItem::updateInfo.Contact.3";
             setIcon(0, QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy));
             setToolTip(1, text);
             //setIcon(2, QImage::fromData(((PurpleBuddyIcon*)purple_buddy_get_icon(buddy))));
@@ -146,7 +146,7 @@ QQuailBListItem::updateInfo()
 	}
     else if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 	{
-        //qDebug() << "QQuailBListItem::updateInfo.Buddy";
+        qDebug() << "QQuailBListItem::updateInfo.Buddy";
 		PurpleBuddy *buddy = (PurpleBuddy *)node;
         PurplePresence *presence = purple_buddy_get_presence(buddy);
 		QString text = "";
@@ -189,7 +189,7 @@ QQuailBListItem::updateInfo()
                 }
             }
         }
-        //qDebug() << "QQuailBListItem::updateInfo.Buddy.1" << buddy->server_alias;
+        qDebug() << "QQuailBListItem::updateInfo.Buddy.1" << buddy->server_alias;
         setIcon(0, QIcon(QQuailBuddyList::getBuddyStatusIcon(node)));
         setText(1, getAlias(buddy));
         //setIcon(2, purple_buddy_get_icon(buddy));
@@ -197,7 +197,7 @@ QQuailBListItem::updateInfo()
 	}
     else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 	{
-        //qDebug() << "QQuailBListItem::updateInfo.Chat";
+        qDebug() << "QQuailBListItem::updateInfo.Chat";
 		PurpleChat *chat = (PurpleChat *)node;
 
         setIcon(0, QIcon(QQuailProtocolUtils::getProtocolIcon(chat->account)));
@@ -205,7 +205,7 @@ QQuailBListItem::updateInfo()
 	}
     else if (PURPLE_BLIST_NODE_IS_GROUP(node))
     {
-        //qDebug() << "QQuailBListItem::updateInfo.Group";
+        qDebug() << "QQuailBListItem::updateInfo.Group";
         PurpleGroup *group = (PurpleGroup *)node;
         setText(1, group->name);
     }
@@ -452,19 +452,19 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
 
 	if (node == NULL)
 		return QPixmap();
-
+    qDebug() << "QQuailBuddyList::getBuddyStatusIcon.1";
     if (PURPLE_BLIST_NODE_IS_BUDDY(node))
 		account = ((PurpleBuddy *)node)->account;
     else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 		account = ((PurpleChat *)node)->account;
 	else
 		return QPixmap();
-
+    qDebug() << "QQuailBuddyList::getBuddyStatusIcon.2";
 	prpl = purple_plugins_find_with_id(purple_account_get_protocol_id(account));
 
 	if (prpl == NULL)
 		return QPixmap();
-
+    qDebug() << "QQuailBuddyList::getBuddyStatusIcon.3";
     prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(prpl);
 
 	if (prplInfo->list_icon != NULL)
@@ -474,7 +474,7 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
         else if (PURPLE_BLIST_NODE_IS_CHAT(node))
 			protoName = prplInfo->list_icon(account, NULL);
 	}
-
+    qDebug() << "QQuailBuddyList::getBuddyStatusIcon.4";
 //    if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
 //		((PurpleBuddy *)node)->present != GAIM_BUDDY_SIGNING_OFF &&
 //		prplInfo->list_emblems != NULL)
@@ -492,36 +492,36 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
 	sw = nw = ne = NULL; /* So that only the se icon will composite. */
 
 //    if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
-//		((PurpleBuddy *)node)->present == GAIM_BUDDY_SIGNING_ON)
-//	{
+//        ((PurpleBuddy *)node)->present == PURPLE_BUDDY_SIGNING_ON)
+//    {
 //        statusImage = QPixmap(":/data/images/status/login.png");
-//	}
+//    }
 //    else if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
-//			 ((PurpleBuddy *)node)->present == GAIM_BUDDY_SIGNING_OFF)
-//	{
+//             ((PurpleBuddy *)node)->present == PURPLE_BUDDY_SIGNING_OFF)
+//    {
 //        statusImage = QPixmap(":/data/images/status/logout.png");
-//	}
-//	else
+//    }
+//    else
 	{
         statusImage = QPixmap(":/data/images/protocols/" +
-                              QString(protoName) + ".png").toImage();
+                              QString(protoName) + ".svg").toImage();
 	}
-
+    qDebug() << "QQuailBuddyList::getBuddyStatusIcon.5:" << protoName;
 	if (statusImage.isNull())
 		return QPixmap();
+    qDebug() << "QQuailBuddyList::getBuddyStatusIcon.6";
+//	if (se != NULL)
+//	{
+//        emblemImage = QPixmap(":/data/images/status/" + QString(se) + ".png").toImage();
 
-	if (se != NULL)
-	{
-        emblemImage = QPixmap(":/data/images/status/" + QString(se) + ".png").toImage();
-
-		if (!emblemImage.isNull())
-		{
-			QQuailImageUtils::blendOnLower(
-					statusImage.width()  - emblemImage.width(),
-					statusImage.height() - emblemImage.height(),
-					emblemImage, statusImage);
-		}
-	}
+//		if (!emblemImage.isNull())
+//		{
+//			QQuailImageUtils::blendOnLower(
+//					statusImage.width()  - emblemImage.width(),
+//					statusImage.height() - emblemImage.height(),
+//					emblemImage, statusImage);
+//		}
+//	}
 
     /* Grey idle buddies. */
     if (PURPLE_BLIST_NODE_IS_BUDDY(node) &&
@@ -536,7 +536,7 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
     }
 
 	statusPixmap.convertFromImage(statusImage);
-
+    qDebug() << "QQuailBuddyList::getBuddyStatusIcon.end";
 	return statusPixmap;
 }
 

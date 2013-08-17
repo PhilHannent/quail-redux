@@ -3,6 +3,9 @@
 
 #include <QString>
 
+#define QUAIL_ACTION_STATUS_NEW 30000
+#define QUAIL_ACTION_STATUS_SAVED 30001
+
 static QString
 stripUnderscores(QString text)
 {

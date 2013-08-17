@@ -27,9 +27,6 @@
 
 #include <libpurple/conversation.h>
 
-#define QUAIL_ACTION_STATUS_NEW 30000
-#define QUAIL_ACTION_STATUS_SAVED 30001
-
 class QQuailAccountsWindow;
 class QQuailBListWindow;
 class QQuailConnectionMeters;
