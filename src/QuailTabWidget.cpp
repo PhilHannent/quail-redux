@@ -19,6 +19,9 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
+
+#include "libpurple/conversation.h"
+
 #include "QuailTabWidget.h"
 #include "QuailTabBar.h"
 #include "QuailConvWindow.h"
@@ -37,6 +40,9 @@ QQuailTabWidget::QQuailTabWidget(QWidget *parent)
 
     connect(this, SIGNAL(signalSendEnabled(bool)),
             parent, SLOT(slotSendEnabled(bool)));
+
+    connect(parent, SIGNAL(signalToggleUserList()),
+            this, SLOT(slotToggleUserList()));
 }
 
 void
@@ -76,4 +82,18 @@ QQuailTabWidget::slotSendMessage()
     qDebug() << "QQuailTabWidget::slotSendMessage()";
     QQuailConversation* qconv = (QQuailConversation*)this->currentWidget();
     qconv->send();
+}
+
+void
+QQuailTabWidget::slotToggleUserList()
+{
+    qDebug() << "QQuailTabWidget::slotToggleUserList()";
+    QQuailConversation *qconv = (QQuailConversation*)this->currentWidget();
+    PurpleConversation *conv = qconv->getConversation();
+    /* Toogle the user list */
+    if (purple_conversation_get_type(conv) == PURPLE_CONV_TYPE_CHAT)
+    {
+        QQuailConvChat *chat = (QQuailConvChat*)qconv;
+        chat->setShowUserList(!chat->getShowUserList());
+    }
 }

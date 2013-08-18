@@ -202,6 +202,7 @@ class QQuailConvWindow : public QMainWindow
 
     signals:
         void signalSendMessage();
+        void signalToggleUserList();
 
 	private:
 		void buildInterface();

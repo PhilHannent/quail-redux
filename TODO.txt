@@ -29,6 +29,10 @@
 * Add Preferences to tray icon
 * Add ability to change status
 * Add recent statuses to the change status menu
+* Display the currently used icon on the buddy list window
+* Enable the selection of a new buddy icon
+* Conversation room list display
+* Conversation text entry
 
 DONE
 ===========================================================

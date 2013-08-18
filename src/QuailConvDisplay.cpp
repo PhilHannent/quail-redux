@@ -33,6 +33,7 @@ QuailConvDisplay::slotAddMessage(bool bLeftAligned, QString sHtml)
         newMessage += "<td class=\"rightEntry\">";
 
     sHtml.replace("\n", "");
+    sHtml.replace("\'", "\\'");
     newMessage += sHtml;
     newMessage += "</td>";
     newMessage.replace("\"", "\\\"");

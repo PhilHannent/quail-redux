@@ -41,6 +41,7 @@ class QQuailTabWidget : public QTabWidget
     public slots:
         void slotSendMessage();
         void slotSendEnabled(bool bEnabled);
+        void slotToggleUserList();
 
     signals:
         void signalSendEnabled(bool bEnabled);

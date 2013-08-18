@@ -427,7 +427,7 @@ QQuailAddChatDialog::accept()
 	{
 		purple_blist_add_chat(chat, group, NULL);
 	}
-
+    qDebug() << "QQuailAddChatDialog::accept().end";
 	QDialog::accept();
 }
 

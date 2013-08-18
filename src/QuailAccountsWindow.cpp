@@ -465,7 +465,7 @@ QQuailAccountsWindow::connectToAccount()
 //    item->startPulse(QQuailProtocolUtils::getProtocolIcon(account),
 //                     QQuailProtocolUtils::getProtocolIconName(account));
 
-    //purple_account_set_enabled(account, UI_ID, TRUE);
+    purple_account_set_enabled(account, UI_ID, TRUE);
     purple_account_connect(account);
     qDebug() << "QQuailAccountsWindow::connectToAccount.end";
 }
