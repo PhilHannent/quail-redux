@@ -1062,24 +1062,6 @@ QQuailConvWindow::send()
 }
 
 void
-QQuailConvWindow::userListToggled(bool on)
-{
-    qDebug() << "QQuailConvWindow::userListToggled()";
-	/* Make sure this is a chat. */
-//    PurpleConversation *conv;
-//    QQuailConvChat *qchat;
-//    conv = purple_conv_window_get_active_conversation(win);
-
-//    if (purple_conversation_get_type(conv) != PURPLE_CONV_TYPE_CHAT)
-//        return;
-
-//    qchat = (QQuailConvChat *)conv->ui_data;
-
-//    qchat->setShowUserList(on);
-
-}
-
-void
 QQuailConvWindow::buildInterface()
 {
     qDebug() << "QQuailConvWindow::buildInterface()";
