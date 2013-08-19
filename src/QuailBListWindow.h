@@ -28,6 +28,8 @@
 #include <QMainWindow>
 
 class QAction;
+class QComboBox;
+class QLabel;
 class QMenuBar;
 class QToolBar;
 class QToolButton;
