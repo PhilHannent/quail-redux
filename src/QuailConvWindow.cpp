@@ -428,14 +428,7 @@ QQuailConvChat::buildInterface()
 
     /* For chats */
     userList = new QListWidget(this);
-//    QStringList horzHeaders;
-//    horzHeaders << tr("Status Icon") << tr("User");
-//    userList->setColumnCount(horzHeaders.size());
-//    userList->setHorizontalHeaderLabels( horzHeaders );
-//    userList->setSelectionBehavior(QAbstractItemView::SelectRows);
-    //userList->header()->hide();
-    //userList->setSorting(1);
-	userList->hide();
+    userList->setSortingEnabled(true);
 
     vbox->addWidget(textDisplay);
     vbox->addWidget(entry);
