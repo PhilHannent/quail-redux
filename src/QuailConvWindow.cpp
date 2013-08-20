@@ -348,12 +348,12 @@ QQuailConvChat::write(const char *who, const char *message,
 }
 
 void
-QQuailConvChat::addUser(const char *user)
+QQuailConvChat::addUser(PurpleConvChatBuddy *user)
 {
     qDebug() << "QQuailConvChat::addUser()";
     QListWidgetItem *item = new QListWidgetItem();
     //TODO: Fix this, its just printing out rubbish
-    item->setText(QString::fromUtf8(user));
+    item->setText(user->alias);
 
     //TODO: Set the chat status icon
 //	if (purple_conv_chat_is_user_ignored(chat, user))
@@ -372,7 +372,7 @@ QQuailConvChat::addUsers(GList *users)
 {
     qDebug() << "QQuailConvChat::addUsers()";
 	for (GList *l = users; l != NULL; l = l->next)
-		addUser((const char *)l->data);
+        addUser((PurpleConvChatBuddy *)l->data);
 }
 
 void
