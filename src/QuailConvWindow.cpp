@@ -473,13 +473,14 @@ QQuailConvChat::send()
 {
     qDebug() << "QQuailConvChat::send()";
     QString text = entry->toPlainText();
+    if (!text.isEmpty())
+    {
+        if (text[text.length() - 1] == '\n')
+            text.remove(text.length() - 1, 1);
 
-	if (text[text.length() - 1] == '\n')
-		text.remove(text.length() - 1, 1);
-
-    purple_conv_chat_send(PURPLE_CONV_CHAT(conv), text.toStdString().c_str());
-
-	entry->setText("");
+        purple_conv_chat_send(PURPLE_CONV_CHAT(conv), text.toStdString().c_str());
+    }
+    entry->setText("");
 }
 
 void
@@ -662,14 +663,14 @@ QQuailConvIm::send()
 {
     qDebug() << "QQuailConvIm::send()";
     QString text = entry->toPlainText();
+    if (!text.isEmpty())
+    {
+        if (text[text.length() - 1] == '\n')
+            text.remove(text.length() - 1, 1);
 
-	if (text[text.length() - 1] == '\n')
-		text.remove(text.length() - 1, 1);
-
-    purple_conv_im_send(PURPLE_CONV_IM(conv), text.toStdString().c_str());
-
-	entry->setText("");
-
+        purple_conv_im_send(PURPLE_CONV_IM(conv), text.toStdString().c_str());
+    }
+    entry->setText("");
 	updateTyping();
 }
 

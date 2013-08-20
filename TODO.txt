@@ -4,7 +4,6 @@
 * Use Aduim's Message Styles for the conversation window
 * Buddy icons showing up
 * Buddy status icons showing
-* Join a chat
 * Formatting toolbar on the conversation window
 * Kill off dead code
 * Rename group
@@ -31,8 +30,7 @@
 * Add recent statuses to the change status menu
 * Display the currently used icon on the buddy list window
 * Enable the selection of a new buddy icon
-* Conversation room list display
-* Conversation text entry
+* Conversation room list display status icons
 
 DONE
 ===========================================================
@@ -44,3 +42,6 @@ DONE
 * Tray icon
 * Add Accounts to tray icon
 * Account icons now correctly changing colour on connect and disconnect
+* Join a chat
+* Conversation room list display
+* Conversation text entry

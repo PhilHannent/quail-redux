@@ -21,6 +21,8 @@
  * MA  02111-1307  USA
  */
 #include "QuailMultiLineEdit.h"
+
+#include <QDebug>
 #include <QEvent>
 #include <QKeyEvent>
 
@@ -63,6 +65,7 @@ QQuailMultiLineEdit::eventFilter(QObject *object, QEvent *event)
 void
 QQuailMultiLineEdit::keyPressEvent(QKeyEvent *event)
 {
+    qDebug() << "QQuailMultiLineEdit::keyPressEvent";
 	int key = event->key();
 
     if (historyEnabled)
@@ -94,14 +97,21 @@ QQuailMultiLineEdit::keyPressEvent(QKeyEvent *event)
         {
             history.prepend(this->toPlainText());
             index = -1;
+            qDebug() << "QQuailMultiLineEdit::keyPressEvent.1";
+            emit returnPressed();
+            return;
         }
         else if (key == Qt::Key_Tab)
         {
             /* TODO Tab completion */
             return;
         }
+        else if (key == Qt::Key_Return && event->modifiers() == Qt::CTRL)
+        {
+            emit returnPressed();
+        }
     }
-    else if (key == Qt::Key_Down)
+    else if (key == Qt::Key_Down || key == Qt::Key_Return)
     {
         emit returnPressed();
 
