@@ -31,6 +31,7 @@
 * Display the currently used icon on the buddy list window
 * Enable the selection of a new buddy icon
 * Conversation room list display status icons
+* Add "User is typing" notification
 
 DONE
 ===========================================================

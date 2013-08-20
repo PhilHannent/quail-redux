@@ -27,8 +27,6 @@
 
 #include <QTreeWidget>
 
-#include "QuailImageUtils.h"
-
 class QQuailBListItem : public QTreeWidgetItem
 {
 	public:
@@ -41,6 +39,9 @@ class QQuailBListItem : public QTreeWidgetItem
 		void updateInfo();
 		void setExpanded(bool expanded);
 		bool isExpanded() const;
+        //TODO: Find out how to calculate this
+        bool recentSignedOnOff()
+        { return false; }
         /*reimp*/QSize sizeHint ( int column ) const;
 
 	protected:
@@ -67,6 +68,7 @@ class QQuailBuddyList : public QTreeWidget
 
 	public:
         static QPixmap getBuddyStatusIcon(PurpleBlistNode *node);
+        static QPixmap getBuddyStatusIcon2(PurpleBlistNode *node);
 
 	public:
         QQuailBuddyList(QWidget *parent = NULL);
@@ -141,8 +143,6 @@ class QQuailBuddyList : public QTreeWidget
 		void updateContact(PurpleBlistNode *node);
 		void updateBuddy(PurpleBlistNode *node);
 		void updateChat(PurpleBlistNode *node);
-
-	private:
         PurpleBuddyList *quailBlist;
 
 		QTimer *saveTimer;

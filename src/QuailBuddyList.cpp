@@ -438,7 +438,7 @@ QQuailBListItem::sizeHint ( int column ) const
  * QQuailBuddyList static utility functions
  **************************************************************************/
 QPixmap
-QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
+QQuailBuddyList::getBuddyStatusIcon2(PurpleBlistNode *node)
 {
     qDebug() << "QQuailBuddyList::getBuddyStatusIcon";
     QImage statusImage;
@@ -539,6 +539,100 @@ QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
     qDebug() << "QQuailBuddyList::getBuddyStatusIcon.end";
 	return statusPixmap;
 }
+
+QPixmap
+QQuailBuddyList::getBuddyStatusIcon(PurpleBlistNode *node)
+{
+    qDebug() << "QQuailBuddyList::getBuddyStatusIcon";
+    QPixmap returnImage;
+    QQuailBListItem *qnode = (QQuailBListItem*)node->ui_data;
+    QQuailBListItem *qbuddynode = NULL;
+    PurpleBuddy *buddy = NULL;
+    PurpleChat *chat = NULL;
+
+    if(PURPLE_BLIST_NODE_IS_CONTACT(node)) {
+        if(!qnode->isExpanded()) {
+            buddy = purple_contact_get_priority_buddy((PurpleContact*)node);
+            if (buddy != NULL)
+                qbuddynode = (QQuailBListItem*)((PurpleBlistNode*)buddy)->ui_data;
+        }
+    } else if(PURPLE_BLIST_NODE_IS_BUDDY(node)) {
+        buddy = (PurpleBuddy*)node;
+        qbuddynode = (QQuailBListItem*)node->ui_data;
+    } else if(PURPLE_BLIST_NODE_IS_CHAT(node)) {
+        chat = (PurpleChat*)node;
+    } else {
+        qDebug() << "QQuailBuddyList::getBuddyStatusIcon.1";
+        return QPixmap();
+    }
+
+    if(buddy || chat) {
+        PurpleAccount *account;
+        PurplePlugin *prpl;
+
+        if(buddy)
+            account = buddy->account;
+        else
+            account = chat->account;
+
+        prpl = purple_find_prpl(purple_account_get_protocol_id(account));
+        if(!prpl) {
+            qDebug() << "QQuailBuddyList::getBuddyStatusIcon.2";
+            return QPixmap();
+        }
+    }
+
+    if(buddy) {
+        PurplePresence *p;
+        gboolean trans;
+
+        p = purple_buddy_get_presence(buddy);
+        trans = purple_presence_is_idle(p);
+
+        if (PURPLE_BUDDY_IS_ONLINE(buddy) && qbuddynode && qbuddynode->recentSignedOnOff())
+            returnImage = QPixmap(":/data/images/status/log-in.png");
+        else if (qbuddynode && qbuddynode->recentSignedOnOff())
+            returnImage = QPixmap(":/data/images/status/log-out.png");
+        else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_UNAVAILABLE))
+            if (trans)
+                returnImage = QQuailImageUtils::greyPixmap(
+                            QPixmap(":/data/images/status/busy.png"),
+                            "busy.png");
+            else
+                returnImage = QPixmap(":/data/images/status/busy.png");
+        else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_AWAY))
+            if (trans)
+                returnImage = QQuailImageUtils::greyPixmap(
+                            QPixmap(":/data/images/status/away.png"),
+                            "away.png");
+            else
+                returnImage = QPixmap(":/data/images/status/away.png");
+        else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_EXTENDED_AWAY))
+            if (trans)
+                returnImage = QQuailImageUtils::greyPixmap(
+                            QPixmap(":/data/images/status/extended-away.png"),
+                            "extended-away.png");
+            else
+                returnImage = QPixmap(":/data/images/status/extended-away.png");
+        else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_OFFLINE))
+            returnImage = QPixmap(":/data/images/status/offline.png");
+        else if (trans)
+            returnImage = QQuailImageUtils::greyPixmap(
+                        QPixmap(":/data/images/status/available.png"),
+                        "available.png");
+        else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_INVISIBLE))
+            returnImage = QPixmap(":/data/images/status/invisible.png");
+        else
+            returnImage = QPixmap(":/data/images/status/available.png");
+    } else if (chat) {
+        returnImage = QPixmap(":/data/images/status/chat.png");
+    } else {
+        returnImage = QPixmap(":/data/images/status/person.png");
+    }
+
+    return returnImage;
+}
+
 
 /**************************************************************************
  * QQuailBuddyList
