@@ -38,6 +38,15 @@
 #include <QSpinBox>
 #include <QVBoxLayout>
 
+static QString
+stripUnderscores(QString text)
+{
+    if (text.startsWith("_")) {
+        text = text.remove(0,1);
+    }
+    return text;
+}
+
 /**************************************************************************
  * QQuailAddBuddyDialog
  **************************************************************************/

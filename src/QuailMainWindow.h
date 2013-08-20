@@ -106,7 +106,6 @@ class QQuailMainWindow : public QMainWindow
         QTranslator 	qtTranslator;
         QMenu* m_statusMenu;
 
-
 };
 
 QQuailMainWindow *qQuailGetMainWindow();

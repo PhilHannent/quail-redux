@@ -23,10 +23,13 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QComboBox>
 #include <QCloseEvent>
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QDir>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QMenu>
 #include <QStackedWidget>
 #include <QSystemTrayIcon>

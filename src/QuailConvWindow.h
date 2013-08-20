@@ -198,7 +198,6 @@ class QQuailConvWindow : public QMainWindow
 		void addRemoveBuddySlot();
 		void userInfoSlot();
 		void send();
-		void userListToggled(bool on);
 
     signals:
         void signalSendMessage();
