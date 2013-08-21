@@ -348,12 +348,12 @@ QQuailConvChat::write(const char *who, const char *message,
 }
 
 void
-QQuailConvChat::addUser(const char *user)
+QQuailConvChat::addUser(PurpleConvChatBuddy *user)
 {
     qDebug() << "QQuailConvChat::addUser()";
     QListWidgetItem *item = new QListWidgetItem();
     //TODO: Fix this, its just printing out rubbish
-    item->setText(QString::fromUtf8(user));
+    item->setText(user->alias);
 
     //TODO: Set the chat status icon
 //	if (purple_conv_chat_is_user_ignored(chat, user))
@@ -372,7 +372,7 @@ QQuailConvChat::addUsers(GList *users)
 {
     qDebug() << "QQuailConvChat::addUsers()";
 	for (GList *l = users; l != NULL; l = l->next)
-		addUser((const char *)l->data);
+        addUser((PurpleConvChatBuddy *)l->data);
 }
 
 void
@@ -428,14 +428,7 @@ QQuailConvChat::buildInterface()
 
     /* For chats */
     userList = new QListWidget(this);
-//    QStringList horzHeaders;
-//    horzHeaders << tr("Status Icon") << tr("User");
-//    userList->setColumnCount(horzHeaders.size());
-//    userList->setHorizontalHeaderLabels( horzHeaders );
-//    userList->setSelectionBehavior(QAbstractItemView::SelectRows);
-    //userList->header()->hide();
-    //userList->setSorting(1);
-	userList->hide();
+    userList->setSortingEnabled(true);
 
     vbox->addWidget(textDisplay);
     vbox->addWidget(entry);
@@ -480,13 +473,14 @@ QQuailConvChat::send()
 {
     qDebug() << "QQuailConvChat::send()";
     QString text = entry->toPlainText();
+    if (!text.isEmpty())
+    {
+        if (text[text.length() - 1] == '\n')
+            text.remove(text.length() - 1, 1);
 
-	if (text[text.length() - 1] == '\n')
-		text.remove(text.length() - 1, 1);
-
-    purple_conv_chat_send(PURPLE_CONV_CHAT(conv), text.toStdString().c_str());
-
-	entry->setText("");
+        purple_conv_chat_send(PURPLE_CONV_CHAT(conv), text.toStdString().c_str());
+    }
+    entry->setText("");
 }
 
 void
@@ -669,14 +663,14 @@ QQuailConvIm::send()
 {
     qDebug() << "QQuailConvIm::send()";
     QString text = entry->toPlainText();
+    if (!text.isEmpty())
+    {
+        if (text[text.length() - 1] == '\n')
+            text.remove(text.length() - 1, 1);
 
-	if (text[text.length() - 1] == '\n')
-		text.remove(text.length() - 1, 1);
-
-    purple_conv_im_send(PURPLE_CONV_IM(conv), text.toStdString().c_str());
-
-	entry->setText("");
-
+        purple_conv_im_send(PURPLE_CONV_IM(conv), text.toStdString().c_str());
+    }
+    entry->setText("");
 	updateTyping();
 }
 

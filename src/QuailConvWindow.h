@@ -106,7 +106,7 @@ class QQuailConvChat : public QQuailConversation
 		void write(const char *who, const char *message,
                    PurpleMessageFlags flags, time_t mtime);
 
-		void addUser(const char *user);
+        void addUser(PurpleConvChatBuddy *user);
 		void addUsers(GList *users);
 		void renameUser(const char *oldName, const char *newName);
 		void removeUser(const char *user);

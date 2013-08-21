@@ -148,8 +148,8 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent)
 	purple_set_blist(purple_blist_new());
 	purple_blist_load();
 
-    //purple_accounts_auto_login("quail");
     retranslateUi(this);
+    purple_accounts_restore_current_statuses();
 }
 
 QQuailMainWindow::~QQuailMainWindow()
