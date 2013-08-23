@@ -6,7 +6,7 @@ Quail is a multi-protocol instant messaging client using libpurple and
 based on qpe-gaim.
 
 This projects main aim is to integrate libpurple and Qt to create a cross-
-platform application primarily targetting Windows, Linux and Android.
+platform application primarily targeting Windows, Linux and Android.
 
 All help appreciated.
 

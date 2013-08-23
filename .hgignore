@@ -3,6 +3,7 @@ syntax: glob
 
 obj
 moc
+win32-bin
 *.user
 *.pro.user.*
 Quail.exe
@@ -23,3 +24,6 @@ qrc_*.cpp
 *~
 *.orig
 *.cppcheck
+*.msi
+*.wixpdb
+*.wixobj
