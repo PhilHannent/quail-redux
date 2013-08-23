@@ -142,9 +142,11 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent)
     createActions();
 	buildInterface();
     createTrayIcon();
+    qDebug() << "QQuailMainWindow::QQuailMainWindow:about to initCore";
 	initCore();
-
+    qDebug() << "QQuailMainWindow::QQuailMainWindow:initCore.complete";
 	showBlistWindow();
+    qDebug() << "QQuailMainWindow::QQuailMainWindow:showBlistWindow()";
 	purple_set_blist(purple_blist_new());
 	purple_blist_load();
 
@@ -320,25 +322,30 @@ QQuailMainWindow::createTrayIcon()
 void
 QQuailMainWindow::initCore()
 {
+    qDebug() << "QQuailMainWindow::initCore()";
     char *path;
 
 	purple_core_set_ui_ops(qQuailGetCoreUiOps());
+    qDebug() << "QQuailMainWindow::initCore().1";
 	purple_eventloop_set_ui_ops(qQuailGetEventLoopUiOps());
-
+    qDebug() << "QQuailMainWindow::initCore().2";
     if (!purple_core_init("quail")) {
         qDebug() << tr("Initialization of the Quail core failed.\n"
                   "Please report this!\n");
 	}
-
+    qDebug() << "QQuailMainWindow::initCore().3";
     path = g_build_filename(purple_user_dir(), "plugins", NULL);
+    qDebug() << "QQuailMainWindow::initCore().4";
     purple_plugins_add_search_path(path);
+    qDebug() << "QQuailMainWindow::initCore().5";
 
 	purple_plugins_probe(NULL);
-
+    qDebug() << "QQuailMainWindow::initCore().6";
 	purple_prefs_load();
-
+    qDebug() << "QQuailMainWindow::initCore().7";
     //purple_accounts_load();
 	purple_pounces_load();
+    qDebug() << "QQuailMainWindow::initCore().end";
 }
 
 void

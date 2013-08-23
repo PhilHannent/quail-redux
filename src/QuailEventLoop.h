@@ -26,6 +26,8 @@
 
 #include <QTimer>
 #include <QSocketNotifier>
+/* http://harmattan-dev.nokia.com/docs/library/html/qt4/qabstracteventdispatcher.html */
+#include <QAbstractEventDispatcher>
 
 class QQuailTimer : public QTimer
 {
