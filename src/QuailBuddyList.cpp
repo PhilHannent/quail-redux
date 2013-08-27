@@ -41,14 +41,14 @@
  * QQuailBListItem
  **************************************************************************/
 QQuailBListItem::QQuailBListItem(QTreeWidget *parent, PurpleBlistNode *node)
-    : QTreeWidgetItem(parent), node(node), expanded(false), dirty(true)
+    : QTreeWidgetItem(parent), node(node), dirty(true)
 {
     qDebug() << "QQuailBListItem::QQuailBListItem::Added to TreeWidget";
 	init();
 }
 
 QQuailBListItem::QQuailBListItem(QTreeWidgetItem *parent, PurpleBlistNode *node)
-    : QTreeWidgetItem(parent), node(node), expanded(false), dirty(true)
+    : QTreeWidgetItem(parent), node(node), dirty(true)
 {
     qDebug() << "QQuailBListItem::QQuailBListItem::Added to TreeWidgetItem";
     init();
@@ -220,18 +220,6 @@ QQuailBListItem::getAlias(PurpleBuddy *buddy)
         return QString(buddy->server_alias);
 
     return QString(buddy->name);
-}
-
-void
-QQuailBListItem::setExpanded(bool expanded)
-{
-	this->expanded = expanded;
-}
-
-bool
-QQuailBListItem::isExpanded() const
-{
-	return expanded;
 }
 
 void
@@ -655,10 +643,11 @@ QQuailBuddyList::QQuailBuddyList(QWidget *parent)
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setStyleSheet("QTreeWidget#treeWidget::item { height: " + QString(BUDDY_ICON_SIZE) + "px; }");
 
-    connect(this, SIGNAL(expanded(QTreeWidgetItem *)),
+    connect(this, SIGNAL(itemExpanded(QTreeWidgetItem *)),
             this, SLOT(nodeExpandedSlot(QTreeWidgetItem *)));
-    connect(this, SIGNAL(collapsed(QTreeWidgetItem *)),
+    connect(this, SIGNAL(itemCollapsed(QTreeWidgetItem *)),
             this, SLOT(nodeCollapsedSlot(QTreeWidgetItem *)));
+    //TODO: Find a replacement for this
     connect(this, SIGNAL(rightButtonPressed(QTreeWidgetItem *,
 											const QPoint &, int)),
             this, SLOT(showContextMenuSlot(QTreeWidgetItem *,
@@ -955,7 +944,7 @@ QQuailBuddyList::populateChatMenu(PurpleChat *chat, QMenu *menu)
 	/* Auto-Join */
     a = new QAction(tr("Auto-Join"), this);
 
-	if (purple_blist_node_get_bool((PurpleBlistNode *)chat, "qpe-autojoin"))
+    if (purple_blist_node_get_bool((PurpleBlistNode *)chat, "autojoin"))
         a->setChecked(true);
 
     menu->addAction(a);
@@ -1043,6 +1032,7 @@ QQuailBuddyList::nodeExpandedSlot(QTreeWidgetItem *_item)
 
     if (PURPLE_BLIST_NODE_IS_GROUP(node))
 	{
+        qDebug() << "QQuailBuddyList::nodeExpandedSlot.setNodeCollapsed:FALSE";
 		purple_blist_node_set_bool(node, "collapsed", FALSE);
 
 //		if (!saveTimer->isActive())
@@ -1065,6 +1055,7 @@ QQuailBuddyList::nodeCollapsedSlot(QTreeWidgetItem *_item)
 
     if (PURPLE_BLIST_NODE_IS_GROUP(node))
 	{
+        qDebug() << "QQuailBuddyList::nodeCollapsedSlot:collapsed::true";
 		purple_blist_node_set_bool(node, "collapsed", TRUE);
 
 //		if (!saveTimer->isActive())
@@ -1388,7 +1379,7 @@ QQuailBuddyList::autoJoinChatSlot(bool on)
     if (!PURPLE_BLIST_NODE_IS_CHAT(node))
 		return;
 
-	purple_blist_node_set_bool(node, "qpe-autojoin", on);
+    purple_blist_node_set_bool(node, "autojoin", on);
 //	purple_blist_save();
 }
 
@@ -1469,20 +1460,18 @@ QQuailBuddyList::updateGroup(PurpleBlistNode *node)
         purple_prefs_get_bool("/quail/blist/show_offline_buddies") ||
 		purple_blist_get_group_online_count(group) > 0)
 	{
-        qDebug() << "QQuailBuddyList::updateGroup.1";
 		if (item == NULL)
 		{
-            //qDebug() << "QQuailBuddyList::updateGroup.1";
 			addGroup(node);
 			item = (QQuailBListItem *)node->ui_data;
 		}
-
         if (!purple_blist_node_get_bool(node, "collapsed"))
+        {
             item->setExpanded(true);
+        }
 	}
 	else
 	{
-        //qDebug() << "QQuailBuddyList::updateGroup.3";
 		if (item != NULL)
 			delete item;
 	}

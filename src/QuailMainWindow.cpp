@@ -333,6 +333,7 @@ QQuailMainWindow::initCore()
         qDebug() << tr("Initialization of the Quail core failed.\n"
                   "Please report this!\n");
 	}
+    purple_debug_set_enabled(false);
     qDebug() << "QQuailMainWindow::initCore().3";
     path = g_build_filename(purple_user_dir(), "plugins", NULL);
     qDebug() << "QQuailMainWindow::initCore().4";

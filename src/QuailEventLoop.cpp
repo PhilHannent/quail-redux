@@ -58,7 +58,7 @@ QQuailInputNotifier::QQuailInputNotifier(int fd,
                                          PurpleInputCondition cond,
                                          PurpleInputFunction func,
                                          gpointer userData)
-    : QAbstractEventDispatcher(), func(func), userData(userData), readNotifier(NULL),
+    : QObject(), func(func), userData(userData), readNotifier(NULL),
 	  writeNotifier(NULL)
 {
     //qDebug() << "QQuailInputNotifier::QQuailInputNotifier";

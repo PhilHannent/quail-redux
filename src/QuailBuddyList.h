@@ -37,8 +37,6 @@ class QQuailBListItem : public QTreeWidgetItem
 		PurpleBlistNode *getBlistNode() const;
 
 		void updateInfo();
-		void setExpanded(bool expanded);
-		bool isExpanded() const;
         //TODO: Find out how to calculate this
         bool recentSignedOnOff()
         { return false; }
@@ -54,7 +52,6 @@ class QQuailBListItem : public QTreeWidgetItem
 
 	private:
 		PurpleBlistNode *node;
-		bool expanded;
 		bool dirty;
 		QString topText, bottomText;
 		int textY1, textY2;
