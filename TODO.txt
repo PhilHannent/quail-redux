@@ -8,7 +8,6 @@
 * Kill off dead code
 * Rename group
 * Rename buddy
-* Remember group expanded state
 * Buddy pounces
 * Sort order on buddy list
 * Packaging
@@ -46,3 +45,4 @@ DONE
 * Join a chat
 * Conversation room list display
 * Conversation text entry
+* Remember group expanded state
