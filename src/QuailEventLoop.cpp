@@ -38,7 +38,7 @@ typedef struct
 static gboolean qQuailSourceRemove(guint handle);
 
 static guint nextSourceId = 0;
-static QMap<guint, QQuailSourceInfo*> sources;
+static QMap<guint, QQuailSourceInfo*> m_sources;
 
 QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
 	: QTimer(), sourceId(sourceId), func(func), userData(data)
@@ -58,7 +58,7 @@ QQuailInputNotifier::QQuailInputNotifier(int fd,
                                          PurpleInputCondition cond,
                                          PurpleInputFunction func,
                                          gpointer userData)
-	: QObject(), func(func), userData(userData), readNotifier(NULL),
+    : QAbstractEventDispatcher(), func(func), userData(userData), readNotifier(NULL),
 	  writeNotifier(NULL)
 {
     //qDebug() << "QQuailInputNotifier::QQuailInputNotifier";
@@ -117,7 +117,7 @@ qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 	info->timer = new QQuailTimer(info->handle, func, data);
 	info->timer->start(interval);
 
-	sources.insert(info->handle, info);
+    m_sources.insert(info->handle, info);
 
 	return info->handle;
 }
@@ -144,7 +144,7 @@ qQuailInputAdd(int fd,
 
 	info->notifier = new QQuailInputNotifier(fd, cond, func, userData);
 
-	sources.insert(info->handle, info);
+    m_sources.insert(info->handle, info);
 
 	return info->handle;
 }
@@ -155,12 +155,12 @@ qQuailSourceRemove(guint handle)
     //qDebug() << "QQuailInputNotifier::qQuailSourceRemove";
 	QQuailSourceInfo *info;
 
-    info = sources.value(handle);
+    info = m_sources.value(handle);
 
 	if (info == NULL)
         return false;
 
-	sources.remove(handle);
+    m_sources.remove(handle);
 
 	if (info->timer != NULL)
 		delete info->timer;

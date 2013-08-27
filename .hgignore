@@ -27,3 +27,4 @@ qrc_*.cpp
 *.msi
 *.wixpdb
 *.wixobj
+*.autosave
