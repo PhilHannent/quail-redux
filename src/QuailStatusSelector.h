@@ -3,6 +3,11 @@
 
 #include <QWidget>
 
+#include <glib.h>
+#include <libpurple/account.h>
+#include <libpurple/status.h>
+
+
 class QComboBox;
 class QLabel;
 
@@ -19,8 +24,12 @@ public slots:
     void updateStatusSelector();
     void slotPickBuddyIcon();
     void slotStatusChanged(int index);
+    void slotSetStatus(int statusId);
 
 private:
+    PurpleStatusType *find_status_type_by_index(const PurpleAccount *account,
+                                                   gint active);
+
     QComboBox *statusSelector;
     QLabel *buddyIcon;
 
