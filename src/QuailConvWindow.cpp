@@ -19,7 +19,8 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
-#include "QuailBuddyList.h"
+//#include "QuailBuddyList.h"
+#include "QuailBlistItem.h"
 #include "QuailConvWindow.h"
 #include "QuailConvButton.h"
 #include "QuailConvDisplay.h"
@@ -318,7 +319,7 @@ QQuailConversation::updateTabIcon()
 	else
 	{
         qwin->getTabs()->setTabIcon(this->getTabId(),
-                                    QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)b));
+                                    QQuailBListItem::getBuddyStatusIcon((PurpleBlistNode *)b));
 	}
     qwin->getTabs()->setTabText(this->getTabId(),
                                 purple_conversation_get_title(conv));
@@ -801,7 +802,7 @@ QQuailConvWindow::addConversation(PurpleConversation *conv)
 	{
         qDebug() << "QQuailConvWindow::addConversation().4";
         tabs->addTab(qconv,
-			QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)b),
+            QQuailBListItem::getBuddyStatusIcon((PurpleBlistNode *)b),
 			purple_conversation_get_title(conv));
 	}
 

@@ -3,7 +3,6 @@
 
 * Use Aduim's Message Styles for the conversation window
 * Buddy icons showing up
-* Buddy status icons showing
 * Formatting toolbar on the conversation window
 * Kill off dead code
 * Rename group
@@ -50,3 +49,4 @@ DONE
 * Conversation text entry
 * Remember group expanded state
 * Enable double click to open a chat
+* Buddy status icons showing

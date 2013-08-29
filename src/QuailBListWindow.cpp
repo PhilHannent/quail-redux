@@ -21,6 +21,7 @@
  */
 #include "QuailAccountsWindow.h"
 #include "QuailBListWindow.h"
+#include "QuailBlistItem.h"
 #include "QuailBuddyList.h"
 #include "QuailConvButton.h"
 #include "QuailConvWindow.h"

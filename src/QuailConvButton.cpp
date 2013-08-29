@@ -129,7 +129,8 @@ QQuailConvButton::generateMenu()
 		}
 		else
 		{
-            a->setIcon(QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy));
+            //TODO: Fixme
+            //a->setIcon(QQuailBuddyList::getBuddyStatusIcon((PurpleBlistNode *)buddy));
 		}
         a->setText(purple_conversation_get_title(conv));
         menu->addAction(a);
