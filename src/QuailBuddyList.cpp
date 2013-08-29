@@ -1132,6 +1132,7 @@ QQuailBuddyList::saveBlistSlot()
 //	purple_blist_save();
 }
 
+//TODO: This needs moving to the items contextMenuEvent
 void
 QQuailBuddyList::showContextMenuSlot(QTreeWidgetItem *_item,
 									const QPoint &point, int)

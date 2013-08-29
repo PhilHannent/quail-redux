@@ -58,7 +58,7 @@ class QQuailBListWindow : public QMainWindow
 		void reloadList();
 
 	protected slots:
-        void nodeChanged(QTreeWidgetItem *item, int col);
+        void nodeChanged(QTreeWidgetItem *item, QTreeWidgetItem *prevItem);
         void currentNodeChanged(QTreeWidgetItem *item, QTreeWidgetItem *prev);
 
         void doubleClickList(QTreeWidgetItem *item, int col);

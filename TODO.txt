@@ -31,6 +31,9 @@
 * Enable the selection of a new buddy icon
 * Conversation room list display status icons
 * Add "User is typing" notification
+* Status selector working from tray icon
+* Improve enter key usage so that Shift-Enter does not send, by inserts a line feed
+* Rewrite the event loop for Windows
 
 DONE
 ===========================================================
@@ -46,3 +49,4 @@ DONE
 * Conversation room list display
 * Conversation text entry
 * Remember group expanded state
+* Enable double click to open a chat

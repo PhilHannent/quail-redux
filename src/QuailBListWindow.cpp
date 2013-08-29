@@ -75,10 +75,10 @@ QQuailBListWindow::buildInterface()
             this, SLOT(nodeChanged(QTreeWidgetItem*, int)));
 
     connect(buddylist, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem*)),
-            this, SLOT(nodeChanged(QTreeWidgetItem *)));
+            this, SLOT(nodeChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
 
-    connect(buddylist, SIGNAL(doubleClicked(QListWidgetItem *, int)),
-            this, SLOT(doubleClickList(QListWidgetItem *, int)));
+    connect(buddylist, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
+            this, SLOT(doubleClickList(QTreeWidgetItem *, int)));
 
 	connect(buddylist, SIGNAL(openIm(PurpleBuddy *)),
 			this, SLOT(openImSlot(PurpleBuddy *)));
@@ -324,13 +324,13 @@ QQuailBListWindow::reloadList()
  **************************************************************************/
 void
 QQuailBListWindow::currentNodeChanged(QTreeWidgetItem *item,
-                                      QTreeWidgetItem */*prevItem*/)
+                                      QTreeWidgetItem *prevItem)
 {
-    nodeChanged(item, 0);
+    nodeChanged(item, prevItem);
 }
 
 void
-QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item, int /*col*/)
+QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item, QTreeWidgetItem * /*prev*/)
 {
     qDebug() << "QQuailBListWindow::nodeChanged";
     QQuailBListItem *item;
