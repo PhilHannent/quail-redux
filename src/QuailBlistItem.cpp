@@ -35,7 +35,8 @@ void
 QQuailBListItem::updateInfo()
 {
     qDebug() << "QQuailBListItem::updateInfo";
-
+    gsize len;
+    const guchar *data = NULL;
     dirty = true;
 
     if (PURPLE_BLIST_NODE_IS_CONTACT(node))
@@ -101,16 +102,19 @@ QQuailBListItem::updateInfo()
 
             }
             qDebug() << "QQuailBListItem::updateInfo.Contact.3";
-            QPixmap statusIcon = QQuailBListItem::getBuddyStatusIcon(
-                        (PurpleBlistNode *)buddy);
-            if (statusIcon.size().width() > 0) {
-                setIcon(1, statusIcon);
-                qDebug() << "QQuailBListItem::updateInfo.Contact.3a" << statusIcon.size().width();
+            setIcon(1, QQuailBListItem::getBuddyStatusIcon((PurpleBlistNode *)buddy));
+            setToolTip(1, text);
+            PurpleBuddyIcon *purpleIcon = purple_buddy_get_icon(buddy);
+            //TODO: Verify this is working
+            data = (guchar *)purple_buddy_icon_get_data(purpleIcon, &len);
+            QImage buddyIcon = QImage::fromData(data, len);
+            purple_buddy_icon_unref(purpleIcon);
+            if (buddyIcon.size().width() > 0) {
+                qDebug() << "QQuailBListItem::updateInfo.Contact.3a" << buddyIcon.size().width();
             } else {
                 qDebug() << "QQuailBListItem::updateInfo.Contact.3b";
             }
-            setToolTip(1, text);
-            //setIcon(2, QImage::fromData(((PurpleBuddyIcon*)purple_buddy_get_icon(buddy))));
+            setIcon(2, QPixmap::fromImage(buddyIcon));
         }
         //qDebug() << "QQuailBListItem::updateInfo.Contact.1:" << buddy->server_alias;
         setText(1, getAlias(buddy));

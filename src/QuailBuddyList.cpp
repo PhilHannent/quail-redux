@@ -1083,7 +1083,6 @@ QQuailBuddyList::updateBuddy(PurpleBlistNode *node)
         {
             node->ui_data = item = new QQuailBListItem(
                 (QQuailBListItem *)(node->parent->ui_data), node);
-            //item->setIcon(0, QIcon(QQuailBuddyList::getBuddyStatusIcon(node)));
         }
         else
             item->updateInfo();
