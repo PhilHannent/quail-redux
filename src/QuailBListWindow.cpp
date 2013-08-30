@@ -420,7 +420,7 @@ QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 	if (group != NULL)
 		dialog->setGroup(group->name);
 
-	dialog->showMaximized();
+    dialog->show();
 }
 
 void
@@ -461,8 +461,8 @@ QQuailBListWindow::showAddChat(PurpleGroup *group)
 
 	if (group != NULL)
 		dialog->setGroup(group->name);
+    dialog->show();
 
-	dialog->showMaximized();
 }
 void
 QQuailBListWindow::showAddChat()

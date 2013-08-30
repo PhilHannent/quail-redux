@@ -47,11 +47,16 @@ stripUnderscores(QString text)
     return text;
 }
 
+QuailDialog::QuailDialog(QWidget *parent) :
+    QDialog(parent)
+{
+}
+
 /**************************************************************************
  * QQuailAddBuddyDialog
  **************************************************************************/
 QQuailAddBuddyDialog::QQuailAddBuddyDialog(QWidget *parent)
-    : QDialog(parent)
+    : QuailDialog(parent)
 {
 	buildInterface();
 }
@@ -133,6 +138,19 @@ QQuailAddBuddyDialog::buildInterface()
     spacer = new QLabel("");
     vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
+
+    QHBoxLayout *hbox = new QHBoxLayout(this);
+    okButton = new QPushButton(this);
+    okButton->setText(tr("Join"));
+    connect(okButton, SIGNAL(released()), this, SLOT(accept()));
+    hbox->addWidget(okButton);
+
+    cancelButton = new QPushButton(this);
+    cancelButton->setText(tr("Cancel"));
+    connect(cancelButton, SIGNAL(released()), this, SLOT(close()));
+    hbox->addWidget(cancelButton);
+    vbox->addLayout(hbox);
+
 }
 
 void
@@ -206,7 +224,7 @@ QQuailAddBuddyDialog::accept()
  * QQuailAddChatDialog
  **************************************************************************/
 QQuailAddChatDialog::QQuailAddChatDialog(QWidget *parent)
-    : QDialog(parent)
+    : QuailDialog(parent)
 {
 	buildInterface();
 }
@@ -282,6 +300,18 @@ QQuailAddChatDialog::buildInterface()
     spacer = new QLabel("");
     vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
+
+    QHBoxLayout *hbox = new QHBoxLayout(this);
+    okButton = new QPushButton(this);
+    okButton->setText(tr("Join"));
+    connect(okButton, SIGNAL(released()), this, SLOT(accept()));
+    hbox->addWidget(okButton);
+
+    cancelButton = new QPushButton(this);
+    cancelButton->setText(tr("Cancel"));
+    connect(cancelButton, SIGNAL(released()), this, SLOT(close()));
+    hbox->addWidget(cancelButton);
+    vbox->addLayout(hbox);
 
 	rebuildWidgetsFrame();
 }
@@ -445,7 +475,7 @@ QQuailAddChatDialog::accept()
  * QQuailNewImDialog
  **************************************************************************/
 QQuailNewImDialog::QQuailNewImDialog(QWidget *parent)
-    : QDialog(parent)
+    : QuailDialog(parent)
 {
 	buildInterface();
 }
@@ -500,6 +530,19 @@ QQuailNewImDialog::buildInterface()
     spacer = new QLabel();
     vbox->addWidget(spacer);
 	vbox->setStretchFactor(spacer, 1);
+
+    QHBoxLayout *hbox = new QHBoxLayout(this);
+    okButton = new QPushButton(this);
+    okButton->setText(tr("Join"));
+    connect(okButton, SIGNAL(released()), this, SLOT(accept()));
+    hbox->addWidget(okButton);
+
+    cancelButton = new QPushButton(this);
+    cancelButton->setText(tr("Cancel"));
+    connect(cancelButton, SIGNAL(released()), this, SLOT(close()));
+    hbox->addWidget(cancelButton);
+    vbox->addLayout(hbox);
+
 }
 
 void
@@ -538,7 +581,7 @@ QQuailNewImDialog::accept()
  * QQuailJoinChatDialog
  **************************************************************************/
 QQuailJoinChatDialog::QQuailJoinChatDialog(QWidget *parent)
-    : QDialog(parent)
+    : QuailDialog(parent)
 {
 
 	buildInterface();

@@ -1012,7 +1012,7 @@ QQuailConvWindow::addRemoveBuddySlot()
 //        dialog->setScreenName(purple_conversation_get_name(conv));
 //        dialog->setAccount(purple_conversation_get_account(conv));
 
-//        dialog->showMaximized();
+//        dialog->show();
 //    }
 //    else
 //    {

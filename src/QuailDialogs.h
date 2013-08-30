@@ -34,12 +34,29 @@ class QGridLayout;
 class QLabel;
 class QLineEdit;
 
-class QQuailAddBuddyDialog : public QDialog
+class QuailDialog : public QDialog
+{
+    Q_OBJECT
+
+public:
+    QuailDialog(QWidget *parent = 0);
+
+protected:
+    virtual void buildInterface() = 0;
+
+    QPushButton *okButton;
+    QPushButton *cancelButton;
+protected slots:
+    virtual void accept() = 0;
+
+};
+
+class QQuailAddBuddyDialog : public QuailDialog
 {
 	Q_OBJECT
 
 	public:
-        QQuailAddBuddyDialog(QWidget *parent = NULL);
+        QQuailAddBuddyDialog(QWidget *parent = 0);
 
 		void setScreenName(const QString &screenName);
 		void setAlias(const QString &alias);
@@ -60,12 +77,12 @@ class QQuailAddBuddyDialog : public QDialog
 		QQuailAccountBox *accountCombo;
 };
 
-class QQuailAddChatDialog : public QDialog
+class QQuailAddChatDialog : public QuailDialog
 {
 	Q_OBJECT
 
 	public:
-        QQuailAddChatDialog(QWidget *parent = NULL);
+        QQuailAddChatDialog(QWidget *parent = 0);
 
 		void setAlias(const QString &alias);
 		void setGroup(const QString &group);
@@ -92,12 +109,12 @@ class QQuailAddChatDialog : public QDialog
         QList<QWidget*> widgets;
 };
 
-class QQuailNewImDialog : public QDialog
+class QQuailNewImDialog : public QuailDialog
 {
 	Q_OBJECT
 
 	public:
-        QQuailNewImDialog(QWidget *parent = NULL);
+        QQuailNewImDialog(QWidget *parent = 0);
 
 		void setScreenName(const QString &screenName);
 		void setAccount(PurpleAccount *account);
@@ -113,12 +130,12 @@ class QQuailNewImDialog : public QDialog
 		QQuailAccountBox *accountCombo;
 };
 
-class QQuailJoinChatDialog : public QDialog
+class QQuailJoinChatDialog : public QuailDialog
 {
 	Q_OBJECT
 
 	public:
-        QQuailJoinChatDialog(QWidget *parent = NULL);
+        QQuailJoinChatDialog(QWidget *parent = 0);
 
 		void setAccount(PurpleAccount *account);
 
@@ -136,8 +153,6 @@ class QQuailJoinChatDialog : public QDialog
 		QFrame *widgetsFrame;
         QList<QWidget*> labels;
         QList<QWidget*> widgets;
-        QPushButton *okButton;
-        QPushButton *cancelButton;
 };
 
 #endif /* _QUAIL_DIALOGS_H_ */

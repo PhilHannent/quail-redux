@@ -175,9 +175,12 @@ QQuailBListItem::updateInfo()
     {
         qDebug() << "QQuailBListItem::updateInfo.Chat";
         PurpleChat *chat = (PurpleChat *)node;
+        QString chatName = chat->alias;
+        if (chatName.isEmpty())
+            chatName = QString::fromStdString(purple_chat_get_name(chat));
 
         setIcon(1, QIcon(QQuailProtocolUtils::getProtocolIcon(chat->account)));
-        setText(1, chat->alias);
+        setText(1, chatName);
     }
     else if (PURPLE_BLIST_NODE_IS_GROUP(node))
     {

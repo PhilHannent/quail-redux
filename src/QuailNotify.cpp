@@ -189,7 +189,7 @@ qQuailNotifyFormatted(const char *title, const char *primary,
     layout->addWidget(textview);
 	textview->setText(text);
 
-	dialog->showMaximized();
+    dialog->show();
 
 	return NULL;
 }
