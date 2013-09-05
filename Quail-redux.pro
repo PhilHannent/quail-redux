@@ -4,7 +4,7 @@ DEFINES += APP_MAJOR_VERSION=\\\"0\\\"
 TEMPLATE = app
 TARGET   = Quail
 VERSION = $${APP_DISPLAY_VERSION}
-CONFIG   = qt warn_on debug
+CONFIG   = qt warn_on debug_and_release
 
 DEFINES += APP_NAME=\\\"Quail\\\"
 DEFINES += QUAIL_PREFS_ROOT=\\\"/quail\\\"
@@ -118,12 +118,15 @@ win32-g++ {
     LIBS += -L"C:/dev/win32-dev/gtk-2.24.10/lib"
     LIBS += -L"C:/dev/pidgin-main/libpurple"
     LIBS += -L"C:/Qt/4.8.5/lib"
+	LIBS += -L"/cygdrive/c/Qt/4.8.5/lib"
 
     #RC_FILE = resource.rc
 
     LIBS        += -llibpurple -lglib-2.0 -lgmodule-2.0
 }
 
+INCLUDEPATH += $$(LIBPURPLE_ROOT)
+#INCLUDEPATH += $$(QTDIR)
 
 OBJECTS_DIR = obj
 MOC_DIR     = moc

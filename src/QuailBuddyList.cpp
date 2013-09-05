@@ -543,6 +543,7 @@ QQuailBuddyList::resizeEvent(QResizeEvent *)
     setColumnWidth(0, BUDDY_ICON_SIZE);
     setColumnWidth(1, this->width() - (BUDDY_ICON_SIZE *4));
     setColumnWidth(2, BUDDY_ICON_SIZE);
+    qDebug() << "QQuailBuddyList::resizeEvent.end";
 }
 
 void
