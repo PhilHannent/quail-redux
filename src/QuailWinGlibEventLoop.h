@@ -56,7 +56,7 @@ public:
     static bool versionSupported();
 
 protected:
-    QEventDispatcherWinGlib(QuailEventDispatcherWinGlibPrivate &dd, QObject *parent = 0);
+    QuailEventDispatcherWinGlib(QuailEventDispatcherWinGlibPrivate &dd, QObject *parent = 0);
     virtual void sendPostedEvents();
 
 private:
@@ -99,11 +99,11 @@ typedef QHash<int, WinTimerInfo*> WinTimerDict; // fast dict of timers
 
 class Q_CORE_EXPORT QuailEventDispatcherWinGlibPrivate : public QAbstractEventDispatcherPrivate
 {
-    Q_DECLARE_PUBLIC(QEventDispatcherWinGlib)
+    Q_DECLARE_PUBLIC(QuailEventDispatcherWinGlib)
 public:
-    QEventDispatcherWinGlibPrivate();
-    QEventDispatcherWinGlibPrivate(GMainContext *context = 0);
-    ~QEventDispatcherWinGlibPrivate();
+    QuailEventDispatcherWinGlibPrivate();
+    QuailEventDispatcherWinGlibPrivate(GMainContext *context = 0);
+    ~QuailEventDispatcherWinGlibPrivate();
 
     GMainContext *mainContext;
     GPostEventSource *postEventSource;
