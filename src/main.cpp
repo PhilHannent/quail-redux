@@ -20,14 +20,19 @@
  * MA  02111-1307  USA
  */
 
+#ifdef Q_OS_WIN
 #include "QuailEventLoop.h"
+#include "QuailWinGlibEventLoop.h"
+#endif
 #include "QuailMainWindow.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    QuailEventLoop quailEventLoop;
+#ifdef Q_OS_WIN
+    QuailWinGlibEventLoop quailEventLoop;
+#endif
     QApplication a(argc, argv);
     QQuailMainWindow w;
     w.show();

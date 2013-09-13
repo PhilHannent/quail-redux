@@ -30,6 +30,12 @@
 /* http://harmattan-dev.nokia.com/docs/library/html/qt4/qabstracteventdispatcher.html */
 #include <QAbstractEventDispatcher>
 
+struct QuailTimerInfo {
+    int id;
+    int interval;
+    QQuailTimer *quailTimer;
+};
+
 class QQuailTimer : public QTimer
 {
 	Q_OBJECT

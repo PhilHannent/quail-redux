@@ -108,6 +108,9 @@ linux-g++* {
 
 win32-g++ {
     message("Using win32")
+    HEADERS += src/QuailWinGlibEventLoop.h
+    SOURCES += src/QuailWinGlibEventLoop.cpp
+
     INCLUDEPATH += /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
         /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0/include \
         /cygdrive/c/dev/pidgin-main \
