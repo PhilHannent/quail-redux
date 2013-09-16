@@ -24,81 +24,44 @@
 
 #include <libpurple/eventloop.h>
 
-#include <QList>
 #include <QTimer>
 #include <QSocketNotifier>
 /* http://harmattan-dev.nokia.com/docs/library/html/qt4/qabstracteventdispatcher.html */
-#include <QAbstractEventDispatcher>
-
-struct QuailTimerInfo {
-    int id;
-    int interval;
-    QQuailTimer *quailTimer;
-};
+//#include <QAbstractEventDispatcher>
 
 class QQuailTimer : public QTimer
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	public:
-        QQuailTimer(GSourceFunc func, gpointer data);
+    public:
+        QQuailTimer(guint sourceId, GSourceFunc func, gpointer data);
 
-	private slots:
-		void update();
-        void setHandle(guint newSourceId);
+    private slots:
+        void update();
 
-	private:
-		guint sourceId;
-		GSourceFunc func;
-		gpointer userData;
+    private:
+        guint sourceId;
+        GSourceFunc func;
+        gpointer userData;
 };
 
 class QQuailInputNotifier : public QObject
 {
-	Q_OBJECT
-
-	public:
-		QQuailInputNotifier(int fd, PurpleInputCondition cond,
-						   PurpleInputFunction func, gpointer userData);
-		~QQuailInputNotifier();
-
-	private slots:
-		void ioInvoke(int fd);
-
-	private:
-		PurpleInputCondition cond;
-		PurpleInputFunction func;
-		gpointer userData;
-		QSocketNotifier *readNotifier, *writeNotifier;
-};
-
-class QuailEventLoop : QAbstractEventDispatcher
-{
     Q_OBJECT
 
-public:
-    QuailEventLoop(QObject *parent = 0);
-    bool processEvents(QEventLoop::ProcessEventsFlags flags);
-    bool hasPendingEvents();
+    public:
+        QQuailInputNotifier(int fd, PurpleInputCondition cond,
+                           PurpleInputFunction func, gpointer userData);
+        ~QQuailInputNotifier();
 
-    void registerSocketNotifier(QSocketNotifier *notifier);
-    void unregisterSocketNotifier(QSocketNotifier *notifier);
+    private slots:
+        void ioInvoke(int fd);
 
-    void registerTimer(int timerId, int interval, QObject *object);
-    bool unregisterTimer(int timerId);
-    bool unregisterTimers(QObject *object);
-    QList<TimerInfo> registeredTimers(QObject *object) const;
-
-    //void wakeUp();
-    //void interrupt();
-    //void flush();
-
-    QList<QQuailInputNotifier*> m_sources;
-    QList<QQuailTimer*> m_timers;
-
-private:
-    //static QMap<guint, QQuailSourceInfo*> m_sources;
-
+    private:
+        PurpleInputCondition cond;
+        PurpleInputFunction func;
+        gpointer userData;
+        QSocketNotifier *readNotifier, *writeNotifier;
 };
 
 /**

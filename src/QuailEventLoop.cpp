@@ -21,157 +21,114 @@
  */
 #include "QuailEventLoop.h"
 #include <QDebug>
+#include <QMap>
+
+typedef struct
+{
+    guint handle;
+
+    union
+    {
+        QQuailTimer *timer;
+        QQuailInputNotifier *notifier;
+    };
+
+} QQuailSourceInfo;
 
 static gboolean qQuailSourceRemove(guint handle);
-static gboolean qQuailTimeoutRemove(guint handle);
 
-static QuailEventLoop *eventLoop = NULL;
+static guint nextSourceId = 0;
+static QMap<guint, QQuailSourceInfo*> m_sources;
 
-QQuailTimer::QQuailTimer(GSourceFunc func, gpointer data)
-    : QTimer(eventLoop), func(func), userData(data)
+QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
+    : QTimer(), sourceId(sourceId), func(func), userData(data)
 {
-	connect(this, SIGNAL(timeout()),
-			this, SLOT(update()));
+    connect(this, SIGNAL(timeout()),
+            this, SLOT(update()));
 }
 
 void
 QQuailTimer::update()
 {
-	if (!func(userData))
-        qQuailTimeoutRemove(sourceId);
-}
-
-void
-QQuailTimer::setHandle(guint newSourceId)
-{
-    sourceId(newSourceId);
+    if (!func(userData))
+        qQuailSourceRemove(sourceId);
 }
 
 QQuailInputNotifier::QQuailInputNotifier(int fd,
                                          PurpleInputCondition cond,
                                          PurpleInputFunction func,
                                          gpointer userData)
-    : QObject(eventLoop), func(func), userData(userData), readNotifier(NULL),
-	  writeNotifier(NULL)
+    : QObject(), func(func), userData(userData), readNotifier(NULL),
+      writeNotifier(NULL)
 {
     //qDebug() << "QQuailInputNotifier::QQuailInputNotifier";
     if (cond & PURPLE_INPUT_READ)
-	{
+    {
         //qDebug() << "QQuailInputNotifier::QQuailInputNotifier::READ";
-		readNotifier = new QSocketNotifier(fd, QSocketNotifier::Read);
+        readNotifier = new QSocketNotifier(fd, QSocketNotifier::Read);
 
-		connect(readNotifier, SIGNAL(activated(int)),
-				this, SLOT(ioInvoke(int)));
-	}
+        connect(readNotifier, SIGNAL(activated(int)),
+                this, SLOT(ioInvoke(int)));
+    }
 
     if (cond & PURPLE_INPUT_WRITE)
-	{
+    {
         //qDebug() << "QQuailInputNotifier::QQuailInputNotifier::WRITE";
-		writeNotifier = new QSocketNotifier(fd, QSocketNotifier::Write);
+        writeNotifier = new QSocketNotifier(fd, QSocketNotifier::Write);
 
-		connect(writeNotifier, SIGNAL(activated(int)),
-				this, SLOT(ioInvoke(int)));
-	}
+        connect(writeNotifier, SIGNAL(activated(int)),
+                this, SLOT(ioInvoke(int)));
+    }
 }
 
 QQuailInputNotifier::~QQuailInputNotifier()
 {
-	if (readNotifier != NULL)
-		delete readNotifier;
+    if (readNotifier != NULL)
+        delete readNotifier;
 
-	if (writeNotifier != NULL)
-		delete writeNotifier;
+    if (writeNotifier != NULL)
+        delete writeNotifier;
 }
 
 void
 QQuailInputNotifier::ioInvoke(int fd)
 {
     //qDebug() << "QQuailInputNotifier::ioInvoke";
-	int cond = 0;
+    int cond = 0;
 
-	if (readNotifier != NULL)
+    if (readNotifier != NULL)
         cond |= PURPLE_INPUT_READ;
 
-	if (writeNotifier != NULL)
+    if (writeNotifier != NULL)
         cond |= PURPLE_INPUT_WRITE;
 
-	func(userData, fd, (PurpleInputCondition)cond);
+    func(userData, fd, (PurpleInputCondition)cond);
 }
 
-QuailEventLoop::QuailEventLoop(QObject *parent) :
-    QObject(parent)
-{
-    eventLoop = this;
-}
-
-bool QuailEventLoop::processEvents(QEventLoop::ProcessEventsFlags flags)
-{
-    //TODO: Fill this in
-}
-
-bool QuailEventLoop::hasPendingEvents()
-{
-    return (m_timers.count() + m_sources.count()) > 0;
-}
-
-void QuailEventLoop::registerSocketNotifier(QSocketNotifier *notifier)
-{
-    //qQuailInputAdd
-}
-
-void QuailEventLoop::unregisterSocketNotifier(QSocketNotifier *notifier)
-{
-    //qQuailSourceRemove
-}
-
-void QuailEventLoop::registerTimer(int timerId, int interval, QObject *object)
-{
-    //qQuailTimeoutAdd
-}
-
-bool QuailEventLoop::unregisterTimer(int timerId)
-{
-    qQuailTimeoutRemove(timerId);
-}
-
-bool QuailEventLoop::unregisterTimers(QObject *object)
-{
-    qQuailTimeoutRemove(m_timers.indexOf(object));
-}
-
-QList<QAbstractEventDispatcher::TimerInfo>
-QuailEventLoop::registeredTimers(QObject *object) const
-{
-    Q_UNUSED(object);
-    /* Not implemented, we won't use this. It's only used for
-       transfering QObject from one thread to another. */
-    return QList<QAbstractEventDispatcher::TimerInfo>();
-}
 
 static guint
 qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 {
     //qDebug() << "QQuailInputNotifier::qQuailTimeoutAdd";
-    QQuailTimer *timer = new QQuailTimer(func, data);
-    eventLoop->m_timers.append(timer);
-    guint handle = eventLoop->m_timers.lastIndexOf(timer);
-    timer->setHandle(handle);
-    timer->start(interval);
+    QQuailSourceInfo *info = new QQuailSourceInfo;
 
-    return handle;
+    info->handle = nextSourceId++;
+
+    info->timer = new QQuailTimer(info->handle, func, data);
+    info->timer->start(interval);
+
+    m_sources.insert(info->handle, info);
+
+    return info->handle;
 }
 
 static gboolean
 qQuailTimeoutRemove(guint handle)
 {
     //qDebug() << "QQuailInputNotifier::qQuailTimeoutRemove";
-    QQuailTimer *timer = eventLoop->m_timers.takeAt(handle);
+    qQuailSourceRemove(handle);
 
-    if (timer == NULL)
-        return false;
-
-    delete timer;
-    return true;
+    return 0;
 }
 
 static guint
@@ -181,21 +138,36 @@ qQuailInputAdd(int fd,
                gpointer userData)
 {
     //qDebug() << "QQuailInputNotifier::qQuailInputAdd";
-    QQuailInputNotifier *notifier = new QQuailInputNotifier(fd, cond, func, userData);
-    eventLoop->m_sources.append(notifier);
-    return eventLoop->m_sources.lastIndexOf(notifier);
+    QQuailSourceInfo *info = new QQuailSourceInfo;
+
+    info->handle = nextSourceId++;
+
+    info->notifier = new QQuailInputNotifier(fd, cond, func, userData);
+
+    m_sources.insert(info->handle, info);
+
+    return info->handle;
 }
 
 static gboolean
 qQuailSourceRemove(guint handle)
 {
     //qDebug() << "QQuailInputNotifier::qQuailSourceRemove";
-    QQuailInputNotifier *notifier = eventLoop->m_sources.takeAt(handle);
+    QQuailSourceInfo *info;
 
-    if (notifier == NULL)
+    info = m_sources.value(handle);
+
+    if (info == NULL)
         return false;
 
-    delete notifier;
+    m_sources.remove(handle);
+
+    if (info->timer != NULL)
+        delete info->timer;
+    else if (info->notifier != NULL)
+        delete info->notifier;
+
+    delete info;
     return true;
 }
 
@@ -231,5 +203,5 @@ static PurpleEventLoopUiOps eventloop_ops =
 PurpleEventLoopUiOps *
 qQuailGetEventLoopUiOps(void)
 {
-	return &eventloop_ops;
+    return &eventloop_ops;
 }

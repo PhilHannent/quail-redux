@@ -73,6 +73,7 @@ struct QSockNot {
     QSocketNotifier *obj;
     int fd;
 };
+
 typedef QHash<int, QSockNot *> QSNDict;
 
 struct WinTimerInfo {                           // internal timer info
@@ -101,7 +102,6 @@ class Q_CORE_EXPORT QuailEventDispatcherWinGlibPrivate : public QAbstractEventDi
 {
     Q_DECLARE_PUBLIC(QuailEventDispatcherWinGlib)
 public:
-    QuailEventDispatcherWinGlibPrivate();
     QuailEventDispatcherWinGlibPrivate(GMainContext *context = 0);
     ~QuailEventDispatcherWinGlibPrivate();
 
