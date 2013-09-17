@@ -195,7 +195,7 @@ struct GPostEventSource
     GSource source;
     QAtomicInt serialNumber;
     int lastSerialNumber;
-    QuailEventDispatcherWinGlibPrivate *d;
+    QuailEventDispatcherWinGlib *d;
 };
 
 static gboolean postEventSourcePrepare(GSource *s, gint *timeout)
@@ -462,8 +462,6 @@ int WSAAsyncSelect(SOCKET, HWND, unsigned int, long)
 #endif
 #endif // Q_OS_WINCE
 
-class QuailEventDispatcherWinGlibPrivate;
-
 #if !defined(DWORD_PTR) && !defined(Q_OS_WIN64)
 #define DWORD_PTR DWORD
 #endif
@@ -502,8 +500,8 @@ static void resolveTimerAPI()
     }
 }
 
-QuailEventDispatcherWinGlibPrivate::QuailEventDispatcherWinGlibPrivate(GMainContext *context = 0)
-    : mainContext(context), threadId(GetCurrentThreadId()), interrupt(false), internalHwnd(0), getMessageHook(0),
+QuailEventDispatcherWinGlib::QuailEventDispatcherWinGlib(GMainContext *context = 0, QObject parent = 0)
+    : mainContext(context), threadId(GetCurrentThreadId()), interruptFlag(false), internalHwnd(0), getMessageHook(0),
       serialNumber(0), lastSerialNumber(0), sendPostedEventsWindowsTimerId(0), wakeUps(0)
 {
     resolveTimerAPI();
@@ -566,12 +564,12 @@ QuailEventDispatcherWinGlibPrivate::QuailEventDispatcherWinGlibPrivate(GMainCont
 
 }
 
-void QuailEventDispatcherWinGlibPrivate::runTimersOnceWithNormalPriority()
+void QuailEventDispatcherWinGlib::runTimersOnceWithNormalPriority()
 {
     timerSource->runWithIdlePriority = false;
 }
 
-QuailEventDispatcherWinGlibPrivate::~QuailEventDispatcherWinGlibPrivate()
+QuailEventDispatcherWinGlib::~QuailEventDispatcherWinGlib()
 {
     if (internalHwnd)
         DestroyWindow(internalHwnd);
@@ -579,7 +577,7 @@ QuailEventDispatcherWinGlibPrivate::~QuailEventDispatcherWinGlibPrivate()
     UnregisterClass((wchar_t*)className.utf16(), qWinAppInst());
 }
 
-void QuailEventDispatcherWinGlibPrivate::activateEventNotifier(QWinEventNotifier * wen)
+void QuailEventDispatcherWinGlib::activateEventNotifier(QWinEventNotifier * wen)
 {
     QEvent event(QEvent::WinEventAct);
     QCoreApplication::sendEvent(wen, &event);
@@ -620,7 +618,7 @@ LRESULT QT_WIN_CALLBACK qt_internal_proc(HWND hwnd, UINT message, WPARAM wp, LPA
 #else
     QuailEventDispatcherWinGlib *q = (QuailEventDispatcherWinGlib *) GetWindowLong(hwnd, GWL_USERDATA);
 #endif
-    QuailEventDispatcherWinGlibPrivate *d = 0;
+    QuailEventDispatcherWinGlib *d = 0;
     if (q != 0)
         d = q->d_func();
 
@@ -687,7 +685,7 @@ LRESULT QT_WIN_CALLBACK qt_GetMessageHook(int code, WPARAM wp, LPARAM lp)
         Q_ASSERT(q != 0);
         if (q) {
             MSG *msg = (MSG *) lp;
-            QuailEventDispatcherWinGlibPrivate *d = q->d_func();
+            QuailEventDispatcherWinGlib *d = q->d_func();
             const int localSerialNumber = d->serialNumber.load();
             if (HIWORD(GetQueueStatus(QS_TIMER | QS_INPUT | QS_RAWINPUT)) == 0) {
                 // no more input or timer events in the message queue, we can allow posted events to be sent normally now
@@ -768,7 +766,7 @@ static HWND qt_create_internal_window(const QuailEventDispatcherWinGlib *eventDi
     return wnd;
 }
 
-void QuailEventDispatcherWinGlibPrivate::registerTimer(WinTimerInfo *t)
+void QuailEventDispatcherWinGlib::registerTimer(WinTimerInfo *t)
 {
     Q_ASSERT(internalHwnd);
 
@@ -798,7 +796,7 @@ void QuailEventDispatcherWinGlibPrivate::registerTimer(WinTimerInfo *t)
         qErrnoWarning("QuailEventDispatcherWinGlib::registerTimer: Failed to create a timer");
 }
 
-void QuailEventDispatcherWinGlibPrivate::unregisterTimer(WinTimerInfo *t)
+void QuailEventDispatcherWinGlib::unregisterTimer(WinTimerInfo *t)
 {
     if (t->interval == 0) {
         QCoreApplicationPrivate::removePostedTimerEvent(t->dispatcher, t->timerId);
@@ -811,7 +809,7 @@ void QuailEventDispatcherWinGlibPrivate::unregisterTimer(WinTimerInfo *t)
     delete t;
 }
 
-void QuailEventDispatcherWinGlibPrivate::sendTimerEvent(int timerId)
+void QuailEventDispatcherWinGlib::sendTimerEvent(int timerId)
 {
     WinTimerInfo *t = timerDict.value(timerId);
     if (t && !t->inTimerEvent) {
@@ -829,7 +827,7 @@ void QuailEventDispatcherWinGlibPrivate::sendTimerEvent(int timerId)
     }
 }
 
-void QuailEventDispatcherWinGlibPrivate::doWsaAsyncSelect(int socket)
+void QuailEventDispatcherWinGlib::doWsaAsyncSelect(int socket)
 {
     Q_ASSERT(internalHwnd);
     int sn_event = 0;
@@ -876,19 +874,6 @@ void QuailEventDispatcherWinGlib::createInternalHwnd()
     wakeUp();
 }
 
-QuailEventDispatcherWinGlib::QuailEventDispatcherWinGlib(QObject *parent)
-    : QAbstractEventDispatcher(*new QuailEventDispatcherWinGlibPrivate, parent)
-{
-}
-
-QuailEventDispatcherWinGlib::QuailEventDispatcherWinGlib(QuailEventDispatcherWinGlibPrivate &dd, QObject *parent)
-    : QAbstractEventDispatcher(dd, parent)
-{ }
-
-QuailEventDispatcherWinGlib::~QuailEventDispatcherWinGlib()
-{
-}
-
 bool QuailEventDispatcherWinGlib::processEvents(QEventLoop::ProcessEventsFlags flags)
 {
     Q_D(QuailEventDispatcherWinGlib);
@@ -896,7 +881,7 @@ bool QuailEventDispatcherWinGlib::processEvents(QEventLoop::ProcessEventsFlags f
     if (!d->internalHwnd)
         createInternalHwnd();
 
-    d->interrupt = false;
+    d->interruptFlag = false;
     emit awake();
 
     bool canWait;
@@ -907,7 +892,7 @@ bool QuailEventDispatcherWinGlib::processEvents(QEventLoop::ProcessEventsFlags f
         DWORD waitRet = 0;
         HANDLE pHandles[MAXIMUM_WAIT_OBJECTS - 1];
         QVarLengthArray<MSG> processedTimers;
-        while (!d->interrupt) {
+        while (!d->interruptFlag) {
             DWORD nCount = d->winEventNotifierList.count();
             Q_ASSERT(nCount < MAXIMUM_WAIT_OBJECTS - 1);
 
@@ -1003,7 +988,7 @@ bool QuailEventDispatcherWinGlib::processEvents(QEventLoop::ProcessEventsFlags f
 
         // still nothing - wait for message or signalled objects
         canWait = (!retVal
-                   && !d->interrupt
+                   && !d->interruptFlag
                    && (flags & QEventLoop::WaitForMoreEvents));
         if (canWait) {
             DWORD nCount = d->winEventNotifierList.count();
@@ -1309,7 +1294,7 @@ void QuailEventDispatcherWinGlib::wakeUp()
 void QuailEventDispatcherWinGlib::interrupt()
 {
     Q_D(QuailEventDispatcherWinGlib);
-    d->interrupt = true;
+    d->interruptFlag = true;
     wakeUp();
 }
 

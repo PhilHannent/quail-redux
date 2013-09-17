@@ -2,6 +2,7 @@
 #define QUAILWINGLIBEVENTLOOP_H
 
 #include "QtCore/qt_windows.h"
+#include "QtCore/qcoreevent.h"
 #include <QAbstractEventDispatcher>
 #include <QHash>
 
@@ -13,56 +14,6 @@ class QuailEventDispatcherWinGlibPrivate;
 // forward declaration
 LRESULT QT_WIN_CALLBACK qt_internal_proc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp);
 int qt_msectime();
-
-
-class QuailEventDispatcherWinGlib : public QAbstractEventDispatcher
-{
-    Q_OBJECT
-    Q_DECLARE_PRIVATE(QuailEventDispatcherWinGlib)
-    void createInternalHwnd();
-
-public:
-    explicit QuailEventDispatcherWinGlib(QObject parent = 0);
-    explicit QuailEventDispatcherWinGlib(GMainContext *context, QObject *parent = 0);
-    ~QuailEventDispatcherWinGlib();
-
-    bool QT_ENSURE_STACK_ALIGNED_FOR_SSE processEvents(QEventLoop::ProcessEventsFlags flags);
-    bool hasPendingEvents();
-
-    void registerSocketNotifier(QSocketNotifier *notifier);
-    void unregisterSocketNotifier(QSocketNotifier *notifier);
-
-    void registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *object);
-    bool unregisterTimer(int timerId);
-    bool unregisterTimers(QObject *object);
-    QList<TimerInfo> registeredTimers(QObject *object) const;
-
-    bool registerEventNotifier(QWinEventNotifier *notifier);
-    void unregisterEventNotifier(QWinEventNotifier *notifier);
-    void activateEventNotifiers();
-
-    int remainingTime(int timerId);
-
-    void wakeUp();
-    void interrupt();
-    void flush();
-
-    void startingUp();
-    void closingDown();
-
-    bool event(QEvent *e);
-
-    /* Glib */
-    static bool versionSupported();
-
-protected:
-    QuailEventDispatcherWinGlib(QuailEventDispatcherWinGlibPrivate &dd, QObject *parent = 0);
-    virtual void sendPostedEvents();
-
-private:
-    friend LRESULT QT_WIN_CALLBACK qt_internal_proc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp);
-    friend LRESULT QT_WIN_CALLBACK qt_GetMessageHook(int, WPARAM, LPARAM);
-};
 
 struct GPostEventSource;
 struct GSocketNotifierSource;
@@ -98,12 +49,43 @@ public:
 typedef QList<WinTimerInfo*>  WinTimerVec;      // vector of TimerInfo structs
 typedef QHash<int, WinTimerInfo*> WinTimerDict; // fast dict of timers
 
-class Q_CORE_EXPORT QuailEventDispatcherWinGlibPrivate : public QAbstractEventDispatcherPrivate
+class QuailEventDispatcherWinGlib : public QAbstractEventDispatcher
 {
-    Q_DECLARE_PUBLIC(QuailEventDispatcherWinGlib)
+    Q_OBJECT
+    void createInternalHwnd();
+
 public:
-    QuailEventDispatcherWinGlibPrivate(GMainContext *context = 0);
-    ~QuailEventDispatcherWinGlibPrivate();
+    explicit QuailEventDispatcherWinGlib(GMainContext *context = 0, QObject *parent = 0);
+    ~QuailEventDispatcherWinGlib();
+
+    bool QT_ENSURE_STACK_ALIGNED_FOR_SSE processEvents(QEventLoop::ProcessEventsFlags flags);
+    bool hasPendingEvents();
+
+    void registerSocketNotifier(QSocketNotifier *notifier);
+    void unregisterSocketNotifier(QSocketNotifier *notifier);
+
+    void registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *object);
+    bool unregisterTimer(int timerId);
+    bool unregisterTimers(QObject *object);
+    QList<TimerInfo> registeredTimers(QObject *object) const;
+
+    bool registerEventNotifier(QWinEventNotifier *notifier);
+    void unregisterEventNotifier(QWinEventNotifier *notifier);
+    void activateEventNotifiers();
+
+    int remainingTime(int timerId);
+
+    void wakeUp();
+    void interrupt();
+    void flush();
+
+    void startingUp();
+    void closingDown();
+
+    bool event(QEvent *e);
+
+    /* Glib */
+    static bool versionSupported();
 
     GMainContext *mainContext;
     GPostEventSource *postEventSource;
@@ -115,7 +97,7 @@ public:
 
     DWORD threadId;
 
-    bool interrupt;
+    bool interruptFlag;
 
     // internal window handle used for socketnotifiers/timers/etc
     HWND internalHwnd;
@@ -144,6 +126,14 @@ public:
 
     QList<MSG> queuedUserInputEvents;
     QList<MSG> queuedSocketEvents;
+
+protected:
+    virtual void sendPostedEvents();
+
+private:
+    friend LRESULT QT_WIN_CALLBACK qt_internal_proc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp);
+    friend LRESULT QT_WIN_CALLBACK qt_GetMessageHook(int, WPARAM, LPARAM);
 };
+
 
 #endif // QUAILWINGLIBEVENTLOOP_H

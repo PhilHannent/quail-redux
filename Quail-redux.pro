@@ -30,6 +30,46 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     QT += webkitwidgets
 }
 
+
+DISTFILES = \
+	AUTHORS \
+	ChangeLog \
+	NEWS \
+	README \
+	quail.png \
+	make.sh \
+	mkstuff.conf \
+	mkipk.sh \
+	mktarball.sh
+
+linux-g++* {
+    message("Using unix")
+    CONFIG += link_pkgconfig
+    PKGCONFIG += purple glib-2.0 gmodule-2.0
+}
+
+win32-g++ {
+    message("Using win32")
+    HEADERS += src/QuailWinGlibEventLoop.h
+    SOURCES += src/QuailWinGlibEventLoop.cpp
+
+    INCLUDEPATH += /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
+        /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0/include \
+        /cygdrive/c/dev/pidgin-main \
+        c:/dev/pidgin-main \
+        c:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
+        C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
+
+    LIBS += -L"C:/dev/win32-dev/gtk-2.24.10/lib"
+    LIBS += -L"C:/dev/pidgin-main/libpurple"
+    LIBS += -L"C:/Qt/4.8.5/lib"
+	LIBS += -L"/cygdrive/c/Qt/4.8.5/lib"
+
+    #RC_FILE = resource.rc
+
+    LIBS        += -llibpurple -lglib-2.0 -lgmodule-2.0
+}
+
 HEADERS = \
         src/QuailAccountBox.h \
         src/QuailAccountEditor.h \
@@ -83,50 +123,12 @@ SOURCES = \
         src/QuailRequest.cpp \
         src/QuailTabBar.cpp \
         src/QuailTabWidget.cpp \
-	src/main.cpp \
+        src/main.cpp \
     src/QuailConvDisplay.cpp \
     src/QuailStatusSelector.cpp \
     src/QuailBlistItem.cpp
 
 
-DISTFILES = \
-	AUTHORS \
-	ChangeLog \
-	NEWS \
-	README \
-	quail.png \
-	make.sh \
-	mkstuff.conf \
-	mkipk.sh \
-	mktarball.sh
-
-linux-g++* {
-    message("Using unix")
-    CONFIG += link_pkgconfig
-    PKGCONFIG += purple glib-2.0 gmodule-2.0
-}
-
-win32-g++ {
-    message("Using win32")
-    HEADERS += src/QuailWinGlibEventLoop.h
-    SOURCES += src/QuailWinGlibEventLoop.cpp
-
-    INCLUDEPATH += /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
-        /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0/include \
-        /cygdrive/c/dev/pidgin-main \
-        c:/dev/pidgin-main \
-        c:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
-        C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
-
-    LIBS += -L"C:/dev/win32-dev/gtk-2.24.10/lib"
-    LIBS += -L"C:/dev/pidgin-main/libpurple"
-    LIBS += -L"C:/Qt/4.8.5/lib"
-	LIBS += -L"/cygdrive/c/Qt/4.8.5/lib"
-
-    #RC_FILE = resource.rc
-
-    LIBS        += -llibpurple -lglib-2.0 -lgmodule-2.0
-}
 
 INCLUDEPATH += $$(LIBPURPLE_ROOT)
 #INCLUDEPATH += $$(QTDIR)
