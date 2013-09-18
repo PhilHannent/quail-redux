@@ -33,6 +33,7 @@
 * Status selector working from tray icon
 * Improve enter key usage so that Shift-Enter does not send, by inserts a line feed
 * Rewrite the event loop for Windows
+* Add a cool logging system: http://jpnaude.github.io/Qtilities/page_widget_set.html
 
 DONE
 ===========================================================
