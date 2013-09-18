@@ -27,41 +27,41 @@
 #include <QTimer>
 #include <QSocketNotifier>
 /* http://harmattan-dev.nokia.com/docs/library/html/qt4/qabstracteventdispatcher.html */
-#include <QAbstractEventDispatcher>
+//#include <QAbstractEventDispatcher>
 
 class QQuailTimer : public QTimer
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	public:
-		QQuailTimer(guint sourceId, GSourceFunc func, gpointer data);
+    public:
+        QQuailTimer(guint sourceId, GSourceFunc func, gpointer data);
 
-	private slots:
-		void update();
+    private slots:
+        void update();
 
-	private:
-		guint sourceId;
-		GSourceFunc func;
-		gpointer userData;
+    private:
+        guint sourceId;
+        GSourceFunc func;
+        gpointer userData;
 };
 
 class QQuailInputNotifier : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	public:
-		QQuailInputNotifier(int fd, PurpleInputCondition cond,
-						   PurpleInputFunction func, gpointer userData);
-		~QQuailInputNotifier();
+    public:
+        QQuailInputNotifier(int fd, PurpleInputCondition cond,
+                           PurpleInputFunction func, gpointer userData);
+        ~QQuailInputNotifier();
 
-	private slots:
-		void ioInvoke(int fd);
+    private slots:
+        void ioInvoke(int fd);
 
-	private:
-		PurpleInputCondition cond;
-		PurpleInputFunction func;
-		gpointer userData;
-		QSocketNotifier *readNotifier, *writeNotifier;
+    private:
+        PurpleInputCondition cond;
+        PurpleInputFunction func;
+        gpointer userData;
+        QSocketNotifier *readNotifier, *writeNotifier;
 };
 
 /**
