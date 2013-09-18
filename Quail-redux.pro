@@ -4,7 +4,6 @@ DEFINES += APP_MAJOR_VERSION=\\\"0\\\"
 TEMPLATE = app
 TARGET   = Quail
 VERSION = $${APP_DISPLAY_VERSION}
-CONFIG   = qt warn_on debug_and_release
 
 DEFINES += APP_NAME=\\\"Quail\\\"
 DEFINES += QUAIL_PREFS_ROOT=\\\"/quail\\\"
@@ -28,8 +27,17 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     DEFINES += USE_QT5
     QT += widgets
     QT += webkitwidgets
+    QT -= printsupport
+    QT -= sensors
+    QT -= qml
+    QT -= opengl
+    QT -= quick
+    QT -= network
+    QT -= multimedia
+    QT -= multimediawidgets
 }
 
+CONFIG   = qt warn_on debug_and_release
 
 DISTFILES = \
 	AUTHORS \
@@ -53,21 +61,17 @@ win32-g++ {
     HEADERS += src/QuailWinGlibEventLoop.h
     SOURCES += src/QuailWinGlibEventLoop.cpp
 
-    INCLUDEPATH += /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
-        /cygdrive/c/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0/include \
-        /cygdrive/c/dev/pidgin-main \
-        c:/dev/pidgin-main \
-        c:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0 \
-        C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
-
-    LIBS += -L"C:/dev/win32-dev/gtk-2.24.10/lib"
-    LIBS += -L"C:/dev/pidgin-main/libpurple"
-    LIBS += -L"C:/Qt/4.8.5/lib"
-	LIBS += -L"/cygdrive/c/Qt/4.8.5/lib"
-
     #RC_FILE = resource.rc
 
     LIBS        += -llibpurple -lglib-2.0 -lgmodule-2.0
+    INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/include/glib-2.0
+    INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/include/glib-2.0/include
+    INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
+    INCLUDEPATH += $(LIBPURPLE_ROOT)
+    INCLUDEPATH += $(QTDIR)/include
+    LIBS += -L"$(LIBPURPLE_ROOT)/../win32-dev/gtk-2.24.10/lib"
+    LIBS += -L"$(LIBPURPLE_ROOT)/libpurple"
+    LIBS += -L"$(QTDIR)/lib"
 }
 
 HEADERS = \
@@ -129,12 +133,6 @@ SOURCES = \
     src/QuailBlistItem.cpp
 
 
-
-INCLUDEPATH += $$(LIBPURPLE_ROOT)
-#INCLUDEPATH += $$(QTDIR)
-
-OBJECTS_DIR = obj
-MOC_DIR     = moc
 
 RESOURCES += \
     quail.qrc
