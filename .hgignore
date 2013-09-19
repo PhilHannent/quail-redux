@@ -1,6 +1,7 @@
 # use glob syntax.
 syntax: glob
 
+*.o
 obj
 moc
 win32-bin

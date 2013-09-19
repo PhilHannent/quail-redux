@@ -2,6 +2,18 @@
 
 #include <QCoreApplication>
 #include <glib.h>
+#include <QDateTime>
+#include <QDebug>
+#include <QThread>
+#include <QMutex>
+#include <QMutexLocker>
+#include "qsystemlibrary.h"
+#include <QWinEventNotifier>
+#include <QElapsedTimer>
+#include "quailtimerinfolist.h"
+
+#include <sys/time.h>
+#include <windows.h>
 
 struct GPollFDWithQSocketNotifier
 {
@@ -200,19 +212,21 @@ struct GPostEventSource
 
 static gboolean postEventSourcePrepare(GSource *s, gint *timeout)
 {
-    QThreadData *data = QThreadData::current();
-    if (!data)
-        return false;
+//    QThreadData *data = QThreadData::current();
+//    if (!data)
+//        return false;
 
-    gint dummy;
-    if (!timeout)
-        timeout = &dummy;
-    const bool canWait = data->canWaitLocked();
-    *timeout = canWait ? -1 : 0;
+//    gint dummy;
+//    if (!timeout)
+//        timeout = &dummy;
+//    const bool canWait = data->canWaitLocked();
+//    *timeout = canWait ? -1 : 0;
 
     GPostEventSource *source = reinterpret_cast<GPostEventSource *>(s);
-    return (!canWait
-            || (source->serialNumber.load() != source->lastSerialNumber));
+//    return (!canWait
+//            || (source->serialNumber.load() != source->lastSerialNumber));
+    return source->serialNumber.load() != source->lastSerialNumber;
+
 }
 
 static gboolean postEventSourceCheck(GSource *source)
@@ -479,7 +493,9 @@ static void resolveTimerAPI()
     static bool triedResolve = false;
     if (!triedResolve) {
 #ifndef QT_NO_THREAD
-        QMutexLocker locker(QMutexPool::globalInstanceGet(&triedResolve));
+        //QMutexLocker locker(QMutexPool::globalInstanceGet(&triedResolve));
+        QMutex locker;
+        triedResolve = locker.tryLock();
         if (triedResolve)
             return;
 #endif
@@ -500,17 +516,21 @@ static void resolveTimerAPI()
     }
 }
 
-QuailEventDispatcherWinGlib::QuailEventDispatcherWinGlib(GMainContext *context = 0, QObject parent = 0)
-    : mainContext(context), threadId(GetCurrentThreadId()), interruptFlag(false), internalHwnd(0), getMessageHook(0),
-      serialNumber(0), lastSerialNumber(0), sendPostedEventsWindowsTimerId(0), wakeUps(0)
+QuailEventDispatcherWinGlib::QuailEventDispatcherWinGlib(QObject *parent)
+    : QAbstractEventDispatcher(parent), mainContext(0),
+      threadId(GetCurrentThreadId()), interruptFlag(false),
+      internalHwnd(0), getMessageHook(0),
+      serialNumber(0), lastSerialNumber(0),
+      sendPostedEventsWindowsTimerId(0), wakeUps(0)
 {
+    qDebug() << "QuailEventDispatcherWinGlib";
     resolveTimerAPI();
 #if GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 32
     if (qEnvironmentVariableIsEmpty("QT_NO_THREADED_GLIB")) {
         static QBasicMutex mutex;
         QMutexLocker locker(&mutex);
-        if (!g_thread_supported())
-            g_thread_init(NULL);
+//        if (!g_thread_supported())
+//            g_thread_init(NULL);
     }
 #endif
 
@@ -580,7 +600,7 @@ QuailEventDispatcherWinGlib::~QuailEventDispatcherWinGlib()
 void QuailEventDispatcherWinGlib::activateEventNotifier(QWinEventNotifier * wen)
 {
     QEvent event(QEvent::WinEventAct);
-    QCoreApplication::sendEvent(wen, &event);
+    QCoreApplication::sendEvent((QObject*)wen, &event);
 }
 
 // This function is called by a workerthread
@@ -620,7 +640,8 @@ LRESULT QT_WIN_CALLBACK qt_internal_proc(HWND hwnd, UINT message, WPARAM wp, LPA
 #endif
     QuailEventDispatcherWinGlib *d = 0;
     if (q != 0)
-        d = q->d_func();
+        d = q;
+        //d = q->d_func();
 
     if (message == WM_QT_SOCKETNOTIFIER) {
         // socket notifier message
@@ -685,7 +706,8 @@ LRESULT QT_WIN_CALLBACK qt_GetMessageHook(int code, WPARAM wp, LPARAM lp)
         Q_ASSERT(q != 0);
         if (q) {
             MSG *msg = (MSG *) lp;
-            QuailEventDispatcherWinGlib *d = q->d_func();
+            //QuailEventDispatcherWinGlib *d = q->d_func();
+            QuailEventDispatcherWinGlib *d = q;
             const int localSerialNumber = d->serialNumber.load();
             if (HIWORD(GetQueueStatus(QS_TIMER | QS_INPUT | QS_RAWINPUT)) == 0) {
                 // no more input or timer events in the message queue, we can allow posted events to be sent normally now
@@ -768,9 +790,11 @@ static HWND qt_create_internal_window(const QuailEventDispatcherWinGlib *eventDi
 
 void QuailEventDispatcherWinGlib::registerTimer(WinTimerInfo *t)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::registerTimer";
     Q_ASSERT(internalHwnd);
 
-    Q_Q(QuailEventDispatcherWinGlib);
+    //Q_Q(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *q = this;
 
     int ok = 0;
     uint interval = t->interval;
@@ -790,7 +814,7 @@ void QuailEventDispatcherWinGlib::registerTimer(WinTimerInfo *t)
         ok = SetTimer(internalHwnd, t->timerId, interval, 0);
     }
 
-    t->timeout = qt_msectime() + interval;
+    t->timeout = QDateTime::currentMSecsSinceEpoch() + interval;
 
     if (ok == 0)
         qErrnoWarning("QuailEventDispatcherWinGlib::registerTimer: Failed to create a timer");
@@ -799,10 +823,12 @@ void QuailEventDispatcherWinGlib::registerTimer(WinTimerInfo *t)
 void QuailEventDispatcherWinGlib::unregisterTimer(WinTimerInfo *t)
 {
     if (t->interval == 0) {
-        QCoreApplicationPrivate::removePostedTimerEvent(t->dispatcher, t->timerId);
+        //QCoreApplicationPrivate::removePostedTimerEvent(t->dispatcher, t->timerId);
+        QCoreApplication::removePostedEvents(t->dispatcher, t->timerId);
     } else if (t->fastTimerId != 0) {
         qtimeKillEvent(t->fastTimerId);
-        QCoreApplicationPrivate::removePostedTimerEvent(t->dispatcher, t->timerId);
+        //QCoreApplicationPrivate::removePostedTimerEvent(t->dispatcher, t->timerId);
+        QCoreApplication::removePostedEvents(t->dispatcher, t->timerId);
     } else if (internalHwnd) {
         KillTimer(internalHwnd, t->timerId);
     }
@@ -839,12 +865,13 @@ void QuailEventDispatcherWinGlib::doWsaAsyncSelect(int socket)
         sn_event |= FD_OOB;
     // BoundsChecker may emit a warning for WSAAsyncSelect when sn_event == 0
     // This is a BoundsChecker bug and not a Qt bug
-    WSAAsyncSelect(socket, internalHwnd, sn_event ? int(WM_QT_SOCKETNOTIFIER) : 0, sn_event);
+    //WSAAsyncSelect(socket, internalHwnd, sn_event ? int(WM_QT_SOCKETNOTIFIER) : 0, sn_event);
 }
 
 void QuailEventDispatcherWinGlib::createInternalHwnd()
 {
-    Q_D(QuailEventDispatcherWinGlib);
+    //QuailEventDispatcherWinGlib *d = this;
+    QuailEventDispatcherWinGlib *d = this;
 
     Q_ASSERT(!d->internalHwnd);
     if (d->internalHwnd)
@@ -876,7 +903,9 @@ void QuailEventDispatcherWinGlib::createInternalHwnd()
 
 bool QuailEventDispatcherWinGlib::processEvents(QEventLoop::ProcessEventsFlags flags)
 {
-    Q_D(QuailEventDispatcherWinGlib);
+    qDebug() << "QuailEventDispatcherWinGlib::processEvents";
+    //QuailEventDispatcherWinGlib *d = this;
+    QuailEventDispatcherWinGlib *d = this;
 
     if (!d->internalHwnd)
         createInternalHwnd();
@@ -1025,6 +1054,7 @@ bool QuailEventDispatcherWinGlib::hasPendingEvents()
 
 void QuailEventDispatcherWinGlib::registerSocketNotifier(QSocketNotifier *notifier)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::registerSocketNotifier";
     Q_ASSERT(notifier);
     int sockfd = notifier->socket();
     int type = notifier->type();
@@ -1038,7 +1068,8 @@ void QuailEventDispatcherWinGlib::registerSocketNotifier(QSocketNotifier *notifi
     }
 #endif
 
-    Q_D(QuailEventDispatcherWinGlib);
+    //QuailEventDispatcherWinGlib *d = this;
+    QuailEventDispatcherWinGlib *d = this;
     QSNDict *sn_vec[3] = { &d->sn_read, &d->sn_write, &d->sn_except };
     QSNDict *dict = sn_vec[type];
 
@@ -1063,6 +1094,7 @@ void QuailEventDispatcherWinGlib::registerSocketNotifier(QSocketNotifier *notifi
 
 void QuailEventDispatcherWinGlib::unregisterSocketNotifier(QSocketNotifier *notifier)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::unregisterSocketNotifier";
     Q_ASSERT(notifier);
     int sockfd = notifier->socket();
     int type = notifier->type();
@@ -1076,7 +1108,7 @@ void QuailEventDispatcherWinGlib::unregisterSocketNotifier(QSocketNotifier *noti
     }
 #endif
 
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
     QSNDict *sn_vec[3] = { &d->sn_read, &d->sn_write, &d->sn_except };
     QSNDict *dict = sn_vec[type];
     QSockNot *sn = dict->value(sockfd);
@@ -1092,6 +1124,7 @@ void QuailEventDispatcherWinGlib::unregisterSocketNotifier(QSocketNotifier *noti
 
 void QuailEventDispatcherWinGlib::registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *object)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::registerTimer.GLIB'ed";
     if (timerId < 1 || interval < 0 || !object) {
         qWarning("QuailEventDispatcherWinGlib::registerTimer: invalid arguments");
         return;
@@ -1100,7 +1133,7 @@ void QuailEventDispatcherWinGlib::registerTimer(int timerId, int interval, Qt::T
         return;
     }
 
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
 
     WinTimerInfo *t = new WinTimerInfo;
     t->dispatcher = this;
@@ -1120,6 +1153,7 @@ void QuailEventDispatcherWinGlib::registerTimer(int timerId, int interval, Qt::T
 
 bool QuailEventDispatcherWinGlib::unregisterTimer(int timerId)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::unregisterTimer";
     if (timerId < 1) {
         qWarning("QuailEventDispatcherWinGlib::unregisterTimer: invalid argument");
         return false;
@@ -1130,7 +1164,7 @@ bool QuailEventDispatcherWinGlib::unregisterTimer(int timerId)
         return false;
     }
 
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
     if (d->timerVec.isEmpty() || timerId <= 0)
         return false;
 
@@ -1146,6 +1180,7 @@ bool QuailEventDispatcherWinGlib::unregisterTimer(int timerId)
 
 bool QuailEventDispatcherWinGlib::unregisterTimers(QObject *object)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::unregisterTimer";
     if (!object) {
         qWarning("QuailEventDispatcherWinGlib::unregisterTimers: invalid argument");
         return false;
@@ -1156,7 +1191,7 @@ bool QuailEventDispatcherWinGlib::unregisterTimers(QObject *object)
         return false;
     }
 
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
     if (d->timerVec.isEmpty())
         return false;
     register WinTimerInfo *t;
@@ -1175,12 +1210,13 @@ bool QuailEventDispatcherWinGlib::unregisterTimers(QObject *object)
 QList<QuailEventDispatcherWinGlib::TimerInfo>
 QuailEventDispatcherWinGlib::registeredTimers(QObject *object) const
 {
+    qDebug() << "QuailEventDispatcherWinGlib::registeredTimers";
     if (!object) {
         qWarning("QuailEventDispatcherWinGlib:registeredTimers: invalid argument");
         return QList<TimerInfo>();
     }
 
-    Q_D(const QuailEventDispatcherWinGlib);
+    const QuailEventDispatcherWinGlib *d = this;
     QList<TimerInfo> list;
     for (int i = 0; i < d->timerVec.size(); ++i) {
         const WinTimerInfo *t = d->timerVec.at(i);
@@ -1192,6 +1228,7 @@ QuailEventDispatcherWinGlib::registeredTimers(QObject *object) const
 
 bool QuailEventDispatcherWinGlib::registerEventNotifier(QWinEventNotifier *notifier)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::registerEventNotifier";
     if (!notifier) {
         qWarning("QWinEventNotifier: Internal error");
         return false;
@@ -1200,7 +1237,7 @@ bool QuailEventDispatcherWinGlib::registerEventNotifier(QWinEventNotifier *notif
         return false;
     }
 
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
 
     if (d->winEventNotifierList.contains(notifier))
         return true;
@@ -1215,6 +1252,7 @@ bool QuailEventDispatcherWinGlib::registerEventNotifier(QWinEventNotifier *notif
 
 void QuailEventDispatcherWinGlib::unregisterEventNotifier(QWinEventNotifier *notifier)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::unregisterEventNotifier";
     if (!notifier) {
         qWarning("QWinEventNotifier: Internal error");
         return;
@@ -1223,7 +1261,7 @@ void QuailEventDispatcherWinGlib::unregisterEventNotifier(QWinEventNotifier *not
         return;
     }
 
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
 
     int i = d->winEventNotifierList.indexOf(notifier);
     if (i != -1)
@@ -1232,7 +1270,7 @@ void QuailEventDispatcherWinGlib::unregisterEventNotifier(QWinEventNotifier *not
 
 void QuailEventDispatcherWinGlib::activateEventNotifiers()
 {
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
     //### this could break if events are removed/added in the activation
     for (int i=0; i<d->winEventNotifierList.count(); i++) {
 #if !defined(Q_OS_WINCE)
@@ -1254,12 +1292,12 @@ int QuailEventDispatcherWinGlib::remainingTime(int timerId)
     }
 #endif
 
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
 
     if (d->timerVec.isEmpty())
         return -1;
 
-    quint64 currentTime = qt_msectime();
+    quint64 currentTime = QDateTime::currentMSecsSinceEpoch ();
 
     register WinTimerInfo *t;
     for (int i=0; i<d->timerVec.size(); i++) {
@@ -1283,7 +1321,7 @@ int QuailEventDispatcherWinGlib::remainingTime(int timerId)
 
 void QuailEventDispatcherWinGlib::wakeUp()
 {
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
     d->serialNumber.ref();
     if (d->internalHwnd && d->wakeUps.testAndSetAcquire(0, 1)) {
         // post a WM_QT_SENDPOSTEDEVENTS to this thread if there isn't one already pending
@@ -1293,7 +1331,7 @@ void QuailEventDispatcherWinGlib::wakeUp()
 
 void QuailEventDispatcherWinGlib::interrupt()
 {
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
     d->interruptFlag = true;
     wakeUp();
 }
@@ -1306,7 +1344,7 @@ void QuailEventDispatcherWinGlib::startingUp()
 
 void QuailEventDispatcherWinGlib::closingDown()
 {
-    Q_D(QuailEventDispatcherWinGlib);
+    QuailEventDispatcherWinGlib *d = this;
 
     // clean up any socketnotifiers
     while (!d->sn_read.isEmpty())
@@ -1331,7 +1369,8 @@ void QuailEventDispatcherWinGlib::closingDown()
 
 bool QuailEventDispatcherWinGlib::event(QEvent *e)
 {
-    Q_D(QuailEventDispatcherWinGlib);
+    qDebug() << "QuailEventDispatcherWinGlib::event";
+    QuailEventDispatcherWinGlib *d = this;
     if (e->type() == QEvent::ZeroTimerEvent) {
         QZeroTimerEvent *zte = static_cast<QZeroTimerEvent*>(e);
         WinTimerInfo *t = d->timerDict.value(zte->timerId());
@@ -1361,6 +1400,62 @@ bool QuailEventDispatcherWinGlib::event(QEvent *e)
 
 void QuailEventDispatcherWinGlib::sendPostedEvents()
 {
-    Q_D(QuailEventDispatcherWinGlib);
-    QCoreApplicationPrivate::sendPostedEvents(0, 0, d->threadData);
+    //QuailEventDispatcherWinGlib *d = this;
+    //QCoreApplicationPrivate::sendPostedEvents(0, 0, d->threadData);
+    QCoreApplication::sendPostedEvents();
 }
+
+QThreadData::QThreadData(int initialRefCount)
+    : _ref(initialRefCount), thread(0), threadId(0),
+      quitNow(false), loopLevel(0), eventDispatcher(0), canWait(true), isAdopted(false)
+{
+    // fprintf(stderr, "QThreadData %p created\n", this);
+}
+
+QThreadData::~QThreadData()
+{
+    Q_ASSERT(_ref.load() == 0);
+
+    // In the odd case that Qt is running on a secondary thread, the main
+    // thread instance will have been dereffed asunder because of the deref in
+    // QThreadData::current() and the deref in the pthread_destroy. To avoid
+    // crashing during QCoreApplicationData's global static cleanup we need to
+    // safeguard the main thread here.. This fix is a bit crude, but it solves
+    // the problem...
+//    if (this->thread == QCoreApplication::thread()) {
+//       //QCoreApplication::thread() = 0;
+//       QThreadData::clearCurrentThreadData();
+//    }
+
+    QThread *t = thread;
+    thread = 0;
+    delete t;
+
+    for (int i = 0; i < postEventList.size(); ++i) {
+        const QPostEvent &pe = postEventList.at(i);
+        if (pe.event) {
+            //--pe.receiver->d_func()->postedEvents;
+            pe.event->posted = false;
+            delete pe.event;
+        }
+    }
+
+    // fprintf(stderr, "QThreadData %p destroyed\n", this);
+}
+
+void QThreadData::ref()
+{
+#ifndef QT_NO_THREAD
+    (void) _ref.ref();
+    Q_ASSERT(_ref.load() != 0);
+#endif
+}
+
+void QThreadData::deref()
+{
+#ifndef QT_NO_THREAD
+    if (!_ref.deref())
+        delete this;
+#endif
+}
+

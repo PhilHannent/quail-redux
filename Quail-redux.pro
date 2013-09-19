@@ -56,10 +56,15 @@ linux-g++* {
     PKGCONFIG += purple glib-2.0 gmodule-2.0
 }
 
-win32-g++ {
+win32-g++* {
     message("Using win32")
-    HEADERS += src/QuailWinGlibEventLoop.h
-    SOURCES += src/QuailWinGlibEventLoop.cpp
+#    HEADERS += src/quailtimerinfolist.h  \
+#                src/qsystemlibrary.h \
+#                src/QuailWinGlibEventLoop.h
+
+#    SOURCES += src/quailtimerinfolist.cpp \
+#                src/qsystemlibrary.h \
+#                src/QuailWinGlibEventLoop.cpp
 
     #RC_FILE = resource.rc
 
@@ -74,7 +79,7 @@ win32-g++ {
     LIBS += -L"$(QTDIR)/lib"
 }
 
-HEADERS = \
+HEADERS += \
         src/QuailAccountBox.h \
         src/QuailAccountEditor.h \
         src/QuailAccountsWindow.h \
@@ -103,8 +108,7 @@ HEADERS = \
     src/QuailStatusSelector.h \
     src/QuailBlistItem.h
 
-
-SOURCES = \
+SOURCES += \
         src/QuailAccountBox.cpp \
         src/QuailAccountEditor.cpp \
         src/QuailAccountsWindow.cpp \
@@ -130,9 +134,8 @@ SOURCES = \
         src/main.cpp \
     src/QuailConvDisplay.cpp \
     src/QuailStatusSelector.cpp \
-    src/QuailBlistItem.cpp
-
-
+    src/QuailBlistItem.cpp \
+    src/qsystemlibrary.cpp
 
 RESOURCES += \
     quail.qrc

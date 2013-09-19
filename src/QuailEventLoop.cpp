@@ -20,8 +20,10 @@
  * MA  02111-1307  USA
  */
 #include "QuailEventLoop.h"
+#include <QApplication>
 #include <QDebug>
 #include <QMap>
+#include <QThread>
 
 typedef struct
 {
@@ -39,19 +41,36 @@ static gboolean qQuailSourceRemove(guint handle);
 
 static guint nextSourceId = 0;
 static QMap<guint, QQuailSourceInfo*> m_sources;
+//static QThread *quailThread = new QThread();
 
 QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
-    : QTimer(), sourceId(sourceId), func(func), userData(data)
+    : sourceId(sourceId), func(func), userData(data), t(0)
 {
-    connect(this, SIGNAL(timeout()),
-            this, SLOT(update()));
+    qDebug() << "QQuailTimer::QQuailTimer.1";
 }
 
 void
 QQuailTimer::update()
 {
+    qDebug() << "QQuailTimer::update()";
     if (!func(userData))
         qQuailSourceRemove(sourceId);
+}
+
+void
+QQuailTimer::start(int msec)
+{
+    qDebug() << "QQuailTimer::start.1";
+//    if (mainWin == 0)
+//        return;
+
+    if (t == 0)
+    {
+        t = mainWin->getNewTimer();
+        connect(t, SIGNAL(timeout()),
+                this, SLOT(update()));
+    }
+    t->start(msec);
 }
 
 QQuailInputNotifier::QQuailInputNotifier(int fd,
@@ -115,6 +134,7 @@ qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
     info->handle = nextSourceId++;
 
     info->timer = new QQuailTimer(info->handle, func, data);
+    //info->timer->moveToThread(quailThread);
     info->timer->start(interval);
 
     m_sources.insert(info->handle, info);
@@ -205,3 +225,4 @@ qQuailGetEventLoopUiOps(void)
 {
     return &eventloop_ops;
 }
+

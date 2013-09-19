@@ -28,14 +28,18 @@
 #include <QSocketNotifier>
 /* http://harmattan-dev.nokia.com/docs/library/html/qt4/qabstracteventdispatcher.html */
 //#include <QAbstractEventDispatcher>
+#include "QuailMainWindow.h"
 
-class QQuailTimer : public QTimer
+static QQuailMainWindow *mainWin = 0;
+
+class QQuailTimer : public QObject
 {
     Q_OBJECT
 
     public:
         QQuailTimer(guint sourceId, GSourceFunc func, gpointer data);
 
+        void start(int interval);
     private slots:
         void update();
 
@@ -43,6 +47,7 @@ class QQuailTimer : public QTimer
         guint sourceId;
         GSourceFunc func;
         gpointer userData;
+        QTimer *t;
 };
 
 class QQuailInputNotifier : public QObject
@@ -63,6 +68,8 @@ class QQuailInputNotifier : public QObject
         gpointer userData;
         QSocketNotifier *readNotifier, *writeNotifier;
 };
+
+
 
 /**
  * Returns the Qt event loop UI operations structure.

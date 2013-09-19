@@ -57,8 +57,6 @@
 #include "QuailPrefsDialog.h"
 #include "QuailRequest.h"
 
-static QQuailMainWindow *mainWin = NULL;
-
 /**************************************************************************
  * Core stuff
  **************************************************************************/
@@ -339,8 +337,7 @@ QQuailMainWindow::initCore()
     qDebug() << "QQuailMainWindow::initCore().4";
     purple_plugins_add_search_path(path);
     qDebug() << "QQuailMainWindow::initCore().5";
-
-	purple_plugins_probe(NULL);
+    purple_plugins_probe(NULL);
     qDebug() << "QQuailMainWindow::initCore().6";
 	purple_prefs_load();
     qDebug() << "QQuailMainWindow::initCore().7";

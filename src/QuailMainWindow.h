@@ -24,6 +24,7 @@
 
 #include <QMainWindow>
 #include <QTranslator>
+#include <QTimer>
 
 #include <libpurple/conversation.h>
 
@@ -60,6 +61,9 @@ class QQuailMainWindow : public QMainWindow
 
         QStackedWidget *getWidgetStack() const;
 		QQuailConnectionMeters *getMeters() const;
+
+        QTimer *getNewTimer()
+        {   return new QTimer(this); }
 
 	public slots:
 		void showBlistWindow();

@@ -23,14 +23,13 @@
 #if defined(Q_OS_CYGWIN)
 #include "QuailWinGlibEventLoop.h"
 #endif
-
-#include "QuailMainWindow.h"
-
 #include <QApplication>
+#include "QuailMainWindow.h"
 
 int main(int argc, char *argv[])
 {
 #if defined(Q_OS_CYGWIN)
+    qDebug() << "MAIN.1";
     QuailEventDispatcherWinGlib quailEventLoop;
 #endif
     QApplication a(argc, argv);
