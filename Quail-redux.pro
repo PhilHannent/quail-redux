@@ -134,8 +134,7 @@ SOURCES += \
         src/main.cpp \
     src/QuailConvDisplay.cpp \
     src/QuailStatusSelector.cpp \
-    src/QuailBlistItem.cpp \
-    src/qsystemlibrary.cpp
+    src/QuailBlistItem.cpp
 
 RESOURCES += \
     quail.qrc
