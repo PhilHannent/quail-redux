@@ -41,6 +41,7 @@ static gboolean qQuailSourceRemove(guint handle);
 
 static guint nextSourceId = 0;
 static QMap<guint, QQuailSourceInfo*> m_sources;
+//static QuailEventDispatcherMarkTwo *mainEvent = 0;
 //static QThread *quailThread = new QThread();
 
 QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
@@ -226,3 +227,8 @@ qQuailGetEventLoopUiOps(void)
     return &eventloop_ops;
 }
 
+//QuailEventDispatcherMarkTwo::QuailEventDispatcherMarkTwo(QObject *parent)
+//    : QAbstractEventDispatcher(parent)
+//{
+//    mainEvent = this;
+//}

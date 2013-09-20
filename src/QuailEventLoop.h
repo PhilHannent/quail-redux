@@ -88,4 +88,29 @@ void qQuailEventLoopInit(void);
  */
 void qQuailEventLoopUninit(void);
 
+//class QuailEventDispatcherMarkTwo : public QAbstractEventDispatcher
+//{
+//    Q_OBJECT
+
+//public:
+//    QuailEventDispatcherMarkTwo(QObject *parent = 0);
+
+//    virtual bool processEvents(QEventLoop::ProcessEventsFlags flags)
+//    {; }
+//    virtual bool hasPendingEvents() = 0;
+
+//    virtual void registerSocketNotifier(QSocketNotifier *notifier) = 0;
+//    virtual void unregisterSocketNotifier(QSocketNotifier *notifier) = 0;
+
+//    virtual void registerTimer(int timerId, int interval, QObject *object) = 0;
+//    virtual bool unregisterTimer(int timerId) = 0;
+//    virtual bool unregisterTimers(QObject *object) = 0;
+//    virtual QList<TimerInfo> registeredTimers(QObject *object) const  = 0;
+
+//    virtual void wakeUp() = 0;
+//    virtual void interrupt() = 0;
+//    virtual void flush() = 0;
+
+//};
+
 #endif /* _QUAIL_EVENT_LOOP_H_ */

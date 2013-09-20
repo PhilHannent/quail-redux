@@ -19,11 +19,13 @@
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA  02111-1307  USA
  */
+#include <QApplication>
+#include <QDebug>
 
-#if defined(Q_OS_CYGWIN)
+#if defined(Q_OS_WIN)
 #include "QuailWinGlibEventLoop.h"
 #endif
-#include <QApplication>
+#include "QuailEventLoop.h"
 #include "QuailMainWindow.h"
 
 int main(int argc, char *argv[])
@@ -32,8 +34,11 @@ int main(int argc, char *argv[])
     qDebug() << "MAIN.1";
     QuailEventDispatcherWinGlib quailEventLoop;
 #endif
-    QApplication a(argc, argv);
+    //QuailEventDispatcherMarkTwo mainEvent;
+    QCoreApplication a(argc, argv);
+    qDebug() << "q";
     QQuailMainWindow w;
+    qDebug() << "q2";
     w.show();
 
     return a.exec();
