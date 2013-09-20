@@ -22,7 +22,7 @@
 #include <QApplication>
 #include <QDebug>
 
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_CYGWIN)
 #include "QuailWinGlibEventLoop.h"
 #endif
 #include "QuailEventLoop.h"
