@@ -74,8 +74,10 @@ qQuailPrefsInit(void)
     purple_prefs_add_bool("/quail/blist/show_large_icons",
                         (QApplication::desktop()->screenGeometry().width() >= 600));
     purple_prefs_add_bool("/quail/blist/dim_idle_buddies",     true);
-
+    purple_prefs_add_none("/quail/blist/geometary", 0);
+    purple_prefs_add_none("/quail/blist/state", 0);
 	qQuailNotifyInit();
+
 }
 
 static void
@@ -150,6 +152,7 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent)
 
     retranslateUi(this);
     purple_accounts_restore_current_statuses();
+    slotReadSettings();
 }
 
 QQuailMainWindow::~QQuailMainWindow()
@@ -455,6 +458,25 @@ QQuailMainWindow::removeConversationWindow(QQuailConversation */*win*/)
 	showBlistWindow();
 }
 
+/* Ideally I want to save these with using the purple pref functions
+ * However they only cover basic types. Need to look at how to put
+ * these settings into a purple string */
+void
+QQuailMainWindow::slotSaveSettings()
+{
+    QSetting appSettings(APP_NAME, APP_MAJOR_VERSION);
+    appSettings.setValue("geometry", saveGeometry());
+    appSettings.setValue("state", saveState());
+}
+
+void
+QQuailMainWindow::slotReadSettings()
+{
+    QSetting appSettings(APP_NAME, APP_MAJOR_VERSION);
+    restoreGeometry(appSettings.value("geometry", saveGeometry()));
+    restoreState(appSettings.value("state", saveState()));
+}
+
 QQuailBListWindow *
 QQuailMainWindow::getBlistWindow() const
 {
@@ -545,6 +567,12 @@ QQuailMainWindow::showPrefWindow()
     setWindowTitle(tr("Preferences"));
     widgetStack->setCurrentWidget(prefWin);
     qDebug() << "QQuailMainWindow::showPrefWindow().end";
+}
+
+QQuailMainWindow::saveSettings()
+{
+    saveGeometry();
+    saveState();
 }
 
 QQuailMainWindow *

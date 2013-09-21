@@ -543,7 +543,9 @@ QQuailBuddyList::resizeEvent(QResizeEvent *)
     setColumnWidth(0, BUDDY_ICON_SIZE);
     setColumnWidth(1, this->width() - (BUDDY_ICON_SIZE *4));
     setColumnWidth(2, BUDDY_ICON_SIZE);
-    qDebug() << "QQuailBuddyList::resizeEvent.end";
+    /* Trigger a geometry and state save */
+    if (!saveTimer->isActive())
+        saveTimer->start(2000);
 }
 
 void
@@ -560,8 +562,6 @@ QQuailBuddyList::nodeExpandedSlot(QTreeWidgetItem *_item)
         qDebug() << "QQuailBuddyList::nodeExpandedSlot.setNodeCollapsed:FALSE";
 		purple_blist_node_set_bool(node, "collapsed", FALSE);
 
-//		if (!saveTimer->isActive())
-//			saveTimer->start(2000, true);
 	}
     else if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 	{
@@ -582,9 +582,6 @@ QQuailBuddyList::nodeCollapsedSlot(QTreeWidgetItem *_item)
 	{
         qDebug() << "QQuailBuddyList::nodeCollapsedSlot:collapsed::true";
 		purple_blist_node_set_bool(node, "collapsed", TRUE);
-
-//		if (!saveTimer->isActive())
-//			saveTimer->start(2000, true);
 	}
     else if (PURPLE_BLIST_NODE_IS_CONTACT(node))
 	{
@@ -655,7 +652,9 @@ QQuailBuddyList::expandContactSlot(QQuailBListItem *item)
 void
 QQuailBuddyList::saveBlistSlot()
 {
-//	purple_blist_save();
+    QSetting appSettings(APP_NAME, APP_MAJOR_VERSION);
+    appSettings.setValue("geometry", saveGeometry());
+    appSettings.setValue("state", saveState());
 }
 
 //TODO: This needs moving to the items contextMenuEvent

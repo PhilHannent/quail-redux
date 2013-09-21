@@ -81,6 +81,8 @@ class QQuailMainWindow : public QMainWindow
 
     private slots:
         void slotStateChanges(QAction*);
+        void slotSaveSettings();
+        void slotReadSettings();
 
 	private:
         void buildInterface();
