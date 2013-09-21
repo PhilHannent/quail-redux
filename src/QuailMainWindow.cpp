@@ -31,12 +31,13 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMenu>
+#include <QSettings>
 #include <QStackedWidget>
 #include <QSystemTrayIcon>
 #include <QTimer>
+#include <QToolBar>
 #include <QVariant>
 #include <QVBoxLayout>
-#include <QToolBar>
 
 #include <libpurple/prefs.h>
 #include <libpurple/conversation.h>
@@ -74,8 +75,8 @@ qQuailPrefsInit(void)
     purple_prefs_add_bool("/quail/blist/show_large_icons",
                         (QApplication::desktop()->screenGeometry().width() >= 600));
     purple_prefs_add_bool("/quail/blist/dim_idle_buddies",     true);
-    purple_prefs_add_none("/quail/blist/geometary", 0);
-    purple_prefs_add_none("/quail/blist/state", 0);
+    //purple_prefs_add_none("/quail/blist/geometary", 0);
+    //purple_prefs_add_none("/quail/blist/state", 0);
 	qQuailNotifyInit();
 
 }
@@ -464,7 +465,7 @@ QQuailMainWindow::removeConversationWindow(QQuailConversation */*win*/)
 void
 QQuailMainWindow::slotSaveSettings()
 {
-    QSetting appSettings(APP_NAME, APP_MAJOR_VERSION);
+    QSettings appSettings(APP_NAME, APP_MAJOR_VERSION);
     appSettings.setValue("geometry", saveGeometry());
     appSettings.setValue("state", saveState());
 }
@@ -472,9 +473,9 @@ QQuailMainWindow::slotSaveSettings()
 void
 QQuailMainWindow::slotReadSettings()
 {
-    QSetting appSettings(APP_NAME, APP_MAJOR_VERSION);
-    restoreGeometry(appSettings.value("geometry", saveGeometry()));
-    restoreState(appSettings.value("state", saveState()));
+    QSettings appSettings(APP_NAME, APP_MAJOR_VERSION);
+    restoreGeometry(appSettings.value("geometry", saveGeometry()).toByteArray());
+    restoreState(appSettings.value("state", saveState()).toByteArray());
 }
 
 QQuailBListWindow *
@@ -569,11 +570,12 @@ QQuailMainWindow::showPrefWindow()
     qDebug() << "QQuailMainWindow::showPrefWindow().end";
 }
 
-QQuailMainWindow::saveSettings()
-{
-    saveGeometry();
-    saveState();
-}
+//void
+//QQuailMainWindow::saveSettings()
+//{
+//    saveGeometry();
+//    saveState();
+//}
 
 QQuailMainWindow *
 qQuailGetMainWindow()

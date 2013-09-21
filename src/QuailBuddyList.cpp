@@ -34,6 +34,7 @@
 #include <QDebug>
 #include <QHeaderView>
 #include <QMenu>
+#include <QSettings>
 #include <QTimer>
 
 #define BUDDY_ICON_SIZE 20
@@ -652,9 +653,9 @@ QQuailBuddyList::expandContactSlot(QQuailBListItem *item)
 void
 QQuailBuddyList::saveBlistSlot()
 {
-    QSetting appSettings(APP_NAME, APP_MAJOR_VERSION);
+    QSettings appSettings(APP_NAME, APP_MAJOR_VERSION);
     appSettings.setValue("geometry", saveGeometry());
-    appSettings.setValue("state", saveState());
+    //appSettings.setValue("state", saveState());
 }
 
 //TODO: This needs moving to the items contextMenuEvent
