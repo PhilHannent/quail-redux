@@ -13,7 +13,8 @@
 #include "quailtimerinfolist.h"
 
 #include <sys/time.h>
-#include <windows.h>
+//#include <windows.h>
+#define WM_SOCKET (WM_USER + 1)
 
 struct GPollFDWithQSocketNotifier
 {
@@ -269,11 +270,7 @@ extern uint qGlobalPostedEventsCount();
 #endif
 
 #ifndef QS_RAWINPUT
-# ifdef Q_OS_WINCE
-#  define QS_RAWINPUT 0x0000
-# else
 #  define QS_RAWINPUT 0x0400
-# endif
 #endif
 
 #ifndef WM_TOUCH
@@ -293,197 +290,6 @@ enum {
     WM_QT_SENDPOSTEDEVENTS = WM_USER + 1,
     SendPostedEventsWindowsTimerId = ~1u
 };
-
-#if defined(Q_OS_WINCE)
-QT_BEGIN_INCLUDE_NAMESPACE
-#include <winsock.h>
-QT_END_INCLUDE_NAMESPACE
-// Asynchronous Winsocks ------------------------------------------
-#ifndef QT_NO_THREAD
-QT_BEGIN_INCLUDE_NAMESPACE
-#include <qthread.h>
-#include <qmap.h>
-#include <qmutex.h>
-QT_END_INCLUDE_NAMESPACE
-
-//#define QCE_ASYNC_DEBUG
-
-namespace {
-    class SocketAsyncHandler;
-
-    class SocketAsyncHandler : public QThread
-    {
-    public:
-        SocketAsyncHandler();
-        ~SocketAsyncHandler();
-        void run();
-        void select(SOCKET sock, HWND handle, unsigned int msg, long ev);
-        void removeSelect(SOCKET sock);
-        void safeRemove(SOCKET sock);
-    private:
-        struct SockInfo {
-            HWND handle;
-            unsigned int msg;
-            long ev;
-        };
-        QMap<SOCKET, SockInfo> sockets;
-        QMutex mutex;
-        QWaitCondition cond;
-        bool supposedToDie;
-    };
-
-    SocketAsyncHandler::SocketAsyncHandler()
-        : supposedToDie(false)
-    {
-    }
-
-    SocketAsyncHandler::~SocketAsyncHandler()
-    {
-        mutex.lock();
-        supposedToDie = true;
-        mutex.unlock();
-        cond.wakeOne();
-        wait();
-        while (sockets.size() > 0)
-            removeSelect(sockets.begin().key());
-    }
-
-    void SocketAsyncHandler::removeSelect(SOCKET sock)
-    {
-        if (!sockets.contains(sock))
-            return;
-        sockets.remove(sock);
-        return;
-    }
-
-    void SocketAsyncHandler::safeRemove(SOCKET sock)
-    {
-        QMutexLocker locker(&mutex);
-        removeSelect(sock);
-    }
-
-    void SocketAsyncHandler::select(SOCKET sock, HWND handle, unsigned int msg, long ev)
-    {
-        QMutexLocker locker(&mutex);
-
-        if (sockets.contains(sock))
-            sockets.remove(sock);
-
-        SockInfo info;
-        info.handle = handle;
-        info.msg = msg;
-        info.ev = ev;
-        sockets.insert(sock, info);
-        cond.wakeOne();
-    }
-
-    void SocketAsyncHandler::run()
-    {
-        do {
-            mutex.lock();
-
-            while (!supposedToDie && sockets.isEmpty()) {
-                cond.wait(&mutex);
-            }
-
-            if (supposedToDie) {
-                mutex.unlock();
-                break;
-            }
-
-            // Copy current items to reduce lock time
-            // and to be able to use SendMessage
-            QMap<SOCKET, SockInfo> currentSockets = sockets;
-            mutex.unlock();
-
-            fd_set readS, writeS, exS;
-            FD_ZERO(&readS);
-            FD_ZERO(&writeS);
-            FD_ZERO(&exS);
-
-            int maxFd = 0;
-
-            for (QMap<SOCKET, SockInfo>::iterator it = currentSockets.begin(); it != currentSockets.end(); ++it) {
-                const SockInfo &info = it.value();
-                int socket = it.key();
-                maxFd = qMax(maxFd, socket);
-
-                if ((info.ev & FD_READ) || (info.ev & FD_CLOSE) || (info.ev & FD_ACCEPT))
-                    FD_SET(socket, &readS);
-                if ((info.ev & FD_WRITE)|| (info.ev & FD_CONNECT))
-                    FD_SET(socket, &writeS);
-                if (info.ev & FD_OOB)
-                    FD_SET(socket, &exS);
-            }
-
-            timeval timeout;
-            timeout.tv_sec = 0;
-            timeout.tv_usec = 50000;
-            int result = ::select(maxFd + 1, &readS, &writeS, &exS, &timeout);
-            if (result > 0) {
-                HWND handle;
-                unsigned int tmpMsg;
-                SOCKET sock;
-                HRESULT ret;
-                for (QMap<SOCKET, SockInfo>::const_iterator it = currentSockets.constBegin();
-                    it != currentSockets.constEnd(); ++it) {
-                        handle = (*it).handle;
-                        tmpMsg = (*it).msg;
-                        sock = it.key();
-                        if (FD_ISSET(sock, &readS))
-                            ret = SendMessage(handle, tmpMsg, sock, FD_READ);
-
-                        if (FD_ISSET(sock, &writeS))
-                            ret = SendMessage(handle, tmpMsg, sock, FD_WRITE);
-
-                        if (FD_ISSET(sock, &exS))
-                            ret = SendMessage(handle, tmpMsg, sock, FD_OOB);
-                }
-            }
-
-#ifdef QCE_ASYNC_DEBUG
-            else if (result == 0) { //timeout
-                qDebug("    WSAAsync select timeout");
-            } else if (result < 0) { // SocketError
-                // This might happen because of two reasons
-                // 1. We already closed a socket in between the copy and the select
-                //    and thus select() returns an error
-                // 2. Something is really wrong, then
-                //    ### Loop on all descriptors, try to select and remove the
-                //    ### broken one.
-                qWarning("WSAAsync select error %d", WSAGetLastError());
-            }
-#endif
-        } while(true);
-    }
-} // namespace
-
-Q_GLOBAL_STATIC(SocketAsyncHandler, qt_async_handler)
-
-int WSAAsyncSelect(SOCKET sock, HWND handle, unsigned int msg, long ev)
-{
-    qDebug() << "QuailEventDispatcherWinGlib::WSAAsyncSelect";
-    if (sock == 0 || handle == 0 || handle == INVALID_HANDLE_VALUE) {
-        WSASetLastError(WSAEINVAL);
-        return SOCKET_ERROR;
-    }
-
-    if (msg == 0 && ev == 0)
-        qt_async_handler()->safeRemove(sock);
-    else
-        qt_async_handler()->select(sock, handle, msg, ev);
-
-    qt_async_handler()->start(QThread::LowPriority);
-    WSASetLastError(0);
-    return 0;
-}
-#else // QT_NO_THREAD
-int WSAAsyncSelect(SOCKET, HWND, unsigned int, long)
-{
-    return SOCKET_ERROR;
-}
-#endif
-#endif // Q_OS_WINCE
 
 #if !defined(DWORD_PTR) && !defined(Q_OS_WIN64)
 #define DWORD_PTR DWORD
@@ -510,7 +316,6 @@ static void resolveTimerAPI()
             return;
 #endif
         triedResolve = true;
-#if !defined(Q_OS_WINCE)
 #  if defined(_MSC_VER) && _MSC_VER >= 1700
         if (QSysInfo::WindowsVersion >= QSysInfo::WV_WINDOWS8) {
 #  else
@@ -519,11 +324,8 @@ static void resolveTimerAPI()
         qtimeSetEvent = (ptimeSetEvent)QSystemLibrary::resolve(QLatin1String("winmm"), "timeSetEvent");
         qtimeKillEvent = (ptimeKillEvent)QSystemLibrary::resolve(QLatin1String("winmm"), "timeKillEvent");
         }
-#else
-        qtimeSetEvent = (ptimeSetEvent)QSystemLibrary::resolve(QLatin1String("Mmtimer"), "timeSetEvent");
-        qtimeKillEvent = (ptimeKillEvent)QSystemLibrary::resolve(QLatin1String("Mmtimer"), "timeKillEvent");
-#endif
     }
+    qDebug() << "QuailEventDispatcherWinGlib::resolveTimerAPI.end";
 }
 
 QuailEventDispatcherWinGlib::QuailEventDispatcherWinGlib(QObject *parent)
@@ -591,7 +393,7 @@ QuailEventDispatcherWinGlib::QuailEventDispatcherWinGlib(QObject *parent)
     g_source_set_can_recurse(&idleTimerSource->source, true);
     g_source_set_priority(&idleTimerSource->source, G_PRIORITY_DEFAULT_IDLE);
     g_source_attach(&idleTimerSource->source, mainContext);
-
+    qDebug() << "QuailEventDispatcherWinGlib.end";
 }
 
 void QuailEventDispatcherWinGlib::runTimersOnceWithNormalPriority()
@@ -747,15 +549,12 @@ LRESULT QT_WIN_CALLBACK qt_GetMessageHook(int code, WPARAM wp, LPARAM lp)
             }
         }
     }
-#ifdef Q_OS_WINCE
-    return 0;
-#else
     return CallNextHookEx(0, code, wp, lp);
-#endif
 }
 
 static HWND qt_create_internal_window(const QuailEventDispatcherWinGlib *eventDispatcher)
 {
+    qDebug() << "qt_create_internal_window";
     // make sure that multiple Qt's can coexist in the same process
     QString className = QLatin1String("QuailEventDispatcherWinGlib_Internal_Widget") + QString::number(quintptr(qt_internal_proc));
 
@@ -772,11 +571,7 @@ static HWND qt_create_internal_window(const QuailEventDispatcherWinGlib *eventDi
     wc.lpszClassName = reinterpret_cast<const wchar_t *> (className.utf16());
 
     RegisterClass(&wc);
-#ifdef Q_OS_WINCE
-    HWND parent = 0;
-#else
     HWND parent = HWND_MESSAGE;
-#endif
     HWND wnd = CreateWindow(wc.lpszClassName,  // classname
                             wc.lpszClassName,  // window name
                             0,                 // style
@@ -795,7 +590,7 @@ static HWND qt_create_internal_window(const QuailEventDispatcherWinGlib *eventDi
 #else
     SetWindowLong(wnd, GWL_USERDATA, (LONG)eventDispatcher);
 #endif
-
+    qDebug() << "qt_create_internal_window.end";
     return wnd;
 }
 
@@ -877,7 +672,7 @@ void QuailEventDispatcherWinGlib::doWsaAsyncSelect(int socket)
         sn_event |= FD_OOB;
     // BoundsChecker may emit a warning for WSAAsyncSelect when sn_event == 0
     // This is a BoundsChecker bug and not a Qt bug
-    //WSAAsyncSelect(socket, internalHwnd, sn_event ? int(WM_QT_SOCKETNOTIFIER) : 0, sn_event);
+    WSAAsyncSelect(socket, internalHwnd, sn_event ? int(WM_QT_SOCKETNOTIFIER) : 0, sn_event);
 }
 
 void QuailEventDispatcherWinGlib::createInternalHwnd()
@@ -890,13 +685,11 @@ void QuailEventDispatcherWinGlib::createInternalHwnd()
         return;
     d->internalHwnd = qt_create_internal_window(this);
 
-#ifndef Q_OS_WINCE
     // setup GetMessage hook needed to drive our posted events
     d->getMessageHook = SetWindowsHookEx(WH_GETMESSAGE, (HOOKPROC) qt_GetMessageHook, NULL, GetCurrentThreadId());
     if (!d->getMessageHook) {
         qFatal("Qt: INTERNALL ERROR: failed to install GetMessage hook");
     }
-#endif
 
     // register all socket notifiers
     QList<int> sockets = (d->sn_read.keys().toSet()
@@ -985,11 +778,6 @@ bool QuailEventDispatcherWinGlib::processEvents(QEventLoop::ProcessEventsFlags f
                 }
             }
             if (haveMessage) {
-#ifdef Q_OS_WINCE
-                // WinCE doesn't support hooks at all, so we have to call this by hand :(
-                (void) qt_GetMessageHook(0, PM_REMOVE, (LPARAM) &msg);
-#endif
-
                 if (d->internalHwnd == msg.hwnd && msg.message == WM_QT_SENDPOSTEDEVENTS) {
                     if (seenWM_QT_SENDPOSTEDEVENTS) {
                         // when calling processEvents() "manually", we only want to send posted
@@ -1286,13 +1074,8 @@ void QuailEventDispatcherWinGlib::activateEventNotifiers()
     QuailEventDispatcherWinGlib *d = this;
     //### this could break if events are removed/added in the activation
     for (int i=0; i<d->winEventNotifierList.count(); i++) {
-#if !defined(Q_OS_WINCE)
         if (WaitForSingleObjectEx(d->winEventNotifierList.at(i)->handle(), 0, TRUE) == WAIT_OBJECT_0)
             d->activateEventNotifier(d->winEventNotifierList.at(i));
-#else
-        if (WaitForSingleObject(d->winEventNotifierList.at(i)->handle(), 0) == WAIT_OBJECT_0)
-            d->activateEventNotifier(d->winEventNotifierList.at(i));
-#endif
     }
 }
 
@@ -1373,11 +1156,9 @@ void QuailEventDispatcherWinGlib::closingDown()
     d->timerVec.clear();
     d->timerDict.clear();
 
-#ifndef Q_OS_WINCE
     if (d->getMessageHook)
         UnhookWindowsHookEx(d->getMessageHook);
     d->getMessageHook = 0;
-#endif
 }
 
 bool QuailEventDispatcherWinGlib::event(QEvent *e)

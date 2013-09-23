@@ -79,6 +79,7 @@ win32-g++* {
     LIBS += -L"$(LIBPURPLE_ROOT)/../win32-dev/gtk-2.24.10/lib"
     LIBS += -L"$(LIBPURPLE_ROOT)/libpurple"
     LIBS += -L"$(QTDIR)/lib"
+    LIBS += -lws2_32
     TARGET = bin/Quail
 }
 

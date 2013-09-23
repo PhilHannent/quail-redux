@@ -143,11 +143,7 @@ qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
     info->timer = new QQuailTimer(info->handle, func, data);
     //info->timer->moveToThread(quailThread);
     m_sources.insert(info->handle, info);
-    if (interval > 0)
-    {
-        info->timer->start(interval);
-    }
-    info->timer->update();
+    info->timer->start(interval);
     return info->handle;
 }
 
