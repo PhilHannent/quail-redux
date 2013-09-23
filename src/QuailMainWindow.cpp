@@ -58,6 +58,8 @@
 #include "QuailPrefsDialog.h"
 #include "QuailRequest.h"
 
+static QQuailMainWindow *mainWin = 0;
+
 /**************************************************************************
  * Core stuff
  **************************************************************************/
@@ -330,12 +332,14 @@ QQuailMainWindow::initCore()
 	purple_core_set_ui_ops(qQuailGetCoreUiOps());
     qDebug() << "QQuailMainWindow::initCore().1";
 	purple_eventloop_set_ui_ops(qQuailGetEventLoopUiOps());
+    QApplication::processEvents();
     qDebug() << "QQuailMainWindow::initCore().2";
     if (!purple_core_init("quail")) {
         qDebug() << tr("Initialization of the Quail core failed.\n"
                   "Please report this!\n");
 	}
-    purple_debug_set_enabled(false);
+    QApplication::processEvents();
+    purple_debug_set_enabled(true);
     qDebug() << "QQuailMainWindow::initCore().3";
     path = g_build_filename(purple_user_dir(), "plugins", NULL);
     qDebug() << "QQuailMainWindow::initCore().4";

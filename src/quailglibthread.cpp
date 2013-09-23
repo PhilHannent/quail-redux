@@ -1,17 +1,17 @@
-#include "quailglibthread.h"
+﻿#include "quailglibthread.h"
 
-QuailThread::QuailThread(QObject *parent) :
+QuailGlibThread::QuailGlibThread(QObject *parent) :
     QThread(parent)
 {
 
 }
 
-QuailThread::~QuailThread()
+QuailGlibThread::~QuailGlibThread()
 {
     stop();
 }
 
-bool QuailThread::start()
+bool QuailGlibThread::start()
 {
     QMutexLocker locker(&m);
     QThread::start();
@@ -19,7 +19,7 @@ bool QuailThread::start()
     return success;
 }
 
-void QuailThread::stop()
+void QuailGlibThread::stop()
 {
     QMutexLocker locker(&m);
     if(mainLoop)
@@ -32,13 +32,13 @@ void QuailThread::stop()
     wait();
 }
 
-GMainContext *QuailThread::mainContext()
+GMainContext *QuailGlibThread::getMainContext()
 {
     QMutexLocker locker(&m);
     return mainContext;
 }
 
-void QuailThread::run()
+void QuailGlibThread::run()
 {
     // this will be unlocked as soon as the mainloop runs
     m.lock();
@@ -51,7 +51,7 @@ void QuailThread::run()
     // deferred call to loop_started()
     GSource *timer = g_timeout_source_new(0);
     g_source_attach(timer, mainContext);
-    g_source_set_callback(timer, cb_loop_started, d, NULL);
+    g_source_set_callback(timer, cb_loop_started, this, NULL);
 
     // kick off the event loop
     g_main_loop_run(mainLoop);

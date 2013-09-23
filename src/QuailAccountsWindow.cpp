@@ -545,7 +545,7 @@ static void
 qQuailConnConnectProgress(PurpleConnection *gc, const char *text,
 						 size_t step, size_t step_count)
 {
-    qDebug() << "QQuailAccountsWindow::qQuailConnConnectProgress";
+    qDebug() << "QQuailAccountsWindow::qQuailConnConnectProgress" << gc->display_name;
 	QQuailConnectionMeters *meters;
 	QQuailConnectionMeter *meter;
 
@@ -561,7 +561,7 @@ qQuailConnConnectProgress(PurpleConnection *gc, const char *text,
 static void
 qQuailConnConnected(PurpleConnection *gc)
 {
-    qDebug() << "QQuailAccountsWindow::qQuailConnConnected";
+    qDebug() << "QQuailAccountsWindow::qQuailConnConnected" << gc->display_name;
 	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QQuailConnectionMeter *meter;
 
@@ -574,7 +574,7 @@ qQuailConnConnected(PurpleConnection *gc)
 static void
 qQuailConnDisconnected(PurpleConnection *gc)
 {
-    qDebug() << "QQuailAccountsWindow::qQuailConnDisconnected";
+    qDebug() << "QQuailAccountsWindow::qQuailConnDisconnected" << gc->display_name;
 	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QQuailConnectionMeter *meter;
 
@@ -603,6 +603,19 @@ qQuailConnectionReportDisconnectReason(PurpleConnection *gc,
     qDebug() << text;
 }
 
+static void
+qQuail_connection_network_disconnected(void)
+{
+    qDebug() << "QQuailAccountsWindow::qQuail_connection_network_disconnected";
+
+}
+
+static void
+qQuail_connection_network_connected(void)
+{
+    qDebug() << "QQuailAccountsWindow::qQuail_connection_network_connected";
+}
+
 static PurpleConnectionUiOps connUiOps =
 {
     qQuailConnConnectProgress, /*connect_progress*/
@@ -610,8 +623,8 @@ static PurpleConnectionUiOps connUiOps =
     qQuailConnDisconnected, /* disconnected */
     qQuailConnNotice, /* notice */
     NULL, /*report_disconnect */
-    NULL, /* network_connected*/
-    NULL, /* network_disconnected*/
+    qQuail_connection_network_connected, /* network_connected*/
+    qQuail_connection_network_disconnected, /* network_disconnected*/
     qQuailConnectionReportDisconnectReason, /* report_disconnect_reason*/
     NULL,
     NULL,

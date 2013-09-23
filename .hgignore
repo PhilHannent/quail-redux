@@ -4,6 +4,7 @@ syntax: glob
 *.o
 obj
 moc
+bin
 win32-bin
 *.user
 *.pro.user.*

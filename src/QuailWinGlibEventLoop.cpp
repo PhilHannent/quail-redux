@@ -1,4 +1,4 @@
-#include "QuailWinGlibEventLoop.h"
+﻿#include "QuailWinGlibEventLoop.h"
 
 #include <QCoreApplication>
 #include <glib.h>
@@ -29,6 +29,7 @@ struct GSocketNotifierSource
 
 static gboolean socketNotifierSourcePrepare(GSource *, gint *timeout)
 {
+    qDebug() << "socketNotifierSourcePrepare";
     if (timeout)
         *timeout = -1;
     return false;
@@ -36,6 +37,7 @@ static gboolean socketNotifierSourcePrepare(GSource *, gint *timeout)
 
 static gboolean socketNotifierSourceCheck(GSource *source)
 {
+    qDebug() << "socketNotifierSourceCheck";
     GSocketNotifierSource *src = reinterpret_cast<GSocketNotifierSource *>(source);
 
     bool pending = false;
@@ -59,6 +61,7 @@ static gboolean socketNotifierSourceCheck(GSource *source)
 
 static gboolean socketNotifierSourceDispatch(GSource *source, GSourceFunc, gpointer)
 {
+    qDebug() << "socketNotifierSourceDispatch";
     QEvent event(QEvent::SockAct);
 
     GSocketNotifierSource *src = reinterpret_cast<GSocketNotifierSource *>(source);
@@ -163,6 +166,7 @@ struct GIdleTimerSource
 
 static gboolean idleTimerSourcePrepare(GSource *source, gint *timeout)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::idleTimerSourcePrepare";
     GIdleTimerSource *idleTimerSource = reinterpret_cast<GIdleTimerSource *>(source);
     GTimerSource *timerSource = idleTimerSource->timerSource;
     if (!timerSource->runWithIdlePriority) {
@@ -177,6 +181,7 @@ static gboolean idleTimerSourcePrepare(GSource *source, gint *timeout)
 
 static gboolean idleTimerSourceCheck(GSource *source)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::idleTimerSourceCheck";
     GIdleTimerSource *idleTimerSource = reinterpret_cast<GIdleTimerSource *>(source);
     GTimerSource *timerSource = idleTimerSource->timerSource;
     if (!timerSource->runWithIdlePriority) {
@@ -188,6 +193,7 @@ static gboolean idleTimerSourceCheck(GSource *source)
 
 static gboolean idleTimerSourceDispatch(GSource *source, GSourceFunc, gpointer)
 {
+
     GTimerSource *timerSource = reinterpret_cast<GIdleTimerSource *>(source)->timerSource;
     (void) timerSourceDispatch(&timerSource->source, 0, 0);
     return true;
@@ -212,6 +218,7 @@ struct GPostEventSource
 
 static gboolean postEventSourcePrepare(GSource *s, gint *timeout)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::postEventSourcePrepare";
 //    QThreadData *data = QThreadData::current();
 //    if (!data)
 //        return false;
@@ -236,6 +243,7 @@ static gboolean postEventSourceCheck(GSource *source)
 
 static gboolean postEventSourceDispatch(GSource *s, GSourceFunc, gpointer)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::postEventSourceDispatch";
     GPostEventSource *source = reinterpret_cast<GPostEventSource *>(s);
     source->lastSerialNumber = source->serialNumber.load();
     QCoreApplication::sendPostedEvents();
@@ -454,6 +462,7 @@ Q_GLOBAL_STATIC(SocketAsyncHandler, qt_async_handler)
 
 int WSAAsyncSelect(SOCKET sock, HWND handle, unsigned int msg, long ev)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::WSAAsyncSelect";
     if (sock == 0 || handle == 0 || handle == INVALID_HANDLE_VALUE) {
         WSASetLastError(WSAEINVAL);
         return SOCKET_ERROR;
@@ -490,6 +499,7 @@ LRESULT QT_WIN_CALLBACK qt_internal_proc(HWND hwnd, UINT message, WPARAM wp, LPA
 
 static void resolveTimerAPI()
 {
+    qDebug() << "QuailEventDispatcherWinGlib::resolveTimerAPI";
     static bool triedResolve = false;
     if (!triedResolve) {
 #ifndef QT_NO_THREAD
@@ -599,6 +609,7 @@ QuailEventDispatcherWinGlib::~QuailEventDispatcherWinGlib()
 
 void QuailEventDispatcherWinGlib::activateEventNotifier(QWinEventNotifier * wen)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::activateEventNotifier";
     QEvent event(QEvent::WinEventAct);
     QCoreApplication::sendEvent((QObject*)wen, &event);
 }
@@ -617,7 +628,7 @@ LRESULT QT_WIN_CALLBACK qt_internal_proc(HWND hwnd, UINT message, WPARAM wp, LPA
 {
     if (message == WM_NCCREATE)
         return true;
-
+    qDebug() << "QuailEventDispatcherWinGlib::qt_internal_proc";
     MSG msg;
     msg.hwnd = hwnd;
     msg.message = message;
@@ -855,6 +866,7 @@ void QuailEventDispatcherWinGlib::sendTimerEvent(int timerId)
 
 void QuailEventDispatcherWinGlib::doWsaAsyncSelect(int socket)
 {
+    qDebug() << "QuailEventDispatcherWinGlib::doWsaAsyncSelect";
     Q_ASSERT(internalHwnd);
     int sn_event = 0;
     if (sn_read.contains(socket))
@@ -1048,6 +1060,7 @@ bool QuailEventDispatcherWinGlib::processEvents(QEventLoop::ProcessEventsFlags f
 
 bool QuailEventDispatcherWinGlib::hasPendingEvents()
 {
+    qDebug() << "QuailEventDispatcherWinGlib::hasPendingEvents";
     MSG msg;
     return qGlobalPostedEventsCount() || PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
 }

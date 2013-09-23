@@ -1,25 +1,24 @@
-#ifndef QUAILGLIBTHREAD_H
+﻿#ifndef QUAILGLIBTHREAD_H
 #define QUAILGLIBTHREAD_H
 
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
-#include <glib/gmain.h>
-
+#include <glib.h>
 
 class QuailGlibThread : public QThread
 {
     Q_OBJECT
 
 public:
-    QuailThread(QObject *parent = 0);
-    ~QuailThread();
+    QuailGlibThread(QObject *parent = 0);
+    ~QuailGlibThread();
 
     bool start();
     void stop();
     void run();
 
-    GMainContext *mainContext();
+    GMainContext *getMainContext();
 
 protected:
     bool success;
@@ -30,7 +29,7 @@ protected:
 
     static gboolean cb_loop_started(gpointer data)
     {
-        return ((Private *)data)->loop_started();
+        return ((QuailGlibThread *)data)->loop_started();
     }
 
     gboolean loop_started()

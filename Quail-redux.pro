@@ -58,13 +58,15 @@ linux-g++* {
 
 win32-g++* {
     message("Using win32")
-#    HEADERS += src/quailtimerinfolist.h  \
-#                src/qsystemlibrary.h \
-#                src/QuailWinGlibEventLoop.h
+    HEADERS += src/quailtimerinfolist.h  \
+                src/qsystemlibrary.h \
+                src/QuailWinGlibEventLoop.h \
+                src/quailglibthread.h
 
-#    SOURCES += src/quailtimerinfolist.cpp \
-#                src/qsystemlibrary.h \
-#                src/QuailWinGlibEventLoop.cpp
+    SOURCES += src/quailtimerinfolist.cpp \
+                src/qsystemlibrary.h \
+                src/QuailWinGlibEventLoop.cpp \
+                src/quailglibthread.cpp
 
     #RC_FILE = resource.rc
 
@@ -77,6 +79,7 @@ win32-g++* {
     LIBS += -L"$(LIBPURPLE_ROOT)/../win32-dev/gtk-2.24.10/lib"
     LIBS += -L"$(LIBPURPLE_ROOT)/libpurple"
     LIBS += -L"$(QTDIR)/lib"
+    TARGET = bin/Quail
 }
 
 HEADERS += \

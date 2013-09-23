@@ -26,28 +26,21 @@
 
 #include <QTimer>
 #include <QSocketNotifier>
-/* http://harmattan-dev.nokia.com/docs/library/html/qt4/qabstracteventdispatcher.html */
-//#include <QAbstractEventDispatcher>
-#include "QuailMainWindow.h"
 
-static QQuailMainWindow *mainWin = 0;
-
-class QQuailTimer : public QObject
+class QQuailTimer : public QTimer
 {
     Q_OBJECT
 
     public:
         QQuailTimer(guint sourceId, GSourceFunc func, gpointer data);
 
-        void start(int interval);
-    private slots:
+    public slots:
         void update();
 
     private:
         guint sourceId;
         GSourceFunc func;
         gpointer userData;
-        QTimer *t;
 };
 
 class QQuailInputNotifier : public QObject
@@ -69,8 +62,6 @@ class QQuailInputNotifier : public QObject
         QSocketNotifier *readNotifier, *writeNotifier;
 };
 
-
-
 /**
  * Returns the Qt event loop UI operations structure.
  *
@@ -87,30 +78,5 @@ void qQuailEventLoopInit(void);
  * Uninitializes the Qt evnet loop subsystem.
  */
 void qQuailEventLoopUninit(void);
-
-//class QuailEventDispatcherMarkTwo : public QAbstractEventDispatcher
-//{
-//    Q_OBJECT
-
-//public:
-//    QuailEventDispatcherMarkTwo(QObject *parent = 0);
-
-//    virtual bool processEvents(QEventLoop::ProcessEventsFlags flags)
-//    {; }
-//    virtual bool hasPendingEvents() = 0;
-
-//    virtual void registerSocketNotifier(QSocketNotifier *notifier) = 0;
-//    virtual void unregisterSocketNotifier(QSocketNotifier *notifier) = 0;
-
-//    virtual void registerTimer(int timerId, int interval, QObject *object) = 0;
-//    virtual bool unregisterTimer(int timerId) = 0;
-//    virtual bool unregisterTimers(QObject *object) = 0;
-//    virtual QList<TimerInfo> registeredTimers(QObject *object) const  = 0;
-
-//    virtual void wakeUp() = 0;
-//    virtual void interrupt() = 0;
-//    virtual void flush() = 0;
-
-//};
 
 #endif /* _QUAIL_EVENT_LOOP_H_ */
