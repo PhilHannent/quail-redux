@@ -20,21 +20,25 @@ else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
 #    DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M.%s')\\\"
 #    DEFINES += BUILDDATE=\\\"$$system(date '+%d/%m/%y')\\\"
 #}
-
-QT       += core gui webkit
-greaterThan(QT_MAJOR_VERSION, 4) {
-    message("Using QT5")
-    DEFINES += USE_QT5
+QT += core gui
+!android-g++ {
+    QT += webkit
+    greaterThan(QT_MAJOR_VERSION, 4) {
+        message("Using QT5")
+        DEFINES += USE_QT5
+        QT += widgets
+        QT += webkitwidgets
+    }
+} else {
     QT += widgets
-    QT += webkitwidgets
-    QT -= printsupport
-    QT -= sensors
-    QT -= qml
-    QT -= opengl
-    QT -= quick
-    QT -= network
-    QT -= multimedia
-    QT -= multimediawidgets
+    INCLUDEPATH += $(LIBPURPLE_ROOT)/../glib/glib
+    INCLUDEPATH += $(LIBPURPLE_ROOT)/../glib
+    INCLUDEPATH += $(LIBPURPLE_ROOT)/../glib/android
+    INCLUDEPATH += $(LIBPURPLE_ROOT)/../glib/gobject/android/gobject
+    INCLUDEPATH += $(LIBPURPLE_ROOT)/../glib/gobject
+    #INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/include/glib-2.0/include
+    #INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
+    INCLUDEPATH += $(LIBPURPLE_ROOT)
 }
 
 CONFIG   = qt warn_on debug_and_release

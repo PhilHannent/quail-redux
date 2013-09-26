@@ -2,7 +2,6 @@
 ===========================================================
 
 * Use Aduim's Message Styles for the conversation window
-* Buddy icons showing up
 * Formatting toolbar on the conversation window
 * Kill off dead code
 * Rename group
@@ -34,6 +33,8 @@
 * Improve enter key usage so that Shift-Enter does not send, by inserts a line feed
 * Rewrite the event loop for Window
 * Remember the window layout and position
+* Buddy icons size improved
+* Windows buddy list size corrected
 
 DONE
 ===========================================================
@@ -51,3 +52,4 @@ DONE
 * Remember group expanded state
 * Enable double click to open a chat
 * Buddy status icons showing
+* Buddy icons showing up
