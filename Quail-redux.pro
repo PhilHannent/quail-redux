@@ -52,11 +52,7 @@ DISTFILES = \
 	ChangeLog \
 	NEWS \
 	README \
-	quail.png \
-	make.sh \
-	mkstuff.conf \
-	mkipk.sh \
-	mktarball.sh
+	LICENSE
 
 linux-g++* {
     message("Using unix")
