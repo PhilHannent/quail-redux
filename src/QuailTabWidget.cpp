@@ -32,17 +32,6 @@ QQuailTabWidget::QQuailTabWidget(QWidget *parent)
     : QTabWidget(parent)
 {
     setTabBar(new QQuailTabBar(this));
-    connect(this, SIGNAL(currentChanged(int)),
-            parent, SLOT(tabChanged(int)));
-
-    connect(parent, SIGNAL(signalSendMessage()),
-            this, SLOT(slotSendMessage()));
-
-    connect(this, SIGNAL(signalSendEnabled(bool)),
-            parent, SLOT(slotSendEnabled(bool)));
-
-    connect(parent, SIGNAL(signalToggleUserList()),
-            this, SLOT(slotToggleUserList()));
 }
 
 void

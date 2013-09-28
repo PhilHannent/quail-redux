@@ -92,8 +92,7 @@ QQuailAccountEditor::buildInterface()
 	else
         setWindowTitle(tr("Edit Account"));
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
-
+    QVBoxLayout *layout = new QVBoxLayout(this);
 	tabs = new QQuailTabWidget(this);
     layout->addWidget(tabs);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
@@ -152,12 +151,12 @@ QQuailAccountEditor::buildAccountTab()
 	int row = 0;
     accountWidget = new QWidget(this);
 	/* Create the main vbox. */
-    accountBox = vbox = new QVBoxLayout(this);
+    accountBox = vbox = new QVBoxLayout(accountWidget);
     accountWidget->setLayout(accountBox);
     vbox->setSpacing(5);
 
     frame = new QFrame(accountWidget);
-    grid = new QGridLayout(this);
+    grid = new QGridLayout();
     grid->addWidget(frame);
 	grid->setSpacing(5);
     vbox->addLayout(grid);
@@ -175,7 +174,7 @@ QQuailAccountEditor::buildAccountTab()
 	buildUserOpts(grid, frame, row);
 
 	/* Add the hbox */
-    hbox = new QHBoxLayout(this);
+    hbox = new QHBoxLayout();
     hbox->addLayout(vbox);
 	hbox->setSpacing(5);
 
@@ -222,7 +221,7 @@ QQuailAccountEditor::buildProtocolTab()
 
     protocolWidget = new QWidget(this);
 	/* Create the main vbox */
-    protocolBox = vbox = new QVBoxLayout(this);
+    protocolBox = vbox = new QVBoxLayout();
     protocolWidget->setLayout(protocolBox);
 	vbox->setSpacing(5);
 
@@ -339,12 +338,9 @@ QQuailAccountEditor::buildProxyTab()
 	int row = 0;
     proxyWidget = new QWidget(this);
 	/* Create the main vbox */
-    proxyBox = vbox = new QVBoxLayout(this);
-    qDebug() << "QQuailAccountEditor::buildProxyTab.1a";
+    proxyBox = vbox = new QVBoxLayout();
     proxyWidget->setLayout(proxyBox);
-    qDebug() << "QQuailAccountEditor::buildProxyTab.1b";
     vbox->setSpacing(5);
-    qDebug() << "QQuailAccountEditor::buildProxyTab.1c";
     frame = new QFrame(this);
     vbox->addWidget(frame);
     grid = new QGridLayout(frame);

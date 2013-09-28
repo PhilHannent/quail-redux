@@ -1063,6 +1063,14 @@ QQuailConvWindow::buildInterface()
 	setupToolbar();
 
     tabs = new QQuailTabWidget(this);
+    connect(tabs, SIGNAL(currentChanged(int)),
+            this, SLOT(tabChanged(int)));
+    connect(this, SIGNAL(signalSendMessage()),
+            tabs, SLOT(slotSendMessage()));
+    connect(tabs, SIGNAL(signalSendEnabled(bool)),
+            this, SLOT(slotSendEnabled(bool)));
+    connect(this, SIGNAL(signalToggleUserList()),
+            tabs, SLOT(slotToggleUserList()));
 
 	setCentralWidget(tabs);
 }
