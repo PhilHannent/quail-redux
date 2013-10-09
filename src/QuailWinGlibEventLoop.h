@@ -2,7 +2,7 @@
 #define QUAILWINGLIBEVENTLOOP_H
 
 #include <winsock2.h>
-#include "QtCore/qt_windows.h"
+//#include "QtCore/qt_windows.h"
 //#include "QtCore/qcoreevent.h"
 #include <QAbstractEventDispatcher>
 #include <QCoreApplication>

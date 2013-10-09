@@ -7,7 +7,6 @@ DEFINES += VER_PRODUCTVERSION_STR=\\\"0.1.0.0\\0\\\"
 
 TEMPLATE = app
 TARGET   = Quail
-VERSION = $${APP_DISPLAY_VERSION}
 
 DEFINES += APP_NAME=\\\"Quail\\\"
 DEFINES += QUAIL_PREFS_ROOT=\\\"/quail\\\"
@@ -24,16 +23,7 @@ else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
 #    DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M.%s')\\\"
 #    DEFINES += BUILDDATE=\\\"$$system(date '+%d/%m/%y')\\\"
 #}
-QT += core gui
-!android-g++ {
-    QT += webkit
-    greaterThan(QT_MAJOR_VERSION, 4) {
-        message("Using QT5")
-        DEFINES += USE_QT5
-        QT += widgets
-        QT += webkitwidgets
-    }
-} else {
+android-g++ {
     QT += widgets
     INCLUDEPATH += $(LIBPURPLE_ROOT)/../glib/glib
     INCLUDEPATH += $(LIBPURPLE_ROOT)/../glib
@@ -43,9 +33,15 @@ QT += core gui
     #INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/include/glib-2.0/include
     #INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
     INCLUDEPATH += $(LIBPURPLE_ROOT)
+} else {
+    QT += webkit
+    greaterThan(QT_MAJOR_VERSION, 4) {
+        message("Using QT5")
+        DEFINES += USE_QT5
+        QT += widgets
+        QT += webkitwidgets
+    }
 }
-
-CONFIG   = qt warn_on debug_and_release
 
 DISTFILES = \
 	AUTHORS \
@@ -56,13 +52,16 @@ DISTFILES = \
 
 linux-g++* {
     message("Using unix")
+    CONFIG += debug_and_release
     CONFIG += link_pkgconfig
     PKGCONFIG += purple glib-2.0 gmodule-2.0
+
 }
 
 win32-g++* {
     message("Using win32")
-    HEADERS += src/quailtimerinfolist.h  \
+    HEADERS += version.h \
+                src/quailtimerinfolist.h  \
                 src/qsystemlibrary.h \
                 src/QuailWinGlibEventLoop.h \
                 src/quailglibthread.h
@@ -72,17 +71,16 @@ win32-g++* {
                 src/QuailWinGlibEventLoop.cpp \
                 src/quailglibthread.cpp
 
-    RC_FILE = resource.rc
+    #RC_FILE = resource.rc
 
-    LIBS        += -llibpurple -lglib-2.0 -lgmodule-2.0
-    INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/include/glib-2.0
-    INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/include/glib-2.0/include
-    INCLUDEPATH += $(LIBPURPLE_ROOT)/../win32-dev/gtk_2_0-2.14/lib/glib-2.0/include
-    INCLUDEPATH += $(LIBPURPLE_ROOT)
+    INCLUDEPATH += "C:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0"
+    INCLUDEPATH += "C:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0/include"
+    INCLUDEPATH += "C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include"
+    INCLUDEPATH += "$(LIBPURPLE_ROOT)"
     INCLUDEPATH += $(QTDIR)/include
-    LIBS += -L"$(LIBPURPLE_ROOT)/../win32-dev/gtk-2.24.10/lib"
-    LIBS += -L"$(LIBPURPLE_ROOT)/libpurple"
-    LIBS += -L"$(QTDIR)/lib"
+    LIBS += -L"$(LIBPURPLE_ROOT)/../win32-dev/gtk-2.24.10/lib" -lglib-2.0 -lgmodule-2.0
+    LIBS += -L"$(LIBPURPLE_ROOT)/libpurple" -llibpurple
+    #LIBS += -L"$(QTDIR)/lib"
     LIBS += -lws2_32
     TARGET = bin/Quail
 }

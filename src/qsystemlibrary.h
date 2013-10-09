@@ -42,7 +42,7 @@
 #ifndef QSYSTEMLIBRARY_P_H
 #define QSYSTEMLIBRARY_P_H
 
-#include <QtCore/qglobal.h>
+//#include <QtCore/qglobal.h>
 #ifdef Q_OS_WIN
 #  include <QtCore/qstring.h>
 #  include <qt_windows.h>
