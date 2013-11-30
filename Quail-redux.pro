@@ -55,7 +55,8 @@ linux-g++* {
     CONFIG += debug_and_release
     CONFIG += link_pkgconfig
     PKGCONFIG += purple glib-2.0 gmodule-2.0
-
+    INCLUDEPATH += "$(LIBPURPLE_ROOT)"
+    LIBS += -L"$(LIBPURPLE_ROOT)/libpurple"
 }
 
 win32-g++* {

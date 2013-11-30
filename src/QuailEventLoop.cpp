@@ -45,10 +45,9 @@ static QMap<guint, QQuailSourceInfo*> m_sources;
 //static QThread *quailThread = new QThread();
 
 QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
-    : QTimer(0), sourceId(sourceId), func(func), userData(data)
+    : QTimer(), sourceId(sourceId), func(func), userData(data)
 {
     //qDebug() << "QQuailTimer::QQuailTimer.1";
-//    this->setSingleShot(true);
     connect(this, SIGNAL(timeout()),
             this, SLOT(update()));
 }
@@ -137,11 +136,8 @@ qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 {
     qDebug() << "qQuailTimeoutAdd" << interval;
     QQuailSourceInfo *info = new QQuailSourceInfo;
-
     info->handle = nextSourceId++;
-
     info->timer = new QQuailTimer(info->handle, func, data);
-    //info->timer->moveToThread(quailThread);
     m_sources.insert(info->handle, info);
     info->timer->start(interval);
     return info->handle;
@@ -168,7 +164,6 @@ qQuailInputAdd(int fd,
     info->handle = nextSourceId++;
 
     info->notifier = new QQuailInputNotifier(fd, cond, func, userData);
-
     m_sources.insert(info->handle, info);
     qDebug() << "QQuailInputNotifier::qQuailInputAdd.end::" << info->handle;
     qDebug() << "QQuailInputNotifier::qQuailInputAdd.end::" << m_sources.size();
@@ -178,21 +173,19 @@ qQuailInputAdd(int fd,
 static gboolean
 qQuailSourceRemove(guint handle)
 {
-    qDebug() << "QQuailInputNotifier::qQuailSourceRemove";
     QQuailSourceInfo *info;
 
-    info = m_sources.value(handle);
-
+    info = m_sources.take(handle);
     if (info == NULL)
         return false;
 
-    m_sources.remove(handle);
-
-    if (info->timer != NULL)
+    if (info->timer != NULL) {
         delete info->timer;
-    else if (info->notifier != NULL)
+        info->timer = NULL;
+    } else if (info->notifier != NULL) {
         delete info->notifier;
-
+        info->notifier = NULL;
+    }
     delete info;
     return true;
 }
