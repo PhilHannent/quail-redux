@@ -73,14 +73,13 @@ win32-g++* {
                 src/quailglibthread.cpp
 
     #RC_FILE = resource.rc
-
-    INCLUDEPATH += "C:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0"
-    INCLUDEPATH += "C:/dev/win32-dev/gtk_2_0-2.14/include/glib-2.0/include"
-    INCLUDEPATH += "C:/dev/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include"
+    INCLUDEPATH += "$(DEV_ROOT)/win32-dev/gtk_2_0-2.14/include/glib-2.0"
+    INCLUDEPATH += "$(DEV_ROOT)/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include"
     INCLUDEPATH += "$(LIBPURPLE_ROOT)"
     INCLUDEPATH += $(QTDIR)/include
-    LIBS += -L"$(LIBPURPLE_ROOT)/../win32-dev/gtk-2.24.10/lib" -lglib-2.0 -lgmodule-2.0
+    LIBS += -L"$(DEV_ROOT)/win32-dev/gtk-2.24.10/lib" -lglib-2.0 -lgmodule-2.0
     LIBS += -L"$(LIBPURPLE_ROOT)/libpurple" -llibpurple
+    LIBS += -L"$(DEV_ROOT)/win32-dev/gtk_2_0-2.14/lib"
     #LIBS += -L"$(QTDIR)/lib"
     LIBS += -lws2_32
     TARGET = bin/Quail
@@ -142,6 +141,8 @@ SOURCES += \
     src/QuailConvDisplay.cpp \
     src/QuailStatusSelector.cpp \
     src/QuailBlistItem.cpp
+
+    QMAKE_CFLAGS += -fstack-protector -fstack-protector-all
 
 RESOURCES += \
     quail.qrc
