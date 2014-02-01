@@ -35,6 +35,7 @@
 #include <QStackedWidget>
 #include <QSystemTrayIcon>
 #include <QTimer>
+#include <QThread>
 #include <QToolBar>
 #include <QVariant>
 #include <QVBoxLayout>
@@ -58,7 +59,7 @@
 #include "QuailPrefsDialog.h"
 #include "QuailRequest.h"
 
-static QQuailMainWindow *mainWin = 0;
+static QQuailMainWindow *main_win = 0;
 
 /**************************************************************************
  * Core stuff
@@ -138,7 +139,7 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent)
       m_language("en")
 {
     qDebug() << "QQuailMainWindow";
-	mainWin = this;
+    main_win = this;
     setWindowIcon(QIcon(":/data/images/logo.png"));
     QString configPath(QDir::home().path() + "/.quail");
     purple_util_set_user_dir(configPath.toStdString().c_str());
@@ -584,5 +585,5 @@ QQuailMainWindow::showPrefWindow()
 QQuailMainWindow *
 qQuailGetMainWindow()
 {
-	return mainWin;
+    return main_win;
 }

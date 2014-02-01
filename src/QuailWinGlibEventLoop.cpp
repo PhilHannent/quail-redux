@@ -217,7 +217,7 @@ struct GPostEventSource
     QuailEventDispatcherWinGlib *d;
 };
 
-static gboolean postEventSourcePrepare(GSource *s, gint *timeout)
+static gboolean postEventSourcePrepare(GSource *s, gint */*timeout*/)
 {
     qDebug() << "QuailEventDispatcherWinGlib::postEventSourcePrepare";
 //    QThreadData *data = QThreadData::current();

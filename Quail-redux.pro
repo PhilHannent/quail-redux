@@ -83,6 +83,8 @@ win32-g++* {
     #LIBS += -L"$(QTDIR)/lib"
     LIBS += -lws2_32
     TARGET = bin/Quail
+    CONFIG += console
+    #DEFINES += QT_NO_DEBUG_OUTPUT
 }
 
 HEADERS += \

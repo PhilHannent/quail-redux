@@ -35,21 +35,118 @@ typedef struct
         QQuailInputNotifier *notifier;
     };
 
-} QQuailSourceInfo;
+} quail_source_info;
 
 static gboolean qQuailSourceRemove(guint handle);
 
 static guint nextSourceId = 0;
-static QMap<guint, QQuailSourceInfo*> m_sources;
+static QMap<guint, quail_source_info*> m_sources;
 //static QuailEventDispatcherMarkTwo *mainEvent = 0;
-//static QThread *quailThread = new QThread();
+//QThread *quail_event_thread = 0;
+static quail_application* quail_app = 0;
+
+quail_application::quail_application(int &argc, char **argv)
+    : QApplication(argc, argv)
+{
+    quail_app = this;
+//    quail_event_thread = new QThread(this);
+//    quail_event_thread->start();
+}
+
+guint
+quail_application::quail_timeout_add(guint interval, GSourceFunc func, gpointer data)
+{
+    qDebug() << "quail_application::quail_timeout_add" << interval;
+    quail_source_info *info = new quail_source_info;
+    info->handle = nextSourceId++;
+    info->timer = new QQuailTimer(info->handle, func, data);
+    info->timer->setInterval(interval);
+    //QThread* test_thread = new QThread;
+    //info->timer->moveToThread(test_thread);
+    //connect(test_thread, SIGNAL(started()), info->timer, SLOT(startTimer()));
+    qDebug() << "quail_application::quail_timeout_add.1";
+    //m_sources.insert(info->handle, info);
+    //info->timer->startTimer();
+    info->timer->startTimer();
+    //test_thread->start();
+    //info->timer->moveToThread(quail_event_thread);
+    qDebug() << "quail_application::quail_timeout_add.2";
+    qDebug() << "quail_application::quail_timeout_add.end";
+    return info->handle;
+}
+
+gboolean
+quail_application::quail_timeout_remove(guint handle)
+{
+    qDebug() << "quail_application::quail_timeout_remove";
+    qQuailSourceRemove(handle);
+
+    return 0;
+}
+
+guint
+quail_application::quail_input_add(int fd,
+               PurpleInputCondition cond,
+               PurpleInputFunction func,
+               gpointer userData)
+{
+    qDebug() << "quail_application::quail_input_add";
+    quail_source_info *info = new quail_source_info;
+
+    info->handle = nextSourceId++;
+
+    info->notifier = new QQuailInputNotifier(fd, cond, func, userData);
+    m_sources.insert(info->handle, info);
+    qDebug() << "quail_application::quail_input_add.end::" << info->handle;
+    qDebug() << "quail_application::quail_input_add.end::" << m_sources.size();
+    return info->handle;
+}
+
+gboolean
+quail_application::quail_source_remove(guint handle)
+{
+    quail_source_info *info;
+
+    info = m_sources.take(handle);
+    if (info == NULL)
+        return false;
+
+    if (info->timer != NULL) {
+        delete info->timer;
+        info->timer = NULL;
+    } else if (info->notifier != NULL) {
+        delete info->notifier;
+        info->notifier = NULL;
+    }
+    delete info;
+    return true;
+}
+
+int
+quail_application::quail_input_get_error(int /*fd*/, int */*error*/)
+{
+    qDebug() << "quail_application::quail_input_get_error";
+    return 0;
+}
+
+guint
+quail_application::quail_timeout_add_seconds(guint interval,
+                        GSourceFunc function,
+                        gpointer data)
+{
+    return this->quail_timeout_add(interval * 1000,function, data);
+}
+
 
 QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
-    : QTimer(), sourceId(sourceId), func(func), userData(data)
+    : QObject(0)
+    , m_timer(new QTimer(this))
+    , sourceId(sourceId)
+    , func(func)
+    , userData(data)
 {
     //qDebug() << "QQuailTimer::QQuailTimer.1";
-    connect(this, SIGNAL(timeout()),
-            this, SLOT(update()));
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 void
@@ -88,7 +185,7 @@ QQuailInputNotifier::QQuailInputNotifier(int fd,
         readNotifier = new QSocketNotifier(fd, QSocketNotifier::Read);
 
         connect(readNotifier, SIGNAL(activated(int)),
-                this, SLOT(ioInvoke(int)));
+                this, SLOT(ioInvoke(int)), Qt::DirectConnection);
         bRead = true;
     }
 
@@ -98,7 +195,7 @@ QQuailInputNotifier::QQuailInputNotifier(int fd,
         writeNotifier = new QSocketNotifier(fd, QSocketNotifier::Write);
 
         connect(writeNotifier, SIGNAL(activated(int)),
-                this, SLOT(ioInvoke(int)));
+                this, SLOT(ioInvoke(int)), Qt::DirectConnection);
         bWrite = true;
     }
 
@@ -135,12 +232,7 @@ static guint
 qQuailTimeoutAdd(guint interval, GSourceFunc func, gpointer data)
 {
     qDebug() << "qQuailTimeoutAdd" << interval;
-    QQuailSourceInfo *info = new QQuailSourceInfo;
-    info->handle = nextSourceId++;
-    info->timer = new QQuailTimer(info->handle, func, data);
-    m_sources.insert(info->handle, info);
-    info->timer->start(interval);
-    return info->handle;
+    return quail_app->quail_timeout_add(interval, func, data);
 }
 
 static gboolean
@@ -148,7 +240,6 @@ qQuailTimeoutRemove(guint handle)
 {
     qDebug() << "QQuailInputNotifier::qQuailTimeoutRemove";
     qQuailSourceRemove(handle);
-
     return 0;
 }
 
@@ -159,41 +250,19 @@ qQuailInputAdd(int fd,
                gpointer userData)
 {
     qDebug() << "QQuailInputNotifier::qQuailInputAdd";
-    QQuailSourceInfo *info = new QQuailSourceInfo;
-
-    info->handle = nextSourceId++;
-
-    info->notifier = new QQuailInputNotifier(fd, cond, func, userData);
-    m_sources.insert(info->handle, info);
-    qDebug() << "QQuailInputNotifier::qQuailInputAdd.end::" << info->handle;
-    qDebug() << "QQuailInputNotifier::qQuailInputAdd.end::" << m_sources.size();
-    return info->handle;
+    return quail_app->quail_input_add(fd, cond, func, userData);
 }
 
 static gboolean
 qQuailSourceRemove(guint handle)
 {
-    QQuailSourceInfo *info;
-
-    info = m_sources.take(handle);
-    if (info == NULL)
-        return false;
-
-    if (info->timer != NULL) {
-        delete info->timer;
-        info->timer = NULL;
-    } else if (info->notifier != NULL) {
-        delete info->notifier;
-        info->notifier = NULL;
-    }
-    delete info;
-    return true;
+    return quail_app->quail_source_remove(handle);
 }
 
 static int
 qQuailInputGetError(int /*fd*/, int */*error*/)
 {
-    qDebug() << "QQuailInputNotifier::qQuailInputGetError";
+    qDebug() << "qQuailInputGetError";
     return 0;
 }
 
@@ -202,7 +271,7 @@ qQuailTimeoutAddSeconds(guint interval,
                         GSourceFunc function,
                         gpointer data)
 {
-        return qQuailTimeoutAdd(interval * 1000,function, data);
+    return quail_app->quail_timeout_add(interval * 1000,function, data);
 }
 
 

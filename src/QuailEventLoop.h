@@ -24,18 +24,47 @@
 
 #include <libpurple/eventloop.h>
 
+#include <QApplication>
 #include <QTimer>
 #include <QSocketNotifier>
 
-class QQuailTimer : public QTimer
+class quail_application : public QApplication
+{
+    Q_OBJECT
+
+public:
+    quail_application(int &argc, char **argv);
+
+    guint       quail_timeout_add(guint interval, GSourceFunc func, gpointer data);
+    gboolean    quail_timeout_remove(guint handle);
+    guint       quail_input_add(int fd,
+                        PurpleInputCondition cond,
+                        PurpleInputFunction func,
+                        gpointer userData);
+    gboolean    quail_source_remove(guint handle);
+    int         quail_input_get_error(int /*fd*/, int */*error*/);
+    guint       quail_timeout_add_seconds(guint interval,
+                        GSourceFunc function,
+                        gpointer data);
+
+private:
+
+};
+
+class QQuailTimer : public QObject
 {
     Q_OBJECT
 
     public:
         QQuailTimer(guint sourceId, GSourceFunc func, gpointer data);
+        QTimer* m_timer;
+        void setInterval(int msec)
+            { m_timer->setInterval(msec); }
 
     public slots:
         void update();
+        void startTimer() { m_timer->start(); }
+        void stopTimer() { m_timer->stop(); }
 
     private:
         guint sourceId;

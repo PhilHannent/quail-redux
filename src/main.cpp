@@ -22,7 +22,7 @@
 #include <QApplication>
 #include <QDebug>
 
-#if defined(Q_OS_CYGWIN)
+#if defined(Q_OS_WIN)
 #include "QuailWinGlibEventLoop.h"
 #endif
 #include "QuailEventLoop.h"
@@ -30,12 +30,12 @@
 
 int main(int argc, char *argv[])
 {
-#if defined(Q_OS_CYGWIN)
+#if defined(Q_OS_WIN)
     qDebug() << "MAIN.1";
-    QuailEventDispatcherWinGlib quailEventLoop;
+    //QuailEventDispatcherWinGlib quailEventLoop;
 #endif
     //QuailEventDispatcherMarkTwo mainEvent;
-    QApplication a(argc, argv);
+    quail_application a(argc, argv);
     qDebug() << "q";
     QQuailMainWindow w;
     qDebug() << "q2";
