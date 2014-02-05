@@ -65,15 +65,19 @@ quail_event_loop::startTimer(int interval, int *id)
 void
 quail_event_loop::timerEvent(QTimerEvent* e)
 {
-    //qDebug() << "quail_event_loop::timerEvent()";
+    qDebug() << "quail_event_loop::timerEvent()" << e->timerId();
     QQuailTimer *t = m_timers.take(e->timerId());
     if (t == 0)
         return;
+    qDebug() << "quail_event_loop::timerEvent().1";
 
-    if (!t->func(t->data))
+    if (!(*t->func)(t->data))
     {
-        quail_timeout_remove(e->timerId());
+        qDebug() << "quail_event_loop::timerEvent().2";
+        killTimer(e->timerId());
     }
+    qDebug() << "quail_event_loop::timerEvent().end";
+
 }
 
 
