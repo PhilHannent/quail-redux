@@ -24,9 +24,10 @@
 
 #include <libpurple/eventloop.h>
 
-#include <QApplication>
-#include <QTimer>
-#include <QSocketNotifier>
+#include <QObject>
+#include <QMap>
+
+class QSocketNotifier;
 
 class quail_event_loop : public QObject
 {
