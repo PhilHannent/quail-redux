@@ -39,7 +39,7 @@ guint
 quail_event_loop::quail_timeout_add(guint interval, GSourceFunc func, gpointer data)
 {
     qDebug() << "quail_application::quail_timeout_add" << interval;
-    int id = -1;
+    int id;
     if (QThread::currentThread() == qApp->thread())
     {
         qDebug() << "quail_application::quail_timeout_add.1a";
@@ -149,6 +149,7 @@ quail_event_loop::quail_source_remove(guint /*handle*/)
     if (notifier == NULL)
         return FALSE;
 
+    notifier->notifier->deleteLater();
     delete notifier;
     return TRUE;
 }
@@ -183,9 +184,9 @@ quail_event_loop::ioInvoke(int fd)
     QQuailInputNotifier* s = m_io.take(found_source_id);
 
     if (s) {
+        sending_socket->setEnabled(false);
         (*s->func)(s->userData, s->fd, (PurpleInputCondition)s->cond);
-
-        delete s;
+        sending_socket->setEnabled(true);
     }
 }
 
