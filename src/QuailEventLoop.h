@@ -26,6 +26,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QMutex>
 
 class QSocketNotifier;
 
@@ -92,7 +93,7 @@ private:
     QMap<int, QQuailTimer*> m_timers;
     QMap<guint, QQuailInputNotifier*> m_io;
     guint nextSourceId;
-
+    QMutex m_timer_mutex;
 };
 
 /**

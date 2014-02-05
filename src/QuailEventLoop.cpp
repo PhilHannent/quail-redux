@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QMap>
+#include <QMutexLocker>
 #include <QSocketNotifier>
 #include <QThread>
 #include <QTimerEvent>
@@ -49,7 +50,7 @@ quail_event_loop::quail_timeout_add(guint interval, GSourceFunc func, gpointer d
         QMetaObject::invokeMethod(this, "startTimer", Qt::BlockingQueuedConnection,
                                   Q_ARG(int, interval), Q_ARG(int*, &id));
     }
-
+    QMutexLocker locker(&m_timer_mutex);
     qDebug() << "quail_application::quail_timeout_add.2";
     m_timers.insert(id,new QQuailTimer(id, func, data));
     qDebug() << "quail_application::quail_timeout_add.end";
@@ -59,20 +60,24 @@ quail_event_loop::quail_timeout_add(guint interval, GSourceFunc func, gpointer d
 void
 quail_event_loop::startTimer(int interval, int *id)
 {
+    QMutexLocker locker(&m_timer_mutex);
     *id = QObject::startTimer(interval);
 }
 
 void
 quail_event_loop::timerEvent(QTimerEvent* e)
 {
+    m_timer_mutex.lock();
     qDebug() << "quail_event_loop::timerEvent()" << e->timerId();
     QQuailTimer *t = m_timers.take(e->timerId());
+    m_timer_mutex.unlock();
     if (t == 0)
         return;
     qDebug() << "quail_event_loop::timerEvent().1";
 
     if (!(*t->func)(t->data))
     {
+        QMutexLocker locker(&m_timer_mutex);
         qDebug() << "quail_event_loop::timerEvent().2";
         killTimer(e->timerId());
     }
@@ -84,6 +89,7 @@ quail_event_loop::timerEvent(QTimerEvent* e)
 gboolean
 quail_event_loop::quail_timeout_remove(guint handle)
 {
+    QMutexLocker locker(&m_timer_mutex);
     qDebug() << "quail_application::quail_timeout_remove";
     QQuailTimer *t = m_timers.take(handle);
     if (t == 0)
@@ -176,22 +182,29 @@ quail_event_loop::quail_timeout_add_seconds(guint interval,
 void
 quail_event_loop::ioInvoke(int fd)
 {
-    qDebug() << "QQuailInputNotifier::ioInvoke" << fd;
+    qDebug() << "QQuailInputNotifier::ioInvoke::fd" << fd;
     QSocketNotifier *sending_socket = qobject_cast<QSocketNotifier *>(sender());
     guint found_source_id = 0;
+    qDebug() << "QQuailInputNotifier::ioInvoke::m_io.size()" << m_io.size();
     foreach(QQuailInputNotifier* socket, m_io)
     {
         if (sending_socket == socket->notifier)
+        {
             found_source_id = socket->sourceId;
+            qDebug() << "QQuailInputNotifier::ioInvoke::socket->fd" << socket->fd;
+        }
+
     }
 
-    QQuailInputNotifier* s = m_io.take(found_source_id);
+    QMap<guint, QQuailInputNotifier*>::const_iterator found_source = m_io.find(found_source_id);
 
-    if (s) {
+    if (found_source != m_io.end()) {
+        QQuailInputNotifier* s = found_source.value();
         sending_socket->setEnabled(false);
-        (*s->func)(s->userData, s->fd, (PurpleInputCondition)s->cond);
+        (*s->func)(s->userData, s->fd, s->cond);
         sending_socket->setEnabled(true);
     }
+
 }
 
 
