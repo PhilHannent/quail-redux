@@ -119,7 +119,7 @@ quail_event_loop::quail_input_add(int fd,
 
         bRead = true;
     }
-    else if (cond & PURPLE_INPUT_WRITE)
+    else
     {
         qDebug() << "quail_event_loop::quail_input_add::WRITE";
         notifier = new QSocketNotifier(fd, QSocketNotifier::Write);
@@ -144,22 +144,19 @@ quail_event_loop::quail_input_add(int fd,
 }
 
 gboolean
-quail_event_loop::quail_source_remove(guint /*handle*/)
+quail_event_loop::quail_source_remove(guint handle)
 {
     qDebug() << "quail_event_loop::quail_source_remove";
-    QSocketNotifier *sending_socket = qobject_cast<QSocketNotifier *>(sender());
-    guint found_source_id = 0;
-    foreach(QQuailInputNotifier* socket, m_io)
-    {
-        if (sending_socket == socket->notifier)
-            found_source_id = socket->sourceId;
-    }
+    QMap<guint, QQuailInputNotifier *>::iterator i = m_io.find(handle);
+    if (i == m_io.end())
+        return FALSE;
 
-    QQuailInputNotifier* notifier = m_io.take(found_source_id);
+    QQuailInputNotifier* notifier = i.value();
     if (notifier == NULL)
         return FALSE;
 
     notifier->notifier->deleteLater();
+    m_io.erase(i);
     delete notifier;
     return TRUE;
 }

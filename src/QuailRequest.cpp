@@ -182,7 +182,7 @@ qQuailRequestAction(const char *title, const char *primary,
 	if (cbs[result] != NULL)
         ((PurpleRequestActionCb)cbs[result])(user_data, result);
 
-	delete cbs;
+    delete cbs;
 
 	return NULL;
 }
