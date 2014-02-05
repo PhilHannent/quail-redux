@@ -28,13 +28,17 @@
 #include <QTimer>
 #include <QSocketNotifier>
 
-class quail_application : public QApplication
+class QQuailTimer;
+class QQuailInputNotifier;
+
+class quail_event_loop : public QObject
 {
     Q_OBJECT
 
 public:
-    quail_application(int &argc, char **argv);
+    explicit quail_event_loop(QObject* parent = 0);
 
+    Q_INVOKABLE void startTimer(int interval, int *id);
     guint       quail_timeout_add(guint interval, GSourceFunc func, gpointer data);
     gboolean    quail_timeout_remove(guint handle);
     guint       quail_input_add(int fd,
@@ -46,8 +50,13 @@ public:
     guint       quail_timeout_add_seconds(guint interval,
                         GSourceFunc function,
                         gpointer data);
+protected:
+    virtual void timerEvent(QTimerEvent *event);
 
 private:
+    QMap<int, QQuailTimer*> m_timers;
+    QMap<guint, QQuailInputNotifier*> m_io;
+    guint nextSourceId;
 
 };
 
@@ -56,20 +65,12 @@ class QQuailTimer : public QObject
     Q_OBJECT
 
     public:
-        QQuailTimer(guint sourceId, GSourceFunc func, gpointer data);
-        QTimer* m_timer;
-        void setInterval(int msec)
-            { m_timer->setInterval(msec); }
-
-    public slots:
-        void update();
-        void startTimer() { m_timer->start(); }
-        void stopTimer() { m_timer->stop(); }
-
-    private:
+        QQuailTimer(guint sourceId = 0, GSourceFunc func = 0, gpointer data = 0);
         guint sourceId;
         GSourceFunc func;
         gpointer userData;
+
+    private:
 };
 
 class QQuailInputNotifier : public QObject

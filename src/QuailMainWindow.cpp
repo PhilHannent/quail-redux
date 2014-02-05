@@ -60,6 +60,7 @@
 #include "QuailRequest.h"
 
 static QQuailMainWindow *main_win = 0;
+quail_event_loop *event_loop = 0;
 
 /**************************************************************************
  * Core stuff
@@ -140,6 +141,7 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent)
 {
     qDebug() << "QQuailMainWindow";
     main_win = this;
+    event_loop = new quail_event_loop();
     setWindowIcon(QIcon(":/data/images/logo.png"));
     QString configPath(QDir::home().path() + "/.quail");
     purple_util_set_user_dir(configPath.toStdString().c_str());
@@ -333,13 +335,11 @@ QQuailMainWindow::initCore()
 	purple_core_set_ui_ops(qQuailGetCoreUiOps());
     qDebug() << "QQuailMainWindow::initCore().1";
 	purple_eventloop_set_ui_ops(qQuailGetEventLoopUiOps());
-    QApplication::processEvents();
     qDebug() << "QQuailMainWindow::initCore().2";
     if (!purple_core_init("quail")) {
         qDebug() << tr("Initialization of the Quail core failed.\n"
                   "Please report this!\n");
 	}
-    QApplication::processEvents();
     purple_debug_set_enabled(true);
     qDebug() << "QQuailMainWindow::initCore().3";
     path = g_build_filename(purple_user_dir(), "plugins", NULL);

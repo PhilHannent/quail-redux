@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     //QuailEventDispatcherWinGlib quailEventLoop;
 #endif
     //QuailEventDispatcherMarkTwo mainEvent;
-    quail_application a(argc, argv);
+    QApplication a(argc, argv);
     qDebug() << "q";
     QQuailMainWindow w;
     qDebug() << "q2";
