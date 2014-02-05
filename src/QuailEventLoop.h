@@ -28,12 +28,43 @@
 #include <QTimer>
 #include <QSocketNotifier>
 
-class QQuailTimer;
-class QQuailInputNotifier;
-
 class quail_event_loop : public QObject
 {
     Q_OBJECT
+    struct QQuailTimer
+    {
+        QQuailTimer(guint sourceId = 0, GSourceFunc func = 0, gpointer data = 0)
+                : sourceId(sourceId)
+                , func(func)
+                , data(data)
+            {; }
+        guint sourceId;
+        GSourceFunc func;
+        gpointer data;
+    };
+
+    struct QQuailInputNotifier
+    {
+        QQuailInputNotifier(int fd
+                            , PurpleInputCondition cond
+                            , PurpleInputFunction func
+                            , gpointer userData
+                            , QSocketNotifier* notifier
+                            , guint sourceId
+                            )
+            : fd(fd)
+            , cond(cond)
+            , func(func)
+            , userData(userData)
+            , notifier(notifier)
+            , sourceId(sourceId) {}
+        int fd;
+        PurpleInputCondition cond;
+        PurpleInputFunction func;
+        gpointer userData;
+        QSocketNotifier *notifier;
+        guint sourceId;
+    };
 
 public:
     explicit quail_event_loop(QObject* parent = 0);
@@ -61,38 +92,6 @@ private:
     QMap<guint, QQuailInputNotifier*> m_io;
     guint nextSourceId;
 
-};
-
-class QQuailTimer
-{
-    public:
-        QQuailTimer(guint sourceId = 0, GSourceFunc func = 0, gpointer data = 0);
-        guint sourceId;
-        GSourceFunc func;
-        gpointer userData;
-
-    private:
-};
-
-class QQuailInputNotifier : public QObject
-{
-    Q_OBJECT
-
-    public:
-        QQuailInputNotifier(int fd
-                            , PurpleInputCondition cond
-                            , PurpleInputFunction func
-                            , gpointer userData
-                            , guint sourceId);
-        ~QQuailInputNotifier();
-
-    PurpleInputCondition cond;
-    PurpleInputFunction func;
-    gpointer userData;
-    QSocketNotifier *readNotifier, *writeNotifier;
-    guint sourceId;
-
-    private:
 };
 
 /**

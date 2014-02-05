@@ -73,7 +73,7 @@ quail_event_loop::timerEvent(QTimerEvent* e)
     if (t == 0)
         return;
 
-    if (!t->func(t->userData))
+    if (!t->func(t->data))
     {
         quail_timeout_remove(e->timerId());
     }
@@ -101,8 +101,37 @@ quail_event_loop::quail_input_add(int fd,
                gpointer userData)
 {
     qDebug() << "quail_application::quail_input_add";
+    bool bRead = false;
+    bool bWrite = false;
+    QSocketNotifier* notifier;
 
-    m_io.insert(nextSourceId, new QQuailInputNotifier(fd, cond, func, userData, nextSourceId));
+    if (cond & PURPLE_INPUT_READ)
+    {
+        qDebug() << "QQuailInputNotifier::QQuailInputNotifier::READ";
+        notifier = new QSocketNotifier(fd, QSocketNotifier::Read);
+
+        bRead = true;
+    }
+    else if (cond & PURPLE_INPUT_WRITE)
+    {
+        qDebug() << "QQuailInputNotifier::QQuailInputNotifier::WRITE";
+        notifier = new QSocketNotifier(fd, QSocketNotifier::Write);
+
+        bWrite = true;
+    }
+    connect(notifier, SIGNAL(activated(int)),
+            this, SLOT(ioInvoke(int)));
+
+    if (!bWrite && !bRead)
+        qWarning() << "QQuailInputNotifier::QQuailInputNotifier:Unknown QSocketNotifier type";
+
+    m_io.insert(nextSourceId, new QQuailInputNotifier(fd
+                                                      , cond
+                                                      , func
+                                                      , userData
+                                                      , notifier
+                                                      , nextSourceId
+                                                      ));
     qDebug() << "quail_application::quail_input_add.end::" << m_io.size();
     return nextSourceId++;
 }
@@ -134,80 +163,17 @@ quail_event_loop::quail_timeout_add_seconds(guint interval,
     return this->quail_timeout_add(interval * 1000,function, data);
 }
 
-
-QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
-    : sourceId(sourceId)
-    , func(func)
-    , userData(data)
-{
-    //qDebug() << "QQuailTimer::QQuailTimer.1";
-    //connect(m_timer, SIGNAL(timeout()), this, SLOT(update()));
-}
-
-QQuailInputNotifier::QQuailInputNotifier(int fd
-                                         , PurpleInputCondition cond
-                                         , PurpleInputFunction func
-                                         , gpointer userData
-                                         , guint sourceId)
-    : func(func)
-    , userData(userData)
-    , readNotifier(NULL)
-    , writeNotifier(NULL)
-    , sourceId(sourceId)
-{
-    qDebug() << "QQuailInputNotifier::QQuailInputNotifier" << cond;
-    qDebug() << "QQuailInputNotifier::QQuailInputNotifier" << fd;
-    bool bRead = false;
-    bool bWrite = false;
-
-    if (cond & PURPLE_INPUT_READ)
-    {
-        qDebug() << "QQuailInputNotifier::QQuailInputNotifier::READ";
-        readNotifier = new QSocketNotifier(fd, QSocketNotifier::Read);
-
-        connect(readNotifier, SIGNAL(activated(int)),
-                this, SLOT(ioInvoke(int)));
-        bRead = true;
-    }
-
-    if (cond & PURPLE_INPUT_WRITE)
-    {
-        qDebug() << "QQuailInputNotifier::QQuailInputNotifier::WRITE";
-        writeNotifier = new QSocketNotifier(fd, QSocketNotifier::Write);
-
-        connect(writeNotifier, SIGNAL(activated(int)),
-                this, SLOT(ioInvoke(int)));
-        bWrite = true;
-    }
-
-    if (!bWrite && !bRead)
-        qWarning() << "QQuailInputNotifier::QQuailInputNotifier:Unknown QSocketNotifier type";
-}
-
-QQuailInputNotifier::~QQuailInputNotifier()
-{
-    if (readNotifier != NULL)
-        delete readNotifier;
-
-    if (writeNotifier != NULL)
-        delete writeNotifier;
-}
-
 void
 quail_event_loop::ioInvoke(int fd)
 {
-    qDebug() << "QQuailInputNotifier::ioInvoke";
-    int cond = 0;
+    qDebug() << "QQuailInputNotifier::ioInvoke" << fd;
     QQuailInputNotifier *s = m_io.take(fd);
 
-    if (s->readNotifier != NULL)
-        cond |= PURPLE_INPUT_READ;
+    if (s) {
+        (*s->func)(s->userData, s->fd, (PurpleInputCondition)s->cond);
 
-    if (s->writeNotifier != NULL)
-        cond |= PURPLE_INPUT_WRITE;
-
-    s->func(s->userData, fd, (PurpleInputCondition)cond);
-    delete s;
+        delete s;
+    }
 }
 
 
@@ -222,8 +188,7 @@ static gboolean
 qQuailTimeoutRemove(guint handle)
 {
     qDebug() << "QQuailInputNotifier::qQuailTimeoutRemove";
-    qQuailSourceRemove(handle);
-    return 0;
+    return quail_app->quail_timeout_remove(handle);
 }
 
 static guint
