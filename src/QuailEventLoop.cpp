@@ -68,7 +68,7 @@ quail_event_loop::startTimer(int interval, int *id)
 void
 quail_event_loop::timerEvent(QTimerEvent* e)
 {
-    qDebug() << "quail_event_loop::timerEvent()";
+    //qDebug() << "quail_event_loop::timerEvent()";
     QQuailTimer *t = m_timers.take(e->timerId());
     if (t == 0)
         return;
@@ -102,7 +102,7 @@ quail_event_loop::quail_input_add(int fd,
 {
     qDebug() << "quail_application::quail_input_add";
 
-    m_io.insert(nextSourceId, new QQuailInputNotifier(fd, cond, func, userData));
+    m_io.insert(nextSourceId, new QQuailInputNotifier(fd, cond, func, userData, nextSourceId));
     qDebug() << "quail_application::quail_input_add.end::" << m_io.size();
     return nextSourceId++;
 }
@@ -110,7 +110,7 @@ quail_event_loop::quail_input_add(int fd,
 gboolean
 quail_event_loop::quail_source_remove(guint handle)
 {
-
+    qDebug() << "quail_event_loop::quail_source_remove";
     QQuailInputNotifier* notifier = m_io.take(handle);
     if (notifier == NULL)
         return FALSE;
@@ -136,8 +136,7 @@ quail_event_loop::quail_timeout_add_seconds(guint interval,
 
 
 QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
-    : QObject(0)
-    , sourceId(sourceId)
+    : sourceId(sourceId)
     , func(func)
     , userData(data)
 {
@@ -145,12 +144,16 @@ QQuailTimer::QQuailTimer(guint sourceId, GSourceFunc func, gpointer data)
     //connect(m_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
-QQuailInputNotifier::QQuailInputNotifier(int fd,
-                                         PurpleInputCondition cond,
-                                         PurpleInputFunction func,
-                                         gpointer userData)
-    : QObject(), func(func), userData(userData), readNotifier(NULL),
-      writeNotifier(NULL)
+QQuailInputNotifier::QQuailInputNotifier(int fd
+                                         , PurpleInputCondition cond
+                                         , PurpleInputFunction func
+                                         , gpointer userData
+                                         , guint sourceId)
+    : func(func)
+    , userData(userData)
+    , readNotifier(NULL)
+    , writeNotifier(NULL)
+    , sourceId(sourceId)
 {
     qDebug() << "QQuailInputNotifier::QQuailInputNotifier" << cond;
     qDebug() << "QQuailInputNotifier::QQuailInputNotifier" << fd;
@@ -191,18 +194,20 @@ QQuailInputNotifier::~QQuailInputNotifier()
 }
 
 void
-QQuailInputNotifier::ioInvoke(int fd)
+quail_event_loop::ioInvoke(int fd)
 {
     qDebug() << "QQuailInputNotifier::ioInvoke";
     int cond = 0;
+    QQuailInputNotifier *s = m_io.take(fd);
 
-    if (readNotifier != NULL)
+    if (s->readNotifier != NULL)
         cond |= PURPLE_INPUT_READ;
 
-    if (writeNotifier != NULL)
+    if (s->writeNotifier != NULL)
         cond |= PURPLE_INPUT_WRITE;
 
-    func(userData, fd, (PurpleInputCondition)cond);
+    s->func(s->userData, fd, (PurpleInputCondition)cond);
+    delete s;
 }
 
 

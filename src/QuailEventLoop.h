@@ -53,6 +53,9 @@ public:
 protected:
     virtual void timerEvent(QTimerEvent *event);
 
+private slots:
+    void ioInvoke(int fd);
+
 private:
     QMap<int, QQuailTimer*> m_timers;
     QMap<guint, QQuailInputNotifier*> m_io;
@@ -60,10 +63,8 @@ private:
 
 };
 
-class QQuailTimer : public QObject
+class QQuailTimer
 {
-    Q_OBJECT
-
     public:
         QQuailTimer(guint sourceId = 0, GSourceFunc func = 0, gpointer data = 0);
         guint sourceId;
@@ -78,18 +79,20 @@ class QQuailInputNotifier : public QObject
     Q_OBJECT
 
     public:
-        QQuailInputNotifier(int fd, PurpleInputCondition cond,
-                           PurpleInputFunction func, gpointer userData);
+        QQuailInputNotifier(int fd
+                            , PurpleInputCondition cond
+                            , PurpleInputFunction func
+                            , gpointer userData
+                            , guint sourceId);
         ~QQuailInputNotifier();
 
-    private slots:
-        void ioInvoke(int fd);
+    PurpleInputCondition cond;
+    PurpleInputFunction func;
+    gpointer userData;
+    QSocketNotifier *readNotifier, *writeNotifier;
+    guint sourceId;
 
     private:
-        PurpleInputCondition cond;
-        PurpleInputFunction func;
-        gpointer userData;
-        QSocketNotifier *readNotifier, *writeNotifier;
 };
 
 /**
