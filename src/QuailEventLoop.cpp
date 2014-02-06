@@ -131,7 +131,7 @@ quail_event_loop::quail_input_add(int fd,
 
     if (!bWrite && !bRead)
         qWarning() << "quail_event_loop::quail_input_add:Unknown QSocketNotifier type";
-
+    notifier->setProperty("sourceId", nextSourceId);
     m_io.insert(nextSourceId, new QQuailInputNotifier(fd
                                                       , cond
                                                       , func
@@ -180,27 +180,18 @@ void
 quail_event_loop::ioInvoke(int fd)
 {
     qDebug() << "QQuailInputNotifier::ioInvoke::fd" << fd;
-    QSocketNotifier *sending_socket = qobject_cast<QSocketNotifier *>(sender());
-    guint found_source_id = 0;
-    qDebug() << "QQuailInputNotifier::ioInvoke::m_io.size()" << m_io.size();
-    foreach(QQuailInputNotifier* socket, m_io)
-    {
-        if (sending_socket == socket->notifier)
-        {
-            found_source_id = socket->sourceId;
-            qDebug() << "QQuailInputNotifier::ioInvoke::socket->fd" << socket->fd;
-        }
+    QSocketNotifier *socket = qobject_cast<QSocketNotifier *>(sender());
+    guint id = socket->property("sourceId").toUInt();
 
-    }
+    QMap<guint, QQuailInputNotifier *>::iterator i = m_io.find(id);
+    if (i == m_io.end())
+        return;
 
-    QMap<guint, QQuailInputNotifier*>::const_iterator found_source = m_io.find(found_source_id);
+    QQuailInputNotifier* s = i.value();
+    if (s == NULL)
+        return;
 
-    if (found_source != m_io.end()) {
-        QQuailInputNotifier* s = found_source.value();
-        sending_socket->setEnabled(false);
-        (*s->func)(s->userData, s->fd, s->cond);
-        sending_socket->setEnabled(true);
-    }
+    (*s->func)(s->userData, s->fd, s->cond);
 
 }
 
