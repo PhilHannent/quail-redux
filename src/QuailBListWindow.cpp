@@ -103,7 +103,7 @@ QQuailBListWindow::buildInterface()
 
     QVBoxLayout *vbox = new QVBoxLayout(this);
     vbox->addWidget(buddylist);
-    QuailStatusSelector *statusSelector = new QuailStatusSelector(this);
+    quail_status_selector *statusSelector = new quail_status_selector(this);
     vbox->addWidget(statusSelector);
 
     QWidget *window = new QWidget(this);
