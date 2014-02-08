@@ -1310,7 +1310,7 @@ qQuailConvWindowNew(PurpleConversation *conv)
 {
     qDebug() << "QQuailConvWindow::qQuailConvWindowNew()";
 //    QQuailConversation *qwin;
-	QQuailMainWindow *mainWin = qQuailGetMainWindow();
+    quail_main_window *mainWin = qQuailGetMainWindow();
 
     mainWin->addConversationWindow(conv);
 

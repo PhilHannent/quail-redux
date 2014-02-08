@@ -59,7 +59,7 @@
 #include "QuailPrefsDialog.h"
 #include "QuailRequest.h"
 
-static QQuailMainWindow *main_win = 0;
+static quail_main_window *main_win = 0;
 quail_event_loop *event_loop = 0;
 
 /**************************************************************************
@@ -129,7 +129,7 @@ qQuailGetCoreUiOps()
 /**************************************************************************
  * QQuailMainWindow
  **************************************************************************/
-QQuailMainWindow::QQuailMainWindow(QWidget *parent)
+quail_main_window::quail_main_window(QWidget *parent)
     : QMainWindow(parent),
       accountsWin(NULL),
       blistWin(NULL),
@@ -161,13 +161,13 @@ QQuailMainWindow::QQuailMainWindow(QWidget *parent)
     slotReadSettings();
 }
 
-QQuailMainWindow::~QQuailMainWindow()
+quail_main_window::~quail_main_window()
 {
 	purple_core_quit();
 }
 
 void
-QQuailMainWindow::buildInterface()
+quail_main_window::buildInterface()
 {
     widgetStack = new QStackedWidget(this);
 
@@ -180,7 +180,7 @@ QQuailMainWindow::buildInterface()
 }
 
 void
-QQuailMainWindow::createActions()
+quail_main_window::createActions()
 {
     actShowBuddyList = new QAction(this);
     actShowBuddyList->setIcon(QIcon(":/data/images/actions/blist.png"));
@@ -201,7 +201,7 @@ QQuailMainWindow::createActions()
 }
 
 QMenu*
-QQuailMainWindow::createStatusMenu()
+quail_main_window::createStatusMenu()
 {
     /* Fetch a list of possible states */
     QMenu* returnedMenu = new QMenu(this);
@@ -268,7 +268,7 @@ QQuailMainWindow::createStatusMenu()
 }
 
 void
-QQuailMainWindow::slotStateChanges(QAction* act)
+quail_main_window::slotStateChanges(QAction* act)
 {
     qDebug() << "QQuailMainWindow::slotStateChanges()";
     switch (act->data().toInt())
@@ -298,7 +298,7 @@ QQuailMainWindow::slotStateChanges(QAction* act)
 }
 
 void
-QQuailMainWindow::retranslateUi(QWidget * /*currentForm*/)
+quail_main_window::retranslateUi(QWidget * /*currentForm*/)
 {
     qDebug() << "QQuailMainWindow::retranslateUi";
     actShowBuddyList->setText(tr("Show Buddy List"));
@@ -308,7 +308,7 @@ QQuailMainWindow::retranslateUi(QWidget * /*currentForm*/)
 }
 
 void
-QQuailMainWindow::createTrayIcon()
+quail_main_window::createTrayIcon()
 {
     trayIconMenu = new QMenu(this);
     trayIconMenu->addAction(actShowBuddyList);
@@ -327,7 +327,7 @@ QQuailMainWindow::createTrayIcon()
 }
 
 void
-QQuailMainWindow::initCore()
+quail_main_window::initCore()
 {
     qDebug() << "QQuailMainWindow::initCore()";
     char *path;
@@ -356,7 +356,7 @@ QQuailMainWindow::initCore()
 }
 
 void
-QQuailMainWindow::closeEvent(QCloseEvent *event)
+quail_main_window::closeEvent(QCloseEvent *event)
 {
     qDebug() << "QQuailMainWindow::closeEvent()";
     QWidget *visibleWidget = widgetStack->currentWidget();
@@ -377,7 +377,7 @@ QQuailMainWindow::closeEvent(QCloseEvent *event)
     event->ignore();
 }
 
-void QQuailMainWindow::switchLanguage()
+void quail_main_window::switchLanguage()
 {
     //qDebug() << "MainWindow::switchLanguage()";
     qApp->removeTranslator(&appTranslator);
@@ -400,7 +400,7 @@ void QQuailMainWindow::switchLanguage()
     retranslateUi(this);
 }
 
-void QQuailMainWindow::changeEvent(QEvent *event)
+void quail_main_window::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LocaleChange) {
         switchLanguage();
@@ -408,7 +408,7 @@ void QQuailMainWindow::changeEvent(QEvent *event)
 }
 
 void
-QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
+quail_main_window::addConversationWindow(PurpleConversation *conv)
 {
     qDebug() << "QQuailMainWindow::addConversationWindow()";
 //    PurpleConversationType conv_type = purple_conversation_get_type(conv);
@@ -435,7 +435,7 @@ QQuailMainWindow::addConversationWindow(PurpleConversation *conv)
 }
 
 void
-QQuailMainWindow::removeConversationWindow(QQuailConversation */*win*/)
+quail_main_window::removeConversationWindow(QQuailConversation */*win*/)
 {
     qDebug() << "QQuailMainWindow::removeConversationWindow()";
 //    GList *l;
@@ -469,7 +469,7 @@ QQuailMainWindow::removeConversationWindow(QQuailConversation */*win*/)
  * However they only cover basic types. Need to look at how to put
  * these settings into a purple string */
 void
-QQuailMainWindow::slotSaveSettings()
+quail_main_window::slotSaveSettings()
 {
     QSettings appSettings(APP_NAME, APP_MAJOR_VERSION);
     appSettings.setValue("geometry", saveGeometry());
@@ -477,7 +477,7 @@ QQuailMainWindow::slotSaveSettings()
 }
 
 void
-QQuailMainWindow::slotReadSettings()
+quail_main_window::slotReadSettings()
 {
     QSettings appSettings(APP_NAME, APP_MAJOR_VERSION);
     restoreGeometry(appSettings.value("geometry", saveGeometry()).toByteArray());
@@ -485,44 +485,44 @@ QQuailMainWindow::slotReadSettings()
 }
 
 QQuailBListWindow *
-QQuailMainWindow::getBlistWindow() const
+quail_main_window::getBlistWindow() const
 {
     return blistWin;
 }
 
 quail_accounts_window *
-QQuailMainWindow::getAccountsWindow() const
+quail_main_window::getAccountsWindow() const
 {
     return accountsWin;
 }
 
 void
-QQuailMainWindow::setLastActiveConvWindow(QQuailConversation *win)
+quail_main_window::setLastActiveConvWindow(QQuailConversation *win)
 {
     qDebug() << "QQuailMainWindow::setLastActiveConvWindow()";
     lastConvWin = win;
 }
 
 QQuailConversation *
-QQuailMainWindow::getLastActiveConvWindow() const
+quail_main_window::getLastActiveConvWindow() const
 {
 	return lastConvWin;
 }
 
 QStackedWidget *
-QQuailMainWindow::getWidgetStack() const
+quail_main_window::getWidgetStack() const
 {
 	return widgetStack;
 }
 
 QQuailConnectionMeters *
-QQuailMainWindow::getMeters() const
+quail_main_window::getMeters() const
 {
 	return meters;
 }
 
 void
-QQuailMainWindow::showBlistWindow()
+quail_main_window::showBlistWindow()
 {
     if (blistWin == NULL)
 	{
@@ -537,7 +537,7 @@ QQuailMainWindow::showBlistWindow()
 }
 
 void
-QQuailMainWindow::showAccountsWindow()
+quail_main_window::showAccountsWindow()
 {
     if (accountsWin == NULL)
 	{
@@ -552,7 +552,7 @@ QQuailMainWindow::showAccountsWindow()
 }
 
 void
-QQuailMainWindow::showConvWindow()
+quail_main_window::showConvWindow()
 {
     if (convWin == 0)
         return;
@@ -562,7 +562,7 @@ QQuailMainWindow::showConvWindow()
 }
 
 void
-QQuailMainWindow::showPrefWindow()
+quail_main_window::showPrefWindow()
 {
     qDebug() << "QQuailMainWindow::showPrefWindow()";
     if (prefWin == 0)
@@ -578,13 +578,13 @@ QQuailMainWindow::showPrefWindow()
 
 
 void
-QQuailMainWindow::slot_quit()
+quail_main_window::slot_quit()
 {
     slotSaveSettings();
     qApp->quit();
 }
 
-QQuailMainWindow *
+quail_main_window *
 qQuailGetMainWindow()
 {
     return main_win;

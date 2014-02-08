@@ -39,7 +39,7 @@ class QMenu;
 class QStackedWidget;
 class QSystemTrayIcon;
 
-class QQuailMainWindow : public QMainWindow
+class quail_main_window : public QMainWindow
 {
 	Q_OBJECT
 
@@ -47,8 +47,8 @@ class QQuailMainWindow : public QMainWindow
         static QString appName() { return QString::fromLatin1(APP_NAME); }
 
 	public:
-        QQuailMainWindow(QWidget *parent = 0);
-		~QQuailMainWindow();
+        quail_main_window(QWidget *parent = 0);
+        ~quail_main_window();
 
         void addConversationWindow(PurpleConversation *win);
         void removeConversationWindow(QQuailConversation *win);
@@ -115,6 +115,6 @@ class QQuailMainWindow : public QMainWindow
 
 };
 
-QQuailMainWindow *qQuailGetMainWindow();
+quail_main_window *qQuailGetMainWindow();
 
 #endif /* _QUAIL_MAIN_WINDOW_H_ */
