@@ -37,19 +37,19 @@ class QToolBar;
 class QToolButton;
 class QVBoxLayout;
 
-class QQuailAccountItem : public QObject, public QTableWidgetItem
+class quail_account_item : public QObject, public QTableWidgetItem
 {
 	Q_OBJECT
 
 	public:
-        QQuailAccountItem();
-        ~QQuailAccountItem();
+        quail_account_item();
+        ~quail_account_item();
 
         void startPulse(QPixmap onlinePixmap, QString pixmapName);
 		void stopPulse();
 
 		void setAccount(PurpleAccount *account);
-		PurpleAccount *getAccount() const;
+        PurpleAccount *get_account() const;
 
 	protected slots:
 		void updatePulse();
@@ -98,7 +98,7 @@ class quail_accounts_window : public QMainWindow
 		void resizeEvent(QResizeEvent *event);
 
 	protected:
-        QQuailAccountItem *getItemFromAccount(PurpleAccount *account);
+        quail_account_item *get_item_from_account(PurpleAccount *account);
 
 	private:
         void buildInterface();

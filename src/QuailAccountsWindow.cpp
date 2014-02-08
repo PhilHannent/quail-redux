@@ -94,7 +94,7 @@ quail_account_item::setAccount(PurpleAccount *account)
 }
 
 PurpleAccount *
-quail_account_item::getAccount() const
+quail_account_item::get_account() const
 {
 	return account;
 }
@@ -187,14 +187,14 @@ quail_accounts_window::accountSignedOn(PurpleAccount *account)
     qDebug() << "QQuailAccountsWindow::accountSignedOn()";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
-	if (item->getAccount() == account)
+    if (item->get_account() == account)
 	{
 		connectButton->setEnabled(false);
 		disconnectButton->setEnabled(true);
 		deleteButton->setEnabled(false);
 	}
 	else
-        item = quail_accounts_window::getItemFromAccount(account);
+        item = quail_accounts_window::get_item_from_account(account);
 
 	if (item != NULL)
 	{
@@ -211,14 +211,14 @@ quail_accounts_window::accountSignedOff(PurpleAccount *account)
     qDebug() << "QQuailAccountsWindow::accountSignedOff()";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
-	if (item->getAccount() == account)
+    if (item->get_account() == account)
 	{
 		connectButton->setEnabled(true);
 		disconnectButton->setEnabled(false);
 		deleteButton->setEnabled(true);
 	}
 	else
-        item = quail_accounts_window::getItemFromAccount(account);
+        item = quail_accounts_window::get_item_from_account(account);
 
 	if (item != NULL)
 	{
@@ -437,7 +437,7 @@ quail_accounts_window::editAccount()
 
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
-    QQuailAccountEditor *editor = new QQuailAccountEditor(item->getAccount(),
+    QQuailAccountEditor *editor = new QQuailAccountEditor(item->get_account(),
                                      this,
                                      tr("Edit Account"));
     editor->show();
@@ -449,7 +449,7 @@ quail_accounts_window::deleteAccount()
     qDebug() << "QQuailAccountsWindow::deleteAccount";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
-	purple_accounts_remove(item->getAccount());
+    purple_accounts_remove(item->get_account());
 
     m_accounts_widget->removeRow(item->row());
 
@@ -466,7 +466,7 @@ quail_accounts_window::connectToAccount()
     connectButton->setEnabled(false);
 
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
-    PurpleAccount *account = item->getAccount();
+    PurpleAccount *account = item->get_account();
 
 //    item->startPulse(QQuailProtocolUtils::getProtocolIcon(account),
 //                     QQuailProtocolUtils::getProtocolIconName(account));
@@ -482,7 +482,7 @@ quail_accounts_window::disconnectFromAccount()
     qDebug() << "QQuailAccountsWindow::disconnectFromAccount";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
-	purple_account_disconnect(item->getAccount());
+    purple_account_disconnect(item->get_account());
 }
 
 void
@@ -501,7 +501,7 @@ quail_accounts_window::slot_account_selected()
         return;
 
     quail_account_item *accountItem = (quail_account_item *)item;
-    PurpleAccount *account = accountItem->getAccount();
+    PurpleAccount *account = accountItem->get_account();
     const char *protocolId = purple_account_get_protocol_id(account);
 
 	if (purple_plugins_find_with_id(protocolId) == NULL)
@@ -530,20 +530,19 @@ quail_accounts_window::resizeEvent(QResizeEvent *)
 }
 
 quail_account_item *
-quail_accounts_window::getItemFromAccount(PurpleAccount *account)
+quail_accounts_window::get_item_from_account(PurpleAccount *account)
 {
     qDebug() << "QQuailAccountsWindow::getItemFromAccount";
-    quail_account_item *gitem;
 
 	if (account == NULL)
 		return NULL;
 
     for (int i=0; i<m_accounts_widget->rowCount(); ++i)
 	{
-        gitem = (quail_account_item *)m_accounts_widget->item(i,0);
+        quail_account_item *my_item = (quail_account_item *)m_accounts_widget->item(i,0);
 
-		if (gitem->getAccount() == account)
-			return gitem;
+        if (my_item->get_account() == account)
+            return my_item;
 	}
 
 	return NULL;
@@ -556,7 +555,7 @@ quail_accounts_window::slot_table_item_pressed(QTableWidgetItem * item_selected)
     quail_account_item* account_item = static_cast<quail_account_item*>(
                 m_accounts_widget->item(item_selected->row(), xEnabled));
 
-    PurpleAccount* account = account_item->getAccount();
+    PurpleAccount* account = account_item->get_account();
     if (account_item->checkState() == Qt::Checked
         && !purple_account_get_enabled(account, UI_ID))
     {
