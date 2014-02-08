@@ -58,36 +58,13 @@ class QQuailAccountItem : public QObject, public QTableWidgetItem
 
 	private:
 		PurpleAccount *account;
-		int index;
+        int m_index;
 		QTimer *pulseTimer;
 		bool pulseGrey;
 		float pulseStep;
 		QPixmap *pulseOrigPixmap;
         QString pulseOrigPixmapName;
 };
-
-class QQuailAccountCheckBox : public QCheckBox
-{
-    Q_OBJECT
-
-    public:
-        QQuailAccountCheckBox(int index)
-            { m_index = index; }
-        ~QQuailAccountCheckBox()
-            { }
-
-        void setAccount(PurpleAccount *account)
-            { m_account = account; }
-        PurpleAccount *getAccount() const
-            { return m_account; }
-
-        //virtual QString key(int column, bool ascending) const;
-
-    private:
-        PurpleAccount *m_account;
-        int m_index;
-};
-
 
 class QQuailAccountsWindow : public QMainWindow
 {
@@ -117,7 +94,7 @@ class QQuailAccountsWindow : public QMainWindow
 		void disconnectFromAccount();
 
 		void accountsToggled(bool state);
-        void accountSelected();
+        void slot_account_selected();
 
 		void resizeEvent(QResizeEvent *event);
 
@@ -139,7 +116,7 @@ class QQuailAccountsWindow : public QMainWindow
 		QAction *connectButton;
 		QAction *disconnectButton;
 
-        QTableWidget *accountsWidget;
+        QTableWidget *accounts_widget;
 };
 
 PurpleConnectionUiOps *qQuailGetConnectionUiOps();
