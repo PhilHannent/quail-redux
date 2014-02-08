@@ -51,10 +51,10 @@ DISTFILES = \
 	LICENSE
 
 linux-g++* {
-    message("Using unix")
+    message("Using Linux")
     CONFIG += debug_and_release
     CONFIG += link_pkgconfig
-    PKGCONFIG += purple glib-2.0 gmodule-2.0
+    PKGCONFIG += purple glib-2.0 gmodule-2.0 libxslt
     INCLUDEPATH += "$(LIBPURPLE_ROOT)"
     LIBS += -L"$(LIBPURPLE_ROOT)/libpurple"
 }
