@@ -489,7 +489,7 @@ QQuailMainWindow::getBlistWindow() const
     return blistWin;
 }
 
-QQuailAccountsWindow *
+quail_accounts_window *
 QQuailMainWindow::getAccountsWindow() const
 {
     return accountsWin;
@@ -540,7 +540,7 @@ QQuailMainWindow::showAccountsWindow()
 {
     if (accountsWin == NULL)
 	{
-		accountsWin = new QQuailAccountsWindow(this);
+        accountsWin = new quail_accounts_window(this);
         widgetStack->addWidget(accountsWin);
 	}
 

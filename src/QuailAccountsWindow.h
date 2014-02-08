@@ -42,7 +42,7 @@ class QQuailAccountItem : public QObject, public QTableWidgetItem
 	Q_OBJECT
 
 	public:
-        QQuailAccountItem(int index);
+        QQuailAccountItem();
         ~QQuailAccountItem();
 
         void startPulse(QPixmap onlinePixmap, QString pixmapName);
@@ -51,14 +51,11 @@ class QQuailAccountItem : public QObject, public QTableWidgetItem
 		void setAccount(PurpleAccount *account);
 		PurpleAccount *getAccount() const;
 
-		virtual QString key(int column, bool ascending) const;
-
 	protected slots:
 		void updatePulse();
 
 	private:
 		PurpleAccount *account;
-        int m_index;
 		QTimer *pulseTimer;
 		bool pulseGrey;
 		float pulseStep;
@@ -66,13 +63,13 @@ class QQuailAccountItem : public QObject, public QTableWidgetItem
         QString pulseOrigPixmapName;
 };
 
-class QQuailAccountsWindow : public QMainWindow
+class quail_accounts_window : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-		QQuailAccountsWindow(QMainWindow *parent);
-		~QQuailAccountsWindow();
+        quail_accounts_window(QMainWindow *parent);
+        ~quail_accounts_window();
 
 		void accountSignedOn(PurpleAccount *account);
 		void accountSignedOff(PurpleAccount *account);
@@ -95,6 +92,8 @@ class QQuailAccountsWindow : public QMainWindow
 
 		void accountsToggled(bool state);
         void slot_account_selected();
+        //void slot_table_item_clicked(QTableWidgetItem *);
+        void slot_table_item_pressed(QTableWidgetItem *);
 
 		void resizeEvent(QResizeEvent *event);
 
@@ -116,7 +115,7 @@ class QQuailAccountsWindow : public QMainWindow
 		QAction *connectButton;
 		QAction *disconnectButton;
 
-        QTableWidget *accounts_widget;
+        QTableWidget *m_accounts_widget;
 };
 
 PurpleConnectionUiOps *qQuailGetConnectionUiOps();

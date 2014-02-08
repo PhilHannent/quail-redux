@@ -43,8 +43,10 @@
 #include <QToolBar>
 #include <QToolButton>
 
-QQuailAccountItem::QQuailAccountItem(int index)
-    : account(NULL), m_index(index), pulseTimer(0), pulseOrigPixmapName("")
+QQuailAccountItem::QQuailAccountItem()
+    : account(NULL)
+    , pulseTimer(0)
+    , pulseOrigPixmapName("")
 {
 }
 
@@ -97,16 +99,6 @@ QQuailAccountItem::getAccount() const
 	return account;
 }
 
-QString
-QQuailAccountItem::key(int, bool) const
-{
-	QString str;
-
-    str.sprintf("%6d", m_index);
-
-	return str;
-}
-
 void
 QQuailAccountItem::updatePulse()
 {
@@ -131,14 +123,14 @@ QQuailAccountItem::updatePulse()
  * QQuailAccountsWindow libpurple callbacks
  **************************************************************************/
 static void
-signedOnCb(PurpleConnection *gc, QQuailAccountsWindow *win)
+signedOnCb(PurpleConnection *gc, quail_accounts_window *win)
 {
     qDebug() << "QQuailAccountsWindow::signedOnCb";
 	win->accountSignedOn(purple_connection_get_account(gc));
 }
 
 static void
-signedOffCb(PurpleConnection *gc, QQuailAccountsWindow *win)
+signedOffCb(PurpleConnection *gc, quail_accounts_window *win)
 {
     qDebug() << "QQuailAccountsWindow::signedOffCb";
 	win->accountSignedOff(purple_connection_get_account(gc));
@@ -159,7 +151,7 @@ signedOffCb(PurpleConnection *gc, QQuailAccountsWindow *win)
 /**************************************************************************
  * QQuailAccountsWindow
  **************************************************************************/
-QQuailAccountsWindow::QQuailAccountsWindow(QMainWindow *parent)
+quail_accounts_window::quail_accounts_window(QMainWindow *parent)
 	: QMainWindow(), parentMainWindow(parent)
 {
     qDebug() << "QQuailAccountsWindow::QQuailAccountsWindow";
@@ -178,22 +170,22 @@ QQuailAccountsWindow::QQuailAccountsWindow(QMainWindow *parent)
 	loadAccounts();
 }
 
-QQuailAccountsWindow::~QQuailAccountsWindow()
+quail_accounts_window::~quail_accounts_window()
 {
-    delete accounts_widget;
+    delete m_accounts_widget;
 }
 
 void
-QQuailAccountsWindow::slotUpdateAccounts()
+quail_accounts_window::slotUpdateAccounts()
 {
 	loadAccounts();
 }
 
 void
-QQuailAccountsWindow::accountSignedOn(PurpleAccount *account)
+quail_accounts_window::accountSignedOn(PurpleAccount *account)
 {
     qDebug() << "QQuailAccountsWindow::accountSignedOn()";
-    QQuailAccountItem *item = (QQuailAccountItem *)accounts_widget->currentItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)m_accounts_widget->currentItem();
 
 	if (item->getAccount() == account)
 	{
@@ -202,11 +194,11 @@ QQuailAccountsWindow::accountSignedOn(PurpleAccount *account)
 		deleteButton->setEnabled(false);
 	}
 	else
-		item = QQuailAccountsWindow::getItemFromAccount(account);
+        item = quail_accounts_window::getItemFromAccount(account);
 
 	if (item != NULL)
 	{
-        item = (QQuailAccountItem*)accounts_widget->item( item->row(), xProtocol);
+        item = (QQuailAccountItem*)m_accounts_widget->item( item->row(), xProtocol);
 		item->stopPulse();
         item->setIcon(QQuailProtocolUtils::getProtocolIcon(account));
 	}
@@ -214,10 +206,10 @@ QQuailAccountsWindow::accountSignedOn(PurpleAccount *account)
 }
 
 void
-QQuailAccountsWindow::accountSignedOff(PurpleAccount *account)
+quail_accounts_window::accountSignedOff(PurpleAccount *account)
 {
     qDebug() << "QQuailAccountsWindow::accountSignedOff()";
-    QQuailAccountItem *item = (QQuailAccountItem *)accounts_widget->currentItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)m_accounts_widget->currentItem();
 
 	if (item->getAccount() == account)
 	{
@@ -226,43 +218,48 @@ QQuailAccountsWindow::accountSignedOff(PurpleAccount *account)
 		deleteButton->setEnabled(true);
 	}
 	else
-		item = QQuailAccountsWindow::getItemFromAccount(account);
+        item = quail_accounts_window::getItemFromAccount(account);
 
 	if (item != NULL)
 	{
         QPixmap protIcon = QQuailProtocolUtils::getProtocolIcon(account);
         QString protIconName = QQuailProtocolUtils::getProtocolIconName(account);
-        item = (QQuailAccountItem*)accounts_widget->item( item->row(), xProtocol);
+        item = (QQuailAccountItem*)m_accounts_widget->item( item->row(), xProtocol);
         item->setIcon(QQuailImageUtils::greyPixmap(protIcon, protIconName));
 	}
     qDebug() << "QQuailAccountsWindow::accountSignedOff().end";
 }
 
 void
-QQuailAccountsWindow::buildInterface()
+quail_accounts_window::buildInterface()
 {
     qDebug() << "QQuailAccountsWindow::buildInterface";
     setWindowIcon(QIcon(":/data/images/logo.png"));
 	setupToolbar();
 
 	/* Create the accounts view */
-    accounts_widget = new QTableWidget(this);
-    connect(accounts_widget, SIGNAL(itemSelectionChanged()),
+    m_accounts_widget = new QTableWidget(this);
+    connect(m_accounts_widget, SIGNAL(itemSelectionChanged()),
             this, SLOT(slot_account_selected()));
+    connect(m_accounts_widget,SIGNAL(itemPressed(QTableWidgetItem *)),
+            this,SLOT(slot_table_item_pressed(QTableWidgetItem *)));
+    connect(m_accounts_widget,SIGNAL(itemClicked(QTableWidgetItem *)),
+            this,SLOT(slot_table_item_pressed(QTableWidgetItem *)));
+
     QStringList horzHeaders;
     horzHeaders << tr("Account") << tr("Network") << tr("");
-    accounts_widget->setColumnCount(horzHeaders.size());
-    accounts_widget->setHorizontalHeaderLabels( horzHeaders );
-    accounts_widget->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-    accounts_widget->horizontalHeader()->setHighlightSections(false);
-    accounts_widget->verticalHeader()->hide();
-    accounts_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
-    accounts_widget->setIconSize(QSize(25,25));
-    setCentralWidget(accounts_widget);
+    m_accounts_widget->setColumnCount(horzHeaders.size());
+    m_accounts_widget->setHorizontalHeaderLabels( horzHeaders );
+    m_accounts_widget->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+    m_accounts_widget->horizontalHeader()->setHighlightSections(false);
+    m_accounts_widget->verticalHeader()->hide();
+    m_accounts_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_accounts_widget->setIconSize(QSize(25,25));
+    setCentralWidget(m_accounts_widget);
 }
 
 void
-QQuailAccountsWindow::setupToolbar()
+quail_accounts_window::setupToolbar()
 {
     qDebug() << "QQuailAccountsWindow::setupToolbar";
 	QAction *a;
@@ -360,15 +357,15 @@ QQuailAccountsWindow::setupToolbar()
 }
 
 void
-QQuailAccountsWindow::loadAccounts()
+quail_accounts_window::loadAccounts()
 {
     qDebug() << "QQuailAccountsWindow::loadAccounts";
     GList *l;
     int index = 0;
-    accounts_widget->setUpdatesEnabled(false);
-    accounts_widget->clearContents();
-    while (accounts_widget->rowCount() > 0)
-        accounts_widget->removeRow(0);
+    m_accounts_widget->setUpdatesEnabled(false);
+    m_accounts_widget->clearContents();
+    while (m_accounts_widget->rowCount() > 0)
+        m_accounts_widget->removeRow(0);
 
     for (l = purple_accounts_get_all(), index = 0;
 		 l != NULL;
@@ -383,13 +380,13 @@ QQuailAccountsWindow::loadAccounts()
         qDebug() << "QQuailAccountsWindow::loadAccounts" << account->alias;
         qDebug() << "QQuailAccountsWindow::loadAccounts" << purple_account_get_username(account);
 
-        accounts_widget->insertRow(index);
+        m_accounts_widget->insertRow(index);
 
-        QQuailAccountItem *itemUserName = new QQuailAccountItem(index);
+        QQuailAccountItem *itemUserName = new QQuailAccountItem();
         itemUserName->setText(purple_account_get_username(account));
         itemUserName->setAccount(account);
 
-        QQuailAccountItem *itemProtocol = new QQuailAccountItem(index);
+        QQuailAccountItem *itemProtocol = new QQuailAccountItem();
         itemProtocol->setText(QQuailProtocolUtils::getProtocolName(protocolId));
         itemProtocol->setAccount(account);
         protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
@@ -400,7 +397,7 @@ QQuailAccountsWindow::loadAccounts()
             itemProtocol->setIcon(QQuailImageUtils::greyPixmap(protocolIcon,
                                                                protocolIconName));
 
-        QQuailAccountItem *itemEnabled = new QQuailAccountItem(index);
+        QQuailAccountItem *itemEnabled = new QQuailAccountItem();
         itemEnabled->setAccount(account);
         if (purple_account_get_enabled(account, UI_ID))
         {
@@ -412,16 +409,16 @@ QQuailAccountsWindow::loadAccounts()
         }
 
 
-        accounts_widget->setItem(index, xUserName, itemUserName);
-        accounts_widget->setItem(index, xProtocol, itemProtocol);
-        accounts_widget->setItem(index, xEnabled, itemEnabled);
+        m_accounts_widget->setItem(index, xUserName, itemUserName);
+        m_accounts_widget->setItem(index, xProtocol, itemProtocol);
+        m_accounts_widget->setItem(index, xEnabled, itemEnabled);
 
 	}
-    accounts_widget->setUpdatesEnabled(true);
+    m_accounts_widget->setUpdatesEnabled(true);
 }
 
 void
-QQuailAccountsWindow::newAccount()
+quail_accounts_window::newAccount()
 {
     qDebug() << "QQuailAccountsWindow::newAccount";
 	QQuailAccountEditor *editor;
@@ -434,11 +431,11 @@ QQuailAccountsWindow::newAccount()
 }
 
 void
-QQuailAccountsWindow::editAccount()
+quail_accounts_window::editAccount()
 {
     qDebug() << "QQuailAccountsWindow::editAccount";
 
-    QQuailAccountItem *item = (QQuailAccountItem *)accounts_widget->currentItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)m_accounts_widget->currentItem();
 
     QQuailAccountEditor *editor = new QQuailAccountEditor(item->getAccount(),
                                      this,
@@ -447,14 +444,14 @@ QQuailAccountsWindow::editAccount()
 }
 
 void
-QQuailAccountsWindow::deleteAccount()
+quail_accounts_window::deleteAccount()
 {
     qDebug() << "QQuailAccountsWindow::deleteAccount";
-    QQuailAccountItem *item = (QQuailAccountItem *)accounts_widget->currentItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)m_accounts_widget->currentItem();
 
 	purple_accounts_remove(item->getAccount());
 
-    accounts_widget->removeRow(item->row());
+    m_accounts_widget->removeRow(item->row());
 
 	connectButton->setEnabled(false);
 	disconnectButton->setEnabled(false);
@@ -463,12 +460,12 @@ QQuailAccountsWindow::deleteAccount()
 }
 
 void
-QQuailAccountsWindow::connectToAccount()
+quail_accounts_window::connectToAccount()
 {
     qDebug() << "QQuailAccountsWindow::connectToAccount";
     connectButton->setEnabled(false);
 
-    QQuailAccountItem *item = (QQuailAccountItem *)accounts_widget->currentItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)m_accounts_widget->currentItem();
     PurpleAccount *account = item->getAccount();
 
 //    item->startPulse(QQuailProtocolUtils::getProtocolIcon(account),
@@ -480,26 +477,26 @@ QQuailAccountsWindow::connectToAccount()
 }
 
 void
-QQuailAccountsWindow::disconnectFromAccount()
+quail_accounts_window::disconnectFromAccount()
 {
     qDebug() << "QQuailAccountsWindow::disconnectFromAccount";
-    QQuailAccountItem *item = (QQuailAccountItem *)accounts_widget->currentItem();
+    QQuailAccountItem *item = (QQuailAccountItem *)m_accounts_widget->currentItem();
 
 	purple_account_disconnect(item->getAccount());
 }
 
 void
-QQuailAccountsWindow::accountsToggled(bool)
+quail_accounts_window::accountsToggled(bool)
 {
     qDebug() << "QQuailAccountsWindow::accountsToggled";
     accountsButton->setChecked(true);
 }
 
 void
-QQuailAccountsWindow::slot_account_selected()
+quail_accounts_window::slot_account_selected()
 {
     qDebug() << "QQuailAccountsWindow::accountSelected";
-    QTableWidgetItem *item = accounts_widget->currentItem();
+    QTableWidgetItem *item = m_accounts_widget->currentItem();
     if (!item)
         return;
 
@@ -523,17 +520,17 @@ QQuailAccountsWindow::slot_account_selected()
 }
 
 void
-QQuailAccountsWindow::resizeEvent(QResizeEvent *)
+quail_accounts_window::resizeEvent(QResizeEvent *)
 {
-    accounts_widget->setColumnWidth(2, (accounts_widget->width() * 0.1) -2);
-    accounts_widget->setColumnWidth(1, (accounts_widget->width() * 0.15) -2);
-    accounts_widget->setColumnWidth(0, (accounts_widget->width() -
-                                 (accounts_widget->columnWidth(1) +
-                                  accounts_widget->columnWidth(2)) - 2));
+    m_accounts_widget->setColumnWidth(2, (m_accounts_widget->width() * 0.1) -2);
+    m_accounts_widget->setColumnWidth(1, (m_accounts_widget->width() * 0.15) -2);
+    m_accounts_widget->setColumnWidth(0, (m_accounts_widget->width() -
+                                 (m_accounts_widget->columnWidth(1) +
+                                  m_accounts_widget->columnWidth(2)) - 2));
 }
 
 QQuailAccountItem *
-QQuailAccountsWindow::getItemFromAccount(PurpleAccount *account)
+quail_accounts_window::getItemFromAccount(PurpleAccount *account)
 {
     qDebug() << "QQuailAccountsWindow::getItemFromAccount";
     QQuailAccountItem *gitem;
@@ -541,15 +538,37 @@ QQuailAccountsWindow::getItemFromAccount(PurpleAccount *account)
 	if (account == NULL)
 		return NULL;
 
-    for (int i=0; i<accounts_widget->rowCount(); ++i)
+    for (int i=0; i<m_accounts_widget->rowCount(); ++i)
 	{
-        gitem = (QQuailAccountItem *)accounts_widget->item(i,0);
+        gitem = (QQuailAccountItem *)m_accounts_widget->item(i,0);
 
 		if (gitem->getAccount() == account)
 			return gitem;
 	}
 
 	return NULL;
+}
+
+void
+quail_accounts_window::slot_table_item_pressed(QTableWidgetItem * item_selected)
+{
+    qDebug() << "quail_accounts_window::slot_table_item_pressed";
+    QQuailAccountItem* account_item = static_cast<QQuailAccountItem*>(
+                m_accounts_widget->item(item_selected->row(), xEnabled));
+
+    PurpleAccount* account = account_item->getAccount();
+    if (account_item->checkState() == Qt::Checked
+        && !purple_account_get_enabled(account, UI_ID))
+    {
+        qDebug() << "quail_accounts_window::slot_table_item_pressed.1";
+        purple_account_set_enabled(account, UI_ID, true);
+    }
+    else if (account_item->checkState() == Qt::Unchecked
+             && purple_account_get_enabled(account, UI_ID))
+    {
+        qDebug() << "quail_accounts_window::slot_table_item_pressed.2";
+        purple_account_set_enabled(account, UI_ID, false);
+    }
 }
 
 static void

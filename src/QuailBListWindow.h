@@ -35,7 +35,7 @@ class QToolBar;
 class QToolButton;
 class QTreeWidgetItem;
 
-class QQuailAccountsWindow;
+class quail_accounts_window;
 class QQuailBuddyList;
 
 class QQuailBListWindow : public QMainWindow
