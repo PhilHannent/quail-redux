@@ -197,7 +197,7 @@ QQuailMainWindow::createActions()
             this, SLOT(hide()));
     actQuit = new QAction(this);
     connect(actQuit, SIGNAL(triggered()),
-            qApp, SLOT(quit()));
+            this, SLOT(slot_quit()));
 }
 
 QMenu*
@@ -363,6 +363,7 @@ QQuailMainWindow::closeEvent(QCloseEvent *event)
 
     if (visibleWidget == accountsWin || visibleWidget == blistWin)
     {
+        slotSaveSettings();
         hide();
     }
     else
@@ -575,12 +576,13 @@ QQuailMainWindow::showPrefWindow()
     qDebug() << "QQuailMainWindow::showPrefWindow().end";
 }
 
-//void
-//QQuailMainWindow::saveSettings()
-//{
-//    saveGeometry();
-//    saveState();
-//}
+
+void
+QQuailMainWindow::slot_quit()
+{
+    slotSaveSettings();
+    qApp->quit();
+}
 
 QQuailMainWindow *
 qQuailGetMainWindow()
