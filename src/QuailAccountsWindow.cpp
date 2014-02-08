@@ -44,9 +44,9 @@
 #include <QToolButton>
 
 quail_account_item::quail_account_item()
-    : account(NULL)
-    , pulseTimer(0)
-    , pulseOrigPixmapName("")
+    : m_account(NULL)
+    , m_pulse_timer(0)
+    , m_pulse_orig_pixmap_name("")
 {
 }
 
@@ -56,67 +56,67 @@ quail_account_item::~quail_account_item()
 }
 
 void
-quail_account_item::startPulse(QPixmap onlinePixmap, QString pixmapName)
+quail_account_item::start_pulse(QPixmap onlinePixmap, QString pixmapName)
 {
     qDebug() << "QQuailAccountItem::startPulse";
-	stopPulse();
+    stop_pulse();
 
-	pulseGrey = true;
-	pulseStep = 0;
+    m_pulse_grey = true;
+    m_pulse_step = 0;
 
-	pulseOrigPixmap = new QPixmap(onlinePixmap);
-    pulseOrigPixmapName = pixmapName;
-    if (pulseTimer == 0) {
-        pulseTimer = new QTimer(this);
-        pulseTimer->setSingleShot(false);
+    m_pulse_orig_pixmap = new QPixmap(onlinePixmap);
+    m_pulse_orig_pixmap_name = pixmapName;
+    if (m_pulse_timer == 0) {
+        m_pulse_timer = new QTimer(this);
+        m_pulse_timer->setSingleShot(false);
 
-        connect(pulseTimer, SIGNAL(timeout()),
-                this, SLOT(updatePulse()));
+        connect(m_pulse_timer, SIGNAL(timeout()),
+                this, SLOT(update_pulse()));
     }
-    pulseTimer->start(100);
+    m_pulse_timer->start(100);
 }
 
 void
-quail_account_item::stopPulse()
+quail_account_item::stop_pulse()
 {
     qDebug() << "QQuailAccountItem::stopPulse";
-    if (pulseTimer == 0)
+    if (m_pulse_timer == 0)
         return;
-    pulseTimer->stop();
-    delete pulseOrigPixmap;
-    pulseOrigPixmap = NULL;
+    m_pulse_timer->stop();
+    delete m_pulse_orig_pixmap;
+    m_pulse_orig_pixmap = NULL;
 }
 
 void
-quail_account_item::setAccount(PurpleAccount *account)
+quail_account_item::set_account(PurpleAccount *account)
 {
-	this->account = account;
+    this->m_account = account;
 }
 
 PurpleAccount *
 quail_account_item::get_account() const
 {
-	return account;
+    return m_account;
 }
 
 void
-quail_account_item::updatePulse()
+quail_account_item::update_pulse()
 {
     qDebug() << "QQuailAccountItem::updatePulse()";
-    QPixmap tempPixmap = pulseOrigPixmap->copy();
+    QPixmap tempPixmap = m_pulse_orig_pixmap->copy();
 
-    if (pulseGrey)
-        pulseStep += 0.20;
+    if (m_pulse_grey)
+        m_pulse_step += 0.20;
     else
-        pulseStep -= 0.20;
+        m_pulse_step -= 0.20;
 
-    pulseGrey = (pulseStep <= 0);
+    m_pulse_grey = (m_pulse_step <= 0);
 
-    QString pixmapName = pulseOrigPixmapName;
-    if (pulseGrey)
+    QString pixmapName = m_pulse_orig_pixmap_name;
+    if (m_pulse_grey)
         pixmapName += "-grey";
     qDebug() << "QQuailAccountItem::updatePulse().1" << pixmapName;
-    setIcon(QQuailImageUtils::saturate(tempPixmap, pulseStep, pixmapName));
+    setIcon(QQuailImageUtils::saturate(tempPixmap, m_pulse_step, pixmapName));
 }
 
 /**************************************************************************
@@ -126,14 +126,14 @@ static void
 signedOnCb(PurpleConnection *gc, quail_accounts_window *win)
 {
     qDebug() << "QQuailAccountsWindow::signedOnCb";
-	win->accountSignedOn(purple_connection_get_account(gc));
+    win->account_signed_on(purple_connection_get_account(gc));
 }
 
 static void
 signedOffCb(PurpleConnection *gc, quail_accounts_window *win)
 {
     qDebug() << "QQuailAccountsWindow::signedOffCb";
-	win->accountSignedOff(purple_connection_get_account(gc));
+    win->account_signed_off(purple_connection_get_account(gc));
 }
 
 //static void
@@ -152,10 +152,10 @@ signedOffCb(PurpleConnection *gc, quail_accounts_window *win)
  * QQuailAccountsWindow
  **************************************************************************/
 quail_accounts_window::quail_accounts_window(QMainWindow *parent)
-	: QMainWindow(), parentMainWindow(parent)
+    : QMainWindow(), m_parent(parent)
 {
     qDebug() << "QQuailAccountsWindow::QQuailAccountsWindow";
-	buildInterface();
+    build_interface();
 
 	purple_signal_connect(purple_connections_get_handle(), "signed-on",
                         this, PURPLE_CALLBACK(signedOnCb), this);
@@ -167,7 +167,8 @@ quail_accounts_window::quail_accounts_window(QMainWindow *parent)
 //    purple_signal_connect(purple_accounts_get_handle(), "account-enabled",
 //                        this, PURPLE_CALLBACK(account_abled_cb), GINT_TO_POINTER(TRUE));
 
-	loadAccounts();
+    connect(this, SIGNAL(signal_update_accounts()), this, SLOT(slot_update_accounts()));
+    emit signal_update_accounts();
 }
 
 quail_accounts_window::~quail_accounts_window()
@@ -176,22 +177,14 @@ quail_accounts_window::~quail_accounts_window()
 }
 
 void
-quail_accounts_window::slotUpdateAccounts()
-{
-	loadAccounts();
-}
-
-void
-quail_accounts_window::accountSignedOn(PurpleAccount *account)
+quail_accounts_window::account_signed_on(PurpleAccount *account)
 {
     qDebug() << "QQuailAccountsWindow::accountSignedOn()";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
     if (item->get_account() == account)
 	{
-		connectButton->setEnabled(false);
-		disconnectButton->setEnabled(true);
-		deleteButton->setEnabled(false);
+        m_delete_btn->setEnabled(false);
 	}
 	else
         item = quail_accounts_window::get_item_from_account(account);
@@ -199,23 +192,21 @@ quail_accounts_window::accountSignedOn(PurpleAccount *account)
 	if (item != NULL)
 	{
         item = (quail_account_item*)m_accounts_widget->item( item->row(), xProtocol);
-		item->stopPulse();
+        item->stop_pulse();
         item->setIcon(QQuailProtocolUtils::getProtocolIcon(account));
 	}
     qDebug() << "QQuailAccountsWindow::accountSignedOn().end";
 }
 
 void
-quail_accounts_window::accountSignedOff(PurpleAccount *account)
+quail_accounts_window::account_signed_off(PurpleAccount *account)
 {
     qDebug() << "QQuailAccountsWindow::accountSignedOff()";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
     if (item->get_account() == account)
 	{
-		connectButton->setEnabled(true);
-		disconnectButton->setEnabled(false);
-		deleteButton->setEnabled(true);
+        m_delete_btn->setEnabled(true);
 	}
 	else
         item = quail_accounts_window::get_item_from_account(account);
@@ -231,11 +222,11 @@ quail_accounts_window::accountSignedOff(PurpleAccount *account)
 }
 
 void
-quail_accounts_window::buildInterface()
+quail_accounts_window::build_interface()
 {
     qDebug() << "QQuailAccountsWindow::buildInterface";
     setWindowIcon(QIcon(":/data/images/logo.png"));
-	setupToolbar();
+    setup_toolbar();
 
 	/* Create the accounts view */
     m_accounts_widget = new QTableWidget(this);
@@ -259,107 +250,78 @@ quail_accounts_window::buildInterface()
 }
 
 void
-quail_accounts_window::setupToolbar()
+quail_accounts_window::setup_toolbar()
 {
     qDebug() << "QQuailAccountsWindow::setupToolbar";
 	QAction *a;
 
-	toolbar = new QToolBar(this);
+    m_toolbar = new QToolBar(this);
     //toolbar->setMovable(false);
 
     /* Buddy List */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
                     tr("Buddy List"),
                     this);
-    toolbar->addAction(a);
+    m_toolbar->addAction(a);
 
     connect(a, SIGNAL(triggered(bool)),
-            parentMainWindow, SLOT(showBlistWindow()));
+            m_parent, SLOT(showBlistWindow()));
 
     /* Accounts */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/accounts.png")),
                     tr("Accounts"),
                     this);
     a->setEnabled(true);
-    accountsButton = a;
-    toolbar->addAction(a);
-
-    connect(a, SIGNAL(toggled(bool)),
-            this, SLOT(accountsToggled(bool)));
+    m_toolbar->addAction(a);
 
     /* Conversations */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/conversations.png")),
                     tr("Conversations"),
                     this);
-    toolbar->addAction(a);
+    m_toolbar->addAction(a);
     connect(a, SIGNAL(triggered(bool)),
-            parentMainWindow, SLOT(showConvWindow()));
+            m_parent, SLOT(showConvWindow()));
 
     /* Now we're going to construct the toolbar on the right. */
-    toolbar->addSeparator();
+    m_toolbar->addSeparator();
 
 	/* New */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/new.png")),
                     tr("New Account"), this);
-    toolbar->addAction(a);
+    m_toolbar->addAction(a);
 
     connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(newAccount()));
+            this, SLOT(new_account()));
 
 	/* Edit */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/edit.png")),
                     tr("Edit Account"),
                     this);
-	editButton = a;
-    toolbar->addAction(a);
+    m_edit_btn = a;
+    m_toolbar->addAction(a);
     a->setEnabled(false);
 
     connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(editAccount()));
+            this, SLOT(edit_account()));
 
 	/* Delete */
     a = new QAction(QIcon(QPixmap(":/data/images/actions/delete.png")),
                     tr("Delete"),
                     this);
-	deleteButton = a;
-    toolbar->addAction(a);
+    m_delete_btn = a;
+    m_toolbar->addAction(a);
     a->setEnabled(false);
 
     connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(deleteAccount()));
+            this, SLOT(delete_account()));
 
-	/* Separator */
-	toolbar->addSeparator();
-
-	/* Connect */
-    a = new QAction(QIcon(QPixmap(":/data/images/actions/connect.png")),
-                    tr("Connect"),
-                    this);
-	connectButton = a;
-    toolbar->addAction(a);
-
-	a->setEnabled(false);
-    connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(connectToAccount()));
-
-	/* Disconnect */
-    a = new QAction(QIcon(QPixmap(":/data/images/actions/disconnect.png")),
-                    tr("Connect"),
-                    this);
-	disconnectButton = a;
-    toolbar->addAction(a);
-
-	a->setEnabled(false);
-    connect(a, SIGNAL(triggered(bool)),
-			this, SLOT(disconnectFromAccount()));
-
-    this->addToolBar(toolbar);
+    this->addToolBar(m_toolbar);
 }
 
 void
-quail_accounts_window::loadAccounts()
+quail_accounts_window::slot_update_accounts()
 {
-    qDebug() << "QQuailAccountsWindow::loadAccounts";
+    qDebug() << "quail_accounts_window::slot_update_accounts";
     GList *l;
     int index = 0;
     m_accounts_widget->setUpdatesEnabled(false);
@@ -375,20 +337,20 @@ quail_accounts_window::loadAccounts()
         QString protocolIconName;
 		PurpleAccount *account = (PurpleAccount *)l->data;
 		QString protocolId = purple_account_get_protocol_id(account);
-        qDebug() << "QQuailAccountsWindow::loadAccounts" << index;
-        qDebug() << "QQuailAccountsWindow::loadAccounts" << protocolId;
-        qDebug() << "QQuailAccountsWindow::loadAccounts" << account->alias;
-        qDebug() << "QQuailAccountsWindow::loadAccounts" << purple_account_get_username(account);
+        qDebug() << "quail_accounts_window::slot_update_accounts" << index;
+        qDebug() << "quail_accounts_window::slot_update_accounts" << protocolId;
+        qDebug() << "quail_accounts_window::slot_update_accounts" << account->alias;
+        qDebug() << "quail_accounts_window::slot_update_accounts" << purple_account_get_username(account);
 
         m_accounts_widget->insertRow(index);
 
         quail_account_item *itemUserName = new quail_account_item();
         itemUserName->setText(purple_account_get_username(account));
-        itemUserName->setAccount(account);
+        itemUserName->set_account(account);
 
         quail_account_item *itemProtocol = new quail_account_item();
         itemProtocol->setText(QQuailProtocolUtils::getProtocolName(protocolId));
-        itemProtocol->setAccount(account);
+        itemProtocol->set_account(account);
         protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
         protocolIconName = QQuailProtocolUtils::getProtocolIconName(account);
         if (purple_account_is_connected(account))
@@ -398,7 +360,7 @@ quail_accounts_window::loadAccounts()
                                                                protocolIconName));
 
         quail_account_item *itemEnabled = new quail_account_item();
-        itemEnabled->setAccount(account);
+        itemEnabled->set_account(account);
         if (purple_account_get_enabled(account, UI_ID))
         {
             itemEnabled->setCheckState(Qt::Checked);
@@ -418,20 +380,20 @@ quail_accounts_window::loadAccounts()
 }
 
 void
-quail_accounts_window::newAccount()
+quail_accounts_window::new_account()
 {
-    qDebug() << "QQuailAccountsWindow::newAccount";
+    qDebug() << "quail_accounts_window::new_account";
 	QQuailAccountEditor *editor;
 
     editor = new QQuailAccountEditor(NULL, this, tr("New Account"));
     connect(editor, SIGNAL(signalAccountUpdated()),
-            this, SLOT(slotUpdateAccounts()));
+            this, SLOT(slot_update_accounts()));
 
     editor->show();
 }
 
 void
-quail_accounts_window::editAccount()
+quail_accounts_window::edit_account()
 {
     qDebug() << "QQuailAccountsWindow::editAccount";
 
@@ -444,7 +406,7 @@ quail_accounts_window::editAccount()
 }
 
 void
-quail_accounts_window::deleteAccount()
+quail_accounts_window::delete_account()
 {
     qDebug() << "QQuailAccountsWindow::deleteAccount";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
@@ -453,70 +415,20 @@ quail_accounts_window::deleteAccount()
 
     m_accounts_widget->removeRow(item->row());
 
-	connectButton->setEnabled(false);
-	disconnectButton->setEnabled(false);
-	editButton->setEnabled(false);
-	deleteButton->setEnabled(false);
-}
-
-void
-quail_accounts_window::connectToAccount()
-{
-    qDebug() << "QQuailAccountsWindow::connectToAccount";
-    connectButton->setEnabled(false);
-
-    quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
-    PurpleAccount *account = item->get_account();
-
-//    item->startPulse(QQuailProtocolUtils::getProtocolIcon(account),
-//                     QQuailProtocolUtils::getProtocolIconName(account));
-
-    purple_account_set_enabled(account, UI_ID, TRUE);
-    purple_account_connect(account);
-    qDebug() << "QQuailAccountsWindow::connectToAccount.end";
-}
-
-void
-quail_accounts_window::disconnectFromAccount()
-{
-    qDebug() << "QQuailAccountsWindow::disconnectFromAccount";
-    quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
-
-    purple_account_disconnect(item->get_account());
-}
-
-void
-quail_accounts_window::accountsToggled(bool)
-{
-    qDebug() << "QQuailAccountsWindow::accountsToggled";
-    accountsButton->setChecked(true);
+    m_edit_btn->setEnabled(false);
+    m_delete_btn->setEnabled(false);
 }
 
 void
 quail_accounts_window::slot_account_selected()
 {
-    qDebug() << "QQuailAccountsWindow::accountSelected";
+    qDebug() << "quail_accounts_window::slot_account_selected()";
     QTableWidgetItem *item = m_accounts_widget->currentItem();
     if (!item)
         return;
 
-    quail_account_item *accountItem = (quail_account_item *)item;
-    PurpleAccount *account = accountItem->get_account();
-    const char *protocolId = purple_account_get_protocol_id(account);
-
-	if (purple_plugins_find_with_id(protocolId) == NULL)
-	{
-		connectButton->setEnabled(false);
-		disconnectButton->setEnabled(false);
-	}
-	else
-	{
-		connectButton->setEnabled(!purple_account_is_connected(account));
-		disconnectButton->setEnabled(purple_account_is_connected(account));
-	}
-
-	editButton->setEnabled(true);
-	deleteButton->setEnabled(true);
+    m_edit_btn->setEnabled(true);
+    m_delete_btn->setEnabled(true);
 }
 
 void

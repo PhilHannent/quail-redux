@@ -45,77 +45,68 @@ class quail_account_item : public QObject, public QTableWidgetItem
         quail_account_item();
         ~quail_account_item();
 
-        void startPulse(QPixmap onlinePixmap, QString pixmapName);
-		void stopPulse();
+        void start_pulse(QPixmap onlinePixmap, QString pixmapName);
+        void stop_pulse();
 
-		void setAccount(PurpleAccount *account);
+        void set_account(PurpleAccount *m_account);
         PurpleAccount *get_account() const;
 
 	protected slots:
-		void updatePulse();
+        void update_pulse();
 
 	private:
-		PurpleAccount *account;
-		QTimer *pulseTimer;
-		bool pulseGrey;
-		float pulseStep;
-		QPixmap *pulseOrigPixmap;
-        QString pulseOrigPixmapName;
+        PurpleAccount *m_account;
+        QTimer *m_pulse_timer;
+        bool m_pulse_grey;
+        float m_pulse_step;
+        QPixmap *m_pulse_orig_pixmap;
+        QString m_pulse_orig_pixmap_name;
 };
 
 class quail_accounts_window : public QMainWindow
 {
 	Q_OBJECT
 
-	public:
-        quail_accounts_window(QMainWindow *parent);
-        ~quail_accounts_window();
+public:
+    quail_accounts_window(QMainWindow *parent);
+    ~quail_accounts_window();
 
-		void accountSignedOn(PurpleAccount *account);
-		void accountSignedOff(PurpleAccount *account);
+    void account_signed_on(PurpleAccount *account);
+    void account_signed_off(PurpleAccount *account);
 
-        enum AccountsWindowColumnOrder {
-            xUserName = 0,
-            xProtocol,
-            xEnabled };
+    enum AccountsWindowColumnOrder {
+        xUserName = 0,
+        xProtocol,
+        xEnabled };
 
-    public slots:
-        void slotUpdateAccounts();
+signals:
+    void signal_update_accounts();
 
-	private slots:
-		void newAccount();
-		void editAccount();
-		void deleteAccount();
+public slots:
+    void slot_update_accounts();
 
-		void connectToAccount();
-		void disconnectFromAccount();
+private slots:
+    void new_account();
+    void edit_account();
+    void delete_account();
 
-		void accountsToggled(bool state);
-        void slot_account_selected();
-        //void slot_table_item_clicked(QTableWidgetItem *);
-        void slot_table_item_pressed(QTableWidgetItem *);
+    void slot_account_selected();
+    void slot_table_item_pressed(QTableWidgetItem *);
 
-		void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
-	protected:
-        quail_account_item *get_item_from_account(PurpleAccount *account);
+private:
+    void build_interface();
+    void setup_toolbar();
+    quail_account_item *get_item_from_account(PurpleAccount *account);
 
-	private:
-        void buildInterface();
-        void setupToolbar();
-        void loadAccounts();
-        QMainWindow *parentMainWindow;
+    QMainWindow *m_parent;
+    QToolBar *m_toolbar;
 
-		QToolBar *toolbar;
-        QMenu *accountMenu;
-		QAction *accountsButton;
+    QAction *m_edit_btn;
+    QAction *m_delete_btn;
 
-		QAction *editButton;
-		QAction *deleteButton;
-		QAction *connectButton;
-		QAction *disconnectButton;
-
-        QTableWidget *m_accounts_widget;
+    QTableWidget *m_accounts_widget;
 };
 
 PurpleConnectionUiOps *qQuailGetConnectionUiOps();
