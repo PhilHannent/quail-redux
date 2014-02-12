@@ -131,11 +131,11 @@ qQuailGetCoreUiOps()
  **************************************************************************/
 quail_main_window::quail_main_window(QWidget *parent)
     : QMainWindow(parent),
-      accountsWin(0),
-      blistWin(0),
-      convWin(0),
+      m_accounts_window(0),
+      m_blist_window(0),
+      m_conv_window(0),
       lastConvWin(0),
-      prefWin(0),
+      m_pref_window(0),
       nextConvWinId(0),
       m_language("en")
 {
@@ -374,7 +374,7 @@ quail_main_window::closeEvent(QCloseEvent *event)
     qDebug() << "QQuailMainWindow::closeEvent()";
     QWidget *visibleWidget = widgetStack->currentWidget();
 
-    if (visibleWidget == accountsWin || visibleWidget == blistWin)
+    if (visibleWidget == m_accounts_window || visibleWidget == m_blist_window)
     {
         slotSaveSettings();
         hide();
@@ -435,15 +435,15 @@ quail_main_window::addConversationWindow(PurpleConversation *conv)
 //    }
 
 //    conv->ui_data = win;
-    if (convWin == 0)
+    if (m_conv_window == 0)
     {
-        convWin = new QQuailConvWindow(this);
-        getWidgetStack()->addWidget(convWin);
+        m_conv_window = new QQuailConvWindow(this);
+        getWidgetStack()->addWidget(m_conv_window);
         //qwin = new QQuailConvWindow(win, this);
         //qwin->setId(nextConvWinId++);
     }
-    convWin->addConversation(conv);
-    getWidgetStack()->setCurrentWidget(convWin);
+    m_conv_window->addConversation(conv);
+    getWidgetStack()->setCurrentWidget(m_conv_window);
     qDebug() << "QQuailMainWindow::addConversationWindow().end";
 }
 
@@ -500,13 +500,13 @@ quail_main_window::slotReadSettings()
 QQuailBListWindow *
 quail_main_window::getBlistWindow() const
 {
-    return blistWin;
+    return m_blist_window;
 }
 
 quail_accounts_window *
 quail_main_window::getAccountsWindow() const
 {
-    return accountsWin;
+    return m_accounts_window;
 }
 
 void
@@ -537,14 +537,14 @@ quail_main_window::getMeters() const
 void
 quail_main_window::showBlistWindow()
 {
-    if (!blistWin)
+    if (!m_blist_window)
 	{
-		blistWin = new QQuailBListWindow(this);
-        widgetStack->addWidget(blistWin);
+        m_blist_window = new QQuailBListWindow(this);
+        widgetStack->addWidget(m_blist_window);
 	}
 
     setWindowTitle(tr("Buddy List"));
-    widgetStack->setCurrentWidget(blistWin);
+    widgetStack->setCurrentWidget(m_blist_window);
     showNormal();
     raise();
 }
@@ -552,14 +552,14 @@ quail_main_window::showBlistWindow()
 void
 quail_main_window::showAccountsWindow()
 {
-    if (!accountsWin)
+    if (!m_accounts_window)
 	{
-        accountsWin = new quail_accounts_window(this);
-        widgetStack->addWidget(accountsWin);
+        m_accounts_window = new quail_accounts_window(this);
+        widgetStack->addWidget(m_accounts_window);
 	}
 
     setWindowTitle(tr("Accounts"));
-    widgetStack->setCurrentWidget(accountsWin);
+    widgetStack->setCurrentWidget(m_accounts_window);
     showNormal();
     raise();
 }
@@ -567,25 +567,25 @@ quail_main_window::showAccountsWindow()
 void
 quail_main_window::showConvWindow()
 {
-    if (!convWin)
+    if (!m_conv_window)
         return;
 
     setWindowTitle(tr("Conversations"));
-    widgetStack->setCurrentWidget(convWin);
+    widgetStack->setCurrentWidget(m_conv_window);
 }
 
 void
 quail_main_window::showPrefWindow()
 {
     qDebug() << "QQuailMainWindow::showPrefWindow()";
-    if (!prefWin)
+    if (!m_pref_window)
     {
         qDebug() << "QQuailMainWindow::showPrefWindow().1";
-        prefWin = new QQuailPrefsDialog(this);
-        widgetStack->addWidget(prefWin);
+        m_pref_window = new QQuailPrefsDialog(this);
+        widgetStack->addWidget(m_pref_window);
     }
     setWindowTitle(tr("Preferences"));
-    widgetStack->setCurrentWidget(prefWin);
+    widgetStack->setCurrentWidget(m_pref_window);
     qDebug() << "QQuailMainWindow::showPrefWindow().end";
 }
 

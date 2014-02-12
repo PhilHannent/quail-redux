@@ -97,12 +97,12 @@ class quail_main_window : public QMainWindow
         void switchLanguage();
 
         QStackedWidget *widgetStack;
-		quail_accounts_window *accountsWin;
-		QQuailBListWindow *blistWin;
+        quail_accounts_window *m_accounts_window;
+        QQuailBListWindow *m_blist_window;
 		QQuailConnectionMeters *meters;
-        QQuailConvWindow *convWin;
+        QQuailConvWindow *m_conv_window;
         QQuailConversation *lastConvWin;
-        QQuailPrefsDialog *prefWin;
+        QQuailPrefsDialog *m_pref_window;
         QAction *actShowBuddyList;
         QAction *actShowAccounts;
         QAction *actMinimize;
