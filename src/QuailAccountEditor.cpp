@@ -45,7 +45,7 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
                                          QString name)
     : QDialog(parent), account(account), m_plugin(NULL),
       m_prpl_info(NULL), userSplitEntries(NULL),
-      protocolOptEntries(NULL), newProxyType(PURPLE_PROXY_USE_GLOBAL)
+      protocolOptEntries(NULL), newProxyType(PURPLE_PROXY_NONE)
 {
     qDebug() << "QQuailAccountEditor::QQuailAccountEditor";
     setWindowTitle(name);
@@ -363,6 +363,7 @@ QQuailAccountEditor::buildProxyTab()
     proxyDropDown->addItem(tr("HTTP"));
     proxyDropDown->addItem(tr("SOCKS 4"));
     proxyDropDown->addItem(tr("SOCKS 5"));
+
     qDebug() << "QQuailAccountEditor::buildProxyTab.4";
 	/* Host */
 	grid->addWidget(new QLabel(tr("Host:"), frame), row, 0);
@@ -410,6 +411,7 @@ QQuailAccountEditor::buildProxyTab()
 	}
 	else
 	{
+        proxyDropDown->setCurrentIndex((int)newProxyType + 1);
 		proxyHost->setReadOnly(true);
 		proxyPort->setReadOnly(true);
 		proxyUsername->setReadOnly(true);
@@ -831,16 +833,17 @@ QQuailAccountEditor::slotAccept()
 
 		if (!str.isEmpty())
 		{
-            bool ok = false;
+            bool ok;
             int intVal = str.toInt(&ok);
-
+            qDebug() << "QQuailAccoutEditor::slotAccept():str:" << str;
+            qDebug() << "QQuailAccoutEditor::slotAccept():intVal" << intVal;
 			if (ok)
 				purple_proxy_info_set_port(proxyInfo, intVal);
 			else
 				purple_proxy_info_set_port(proxyInfo, 0);
 		}
 		else
-			purple_proxy_info_set_port(proxyInfo, 0);
+            purple_proxy_info_set_port(proxyInfo, 0);
 
 		/* Username */
 		str = proxyUsername->text();
