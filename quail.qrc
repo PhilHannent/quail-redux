@@ -72,5 +72,7 @@
         <file>data/images/status/log-out.png</file>
         <file>data/images/status/offline.png</file>
         <file>data/images/status/person.png</file>
+        <file>data/images/protocols/facebook.svg</file>
+        <file>data/images/protocols/myspaceim.svg</file>
     </qresource>
 </RCC>

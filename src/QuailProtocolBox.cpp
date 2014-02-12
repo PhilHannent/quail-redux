@@ -24,6 +24,7 @@
 
 #include <libpurple/debug.h>
 
+#include <QDebug>
 #include <QPixmap>
 
 QQuailProtocolBox::QQuailProtocolBox(QWidget *parent)
@@ -72,8 +73,10 @@ QQuailProtocolBox::setCurrentProtocol(QString protocolId)
 void
 QQuailProtocolBox::buildMenu(QString protocolId)
 {
+    qDebug() << "QQuailProtocolBox::buildMenu";
 	GList *p;
 	int count;
+    bool prpl_jabber_found = false;
 
 	for (p = purple_plugins_get_protocols(), count = 0;
 		 p != NULL;
@@ -82,12 +85,22 @@ QQuailProtocolBox::buildMenu(QString protocolId)
 		PurplePlugin *plugin;
 
 		plugin = (PurplePlugin *)p->data;
+        QString plugin_name = plugin->info->name;
+        if (!prpl_jabber_found && plugin_name == "XMPP")
+            prpl_jabber_found = true;
 
+        qDebug() << "QQuailProtocolBox::buildMenu" << plugin_name;
         addItem(
             QQuailProtocolUtils::getProtocolIcon(plugin),
-			plugin->info->name);
+            plugin_name);
 
 		if (protocolId != NULL && protocolId == plugin->info->id)
             setCurrentIndex(count);
 	}
+    if (prpl_jabber_found)
+    {
+        addItem(QQuailProtocolUtils::getProtocolIcon("google-talk"), "Google Talk");
+        addItem(QQuailProtocolUtils::getProtocolIcon("facebook"), "Facebook");
+    }
+    this->model()->sort(0);
 }
