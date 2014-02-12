@@ -43,8 +43,8 @@
 QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
                                          QWidget *parent,
                                          QString name)
-    : QDialog(parent), account(account), plugin(NULL),
-      prplInfo(NULL), userSplitEntries(NULL),
+    : QDialog(parent), account(account), m_plugin(NULL),
+      m_prpl_info(NULL), userSplitEntries(NULL),
       protocolOptEntries(NULL), newProxyType(PURPLE_PROXY_USE_GLOBAL)
 {
     qDebug() << "QQuailAccountEditor::QQuailAccountEditor";
@@ -55,20 +55,20 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
 		if (purple_plugins_get_protocols() != NULL)
 		{
             qDebug() << "QQuailAccountEditor::QQuailAccountEditor.1a";
-			plugin = (PurplePlugin *)purple_plugins_get_protocols()->data;
+            m_plugin = (PurplePlugin *)purple_plugins_get_protocols()->data;
 
-            prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
+            m_prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(m_plugin);
 
-			protocolId = plugin->info->id;
+            m_protocol_id = m_plugin->info->id;
 		}
 	}
 	else
 	{
         qDebug() << "QQuailAccountEditor::QQuailAccountEditor.2";
-		protocolId = purple_account_get_protocol_id(account);
+        m_protocol_id = purple_account_get_protocol_id(account);
 
-        if ((plugin = purple_plugins_find_with_id(protocolId.toLatin1())) != NULL)
-            prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
+        if ((m_plugin = purple_plugins_find_with_id(m_protocol_id.toLatin1())) != NULL)
+            m_prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(m_plugin);
 	}
 
 	buildInterface();
@@ -118,13 +118,13 @@ QQuailAccountEditor::buildTabs()
 	tabs->addTab(widget, tr("Account"));
     tabList.append(widget);
 
-	if (plugin != NULL)
+    if (m_plugin != NULL)
 	{
 		widget = buildProtocolTab();
 
 		tabs->addTab(widget,
-            QQuailProtocolUtils::getProtocolIcon(plugin),
-			plugin->info->name);
+            QQuailProtocolUtils::getProtocolIcon(m_plugin),
+            m_plugin->info->name);
 
 		tabList.append(widget);
 	}
@@ -188,16 +188,16 @@ QQuailAccountEditor::buildAccountTab()
 	 * We want to hide a couple of things if the protocol doesn't want
 	 * a password.
 	 */
-	if (prplInfo != NULL)
+    if (m_prpl_info != NULL)
 	{
-		if (prplInfo->options & OPT_PROTO_NO_PASSWORD)
+        if (m_prpl_info->options & OPT_PROTO_NO_PASSWORD)
 		{
 			passwordLabel->hide();
 			passwordEntry->hide();
 			rememberPassCheck->hide();
 		}
 
-		if (prplInfo->register_user == NULL)
+        if (m_prpl_info->register_user == NULL)
 			registerButton->hide();
 	}
 
@@ -236,9 +236,9 @@ QQuailAccountEditor::buildProtocolTab()
 		protocolOptEntries = NULL;
 	}
 
-	if (prplInfo != NULL)
+    if (m_prpl_info != NULL)
 	{
-		for (l = prplInfo->protocol_options; l != NULL; l = l->next)
+        for (l = m_prpl_info->protocol_options; l != NULL; l = l->next)
 		{
 			PurpleAccountOption *option = (PurpleAccountOption *)l->data;
 
@@ -246,7 +246,7 @@ QQuailAccountEditor::buildProtocolTab()
 			{
                 case PURPLE_PREF_BOOLEAN:
 					if (account == NULL ||
-						protocolId != purple_account_get_protocol_id(account))
+                        m_protocol_id != purple_account_get_protocol_id(account))
 					{
                         purple_account_option_get_default_bool(option);
 					}
@@ -267,7 +267,7 @@ QQuailAccountEditor::buildProtocolTab()
 
                 case PURPLE_PREF_INT:
 					if (account == NULL ||
-						protocolId != purple_account_get_protocol_id(account))
+                        m_protocol_id != purple_account_get_protocol_id(account))
 					{
 						intValue = purple_account_option_get_default_int(option);
 					}
@@ -293,7 +293,7 @@ QQuailAccountEditor::buildProtocolTab()
 
                 case PURPLE_PREF_STRING:
 					if (account == NULL ||
-						protocolId != purple_account_get_protocol_id(account))
+                        m_protocol_id != purple_account_get_protocol_id(account))
 					{
 						strValue =
 							purple_account_option_get_default_string(option);
@@ -431,7 +431,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	/* Protocol */
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
     protocolList = new QQuailProtocolBox(parent);
-	protocolList->setCurrentProtocol(protocolId);
+    protocolList->setCurrentProtocol(m_protocol_id);
 
 	grid->addWidget(protocolList, row++, 1);
 
@@ -445,8 +445,8 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	grid->addWidget(screenNameEntry, row++, 1);
 
 	/* User split stuff. */
-	if (prplInfo != NULL)
-		userSplits = prplInfo->user_splits;
+    if (m_prpl_info != NULL)
+        userSplits = m_prpl_info->user_splits;
 
 	if (account != NULL)
 		username = purple_account_get_username(account);
@@ -549,8 +549,8 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	 * We want to hide a couple of things if the protocol doesn't want
 	 * a password.
 	 */
-	if (prplInfo != NULL &&
-		(prplInfo->options & OPT_PROTO_NO_PASSWORD))
+    if (m_prpl_info != NULL &&
+        (m_prpl_info->options & OPT_PROTO_NO_PASSWORD))
 	{
 		passwordLabel->hide();
 		passwordEntry->hide();
@@ -576,7 +576,7 @@ QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 		mailNotificationCheck->setChecked(
 				purple_account_get_check_mail(account));
     qDebug() << "QQuailAccountEditor::buildUserOpts.3";
-	if (prplInfo != NULL && !(prplInfo->options & OPT_PROTO_MAIL_CHECK))
+    if (m_prpl_info != NULL && !(m_prpl_info->options & OPT_PROTO_MAIL_CHECK))
 		mailNotificationCheck->hide();
     qDebug() << "QQuailAccountEditor::buildUserOpts.end";
 }
@@ -607,22 +607,35 @@ QQuailAccountEditor::proxyTypeChanged(int index)
 void
 QQuailAccountEditor::protocolChanged(int index)
 {
-    qDebug() << "QQuailAccountEditor::protocolChanged";
-	GList *l;
+    qDebug() << "QQuailAccountEditor::protocolChanged:index:" << index;
+//	GList *l;
+    QString protocolId = protocolList->itemData(index).toString();
+    qDebug() << "QQuailAccountEditor::protocolChanged:protocolId:" << protocolId;
+//    l = g_list_nth(purple_plugins_get_protocols(), protocolCount.toInt());
 
-	l = g_list_nth(purple_plugins_get_protocols(), index);
+//	if (l == NULL)
+//	{
+//        purple_debug(PURPLE_DEBUG_FATAL, "QQuailAccountEditor",
+//				   "Protocol switched to is not in list!\n");
+//		abort();
+//	}
 
-	if (l == NULL)
-	{
+    //plugin = (PurplePlugin *)l->data;
+    if (protocolId == "google-talk"
+            || protocolId == "facebook")
+        m_plugin = purple_plugins_find_with_id("prpl-jabber");
+    else
+        m_plugin = purple_plugins_find_with_id(protocolId.toLatin1());
+
+    if (m_plugin == NULL)
+    {
         purple_debug(PURPLE_DEBUG_FATAL, "QQuailAccountEditor",
-				   "Protocol switched to is not in list!\n");
-		abort();
-	}
+                   "Protocol switched to is not in list!\n");
+        abort();
+    }
 
-	plugin = (PurplePlugin *)l->data;
-
-    prplInfo   = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
-	protocolId = plugin->info->id;
+    m_prpl_info   = PURPLE_PLUGIN_PROTOCOL_INFO(m_plugin);
+    m_protocol_id = protocolId;
 
     tabs->removeTab(tabs->indexOf(accountWidget));
     tabs->removeTab(tabs->indexOf(protocolWidget));
@@ -657,9 +670,15 @@ void
 QQuailAccountEditor::slotAccept()
 {
     qDebug() << "QQuailAccountEditor::slotAccept";
-	QString str, username;
+    QString str, username, protocolId;
 	GList *l, *l2;
 	bool newAccount = (account == NULL);
+
+    if (m_protocol_id == "google-talk"
+            || m_protocol_id == "facebook")
+        protocolId = "prpl-jabber";
+    else
+        protocolId = m_protocol_id;
 
 	if (account == NULL)
 	{
@@ -690,7 +709,7 @@ QQuailAccountEditor::slotAccept()
 	purple_account_set_remember_password(account,
 									   rememberPassCheck->isChecked());
 	/* Check Mail */
-	if (prplInfo->options & OPT_PROTO_MAIL_CHECK)
+    if (m_prpl_info->options & OPT_PROTO_MAIL_CHECK)
 		purple_account_set_check_mail(account,
 									mailNotificationCheck->isChecked());
 	/* Auto-Login */
@@ -706,7 +725,7 @@ QQuailAccountEditor::slotAccept()
 
 	/* Build the username string. */
 	username = screenNameEntry->text();
-	for (l = prplInfo->user_splits, l2 = userSplitEntries;
+    for (l = m_prpl_info->user_splits, l2 = userSplitEntries;
 		 l != NULL && l2 != NULL;
 		 l = l->next, l2 = l2->next)
 	{
@@ -730,7 +749,7 @@ QQuailAccountEditor::slotAccept()
 	}
     purple_account_set_username(account, username.toStdString().c_str());
 	/* Add the protocol settings */
-	for (l = prplInfo->protocol_options, l2 = protocolOptEntries;
+    for (l = m_prpl_info->protocol_options, l2 = protocolOptEntries;
 		 l != NULL && l2 != NULL;
 		 l = l->next, l2 = l2->next)
 	{

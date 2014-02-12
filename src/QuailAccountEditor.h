@@ -78,10 +78,10 @@ class QQuailAccountEditor : public QDialog
 
 	private:
 		PurpleAccount *account;
-		PurplePlugin *plugin;
-		PurplePluginProtocolInfo *prplInfo;
+		PurplePlugin *m_plugin;
+		PurplePluginProtocolInfo *m_prpl_info;
 
-		QString protocolId;
+		QString m_protocol_id;
 
 		GList *userSplitEntries;
 		GList *protocolOptEntries;

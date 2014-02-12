@@ -192,6 +192,11 @@ quail_main_window::createActions()
     connect(actShowAccounts, SIGNAL(triggered()),
             this, SLOT(showAccountsWindow()));
 
+    actMetersAccounts = new QAction(this);
+    actMetersAccounts->setText("Show Meters");
+    connect(actMetersAccounts, SIGNAL(triggered()),
+            this, SLOT(slot_show_meters()));
+
     actMinimize = new QAction(this);
     connect(actMinimize, SIGNAL(triggered()),
             this, SLOT(hide()));
@@ -596,6 +601,13 @@ quail_main_window::slot_quit()
     m_tray_icon->deleteLater();
     slotSaveSettings();
     qApp->quit();
+}
+
+void
+quail_main_window::slot_show_meters()
+{
+    widgetStack->setCurrentWidget(meters);
+    setWindowTitle(tr("Connection meters"));
 }
 
 quail_main_window *

@@ -120,6 +120,11 @@ QQuailBListWindow::buildToolBar()
 	toolbar = new QToolBar(this);
     //toolbar->setMovable(false);
 
+    metersButton = new QAction(this);
+    metersButton->setText("Connection Meters");
+    toolbar->addAction(metersButton);
+    connect(metersButton, SIGNAL(triggered()), parentMainWindow, SLOT(slot_show_meters()));
+
     /* Buddy List */
     blistButton = new QAction(QIcon(QPixmap(":/data/images/actions/blist.png")),
                               tr("Buddy List"),

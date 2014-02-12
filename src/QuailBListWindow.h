@@ -111,6 +111,7 @@ class QQuailBListWindow : public QMainWindow
 		QAction *showOfflineButton;
 
 		QAction *blistButton;
+        QAction *metersButton;
 
         QMenu *addMenu;
         QMenu *settingsMenu;

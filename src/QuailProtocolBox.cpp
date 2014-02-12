@@ -52,28 +52,37 @@ QQuailProtocolBox::QQuailProtocolBox(QString protocolId, QWidget *parent)
 void
 QQuailProtocolBox::setCurrentProtocol(QString protocolId)
 {
-	PurplePlugin *plugin;
-	GList *p;
-	int i;
+    qDebug() << "QQuailProtocolBox::setCurrentProtocol" << protocolId;
+    //PurplePlugin *plugin;
+    //GList *p;
+    //int i;
 
-	for (p = purple_plugins_get_protocols(), i = 0;
-		 p != NULL;
-		 p = p->next, i++)
-	{
-		plugin = (PurplePlugin *)p->data;
-
-		if (plugin->info->id == protocolId)
-		{
+    for (int i = 0; i < this->count(); ++i )
+    {
+        if (protocolId == this->itemData(i).toString())
+        {
             setCurrentIndex(i);
-			break;
-		}
-	}
+            return;
+        }
+    }
+//	for (p = purple_plugins_get_protocols(), i = 0;
+//		 p != NULL;
+//		 p = p->next, i++)
+//	{
+//		plugin = (PurplePlugin *)p->data;
+
+//		if (plugin->info->id == protocolId)
+//		{
+//            setCurrentIndex(i);
+//			break;
+//		}
+//	}
 }
 
 void
 QQuailProtocolBox::buildMenu(QString protocolId)
 {
-    qDebug() << "QQuailProtocolBox::buildMenu";
+    qDebug() << "QQuailProtocolBox::buildMenu:protocolId:" << protocolId;
 	GList *p;
 	int count;
     bool prpl_jabber_found = false;
@@ -86,21 +95,37 @@ QQuailProtocolBox::buildMenu(QString protocolId)
 
 		plugin = (PurplePlugin *)p->data;
         QString plugin_name = plugin->info->name;
+        QString plugin_id = plugin->info->id;
         if (!prpl_jabber_found && plugin_name == "XMPP")
+        {
             prpl_jabber_found = true;
+        }
 
-        qDebug() << "QQuailProtocolBox::buildMenu" << plugin_name;
-        addItem(
-            QQuailProtocolUtils::getProtocolIcon(plugin),
-            plugin_name);
+        qDebug() << "QQuailProtocolBox::buildMenu:plugin_name:" << plugin_name;
+        qDebug() << "QQuailProtocolBox::buildMenu:plugin_id:" << plugin_id;
+        addItem(QQuailProtocolUtils::getProtocolIcon(plugin)
+                , plugin_name
+                , plugin_id);
 
-		if (protocolId != NULL && protocolId == plugin->info->id)
+        if (protocolId != NULL && protocolId == plugin_id)
             setCurrentIndex(count);
 	}
     if (prpl_jabber_found)
     {
-        addItem(QQuailProtocolUtils::getProtocolIcon("google-talk"), "Google Talk");
-        addItem(QQuailProtocolUtils::getProtocolIcon("facebook"), "Facebook");
+        addItem(QQuailProtocolUtils::getProtocolIcon("google-talk"), "Google Talk", "google-talk");
+        ++count;
+        if (protocolId == "google-talk")
+        {
+            qDebug() << "QQuailProtocolBox::buildMenu:googleTalk set:" << protocolId;
+            setCurrentIndex(count);
+        }
+        addItem(QQuailProtocolUtils::getProtocolIcon("facebook"), "Facebook", "facebook");
+        ++count;
+        if (protocolId == "facebook")
+        {
+            qDebug() << "QQuailProtocolBox::buildMenu:facebook set:" << protocolId;
+            setCurrentIndex(count);
+        }
     }
     this->model()->sort(0);
 }

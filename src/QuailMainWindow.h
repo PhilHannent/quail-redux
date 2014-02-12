@@ -71,6 +71,7 @@ class quail_main_window : public QMainWindow
 		void showAccountsWindow();
         void showConvWindow();
         void showPrefWindow();
+        void slot_show_meters();
         void retranslateUi(QWidget * /*currentForm*/);
 
 	protected:
@@ -105,6 +106,7 @@ class quail_main_window : public QMainWindow
         QQuailPrefsDialog *m_pref_window;
         QAction *actShowBuddyList;
         QAction *actShowAccounts;
+        QAction *actMetersAccounts;
         QAction *actMinimize;
         QAction *actQuit;
         QMenu *m_tray_icon_menu;
