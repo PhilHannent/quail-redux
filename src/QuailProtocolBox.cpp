@@ -24,9 +24,6 @@
 
 #include <libpurple/prpl.h>
 
-#include <QDebug>
-#include <QPixmap>
-
 quail_protocol_box::quail_protocol_box(QWidget *parent)
     : QComboBox(parent)
 {
@@ -52,7 +49,6 @@ quail_protocol_box::quail_protocol_box(QString protocolId, QWidget *parent)
 void
 quail_protocol_box::setCurrentProtocol(QString protocolId)
 {
-    qDebug() << "QQuailProtocolBox::setCurrentProtocol" << protocolId;
     for (int i = 0; i < this->count(); ++i )
     {
         if (protocolId == this->itemData(i).toString())
@@ -66,10 +62,9 @@ quail_protocol_box::setCurrentProtocol(QString protocolId)
 void
 quail_protocol_box::buildMenu(QString protocolId)
 {
-	GList *p;
     bool prpl_jabber_found = false;
 
-    for (p = purple_plugins_get_protocols();
+    for (GList *p = purple_plugins_get_protocols();
 		 p != NULL;
          p = p->next)
 	{
