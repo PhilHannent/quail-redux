@@ -29,13 +29,13 @@
 
 class QQuailBListItem;
 
-class QQuailBuddyList : public QTreeWidget
+class quail_buddy_list : public QTreeWidget
 {
 	Q_OBJECT
 
 	public:
-        QQuailBuddyList(QWidget *parent = NULL);
-		virtual ~QQuailBuddyList();
+        quail_buddy_list(QWidget *parent = NULL);
+        virtual ~quail_buddy_list();
 
         void setBlist(PurpleBuddyList *list);
         PurpleBuddyList *getBlist() const;
