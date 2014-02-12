@@ -131,8 +131,8 @@ qQuailGetCoreUiOps()
  **************************************************************************/
 quail_main_window::quail_main_window(QWidget *parent)
     : QMainWindow(parent),
-      accountsWin(NULL),
-      blistWin(NULL),
+      accountsWin(0),
+      blistWin(0),
       convWin(0),
       lastConvWin(0),
       prefWin(0),
@@ -537,7 +537,7 @@ quail_main_window::getMeters() const
 void
 quail_main_window::showBlistWindow()
 {
-    if (blistWin == NULL)
+    if (!blistWin)
 	{
 		blistWin = new QQuailBListWindow(this);
         widgetStack->addWidget(blistWin);
@@ -552,7 +552,7 @@ quail_main_window::showBlistWindow()
 void
 quail_main_window::showAccountsWindow()
 {
-    if (accountsWin == NULL)
+    if (!accountsWin)
 	{
         accountsWin = new quail_accounts_window(this);
         widgetStack->addWidget(accountsWin);
@@ -567,7 +567,7 @@ quail_main_window::showAccountsWindow()
 void
 quail_main_window::showConvWindow()
 {
-    if (convWin == 0)
+    if (!convWin)
         return;
 
     setWindowTitle(tr("Conversations"));
@@ -578,7 +578,7 @@ void
 quail_main_window::showPrefWindow()
 {
     qDebug() << "QQuailMainWindow::showPrefWindow()";
-    if (prefWin == 0)
+    if (!prefWin)
     {
         qDebug() << "QQuailMainWindow::showPrefWindow().1";
         prefWin = new QQuailPrefsDialog(this);
