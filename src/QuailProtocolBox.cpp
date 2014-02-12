@@ -53,10 +53,6 @@ void
 QQuailProtocolBox::setCurrentProtocol(QString protocolId)
 {
     qDebug() << "QQuailProtocolBox::setCurrentProtocol" << protocolId;
-    //PurplePlugin *plugin;
-    //GList *p;
-    //int i;
-
     for (int i = 0; i < this->count(); ++i )
     {
         if (protocolId == this->itemData(i).toString())
@@ -65,18 +61,6 @@ QQuailProtocolBox::setCurrentProtocol(QString protocolId)
             return;
         }
     }
-//	for (p = purple_plugins_get_protocols(), i = 0;
-//		 p != NULL;
-//		 p = p->next, i++)
-//	{
-//		plugin = (PurplePlugin *)p->data;
-
-//		if (plugin->info->id == protocolId)
-//		{
-//            setCurrentIndex(i);
-//			break;
-//		}
-//	}
 }
 
 void
