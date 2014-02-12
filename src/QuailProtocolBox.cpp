@@ -22,12 +22,12 @@
 #include "QuailProtocolBox.h"
 #include "QuailProtocolUtils.h"
 
-#include <libpurple/debug.h>
+#include <libpurple/prpl.h>
 
 #include <QDebug>
 #include <QPixmap>
 
-QQuailProtocolBox::QQuailProtocolBox(QWidget *parent)
+quail_protocol_box::quail_protocol_box(QWidget *parent)
     : QComboBox(parent)
 {
 	GList *protocols;
@@ -43,14 +43,14 @@ QQuailProtocolBox::QQuailProtocolBox(QWidget *parent)
 	}
 }
 
-QQuailProtocolBox::QQuailProtocolBox(QString protocolId, QWidget *parent)
+quail_protocol_box::quail_protocol_box(QString protocolId, QWidget *parent)
     : QComboBox(parent)
 {
 	buildMenu(protocolId);
 }
 
 void
-QQuailProtocolBox::setCurrentProtocol(QString protocolId)
+quail_protocol_box::setCurrentProtocol(QString protocolId)
 {
     qDebug() << "QQuailProtocolBox::setCurrentProtocol" << protocolId;
     for (int i = 0; i < this->count(); ++i )
@@ -64,16 +64,14 @@ QQuailProtocolBox::setCurrentProtocol(QString protocolId)
 }
 
 void
-QQuailProtocolBox::buildMenu(QString protocolId)
+quail_protocol_box::buildMenu(QString protocolId)
 {
-    qDebug() << "QQuailProtocolBox::buildMenu:protocolId:" << protocolId;
 	GList *p;
-	int count;
     bool prpl_jabber_found = false;
 
-	for (p = purple_plugins_get_protocols(), count = 0;
+    for (p = purple_plugins_get_protocols();
 		 p != NULL;
-		 p = p->next, count++)
+         p = p->next)
 	{
 		PurplePlugin *plugin;
 
@@ -85,30 +83,24 @@ QQuailProtocolBox::buildMenu(QString protocolId)
             prpl_jabber_found = true;
         }
 
-        qDebug() << "QQuailProtocolBox::buildMenu:plugin_name:" << plugin_name;
-        qDebug() << "QQuailProtocolBox::buildMenu:plugin_id:" << plugin_id;
         addItem(QQuailProtocolUtils::getProtocolIcon(plugin)
                 , plugin_name
                 , plugin_id);
 
         if (protocolId != NULL && protocolId == plugin_id)
-            setCurrentIndex(count);
+            setCurrentIndex(this->count()-1);
 	}
     if (prpl_jabber_found)
     {
         addItem(QQuailProtocolUtils::getProtocolIcon("google-talk"), "Google Talk", "google-talk");
-        ++count;
         if (protocolId == "google-talk")
         {
-            qDebug() << "QQuailProtocolBox::buildMenu:googleTalk set:" << protocolId;
-            setCurrentIndex(count);
+            setCurrentIndex(this->count()-1);
         }
         addItem(QQuailProtocolUtils::getProtocolIcon("facebook"), "Facebook", "facebook");
-        ++count;
         if (protocolId == "facebook")
         {
-            qDebug() << "QQuailProtocolBox::buildMenu:facebook set:" << protocolId;
-            setCurrentIndex(count);
+            setCurrentIndex(this->count()-1);
         }
     }
     this->model()->sort(0);

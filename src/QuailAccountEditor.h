@@ -33,7 +33,7 @@
 
 class QCheckBox;
 class QComboBox;
-class QQuailProtocolBox;
+class quail_protocol_box;
 class QQuailTabWidget;
 class QGridLayout;
 class QLabel;
@@ -95,7 +95,7 @@ class QQuailAccountEditor : public QDialog
 		/* Account tab */
         QWidget *accountWidget;
         QVBoxLayout *accountBox;
-		QQuailProtocolBox *protocolList;
+		quail_protocol_box *protocolList;
 		QLineEdit *screenNameEntry;
 		QLabel *passwordLabel;
 		QLineEdit *passwordEntry;

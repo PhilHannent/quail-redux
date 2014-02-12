@@ -540,13 +540,13 @@ QQuailBuddyList::populateGroupMenu(PurpleGroup *, QMenu *menu)
 void
 QQuailBuddyList::resizeEvent(QResizeEvent *)
 {
-    qDebug() << "QQuailBuddyList::resizeEvent";
+    //qDebug() << "QQuailBuddyList::resizeEvent";
     setColumnWidth(0, BUDDY_ICON_SIZE);
     setColumnWidth(1, this->width() - (BUDDY_ICON_SIZE *4));
     setColumnWidth(2, BUDDY_ICON_SIZE);
     /* Trigger a geometry and state save */
     if (!saveTimer->isActive())
-        saveTimer->start(2000);
+        saveTimer->start(5000);
 }
 
 void

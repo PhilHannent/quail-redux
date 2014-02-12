@@ -432,7 +432,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 
 	/* Protocol */
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
-    protocolList = new QQuailProtocolBox(parent);
+    protocolList = new quail_protocol_box(parent);
     protocolList->setCurrentProtocol(m_protocol_id);
 
 	grid->addWidget(protocolList, row++, 1);
