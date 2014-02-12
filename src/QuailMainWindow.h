@@ -23,6 +23,7 @@
 #define _QUAIL_MAIN_WINDOW_H_
 
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 #include <QTranslator>
 #include <QTimer>
 
@@ -84,6 +85,7 @@ class quail_main_window : public QMainWindow
         void slotSaveSettings();
         void slotReadSettings();
         void slot_quit();
+        void slot_activate_tray(QSystemTrayIcon::ActivationReason reason);
 
 	private:
         void buildInterface();
@@ -105,13 +107,13 @@ class quail_main_window : public QMainWindow
         QAction *actShowAccounts;
         QAction *actMinimize;
         QAction *actQuit;
-        QMenu *trayIconMenu;
-        QSystemTrayIcon *trayIcon;
+        QMenu *m_tray_icon_menu;
+        QSystemTrayIcon *m_tray_icon;
         int nextConvWinId;
         QString m_language;
         QTranslator 	appTranslator;
         QTranslator 	qtTranslator;
-        QMenu* m_statusMenu;
+        QMenu* m_status_menu;
 
 };
 

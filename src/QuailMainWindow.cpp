@@ -310,20 +310,33 @@ quail_main_window::retranslateUi(QWidget * /*currentForm*/)
 void
 quail_main_window::createTrayIcon()
 {
-    trayIconMenu = new QMenu(this);
-    trayIconMenu->addAction(actShowBuddyList);
-    trayIconMenu->addAction(actShowAccounts);
-    trayIconMenu->addAction(actMinimize);
-    trayIconMenu->addSeparator();
-    m_statusMenu = createStatusMenu();
-    trayIconMenu->addMenu(m_statusMenu);
-    trayIconMenu->addSeparator();
-    trayIconMenu->addAction(actQuit);
+    m_tray_icon_menu = new QMenu(this);
+    m_tray_icon_menu->addAction(actShowBuddyList);
+    m_tray_icon_menu->addAction(actShowAccounts);
+    m_tray_icon_menu->addAction(actMinimize);
+    m_tray_icon_menu->addSeparator();
+    m_status_menu = createStatusMenu();
+    m_tray_icon_menu->addMenu(m_status_menu);
+    m_tray_icon_menu->addSeparator();
+    m_tray_icon_menu->addAction(actQuit);
 
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon(":/data/images/logo.png"));
-    trayIcon->show();
+    m_tray_icon = new QSystemTrayIcon(this);
+    m_tray_icon->setContextMenu(m_tray_icon_menu);
+    m_tray_icon->setIcon(QIcon(":/data/images/logo.png"));
+    m_tray_icon->show();
+    connect(m_tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(slot_activate_tray(QSystemTrayIcon::ActivationReason)));
+}
+
+void quail_main_window::slot_activate_tray(QSystemTrayIcon::ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::DoubleClick)
+    {
+        if (this->isVisible())
+            this->hide();
+        else
+            this->show();
+    }
 }
 
 void
@@ -580,6 +593,7 @@ quail_main_window::showPrefWindow()
 void
 quail_main_window::slot_quit()
 {
+    m_tray_icon->deleteLater();
     slotSaveSettings();
     qApp->quit();
 }
