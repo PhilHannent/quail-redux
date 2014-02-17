@@ -2,8 +2,6 @@ DEFINES += APP_DISPLAY_VERSION=\\\"0.1.0\\\"
 DEFINES += APP_MAJOR_VERSION=\\\"0\\\"
 DEFINES += VER_FILEVERSION=0,1,0,0
 DEFINES += VER_FILEVERSION_STR=\\\"0.1.0.0\\0\\\"
-DEFINES += VER_PRODUCTVERSION=0,1,0,0
-DEFINES += VER_PRODUCTVERSION_STR=\\\"0.1.0.0\\0\\\"
 
 TEMPLATE = app
 TARGET   = Quail
@@ -72,7 +70,7 @@ win32-g++* {
                 src/QuailWinGlibEventLoop.cpp \
                 src/quailglibthread.cpp
 
-    #RC_FILE = resource.rc
+    RC_FILE = resource.rc
     INCLUDEPATH += "$(DEV_ROOT)/win32-dev/gtk_2_0-2.14/include/glib-2.0"
     INCLUDEPATH += "$(DEV_ROOT)/win32-dev/gtk_2_0-2.14/lib/glib-2.0/include"
     INCLUDEPATH += "$(LIBPURPLE_ROOT)"

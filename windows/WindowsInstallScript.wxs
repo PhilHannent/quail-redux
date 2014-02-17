@@ -35,19 +35,19 @@
                     <File Id="fil3A9F34CD51194B07519FBC81D058EA9A" KeyPath="yes" Source="$(env.PIDGIN_BINARY)\freebl3.dll" />
                 </Component>
                 <Component Id="cmp5D9552305D370D14D3E52F0F58F20289">
-                    <File Id="fil5AB1B6CFD554789DEF3E2B7B936A6ADD" KeyPath="yes" Source="$(var.MySource)\intl.dll" />
+                    <File Id="fil5AB1B6CFD554789DEF3E2B7B936A6ADD" KeyPath="yes" Source="$(env.QUAIL_BINARY)\intl.dll" />
                 </Component>
                 <Component Id="cmpC5B6621C6BC14875AAACE3BAE019BBF7">
-                    <File Id="fil77670B41C6C0F718E94E3A0DF126366E" KeyPath="yes" Source="$(var.MySource)\libglib-2.0-0.dll" />
+                    <File Id="fil77670B41C6C0F718E94E3A0DF126366E" KeyPath="yes" Source="$(env.QUAIL_BINARY)\libglib-2.0-0.dll" />
                 </Component>
                 <Component Id="cmpBD142C6A4FDF5ED70D14D153FCF1C8C4">
-                    <File Id="filDCA51EED4E050D57BA04875AF9FBA963" KeyPath="yes" Source="$(var.MySource)\libgmodule-2.0-0.dll" />
+                    <File Id="filDCA51EED4E050D57BA04875AF9FBA963" KeyPath="yes" Source="$(env.QUAIL_BINARY)\libgmodule-2.0-0.dll" />
                 </Component>
                 <Component Id="cmpBC8E58B56EB959A22E223F020811B0F4">
-                    <File Id="filB9D888DB400A346D5958EB2B13445259" KeyPath="yes" Source="$(var.MySource)\libgobject-2.0-0.dll" />
+                    <File Id="filB9D888DB400A346D5958EB2B13445259" KeyPath="yes" Source="$(env.QUAIL_BINARY)\libgobject-2.0-0.dll" />
                 </Component>
                 <Component Id="cmpBF2F64F5E4A756F99E8E9CF06233C9BA">
-                    <File Id="fil3C1C05D0C252E846615D3104F2E4713F" KeyPath="yes" Source="$(var.MySource)\libgthread-2.0-0.dll" />
+                    <File Id="fil3C1C05D0C252E846615D3104F2E4713F" KeyPath="yes" Source="$(env.QUAIL_BINARY)\libgthread-2.0-0.dll" />
                 </Component>
                 <Component Id="cmp68787459FF02C7B01876FABC04D66436">
                     <File Id="fil7EFE9281D90B5C75FF6B11DFF5CB8862" KeyPath="yes" Source="$(env.PIDGIN_BINARY)\libjabber.dll" />
@@ -92,9 +92,9 @@
                     <File Id="filDE3152A6E8A0E084C3C601AEE5742D8D" KeyPath="yes" Source="$(env.PIDGIN_BINARY)\nssutil3.dll" />
                 </Component>
                 <Component Id="cmp8CAFBBCEFDA096798C6BD867EFDAD51C">
-                    <File Id="appEXE" KeyPath="yes" Source="$(var.MySource)\Quail.exe">
-					  <Shortcut Id="startmenuFoobar10" Directory="ProgramMenuDir" Name="Quail IM" WorkingDirectory='INSTALLDIR' Icon="icon.ico" IconIndex="0" Advertise="yes" />
-					  <Shortcut Id="desktopFoobar10" Directory="DesktopFolder" Name="Quail IM" WorkingDirectory='INSTALLDIR' Icon="icon.ico" IconIndex="0" Advertise="yes" />
+                    <File Id="appEXE" KeyPath="yes" Source="$(env.QUAIL_BINARY)\Quail.exe">
+					  <Shortcut Id="startmenuFoobar10" Directory="ProgramMenuDir" Name="Quail IM" WorkingDirectory='INSTALLDIR' Icon="logo.ico" IconIndex="0" Advertise="yes" />
+					  <Shortcut Id="desktopFoobar10" Directory="DesktopFolder" Name="Quail IM" WorkingDirectory='INSTALLDIR' Icon="logo.ico" IconIndex="0" Advertise="yes" />
 					</File>
                 </Component>
                 <Component Id="cmp8CAFBBCEFDA096798C6BD867EFDAD999">
@@ -122,7 +122,7 @@
                     <File Id="fil92A3378C09EACE1877AA87BCBFE90F11" KeyPath="yes" Source="$(env.PIDGIN_BINARY)\ssl3.dll" />
                 </Component>
                 <Component Id="cmp400F6DB334F0F58A86E6205D3BB91F2F">
-                    <File Id="filBEF04C1377CCFA908665C1DB6FDD2FB2" KeyPath="yes" Source="$(var.MySource)\zlib1.dll" />
+                    <File Id="filBEF04C1377CCFA908665C1DB6FDD2FB2" KeyPath="yes" Source="$(env.QUAIL_BINARY)\zlib1.dll" />
                 </Component>
                 <Directory Id="dir7E02291B9873DD09A511AB119A04904B" Name="plugins">
                     <Component Id="cmp01F0489D00C0B0CF544F337EE0D16E1D">
@@ -429,7 +429,7 @@
 	  <UpgradeVersion Minimum='$(var.RTMProductVersion)'
 					  IncludeMinimum='yes'
 					  Maximum='!(bind.FileVersion.appEXE)'
-					  IncludeMaximum='yes'
+					  IncludeMaximum='no'
 					  Property='UPGRADEFOUND' />
     </Upgrade>
     <!-- Prevent downgrading -->
