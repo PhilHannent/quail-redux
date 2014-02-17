@@ -36,7 +36,7 @@ class QToolButton;
 class QTreeWidgetItem;
 
 class quail_accounts_window;
-class QQuailBuddyList;
+class quail_buddy_list;
 
 class QQuailBListWindow : public QMainWindow
 {
@@ -89,7 +89,7 @@ class QQuailBListWindow : public QMainWindow
 	private:
 		QMainWindow *parentMainWindow;
 
-		QQuailBuddyList *buddylist;
+		quail_buddy_list *buddylist;
 
 		QToolButton *addButton;
 

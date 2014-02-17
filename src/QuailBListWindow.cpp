@@ -71,7 +71,7 @@ QQuailBListWindow::buildInterface()
 	buildToolBar();
 
 	/* Setup the buddy list */
-    buddylist = new QQuailBuddyList(this);
+    buddylist = new quail_buddy_list(this);
     connect(buddylist, SIGNAL(itemClicked(QTreeWidgetItem*,int)),
             this, SLOT(nodeChanged(QTreeWidgetItem*, int)));
 
