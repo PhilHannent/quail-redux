@@ -5,34 +5,34 @@
 #include <QDebug>
 #include <QPixmap>
 
-QQuailBListItem::QQuailBListItem(QTreeWidget *parent, PurpleBlistNode *node)
+quail_blist_item::quail_blist_item(QTreeWidget *parent, PurpleBlistNode *node)
     : QTreeWidgetItem(parent), node(node), dirty(true)
 {
     qDebug() << "QQuailBListItem::QQuailBListItem::Added to TreeWidget";
     init();
 }
 
-QQuailBListItem::QQuailBListItem(QTreeWidgetItem *parent, PurpleBlistNode *node)
+quail_blist_item::quail_blist_item(QTreeWidgetItem *parent, PurpleBlistNode *node)
     : QTreeWidgetItem(parent), node(node), dirty(true)
 {
     qDebug() << "QQuailBListItem::QQuailBListItem::Added to TreeWidgetItem";
     init();
 }
 
-QQuailBListItem::~QQuailBListItem()
+quail_blist_item::~quail_blist_item()
 {
     if (node != NULL)
         node->ui_data = NULL;
 }
 
 PurpleBlistNode *
-QQuailBListItem::getBlistNode() const
+quail_blist_item::getBlistNode() const
 {
     return node;
 }
 
 void
-QQuailBListItem::updateInfo()
+quail_blist_item::updateInfo()
 {
     qDebug() << "QQuailBListItem::updateInfo";
     gsize len;
@@ -102,7 +102,7 @@ QQuailBListItem::updateInfo()
 
             }
             qDebug() << "QQuailBListItem::updateInfo.Contact.3";
-            setIcon(1, QQuailBListItem::getBuddyStatusIcon((PurpleBlistNode *)buddy));
+            setIcon(1, quail_blist_item::getBuddyStatusIcon((PurpleBlistNode *)buddy));
             setToolTip(1, text);
             qDebug() << "QQuailBListItem::updateInfo.Contact.3.1";
             PurpleBuddyIcon *purpleIcon = purple_buddy_get_icon(buddy);
@@ -173,10 +173,8 @@ QQuailBListItem::updateInfo()
             }
         }
         qDebug() << "QQuailBListItem::updateInfo.Buddy.1" << buddy->server_alias;
-        setIcon(1, QIcon(QQuailBListItem::getBuddyStatusIcon(node)));
+        setIcon(1, QIcon(quail_blist_item::getBuddyStatusIcon(node)));
         setText(1, getAlias(buddy));
-        //setIcon(2, purple_buddy_get_icon(buddy));
-        //setText(1, text);
     }
     else if (PURPLE_BLIST_NODE_IS_CHAT(node))
     {
@@ -198,24 +196,27 @@ QQuailBListItem::updateInfo()
 }
 
 QString
-QQuailBListItem::getAlias(PurpleBuddy *buddy)
+quail_blist_item::getAlias(PurpleBuddy *buddy)
 {
+//    qDebug() << "quail_blist_item::getAlias" << buddy->alias;
+//    qDebug() << "quail_blist_item::getAlias" << buddy->server_alias;
+//    qDebug() << "quail_blist_item::getAlias" << buddy->name;
+
     if(!QString(buddy->alias).isEmpty())
         return QString(buddy->alias);
     else if(!QString(buddy->server_alias).isEmpty())
         return QString(buddy->server_alias);
-
     return QString(buddy->name);
 }
 
 void
-QQuailBListItem::init()
+quail_blist_item::init()
 {
     updateInfo();
 }
 
 QSize
-QQuailBListItem::sizeHint ( int column ) const
+quail_blist_item::sizeHint ( int column ) const
 {
     qDebug() << "QQuailBListItem::sizeHint";
     if (column == 0 || column == 2)
@@ -408,12 +409,12 @@ QQuailBListItem::sizeHint ( int column ) const
 //}
 
 QPixmap
-QQuailBListItem::getBuddyStatusIcon(PurpleBlistNode *node)
+quail_blist_item::getBuddyStatusIcon(PurpleBlistNode *node)
 {
     qDebug() << "QQuailBListItem::getBuddyStatusIcon";
     QPixmap returnImage;
-    QQuailBListItem *qnode = (QQuailBListItem*)node->ui_data;
-    QQuailBListItem *qbuddynode = NULL;
+    quail_blist_item *qnode = (quail_blist_item*)node->ui_data;
+    quail_blist_item *qbuddynode = NULL;
     PurpleBuddy *buddy = NULL;
     PurpleChat *chat = NULL;
 
@@ -421,11 +422,11 @@ QQuailBListItem::getBuddyStatusIcon(PurpleBlistNode *node)
         if(!qnode->isExpanded()) {
             buddy = purple_contact_get_priority_buddy((PurpleContact*)node);
             if (buddy != NULL)
-                qbuddynode = (QQuailBListItem*)((PurpleBlistNode*)buddy)->ui_data;
+                qbuddynode = (quail_blist_item*)((PurpleBlistNode*)buddy)->ui_data;
         }
     } else if(PURPLE_BLIST_NODE_IS_BUDDY(node)) {
         buddy = (PurpleBuddy*)node;
-        qbuddynode = (QQuailBListItem*)node->ui_data;
+        qbuddynode = (quail_blist_item*)node->ui_data;
     } else if(PURPLE_BLIST_NODE_IS_CHAT(node)) {
         chat = (PurpleChat*)node;
     } else {

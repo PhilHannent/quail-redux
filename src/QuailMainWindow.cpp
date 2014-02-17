@@ -48,6 +48,7 @@
 #include <libpurple/pounce.h>
 #include <libpurple/plugin.h>
 
+#include "version.h"
 #include "global.h"
 #include "QuailAccountsWindow.h"
 #include "QuailBListWindow.h"

@@ -27,7 +27,7 @@
 
 #include <QTreeWidget>
 
-class QQuailBListItem;
+class quail_blist_item;
 
 class quail_buddy_list : public QTreeWidget
 {
@@ -69,12 +69,12 @@ class quail_buddy_list : public QTreeWidget
         void nodeExpandedSlot(QTreeWidgetItem *item);
         void nodeCollapsedSlot(QTreeWidgetItem *item);
 		void collapseContactSlot();
-		void collapseContactSlot(QQuailBListItem *item);
+        void collapseContactSlot(quail_blist_item *item);
 		void expandContactSlot();
-		void expandContactSlot(QQuailBListItem *item);
+        void expandContactSlot(quail_blist_item *item);
 		void saveBlistSlot();
 
-        void showContextMenuSlot(QTreeWidgetItem *item, const QPoint &point,
+        void slot_show_context_menu(QTreeWidgetItem *item, const QPoint &point,
 								 int col);
 
 		/* Group menu slots */

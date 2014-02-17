@@ -319,7 +319,7 @@ QQuailConversation::updateTabIcon()
 	else
 	{
         qwin->getTabs()->setTabIcon(this->getTabId(),
-                                    QQuailBListItem::getBuddyStatusIcon((PurpleBlistNode *)b));
+                                    quail_blist_item::getBuddyStatusIcon((PurpleBlistNode *)b));
 	}
     qwin->getTabs()->setTabText(this->getTabId(),
                                 purple_conversation_get_title(conv));
@@ -802,7 +802,7 @@ QQuailConvWindow::addConversation(PurpleConversation *conv)
 	{
         qDebug() << "QQuailConvWindow::addConversation().4";
         tabs->addTab(qconv,
-            QQuailBListItem::getBuddyStatusIcon((PurpleBlistNode *)b),
+            quail_blist_item::getBuddyStatusIcon((PurpleBlistNode *)b),
 			purple_conversation_get_title(conv));
 	}
 
