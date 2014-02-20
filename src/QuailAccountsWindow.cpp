@@ -383,9 +383,9 @@ void
 quail_accounts_window::new_account()
 {
     qDebug() << "quail_accounts_window::new_account";
-	QQuailAccountEditor *editor;
+	quail_account_editor *editor;
 
-    editor = new QQuailAccountEditor(NULL, this, tr("New Account"));
+    editor = new quail_account_editor(NULL, this, tr("New Account"));
     connect(editor, SIGNAL(signalAccountUpdated()),
             this, SLOT(slot_update_accounts()));
 
@@ -399,7 +399,7 @@ quail_accounts_window::edit_account()
 
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
-    QQuailAccountEditor *editor = new QQuailAccountEditor(item->get_account(),
+    quail_account_editor *editor = new quail_account_editor(item->get_account(),
                                      this,
                                      tr("Edit Account"));
     editor->show();

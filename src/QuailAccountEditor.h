@@ -43,15 +43,15 @@ class QPushButton;
 class QTabWidget;
 class QVBoxLayout;
 
-class QQuailAccountEditor : public QDialog
+class quail_account_editor : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QQuailAccountEditor(PurpleAccount *account = NULL,
+		quail_account_editor(PurpleAccount *account = NULL,
                             QWidget *parent = NULL,
                             QString name = "");
-		~QQuailAccountEditor();
+		~quail_account_editor();
 
 	protected:
 		virtual void buildInterface();

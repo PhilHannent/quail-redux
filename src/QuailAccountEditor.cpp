@@ -40,7 +40,7 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
+quail_account_editor::quail_account_editor(PurpleAccount *account,
                                          QWidget *parent,
                                          QString name)
     : QDialog(parent), account(account), m_plugin(NULL),
@@ -74,7 +74,7 @@ QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
 	buildInterface();
 }
 
-QQuailAccountEditor::~QQuailAccountEditor()
+quail_account_editor::~quail_account_editor()
 {
 	if (userSplitEntries != NULL)
 		g_list_free(userSplitEntries);
@@ -84,7 +84,7 @@ QQuailAccountEditor::~QQuailAccountEditor()
 }
 
 void
-QQuailAccountEditor::buildInterface()
+quail_account_editor::buildInterface()
 {
     qDebug() << "QQuailAccountEditor::buildInterface";
 	if (account == NULL)
@@ -107,7 +107,7 @@ QQuailAccountEditor::buildInterface()
 }
 
 void
-QQuailAccountEditor::buildTabs()
+quail_account_editor::buildTabs()
 {
     qDebug() << "QQuailAccountEditor::buildTabs";
 	QWidget *widget;
@@ -140,7 +140,7 @@ QQuailAccountEditor::buildTabs()
 }
 
 QWidget *
-QQuailAccountEditor::buildAccountTab()
+quail_account_editor::buildAccountTab()
 {
     qDebug() << "QQuailAccountEditor::buildAccountTab";
 	/* QFrame *sep; */
@@ -205,7 +205,7 @@ QQuailAccountEditor::buildAccountTab()
 }
 
 QWidget *
-QQuailAccountEditor::buildProtocolTab()
+quail_account_editor::buildProtocolTab()
 {
     qDebug() << "QQuailAccountEditor::buildProtocolTab";
     QVBoxLayout *vbox;
@@ -328,7 +328,7 @@ QQuailAccountEditor::buildProtocolTab()
 }
 
 QWidget *
-QQuailAccountEditor::buildProxyTab()
+quail_account_editor::buildProxyTab()
 {
     qDebug() << "QQuailAccountEditor::buildProxyTab";
     QVBoxLayout *vbox;
@@ -422,7 +422,7 @@ QQuailAccountEditor::buildProxyTab()
 }
 
 void
-QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
+quail_account_editor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 								   int &row)
 {
     qDebug() << "QQuailAccountEditor::buildLoginOpts";
@@ -561,7 +561,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 }
 
 void
-QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
+quail_account_editor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 								  int &row)
 {
     qDebug() << "QQuailAccountEditor::buildUserOpts";
@@ -584,7 +584,7 @@ QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 }
 
 void
-QQuailAccountEditor::proxyTypeChanged(int index)
+quail_account_editor::proxyTypeChanged(int index)
 {
     qDebug() << "QQuailAccountEditor::proxyTypeChanged";
     newProxyType = (PurpleProxyType)(index - 1);
@@ -607,7 +607,7 @@ QQuailAccountEditor::proxyTypeChanged(int index)
 }
 
 void
-QQuailAccountEditor::protocolChanged(int index)
+quail_account_editor::protocolChanged(int index)
 {
     qDebug() << "QQuailAccountEditor::protocolChanged:index:" << index;
 //	GList *l;
@@ -653,7 +653,7 @@ QQuailAccountEditor::protocolChanged(int index)
 }
 
 void
-QQuailAccountEditor::registerClicked()
+quail_account_editor::registerClicked()
 {
     qDebug() << "QQuailAccountEditor::registerClicked";
 	purple_account_register(account);
@@ -663,13 +663,13 @@ QQuailAccountEditor::registerClicked()
 
 
 void
-QQuailAccountEditor::slotRejected()
+quail_account_editor::slotRejected()
 {
     close();
 }
 
 void
-QQuailAccountEditor::slotAccept()
+quail_account_editor::slotAccept()
 {
     qDebug() << "QQuailAccountEditor::slotAccept";
     QString str, username, protocolId;
