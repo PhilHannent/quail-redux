@@ -30,13 +30,13 @@
 
 class QMenu;
 
-class QQuailConvButton : public QToolButton
+class quail_conv_button : public QToolButton
 {
 	Q_OBJECT
 
 	public:
-        QQuailConvButton(QWidget *parent = NULL);
-		~QQuailConvButton();
+        quail_conv_button(QWidget *parent = NULL);
+		~quail_conv_button();
 
 	protected slots:
 		void generateMenu();

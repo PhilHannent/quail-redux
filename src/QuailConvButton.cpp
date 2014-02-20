@@ -31,19 +31,19 @@
 #include <QMenu>
 
 static void
-newConvCb(char *, QQuailConvButton *button)
+newConvCb(char *, quail_conv_button *button)
 {
 	button->setEnabled(true);
 }
 
 static void
-delConvCb(char *, QQuailConvButton *button)
+delConvCb(char *, quail_conv_button *button)
 {
 	if (purple_get_conversations()->next == NULL)
 		button->setEnabled(false);
 }
 
-QQuailConvButton::QQuailConvButton(QWidget *parent)
+quail_conv_button::quail_conv_button(QWidget *parent)
     : QToolButton(parent), convs(NULL)
 {
     qDebug() << "QQuailConvButton::QQuailConvButton()";
@@ -73,7 +73,7 @@ QQuailConvButton::QQuailConvButton(QWidget *parent)
 		setEnabled(false);
 }
 
-QQuailConvButton::~QQuailConvButton()
+quail_conv_button::~quail_conv_button()
 {
 	delete menu;
 
@@ -89,7 +89,7 @@ QQuailConvButton::~QQuailConvButton()
 }
 
 void
-QQuailConvButton::generateMenu()
+quail_conv_button::generateMenu()
 {
     qDebug() << "QQuailConvButton::generateMenu()";
     PurpleConversation *conv;
@@ -140,7 +140,7 @@ QQuailConvButton::generateMenu()
 }
 
 void
-QQuailConvButton::convActivated(QAction *id)
+quail_conv_button::convActivated(QAction *id)
 {
     qDebug() << "QQuailConvButton::convActivated()";
     PurpleConversation *conv;
@@ -167,7 +167,7 @@ QQuailConvButton::convActivated(QAction *id)
 }
 
 void
-QQuailConvButton::buttonClicked()
+quail_conv_button::buttonClicked()
 {
     qDebug() << "QQuailConvButton::buttonClicked()";
     //QQuailConversation *lastWin = qQuailGetMainWindow()->getLastActiveConvWindow();
