@@ -34,7 +34,7 @@ class quail_blist_window;
 class QQuailConnectionMeters;
 class quail_conv_window;
 class quail_conversation;
-class QQuailPrefsDialog;
+class quail_prefs_dialog;
 
 class QMenu;
 class QStackedWidget;
@@ -103,7 +103,7 @@ class quail_main_window : public QMainWindow
 		QQuailConnectionMeters *meters;
         quail_conv_window *m_conv_window;
         quail_conversation *lastConvWin;
-        QQuailPrefsDialog *m_pref_window;
+        quail_prefs_dialog *m_pref_window;
         QAction *actShowBuddyList;
         QAction *actShowAccounts;
         QAction *actMetersAccounts;

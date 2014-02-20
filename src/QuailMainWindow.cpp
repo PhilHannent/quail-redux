@@ -588,7 +588,7 @@ quail_main_window::showPrefWindow()
     if (!m_pref_window)
     {
         qDebug() << "QQuailMainWindow::showPrefWindow().1";
-        m_pref_window = new QQuailPrefsDialog(this);
+        m_pref_window = new quail_prefs_dialog(this);
         widgetStack->addWidget(m_pref_window);
     }
     setWindowTitle(tr("Preferences"));
