@@ -193,13 +193,13 @@ quail_buddy_list::~quail_buddy_list()
 void
 quail_buddy_list::setBlist(PurpleBuddyList *list)
 {
-    quailBlist = list;
+    m_blist = list;
 }
 
 PurpleBuddyList *
 quail_buddy_list::getBlist() const
 {
-    return quailBlist;
+    return m_blist;
 }
 
 void
@@ -225,7 +225,7 @@ quail_buddy_list::reload(bool remove)
 	if (remove)
 		clear();
 
-    for (group = quailBlist->root; group != NULL; group = group->next)
+    for (group = m_blist->root; group != NULL; group = group->next)
 	{
         if (!PURPLE_BLIST_NODE_IS_GROUP(group))
 			continue;

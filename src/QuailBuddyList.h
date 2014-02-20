@@ -106,7 +106,7 @@ class quail_buddy_list : public QTreeWidget
 		void updateContact(PurpleBlistNode *node);
 		void updateBuddy(PurpleBlistNode *node);
 		void updateChat(PurpleBlistNode *node);
-        PurpleBuddyList *quailBlist;
+        PurpleBuddyList *m_blist;
 
 		QTimer *saveTimer;
 };
