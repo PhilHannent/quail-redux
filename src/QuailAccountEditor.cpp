@@ -93,7 +93,7 @@ quail_account_editor::buildInterface()
         setWindowTitle(tr("Edit Account"));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-	tabs = new QQuailTabWidget(this);
+    tabs = new quail_tab_widget(this);
     layout->addWidget(tabs);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
                                      | QDialogButtonBox::Cancel,

@@ -56,7 +56,7 @@
  * QQuailConversation
  **************************************************************************/
 quail_conversation::quail_conversation(PurpleConversation *conv,
-                                     QQuailTabWidget *parent)
+                                     quail_tab_widget *parent)
     : QWidget(parent), conv(conv), textDisplay(NULL), notifying(false)
 {
     qDebug() << "QQuailConversation::QQuailConversation()";
@@ -329,7 +329,7 @@ quail_conversation::updateTabIcon()
 /**************************************************************************
  * QQuailConvChat
  **************************************************************************/
-quail_conv_chat::quail_conv_chat(PurpleConversation *conv, QQuailTabWidget *parent)
+quail_conv_chat::quail_conv_chat(PurpleConversation *conv, quail_tab_widget *parent)
     : quail_conversation(conv, parent), chat(PURPLE_CONV_CHAT(conv))
 {
     qDebug() << "QQuailConvChat::QQuailConvChat()";
@@ -554,7 +554,7 @@ quail_conv_chat::updated(PurpleConvUpdateType type)
 /**************************************************************************
  * QQuailConvIm
  **************************************************************************/
-quail_conv_im::quail_conv_im(PurpleConversation *conv, QQuailTabWidget *parent)
+quail_conv_im::quail_conv_im(PurpleConversation *conv, quail_tab_widget *parent)
     : quail_conversation(conv, parent), im(PURPLE_CONV_IM(conv))
 {
     qDebug() << "QQuailConvIm::QQuailConvIm()";
@@ -883,7 +883,7 @@ quail_conv_window::slotSendEnabled(bool enabled)
 	sendButton->setEnabled(enabled);
 }
 
-QQuailTabWidget *
+quail_tab_widget *
 quail_conv_window::getTabs() const
 {
 	return tabs;
@@ -1062,7 +1062,7 @@ quail_conv_window::buildInterface()
     qDebug() << "QQuailConvWindow::buildInterface()";
 	setupToolbar();
 
-    tabs = new QQuailTabWidget(this);
+    tabs = new quail_tab_widget(this);
     connect(tabs, SIGNAL(currentChanged(int)),
             this, SLOT(tabChanged(int)));
     connect(this, SIGNAL(signalSendMessage()),

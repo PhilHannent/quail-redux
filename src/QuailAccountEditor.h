@@ -34,7 +34,7 @@
 class QCheckBox;
 class QComboBox;
 class quail_protocol_box;
-class QQuailTabWidget;
+class quail_tab_widget;
 class QGridLayout;
 class QLabel;
 class QLineEdit;
@@ -88,7 +88,7 @@ class quail_account_editor : public QDialog
 
         PurpleProxyType newProxyType;
 
-		QQuailTabWidget *tabs;
+		quail_tab_widget *tabs;
 
         QList<QWidget*> tabList;
 

@@ -35,7 +35,7 @@
 
 class QAction;
 class QQuailMultiLineEdit;
-class QQuailTabWidget;
+class quail_tab_widget;
 class quail_conv_display;
 class QListWidget;
 class QTabWidget;
@@ -60,7 +60,7 @@ class quail_conversation : public QWidget
 
 	public:
         quail_conversation(PurpleConversation *conv,
-                           QQuailTabWidget *parent = NULL);
+                           quail_tab_widget *parent = NULL);
         virtual ~quail_conversation();
 
         void setConversation(PurpleConversation *conv);
@@ -100,7 +100,7 @@ class quail_conv_chat : public quail_conversation
 	Q_OBJECT
 
 	public:
-        quail_conv_chat(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
+        quail_conv_chat(PurpleConversation *conv, quail_tab_widget *parent = NULL);
         virtual ~quail_conv_chat();
 
 		void write(const char *who, const char *message,
@@ -138,7 +138,7 @@ class quail_conv_im : public quail_conversation
 	Q_OBJECT
 
 	public:
-        quail_conv_im(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
+        quail_conv_im(PurpleConversation *conv, quail_tab_widget *parent = NULL);
         virtual ~quail_conv_im();
 
 		void write(const char *who, const char *message,
@@ -180,7 +180,7 @@ class quail_conv_window : public QMainWindow
 
 		void updateAddRemoveButton();
 
-		QQuailTabWidget *getTabs() const;
+        quail_tab_widget *getTabs() const;
 
     public slots:
         void slotSendEnabled(bool enabled);
@@ -214,7 +214,7 @@ class quail_conv_window : public QMainWindow
         //int convWinId;
 
 		QToolBar *toolbar;
-		QQuailTabWidget *tabs;
+        quail_tab_widget *tabs;
 
 		QToolButton *convsButton;
 
