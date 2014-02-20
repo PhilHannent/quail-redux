@@ -36,7 +36,7 @@
 class QAction;
 class QQuailMultiLineEdit;
 class QQuailTabWidget;
-class QuailConvDisplay;
+class quail_conv_display;
 class QListWidget;
 class QTabWidget;
 class QTextEdit;
@@ -89,7 +89,7 @@ class QQuailConversation : public QWidget
 
 	protected:
         PurpleConversation *conv;
-        QuailConvDisplay *textDisplay;
+        quail_conv_display *textDisplay;
 		QQuailMultiLineEdit *entry;
 		int tabId;
 		bool notifying;

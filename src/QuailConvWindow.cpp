@@ -419,7 +419,7 @@ QQuailConvChat::buildInterface()
     QHBoxLayout *hbox = new QHBoxLayout(this);
     QVBoxLayout *vbox = new QVBoxLayout(this);
 
-    textDisplay  = new QuailConvDisplay(this);
+    textDisplay  = new quail_conv_display(this);
 
     entry = new QQuailMultiLineEdit(this);
     entry->setHistoryEnabled(true);
@@ -633,7 +633,7 @@ QQuailConvIm::buildInterface()
     QVBoxLayout *l = new QVBoxLayout(this);
     setWindowIcon(QIcon(":/data/images/logo.png"));
 
-    textDisplay  = new QuailConvDisplay(this);
+    textDisplay  = new quail_conv_display(this);
     entry = new QQuailMultiLineEdit(this);
     QFontMetrics m (entry->font()) ;
     int RowHeight = m.lineSpacing() ;

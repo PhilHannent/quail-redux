@@ -7,12 +7,12 @@
 #include <QWebView>
 #endif
 
-class QuailConvDisplay : public QWebView
+class quail_conv_display : public QWebView
 {
     Q_OBJECT
 public:
-    QuailConvDisplay(QWidget *parent = 0);
-    ~QuailConvDisplay();
+    quail_conv_display(QWidget *parent = 0);
+    ~quail_conv_display();
 
 signals:
     
