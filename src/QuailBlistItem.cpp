@@ -184,7 +184,7 @@ quail_blist_item::updateInfo()
         if (chatName.isEmpty())
             chatName = QString::fromStdString(purple_chat_get_name(chat));
 
-        setIcon(1, QIcon(QQuailProtocolUtils::getProtocolIcon(chat->account)));
+        setIcon(1, QIcon(quail_protocol_utils::getProtocolIcon(chat->account)));
         setText(1, chatName);
     }
     else if (PURPLE_BLIST_NODE_IS_GROUP(node))

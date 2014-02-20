@@ -32,7 +32,7 @@
 
 class QPixmap;
 
-class QQuailProtocolUtils
+class quail_protocol_utils
 {
 	public:
 		static QString getProtocolName(QString protocolId);

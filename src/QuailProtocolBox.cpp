@@ -78,7 +78,7 @@ quail_protocol_box::buildMenu(QString protocolId)
             prpl_jabber_found = true;
         }
 
-        addItem(QQuailProtocolUtils::getProtocolIcon(plugin)
+        addItem(quail_protocol_utils::getProtocolIcon(plugin)
                 , plugin_name
                 , plugin_id);
 
@@ -87,12 +87,12 @@ quail_protocol_box::buildMenu(QString protocolId)
 	}
     if (prpl_jabber_found)
     {
-        addItem(QQuailProtocolUtils::getProtocolIcon("google-talk"), "Google Talk", "google-talk");
+        addItem(quail_protocol_utils::getProtocolIcon("google-talk"), "Google Talk", "google-talk");
         if (protocolId == "google-talk")
         {
             setCurrentIndex(this->count()-1);
         }
-        addItem(QQuailProtocolUtils::getProtocolIcon("facebook"), "Facebook", "facebook");
+        addItem(quail_protocol_utils::getProtocolIcon("facebook"), "Facebook", "facebook");
         if (protocolId == "facebook")
         {
             setCurrentIndex(this->count()-1);

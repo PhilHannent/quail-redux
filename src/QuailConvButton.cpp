@@ -125,7 +125,7 @@ quail_conv_button::generateMenu()
 
 		if (buddy == NULL)
 		{
-            a->setIcon(QQuailProtocolUtils::getProtocolIcon(account));
+            a->setIcon(quail_protocol_utils::getProtocolIcon(account));
 		}
 		else
 		{

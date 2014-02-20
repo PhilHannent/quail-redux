@@ -314,7 +314,7 @@ quail_conversation::updateTabIcon()
 	if (b == NULL)
 	{
         qwin->getTabs()->setTabIcon(this->getTabId(),
-                                    QQuailProtocolUtils::getProtocolIcon(account));
+                                    quail_protocol_utils::getProtocolIcon(account));
 	}
 	else
 	{
@@ -795,7 +795,7 @@ quail_conv_window::addConversation(PurpleConversation *conv)
 	{
         qDebug() << "QQuailConvWindow::addConversation().3";
         tabs->addTab(qconv,
-            QQuailProtocolUtils::getProtocolIcon(account),
+            quail_protocol_utils::getProtocolIcon(account),
 			purple_conversation_get_title(conv));
 	}
 	else

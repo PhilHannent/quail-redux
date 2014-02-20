@@ -142,7 +142,7 @@ quail_account_box::buildMenu(PurpleAccount *account)
 
 		str = purple_account_get_username(tempAccount);
 
-		pixmap = QQuailProtocolUtils::getProtocolIcon(tempAccount);
+        pixmap = quail_protocol_utils::getProtocolIcon(tempAccount);
 
 		int pw = (pixmap.isNull() ? 10 : pixmap.width() + 10);
 		int itemWidth;

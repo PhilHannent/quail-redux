@@ -123,7 +123,7 @@ quail_account_editor::buildTabs()
 		widget = buildProtocolTab();
 
 		tabs->addTab(widget,
-            QQuailProtocolUtils::getProtocolIcon(m_plugin),
+            quail_protocol_utils::getProtocolIcon(m_plugin),
             m_plugin->info->name);
 
 		tabList.append(widget);

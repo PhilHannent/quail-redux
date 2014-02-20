@@ -193,7 +193,7 @@ quail_accounts_window::account_signed_on(PurpleAccount *account)
 	{
         item = (quail_account_item*)m_accounts_widget->item( item->row(), xProtocol);
         item->stop_pulse();
-        item->setIcon(QQuailProtocolUtils::getProtocolIcon(account));
+        item->setIcon(quail_protocol_utils::getProtocolIcon(account));
 	}
     qDebug() << "QQuailAccountsWindow::accountSignedOn().end";
 }
@@ -213,8 +213,8 @@ quail_accounts_window::account_signed_off(PurpleAccount *account)
 
 	if (item != NULL)
 	{
-        QPixmap protIcon = QQuailProtocolUtils::getProtocolIcon(account);
-        QString protIconName = QQuailProtocolUtils::getProtocolIconName(account);
+        QPixmap protIcon = quail_protocol_utils::getProtocolIcon(account);
+        QString protIconName = quail_protocol_utils::getProtocolIconName(account);
         item = (quail_account_item*)m_accounts_widget->item( item->row(), xProtocol);
         item->setIcon(quail_image_utils::greyPixmap(protIcon, protIconName));
 	}
@@ -349,10 +349,10 @@ quail_accounts_window::slot_update_accounts()
         itemUserName->set_account(account);
 
         quail_account_item *itemProtocol = new quail_account_item();
-        itemProtocol->setText(QQuailProtocolUtils::getProtocolName(protocolId));
+        itemProtocol->setText(quail_protocol_utils::getProtocolName(protocolId));
         itemProtocol->set_account(account);
-        protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
-        protocolIconName = QQuailProtocolUtils::getProtocolIconName(account);
+        protocolIcon = quail_protocol_utils::getProtocolIcon(account);
+        protocolIconName = quail_protocol_utils::getProtocolIconName(account);
         if (purple_account_is_connected(account))
             itemProtocol->setIcon(protocolIcon);
         else
