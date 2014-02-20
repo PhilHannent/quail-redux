@@ -116,7 +116,7 @@ quail_account_item::update_pulse()
     if (m_pulse_grey)
         pixmapName += "-grey";
     qDebug() << "QQuailAccountItem::updatePulse().1" << pixmapName;
-    setIcon(QQuailImageUtils::saturate(tempPixmap, m_pulse_step, pixmapName));
+    setIcon(quail_image_utils::saturate(tempPixmap, m_pulse_step, pixmapName));
 }
 
 /**************************************************************************
@@ -216,7 +216,7 @@ quail_accounts_window::account_signed_off(PurpleAccount *account)
         QPixmap protIcon = QQuailProtocolUtils::getProtocolIcon(account);
         QString protIconName = QQuailProtocolUtils::getProtocolIconName(account);
         item = (quail_account_item*)m_accounts_widget->item( item->row(), xProtocol);
-        item->setIcon(QQuailImageUtils::greyPixmap(protIcon, protIconName));
+        item->setIcon(quail_image_utils::greyPixmap(protIcon, protIconName));
 	}
     qDebug() << "QQuailAccountsWindow::accountSignedOff().end";
 }
@@ -356,7 +356,7 @@ quail_accounts_window::slot_update_accounts()
         if (purple_account_is_connected(account))
             itemProtocol->setIcon(protocolIcon);
         else
-            itemProtocol->setIcon(QQuailImageUtils::greyPixmap(protocolIcon,
+            itemProtocol->setIcon(quail_image_utils::greyPixmap(protocolIcon,
                                                                protocolIconName));
 
         quail_account_item *itemEnabled = new quail_account_item();

@@ -463,21 +463,21 @@ quail_blist_item::getBuddyStatusIcon(PurpleBlistNode *node)
             returnImage = QPixmap(":/data/images/status/log-out.png");
         else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_UNAVAILABLE))
             if (trans)
-                returnImage = QQuailImageUtils::greyPixmap(
+                returnImage = quail_image_utils::greyPixmap(
                             QPixmap(":/data/images/status/busy.png"),
                             "busy.png");
             else
                 returnImage = QPixmap(":/data/images/status/busy.png");
         else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_AWAY))
             if (trans)
-                returnImage = QQuailImageUtils::greyPixmap(
+                returnImage = quail_image_utils::greyPixmap(
                             QPixmap(":/data/images/status/away.png"),
                             "away.png");
             else
                 returnImage = QPixmap(":/data/images/status/away.png");
         else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_EXTENDED_AWAY))
             if (trans)
-                returnImage = QQuailImageUtils::greyPixmap(
+                returnImage = quail_image_utils::greyPixmap(
                             QPixmap(":/data/images/status/extended-away.png"),
                             "extended-away.png");
             else
@@ -485,7 +485,7 @@ quail_blist_item::getBuddyStatusIcon(PurpleBlistNode *node)
         else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_OFFLINE))
             returnImage = QPixmap(":/data/images/status/offline.png");
         else if (trans)
-            returnImage = QQuailImageUtils::greyPixmap(
+            returnImage = quail_image_utils::greyPixmap(
                         QPixmap(":/data/images/status/available.png"),
                         "available.png");
         else if (purple_presence_is_status_primitive_active(p, PURPLE_STATUS_INVISIBLE))
