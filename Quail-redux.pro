@@ -55,15 +55,9 @@ linux-g++* {
 win32-g++* {
     message("Using win32")
     HEADERS += version.h \
-                src/quailtimerinfolist.h  \
-                src/qsystemlibrary.h \
-                src/QuailWinGlibEventLoop.h \
-                src/quailglibthread.h
+                src/quailtimerinfolist.h
 
-    SOURCES += src/quailtimerinfolist.cpp \
-                src/qsystemlibrary.h \
-                src/QuailWinGlibEventLoop.cpp \
-                src/quailglibthread.cpp
+    SOURCES +=
 
     RC_FILE = resource.rc
     INCLUDEPATH += "$(DEV_ROOT)/win32-dev/gtk_2_0-2.14/include/glib-2.0"
@@ -104,7 +98,6 @@ HEADERS += \
         src/QuailRequest.h \
         src/QuailTabBar.h \
         src/QuailTabWidget.h \
-    src/global.h \
     src/QuailConvDisplay.h \
     src/QuailStatusSelector.h \
     src/QuailBlistItem.h

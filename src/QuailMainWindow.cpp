@@ -59,6 +59,7 @@
 #include "QuailNotify.h"
 #include "QuailPrefsDialog.h"
 #include "QuailRequest.h"
+#include "QuailStatusSelector.h"
 
 static quail_main_window *main_win = 0;
 quail_event_loop *event_loop = 0;
