@@ -69,7 +69,7 @@ void
 QQuailTabWidget::slotSendMessage()
 {
     qDebug() << "QQuailTabWidget::slotSendMessage()";
-    QQuailConversation* qconv = (QQuailConversation*)this->currentWidget();
+    quail_conversation* qconv = (quail_conversation*)this->currentWidget();
     qconv->send();
 }
 
@@ -77,7 +77,7 @@ void
 QQuailTabWidget::slotToggleUserList()
 {
     qDebug() << "QQuailTabWidget::slotToggleUserList()";
-    QQuailConversation *qconv = (QQuailConversation*)this->currentWidget();
+    quail_conversation *qconv = (quail_conversation*)this->currentWidget();
     PurpleConversation *conv = qconv->getConversation();
     /* Toogle the user list */
     if (purple_conversation_get_type(conv) == PURPLE_CONV_TYPE_CHAT)

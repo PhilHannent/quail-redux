@@ -33,7 +33,7 @@ class quail_accounts_window;
 class quail_blist_window;
 class QQuailConnectionMeters;
 class QQuailConvWindow;
-class QQuailConversation;
+class quail_conversation;
 class QQuailPrefsDialog;
 
 class QMenu;
@@ -52,13 +52,13 @@ class quail_main_window : public QMainWindow
         ~quail_main_window();
 
         void addConversationWindow(PurpleConversation *win);
-        void removeConversationWindow(QQuailConversation *win);
+        void removeConversationWindow(quail_conversation *win);
 
 		quail_blist_window *getBlistWindow() const;
 		quail_accounts_window *getAccountsWindow() const;
 
-        void setLastActiveConvWindow(QQuailConversation *win);
-        QQuailConversation *getLastActiveConvWindow() const;
+        void setLastActiveConvWindow(quail_conversation *win);
+        quail_conversation *getLastActiveConvWindow() const;
 
         QStackedWidget *getWidgetStack() const;
 		QQuailConnectionMeters *getMeters() const;
@@ -102,7 +102,7 @@ class quail_main_window : public QMainWindow
         quail_blist_window *m_blist_window;
 		QQuailConnectionMeters *meters;
         QQuailConvWindow *m_conv_window;
-        QQuailConversation *lastConvWin;
+        quail_conversation *lastConvWin;
         QQuailPrefsDialog *m_pref_window;
         QAction *actShowBuddyList;
         QAction *actShowAccounts;
