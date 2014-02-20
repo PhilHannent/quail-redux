@@ -26,7 +26,7 @@
 
 #include <QPixmap>
 
-QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent)
+quail_account_box::quail_account_box(bool showAll, QWidget *parent)
     : QComboBox(parent), showAll(showAll)
 {
 
@@ -42,7 +42,7 @@ QQuailAccountBox::QQuailAccountBox(bool showAll, QWidget *parent)
 	}
 }
 
-QQuailAccountBox::QQuailAccountBox(PurpleAccount *account, bool showAll,
+quail_account_box::quail_account_box(PurpleAccount *account, bool showAll,
                                  QWidget *parent)
     : QComboBox(parent), showAll(showAll)
 {
@@ -50,7 +50,7 @@ QQuailAccountBox::QQuailAccountBox(PurpleAccount *account, bool showAll,
 }
 
 void
-QQuailAccountBox::setCurrentAccount(PurpleAccount *account)
+quail_account_box::setCurrentAccount(PurpleAccount *account)
 {
 	PurpleAccount *tempAccount;
 	GList *l, *list;
@@ -81,7 +81,7 @@ QQuailAccountBox::setCurrentAccount(PurpleAccount *account)
 }
 
 PurpleAccount *
-QQuailAccountBox::getCurrentAccount() const
+quail_account_box::getCurrentAccount() const
 {
     int index = currentIndex();
 	GList *l;
@@ -111,7 +111,7 @@ QQuailAccountBox::getCurrentAccount() const
 }
 
 void
-QQuailAccountBox::buildMenu(PurpleAccount *account)
+quail_account_box::buildMenu(PurpleAccount *account)
 {
 	GList *l, *list;
 	int count;
@@ -173,7 +173,7 @@ QQuailAccountBox::buildMenu(PurpleAccount *account)
 }
 
 void
-QQuailAccountBox::resizeEvent(QResizeEvent *event)
+quail_account_box::resizeEvent(QResizeEvent *event)
 {
 	buildMenu(getCurrentAccount());
 

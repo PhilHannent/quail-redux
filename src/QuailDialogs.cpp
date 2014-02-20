@@ -131,7 +131,7 @@ QQuailAddBuddyDialog::buildInterface()
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Account:"), frame), 3, 0);
-    accountCombo = new QQuailAccountBox(false, frame);
+    accountCombo = new quail_account_box(false, frame);
 	grid->addWidget(accountCombo, 3, 1);
 
 	/* Add a spacer. */
@@ -274,7 +274,7 @@ QQuailAddChatDialog::buildInterface()
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Account:"), widgetsFrame), 0, 0);
-    accountCombo = new QQuailAccountBox(false, widgetsFrame);
+    accountCombo = new quail_account_box(false, widgetsFrame);
 	grid->addWidget(accountCombo, 0, 1);
 
 	/* Connect the signal */
@@ -523,7 +523,7 @@ QQuailNewImDialog::buildInterface()
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Account:"), frame), 3, 0);
-    accountCombo = new QQuailAccountBox(false, frame);
+    accountCombo = new quail_account_box(false, frame);
 	grid->addWidget(accountCombo, 3, 1);
 
 	/* Add a spacer. */
@@ -613,7 +613,7 @@ QQuailJoinChatDialog::buildInterface()
 
 	/* Account */
 	grid->addWidget(new QLabel(tr("Join Chat As:"), widgetsFrame), 0, 0);
-    accountCombo = new QQuailAccountBox(false, widgetsFrame);
+    accountCombo = new quail_account_box(false, widgetsFrame);
 	grid->addWidget(accountCombo, 0, 1);
 
 	/* Connect the signal */

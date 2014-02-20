@@ -29,7 +29,7 @@
 
 class QComboBox;
 class QFrame;
-class QQuailAccountBox;
+class quail_account_box;
 class QGridLayout;
 class QLabel;
 class QLineEdit;
@@ -74,7 +74,7 @@ class QQuailAddBuddyDialog : public QuailDialog
 		QLineEdit *screenNameEntry;
 		QLineEdit *aliasEntry;
 		QComboBox *groupCombo;
-		QQuailAccountBox *accountCombo;
+		quail_account_box *accountCombo;
 };
 
 class QQuailAddChatDialog : public QuailDialog
@@ -102,7 +102,7 @@ class QQuailAddChatDialog : public QuailDialog
 		QLabel *groupLabel;
 		QLineEdit *aliasEntry;
 		QComboBox *groupCombo;
-		QQuailAccountBox *accountCombo;
+		quail_account_box *accountCombo;
 		QGridLayout *grid;
 		QFrame *widgetsFrame;
         QList<QWidget*> labels;
@@ -127,7 +127,7 @@ class QQuailNewImDialog : public QuailDialog
 
 	private:
 		QLineEdit *screenNameEntry;
-		QQuailAccountBox *accountCombo;
+		quail_account_box *accountCombo;
 };
 
 class QQuailJoinChatDialog : public QuailDialog
@@ -148,7 +148,7 @@ class QQuailJoinChatDialog : public QuailDialog
 		void accept();
 
 	private:
-		QQuailAccountBox *accountCombo;
+		quail_account_box *accountCombo;
 		QGridLayout *grid;
 		QFrame *widgetsFrame;
         QList<QWidget*> labels;
