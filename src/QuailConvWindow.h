@@ -95,13 +95,13 @@ class quail_conversation : public QWidget
 		bool notifying;
 };
 
-class QQuailConvChat : public quail_conversation
+class quail_conv_chat : public quail_conversation
 {
 	Q_OBJECT
 
 	public:
-        QQuailConvChat(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
-		virtual ~QQuailConvChat();
+        quail_conv_chat(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
+        virtual ~quail_conv_chat();
 
 		void write(const char *who, const char *message,
                    PurpleMessageFlags flags, time_t mtime);

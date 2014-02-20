@@ -82,7 +82,7 @@ QQuailTabWidget::slotToggleUserList()
     /* Toogle the user list */
     if (purple_conversation_get_type(conv) == PURPLE_CONV_TYPE_CHAT)
     {
-        QQuailConvChat *chat = (QQuailConvChat*)qconv;
+        quail_conv_chat *chat = (quail_conv_chat*)qconv;
         chat->setShowUserList(!chat->getShowUserList());
     }
 }

@@ -32,7 +32,7 @@
 class quail_accounts_window;
 class quail_blist_window;
 class QQuailConnectionMeters;
-class QQuailConvWindow;
+class quail_conv_window;
 class quail_conversation;
 class QQuailPrefsDialog;
 
@@ -101,7 +101,7 @@ class quail_main_window : public QMainWindow
         quail_accounts_window *m_accounts_window;
         quail_blist_window *m_blist_window;
 		QQuailConnectionMeters *meters;
-        QQuailConvWindow *m_conv_window;
+        quail_conv_window *m_conv_window;
         quail_conversation *lastConvWin;
         QQuailPrefsDialog *m_pref_window;
         QAction *actShowBuddyList;
