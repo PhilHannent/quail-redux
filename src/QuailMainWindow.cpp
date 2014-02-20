@@ -444,7 +444,7 @@ quail_main_window::addConversationWindow(PurpleConversation *conv)
 //    conv->ui_data = win;
     if (m_conv_window == 0)
     {
-        m_conv_window = new QQuailConvWindow(this);
+        m_conv_window = new quail_conv_window(this);
         getWidgetStack()->addWidget(m_conv_window);
         //qwin = new QQuailConvWindow(win, this);
         //qwin->setId(nextConvWinId++);

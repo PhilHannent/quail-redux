@@ -133,13 +133,13 @@ class quail_conv_chat : public quail_conversation
         QListWidget *userList;
 };
 
-class QQuailConvIm : public quail_conversation
+class quail_conv_im : public quail_conversation
 {
 	Q_OBJECT
 
 	public:
-        QQuailConvIm(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
-		virtual ~QQuailConvIm();
+        quail_conv_im(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
+        virtual ~quail_conv_im();
 
 		void write(const char *who, const char *message,
                    PurpleMessageFlags flags, time_t mtime);
@@ -161,13 +161,13 @@ class QQuailConvIm : public quail_conversation
         PurpleConvIm *im;
 };
 
-class QQuailConvWindow : public QMainWindow
+class quail_conv_window : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-        QQuailConvWindow(QMainWindow *parent);
-		~QQuailConvWindow();
+        quail_conv_window(QMainWindow *parent);
+        ~quail_conv_window();
 
 //        void setConvWindow(QQuailConversation *win);
 //        QQuailConversation *getConvWindow() const;
