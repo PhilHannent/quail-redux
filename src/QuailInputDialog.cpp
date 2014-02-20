@@ -29,7 +29,7 @@
 #include <QSignalMapper>
 #include <QHBoxLayout>
 
-QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent)
+quail_input_dialog::quail_input_dialog(bool multiline, QWidget *parent)
     : QDialog(parent), multiline(multiline), masked(false)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -64,13 +64,13 @@ QQuailInputDialog::QQuailInputDialog(bool multiline, QWidget *parent)
 }
 
 void
-QQuailInputDialog::setInfoText(const QString &text)
+quail_input_dialog::setInfoText(const QString &text)
 {
 	label->setText(text);
 }
 
 void
-QQuailInputDialog::setMasked(bool masked)
+quail_input_dialog::setMasked(bool masked)
 {
 	this->masked = masked;
 
@@ -93,13 +93,13 @@ QQuailInputDialog::setMasked(bool masked)
 }
 
 bool
-QQuailInputDialog::isMasked() const
+quail_input_dialog::isMasked() const
 {
 	return masked;
 }
 
 void
-QQuailInputDialog::setDefaultValue(const QString &text)
+quail_input_dialog::setDefaultValue(const QString &text)
 {
 	if (multiline)
 	{
@@ -116,7 +116,7 @@ QQuailInputDialog::setDefaultValue(const QString &text)
 }
 
 QString
-QQuailInputDialog::getText() const
+quail_input_dialog::getText() const
 {
 	if (multiline)
 	{
@@ -133,14 +133,14 @@ QQuailInputDialog::getText() const
 }
 
 void
-QQuailInputDialog::addButtons(const QString &cancel, const QString &ok)
+quail_input_dialog::addButtons(const QString &cancel, const QString &ok)
 {
 	addButton(ok, 1);
 	addButton(cancel, 0);
 }
 
 void
-QQuailInputDialog::addButton(const QString &text, int result)
+quail_input_dialog::addButton(const QString &text, int result)
 {
     QPushButton *button = new QPushButton(text);
     hbox->addWidget(button);

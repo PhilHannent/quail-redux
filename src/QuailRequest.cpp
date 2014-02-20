@@ -41,7 +41,7 @@ qQuailRequestInput(const char *title, const char *primary,
 {
 	QString message;
 	QString newTitle;
-	QQuailInputDialog *dialog;
+	quail_input_dialog *dialog;
 
 	message = "";
 
@@ -64,7 +64,7 @@ qQuailRequestInput(const char *title, const char *primary,
 	else
 		newTitle = title;
 
-    dialog = new QQuailInputDialog(multiline, qQuailGetMainWindow());
+    dialog = new quail_input_dialog(multiline, qQuailGetMainWindow());
     dialog->setWindowTitle(newTitle);
 	dialog->setInfoText(message);
 
