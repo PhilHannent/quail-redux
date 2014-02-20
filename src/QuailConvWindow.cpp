@@ -55,7 +55,7 @@
 /**************************************************************************
  * QQuailConversation
  **************************************************************************/
-QQuailConversation::QQuailConversation(PurpleConversation *conv,
+quail_conversation::quail_conversation(PurpleConversation *conv,
                                      QQuailTabWidget *parent)
     : QWidget(parent), conv(conv), textDisplay(NULL), notifying(false)
 {
@@ -64,24 +64,24 @@ QQuailConversation::QQuailConversation(PurpleConversation *conv,
             parent, SIGNAL(signalSendEnabled(bool)));
 }
 
-QQuailConversation::~QQuailConversation()
+quail_conversation::~quail_conversation()
 {
 }
 
 void
-QQuailConversation::setConversation(PurpleConversation *conv)
+quail_conversation::setConversation(PurpleConversation *conv)
 {
 	this->conv = conv;
 }
 
 PurpleConversation *
-QQuailConversation::getConversation() const
+quail_conversation::getConversation() const
 {
 	return conv;
 }
 
 void
-QQuailConversation::write(const char *who, const char *message,
+quail_conversation::write(const char *who, const char *message,
                          PurpleMessageFlags flags, time_t)
 {
     qDebug() << "QQuailConversation::write()";
@@ -200,14 +200,14 @@ QQuailConversation::write(const char *who, const char *message,
 }
 
 void
-QQuailConversation::setTitle(const char */*newTitle*/)
+quail_conversation::setTitle(const char */*newTitle*/)
 {
     qDebug() << "QQuailConversation::setTitle()";
     //title = NULL;
 }
 
 void
-QQuailConversation::updated(PurpleConvUpdateType type)
+quail_conversation::updated(PurpleConvUpdateType type)
 {
     qDebug() << "QQuailConversation::updated()";
     if (type == PURPLE_CONV_UPDATE_ACCOUNT)
@@ -238,19 +238,19 @@ QQuailConversation::updated(PurpleConvUpdateType type)
 }
 
 void
-QQuailConversation::setTabId(int id)
+quail_conversation::setTabId(int id)
 {
 	tabId = id;
 }
 
 int
-QQuailConversation::getTabId() const
+quail_conversation::getTabId() const
 {
 	return tabId;
 }
 
 bool
-QQuailConversation::meify(char *message, int len)
+quail_conversation::meify(char *message, int len)
 {
     qDebug() << "QQuailConversation::meify()";
 	char *c;
@@ -289,7 +289,7 @@ QQuailConversation::meify(char *message, int len)
 }
 
 QString
-QQuailConversation::stripFontFace(const QString &str)
+quail_conversation::stripFontFace(const QString &str)
 {
 	QString newStr = str;
 
@@ -299,7 +299,7 @@ QQuailConversation::stripFontFace(const QString &str)
 }
 
 void
-QQuailConversation::updateTabIcon()
+quail_conversation::updateTabIcon()
 {
     qDebug() << "QQuailConversation::updateTabIcon()";
     QQuailConvWindow *qwin;
@@ -330,7 +330,7 @@ QQuailConversation::updateTabIcon()
  * QQuailConvChat
  **************************************************************************/
 QQuailConvChat::QQuailConvChat(PurpleConversation *conv, QQuailTabWidget *parent)
-    : QQuailConversation(conv, parent), chat(PURPLE_CONV_CHAT(conv))
+    : quail_conversation(conv, parent), chat(PURPLE_CONV_CHAT(conv))
 {
     qDebug() << "QQuailConvChat::QQuailConvChat()";
 	buildInterface();
@@ -548,14 +548,14 @@ QQuailConvChat::updated(PurpleConvUpdateType type)
 //		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
 
-	QQuailConversation::updated(type);
+    quail_conversation::updated(type);
 }
 
 /**************************************************************************
  * QQuailConvIm
  **************************************************************************/
 QQuailConvIm::QQuailConvIm(PurpleConversation *conv, QQuailTabWidget *parent)
-    : QQuailConversation(conv, parent), im(PURPLE_CONV_IM(conv))
+    : quail_conversation(conv, parent), im(PURPLE_CONV_IM(conv))
 {
     qDebug() << "QQuailConvIm::QQuailConvIm()";
 	buildInterface();
@@ -623,7 +623,7 @@ QQuailConvIm::updated(PurpleConvUpdateType type)
 //		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
 
-	QQuailConversation::updated(type);
+    quail_conversation::updated(type);
 }
 
 void
@@ -765,7 +765,7 @@ void
 QQuailConvWindow::addConversation(PurpleConversation *conv)
 {
     qDebug() << "QQuailConvWindow::addConversation()";
-    QQuailConversation *qconv = NULL;
+    quail_conversation *qconv = NULL;
     PurpleAccount *account;
 	PurpleBuddy *b;
     PurpleConversationType type = purple_conversation_get_type(conv);
@@ -820,7 +820,7 @@ QQuailConvWindow::removeConversation(PurpleConversation *conv)
 {
     qDebug() << "QQuailConvWindow::removeConversation()";
 	/* NOTE: This deletes conv->ui_data. Find out what to do here. */
-    QQuailConversation *win = (QQuailConversation *)conv->ui_data;
+    quail_conversation *win = (quail_conversation *)conv->ui_data;
     tabs->removeTab(win->getTabId());
     win->deleteLater();
     //conv->ui_data = NULL;
@@ -893,7 +893,7 @@ void
 QQuailConvWindow::tabChanged(int widgetId)
 {
     qDebug() << "QQuailConvWindow::tabChanged";
-    QQuailConversation *qconv = (QQuailConversation *)this->getTabs()->widget(widgetId);
+    quail_conversation *qconv = (quail_conversation *)this->getTabs()->widget(widgetId);
     PurpleConversation *conv = qconv->getConversation();
 	PurpleAccount *account = purple_conversation_get_account(conv);
 	PurplePlugin *prpl;
@@ -1220,7 +1220,7 @@ static void
 qQuailConvDestroy(PurpleConversation *conv)
 {
     qDebug() << "QQuailConvWindow::qQuailConvDestroy()";
-	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
+    quail_conversation *qconv = (quail_conversation *)conv->ui_data;
 
 	if (qconv == NULL)
 		return;
@@ -1261,7 +1261,7 @@ qQuailConvWriteConv(PurpleConversation *conv,
                     time_t mtime)
 {
     qDebug() << "QQuailConvWindow::qQuailConvWriteConv()";
-	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
+    quail_conversation *qconv = (quail_conversation *)conv->ui_data;
 
     qconv->write(name, message, flags, mtime);
 }

@@ -455,7 +455,7 @@ quail_main_window::addConversationWindow(PurpleConversation *conv)
 }
 
 void
-quail_main_window::removeConversationWindow(QQuailConversation */*win*/)
+quail_main_window::removeConversationWindow(quail_conversation */*win*/)
 {
     qDebug() << "QQuailMainWindow::removeConversationWindow()";
 //    GList *l;
@@ -517,13 +517,13 @@ quail_main_window::getAccountsWindow() const
 }
 
 void
-quail_main_window::setLastActiveConvWindow(QQuailConversation *win)
+quail_main_window::setLastActiveConvWindow(quail_conversation *win)
 {
     qDebug() << "QQuailMainWindow::setLastActiveConvWindow()";
     lastConvWin = win;
 }
 
-QQuailConversation *
+quail_conversation *
 quail_main_window::getLastActiveConvWindow() const
 {
 	return lastConvWin;

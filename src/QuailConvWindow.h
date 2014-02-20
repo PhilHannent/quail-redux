@@ -54,14 +54,14 @@ typedef enum
 } QuailUnseenState;
 
 
-class QQuailConversation : public QWidget
+class quail_conversation : public QWidget
 {
 	Q_OBJECT
 
 	public:
-        QQuailConversation(PurpleConversation *conv,
+        quail_conversation(PurpleConversation *conv,
                            QQuailTabWidget *parent = NULL);
-		virtual ~QQuailConversation();
+        virtual ~quail_conversation();
 
         void setConversation(PurpleConversation *conv);
         PurpleConversation *getConversation() const;
@@ -95,7 +95,7 @@ class QQuailConversation : public QWidget
 		bool notifying;
 };
 
-class QQuailConvChat : public QQuailConversation
+class QQuailConvChat : public quail_conversation
 {
 	Q_OBJECT
 
@@ -133,7 +133,7 @@ class QQuailConvChat : public QQuailConversation
         QListWidget *userList;
 };
 
-class QQuailConvIm : public QQuailConversation
+class QQuailConvIm : public quail_conversation
 {
 	Q_OBJECT
 
