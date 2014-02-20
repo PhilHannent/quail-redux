@@ -47,7 +47,7 @@ stripUnderscores(QString text)
     return text;
 }
 
-QuailDialog::QuailDialog(QWidget *parent) :
+quail_dialog::quail_dialog(QWidget *parent) :
     QDialog(parent)
 {
 }
@@ -55,38 +55,38 @@ QuailDialog::QuailDialog(QWidget *parent) :
 /**************************************************************************
  * QQuailAddBuddyDialog
  **************************************************************************/
-QQuailAddBuddyDialog::QQuailAddBuddyDialog(QWidget *parent)
-    : QuailDialog(parent)
+quail_add_buddy_dialog::quail_add_buddy_dialog(QWidget *parent)
+    : quail_dialog(parent)
 {
 	buildInterface();
 }
 
 void
-QQuailAddBuddyDialog::setScreenName(const QString &screenName)
+quail_add_buddy_dialog::setScreenName(const QString &screenName)
 {
 	screenNameEntry->setText(screenName);
 }
 
 void
-QQuailAddBuddyDialog::setAlias(const QString &alias)
+quail_add_buddy_dialog::setAlias(const QString &alias)
 {
 	aliasEntry->setText(alias);
 }
 
 void
-QQuailAddBuddyDialog::setGroup(const QString &group)
+quail_add_buddy_dialog::setGroup(const QString &group)
 {
 	groupCombo->lineEdit()->setText(group);
 }
 
 void
-QQuailAddBuddyDialog::setAccount(PurpleAccount *account)
+quail_add_buddy_dialog::setAccount(PurpleAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
 
 void
-QQuailAddBuddyDialog::buildInterface()
+quail_add_buddy_dialog::buildInterface()
 {
 	QFrame *frame;
 	QGridLayout *grid;
@@ -154,7 +154,7 @@ QQuailAddBuddyDialog::buildInterface()
 }
 
 void
-QQuailAddBuddyDialog::populateGroupCombo()
+quail_add_buddy_dialog::populateGroupCombo()
 {
 	PurpleBlistNode *node = purple_get_blist()->root;
 
@@ -175,7 +175,7 @@ QQuailAddBuddyDialog::populateGroupCombo()
 }
 
 void
-QQuailAddBuddyDialog::accept()
+quail_add_buddy_dialog::accept()
 {
     qDebug() << "QQuailAddBuddyDialog::accept()";
     PurpleConversation *conv;
@@ -223,32 +223,32 @@ QQuailAddBuddyDialog::accept()
 /**************************************************************************
  * QQuailAddChatDialog
  **************************************************************************/
-QQuailAddChatDialog::QQuailAddChatDialog(QWidget *parent)
-    : QuailDialog(parent)
+quail_add_chat_dialog::quail_add_chat_dialog(QWidget *parent)
+    : quail_dialog(parent)
 {
 	buildInterface();
 }
 
 void
-QQuailAddChatDialog::setAlias(const QString &alias)
+quail_add_chat_dialog::setAlias(const QString &alias)
 {
 	aliasEntry->setText(alias);
 }
 
 void
-QQuailAddChatDialog::setGroup(const QString &group)
+quail_add_chat_dialog::setGroup(const QString &group)
 {
 	groupCombo->lineEdit()->setText(group);
 }
 
 void
-QQuailAddChatDialog::setAccount(PurpleAccount *account)
+quail_add_chat_dialog::setAccount(PurpleAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
 
 void
-QQuailAddChatDialog::buildInterface()
+quail_add_chat_dialog::buildInterface()
 {
 	QLabel *label;
 	QLabel *spacer;
@@ -317,7 +317,7 @@ QQuailAddChatDialog::buildInterface()
 }
 
 void
-QQuailAddChatDialog::populateGroupCombo()
+quail_add_chat_dialog::populateGroupCombo()
 {
 	PurpleBlistNode *node = purple_get_blist()->root;
 
@@ -338,7 +338,7 @@ QQuailAddChatDialog::populateGroupCombo()
 }
 
 void
-QQuailAddChatDialog::rebuildWidgetsFrame()
+quail_add_chat_dialog::rebuildWidgetsFrame()
 {
 	GList *chatInfoList, *l;
 	QLabel *label;
@@ -397,13 +397,13 @@ QQuailAddChatDialog::rebuildWidgetsFrame()
 }
 
 void
-QQuailAddChatDialog::accountChanged(int)
+quail_add_chat_dialog::accountChanged(int)
 {
 	rebuildWidgetsFrame();
 }
 
 void
-QQuailAddChatDialog::accept()
+quail_add_chat_dialog::accept()
 {
     qDebug() << "QQuailAddChatDialog::accept()";
     PurpleConnection *gc;
@@ -474,26 +474,26 @@ QQuailAddChatDialog::accept()
 /**************************************************************************
  * QQuailNewImDialog
  **************************************************************************/
-QQuailNewImDialog::QQuailNewImDialog(QWidget *parent)
-    : QuailDialog(parent)
+quail_new_im_dialog::quail_new_im_dialog(QWidget *parent)
+    : quail_dialog(parent)
 {
 	buildInterface();
 }
 
 void
-QQuailNewImDialog::setScreenName(const QString &screenName)
+quail_new_im_dialog::setScreenName(const QString &screenName)
 {
 	screenNameEntry->setText(screenName);
 }
 
 void
-QQuailNewImDialog::setAccount(PurpleAccount *account)
+quail_new_im_dialog::setAccount(PurpleAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
 
 void
-QQuailNewImDialog::buildInterface()
+quail_new_im_dialog::buildInterface()
 {
 	QFrame *frame;
 	QGridLayout *grid;
@@ -546,7 +546,7 @@ QQuailNewImDialog::buildInterface()
 }
 
 void
-QQuailNewImDialog::accept()
+quail_new_im_dialog::accept()
 {
     qDebug() << "QQuailNewImDialog::accept()";
 	QString screenname = screenNameEntry->text();
@@ -580,21 +580,21 @@ QQuailNewImDialog::accept()
 /**************************************************************************
  * QQuailJoinChatDialog
  **************************************************************************/
-QQuailJoinChatDialog::QQuailJoinChatDialog(QWidget *parent)
-    : QuailDialog(parent)
+quail_join_chat_dialog::quail_join_chat_dialog(QWidget *parent)
+    : quail_dialog(parent)
 {
 
 	buildInterface();
 }
 
 void
-QQuailJoinChatDialog::setAccount(PurpleAccount *account)
+quail_join_chat_dialog::setAccount(PurpleAccount *account)
 {
 	accountCombo->setCurrentAccount(account);
 }
 
 void
-QQuailJoinChatDialog::buildInterface()
+quail_join_chat_dialog::buildInterface()
 {
     QVBoxLayout *vbox;
 
@@ -636,7 +636,7 @@ QQuailJoinChatDialog::buildInterface()
 }
 
 void
-QQuailJoinChatDialog::rebuildWidgetsFrame()
+quail_join_chat_dialog::rebuildWidgetsFrame()
 {
 	GList *chatInfoList, *l;
 	QLabel *label;
@@ -690,13 +690,13 @@ QQuailJoinChatDialog::rebuildWidgetsFrame()
 }
 
 void
-QQuailJoinChatDialog::accountChanged(int)
+quail_join_chat_dialog::accountChanged(int)
 {
 	rebuildWidgetsFrame();
 }
 
 void
-QQuailJoinChatDialog::accept()
+quail_join_chat_dialog::accept()
 {
     qDebug() << "QQuailJoinChatDialog::accept()";
     PurpleConnection *gc;

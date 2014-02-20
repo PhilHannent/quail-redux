@@ -396,7 +396,7 @@ void
 quail_blist_window::showAddBuddy(PurpleGroup *group)
 {
     qDebug() << "QQuailBListWindow::showAddBuddy";
-    QQuailAddBuddyDialog *dialog;
+    quail_add_buddy_dialog *dialog;
     quail_blist_item *item;
 	PurpleBlistNode *node;
 
@@ -420,7 +420,7 @@ quail_blist_window::showAddBuddy(PurpleGroup *group)
 		}
 	}
 
-    dialog = new QQuailAddBuddyDialog(this);
+    dialog = new quail_add_buddy_dialog(this);
 
 	if (group != NULL)
 		dialog->setGroup(group->name);
@@ -438,7 +438,7 @@ void
 quail_blist_window::showAddChat(PurpleGroup *group)
 {
     qDebug() << "QQuailBListWindow::showAddChat()";
-	QQuailAddChatDialog *dialog;
+    quail_add_chat_dialog *dialog;
     quail_blist_item *item;
 	PurpleBlistNode *node;
 
@@ -462,7 +462,7 @@ quail_blist_window::showAddChat(PurpleGroup *group)
 		}
 	}
 
-    dialog = new QQuailAddChatDialog(this);
+    dialog = new quail_add_chat_dialog(this);
 
 	if (group != NULL)
 		dialog->setGroup(group->name);
@@ -760,9 +760,9 @@ quail_blist_window::openImSlot(PurpleBuddy *buddy)
 	else
 	{
         qDebug() << "QQuailBListWindow::openImSlot().1";
-		QQuailNewImDialog *dialog;
+        quail_new_im_dialog *dialog;
 
-		dialog = new QQuailNewImDialog(this);
+        dialog = new quail_new_im_dialog(this);
 
         dialog->show();
 	}
@@ -806,9 +806,9 @@ quail_blist_window::openChatSlot(PurpleChat *chat)
 	else
 	{
         qDebug() << "QQuailBListWindow::openChatSlot().5";
-		QQuailJoinChatDialog *dialog;
+        quail_join_chat_dialog *dialog;
 
-        dialog = new QQuailJoinChatDialog(this);
+        dialog = new quail_join_chat_dialog(this);
 
         dialog->show();
 	}
