@@ -27,9 +27,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    qDebug() << "q";
     quail_main_window w;
-    qDebug() << "q2";
     w.show();
 
     return a.exec();

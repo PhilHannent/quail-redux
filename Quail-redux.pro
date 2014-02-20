@@ -37,11 +37,11 @@ android-g++ {
 }
 
 DISTFILES = \
-	AUTHORS \
-	ChangeLog \
-	NEWS \
-	README \
-	LICENSE
+    AUTHORS \
+    ChangeLog \
+    NEWS \
+    README \
+    LICENSE
 
 linux-g++* {
     message("Using Linux")
@@ -54,10 +54,6 @@ linux-g++* {
 
 win32-g++* {
     message("Using win32")
-    HEADERS += version.h \
-                src/quailtimerinfolist.h
-
-    SOURCES +=
 
     RC_FILE = resource.rc
     INCLUDEPATH += "$(DEV_ROOT)/win32-dev/gtk_2_0-2.14/include/glib-2.0"
@@ -75,62 +71,63 @@ win32-g++* {
 }
 
 HEADERS += \
-        src/QuailAccountBox.h \
-        src/QuailAccountEditor.h \
-        src/QuailAccountsWindow.h \
-        src/QuailAction.h \
-        src/QuailBListWindow.h \
-        src/QuailBuddyList.h \
-        src/QuailConnectionMeter.h \
-        src/QuailConvButton.h \
-        src/QuailConvWindow.h \
-        src/QuailDebugWindow.h \
-        src/QuailEventLoop.h \
-        src/QuailDialogs.h \
-        src/QuailImageUtils.h \
-        src/QuailInputDialog.h \
-        src/QuailMainWindow.h \
-        src/QuailMultiLineEdit.h \
-        src/QuailNotify.h \
-        src/QuailPrefsDialog.h \
-        src/QuailProtocolBox.h \
-        src/QuailProtocolUtils.h \
-        src/QuailRequest.h \
-        src/QuailTabBar.h \
-        src/QuailTabWidget.h \
+    src/QuailAccountBox.h \
+    src/QuailAccountEditor.h \
+    src/QuailAccountsWindow.h \
+    src/QuailAction.h \
+    src/QuailBListWindow.h \
+    src/QuailBuddyList.h \
+    src/QuailConnectionMeter.h \
+    src/QuailConvButton.h \
+    src/QuailConvWindow.h \
+    src/QuailDebugWindow.h \
+    src/QuailEventLoop.h \
+    src/QuailDialogs.h \
+    src/QuailImageUtils.h \
+    src/QuailInputDialog.h \
+    src/QuailMainWindow.h \
+    src/QuailMultiLineEdit.h \
+    src/QuailNotify.h \
+    src/QuailPrefsDialog.h \
+    src/QuailProtocolBox.h \
+    src/QuailProtocolUtils.h \
+    src/QuailRequest.h \
+    src/QuailTabBar.h \
+    src/QuailTabWidget.h \
     src/QuailConvDisplay.h \
     src/QuailStatusSelector.h \
-    src/QuailBlistItem.h
+    src/QuailBlistItem.h \
+    version.h
 
 SOURCES += \
-        src/QuailAccountBox.cpp \
-        src/QuailAccountEditor.cpp \
-        src/QuailAccountsWindow.cpp \
-        src/QuailBListWindow.cpp \
-        src/QuailBuddyList.cpp \
-        src/QuailConnectionMeter.cpp \
-        src/QuailConvButton.cpp \
-        src/QuailConvWindow.cpp \
-        src/QuailDebugWindow.cpp \
-        src/QuailDialogs.cpp \
-        src/QuailEventLoop.cpp \
-        src/QuailImageUtils.cpp \
-        src/QuailInputDialog.cpp \
-        src/QuailMainWindow.cpp \
-        src/QuailMultiLineEdit.cpp \
-        src/QuailNotify.cpp \
-        src/QuailPrefsDialog.cpp \
-        src/QuailProtocolBox.cpp \
-        src/QuailProtocolUtils.cpp \
-        src/QuailRequest.cpp \
-        src/QuailTabBar.cpp \
-        src/QuailTabWidget.cpp \
-        src/main.cpp \
+    src/QuailAccountBox.cpp \
+    src/QuailAccountEditor.cpp \
+    src/QuailAccountsWindow.cpp \
+    src/QuailBListWindow.cpp \
+    src/QuailBuddyList.cpp \
+    src/QuailConnectionMeter.cpp \
+    src/QuailConvButton.cpp \
+    src/QuailConvWindow.cpp \
+    src/QuailDebugWindow.cpp \
+    src/QuailDialogs.cpp \
+    src/QuailEventLoop.cpp \
+    src/QuailImageUtils.cpp \
+    src/QuailInputDialog.cpp \
+    src/QuailMainWindow.cpp \
+    src/QuailMultiLineEdit.cpp \
+    src/QuailNotify.cpp \
+    src/QuailPrefsDialog.cpp \
+    src/QuailProtocolBox.cpp \
+    src/QuailProtocolUtils.cpp \
+    src/QuailRequest.cpp \
+    src/QuailTabBar.cpp \
+    src/QuailTabWidget.cpp \
+    src/main.cpp \
     src/QuailConvDisplay.cpp \
     src/QuailStatusSelector.cpp \
     src/QuailBlistItem.cpp
 
-    QMAKE_CFLAGS += -fstack-protector -fstack-protector-all
+QMAKE_CFLAGS += -fstack-protector -fstack-protector-all
 
 RESOURCES += \
     quail.qrc
