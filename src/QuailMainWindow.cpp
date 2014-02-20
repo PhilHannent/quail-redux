@@ -504,7 +504,7 @@ quail_main_window::slotReadSettings()
     restoreState(appSettings.value("state", saveState()).toByteArray());
 }
 
-QQuailBListWindow *
+quail_blist_window *
 quail_main_window::getBlistWindow() const
 {
     return m_blist_window;
@@ -546,7 +546,7 @@ quail_main_window::showBlistWindow()
 {
     if (!m_blist_window)
 	{
-        m_blist_window = new QQuailBListWindow(this);
+        m_blist_window = new quail_blist_window(this);
         widgetStack->addWidget(m_blist_window);
 	}
 

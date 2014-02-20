@@ -30,7 +30,7 @@
 #include <libpurple/conversation.h>
 
 class quail_accounts_window;
-class QQuailBListWindow;
+class quail_blist_window;
 class QQuailConnectionMeters;
 class QQuailConvWindow;
 class QQuailConversation;
@@ -54,7 +54,7 @@ class quail_main_window : public QMainWindow
         void addConversationWindow(PurpleConversation *win);
         void removeConversationWindow(QQuailConversation *win);
 
-		QQuailBListWindow *getBlistWindow() const;
+		quail_blist_window *getBlistWindow() const;
 		quail_accounts_window *getAccountsWindow() const;
 
         void setLastActiveConvWindow(QQuailConversation *win);
@@ -99,7 +99,7 @@ class quail_main_window : public QMainWindow
 
         QStackedWidget *widgetStack;
         quail_accounts_window *m_accounts_window;
-        QQuailBListWindow *m_blist_window;
+        quail_blist_window *m_blist_window;
 		QQuailConnectionMeters *meters;
         QQuailConvWindow *m_conv_window;
         QQuailConversation *lastConvWin;

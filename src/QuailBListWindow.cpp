@@ -43,21 +43,21 @@
 #include <QToolBar>
 #include <QToolButton>
 
-QQuailBListWindow::QQuailBListWindow(QMainWindow *parent)
+quail_blist_window::quail_blist_window(QMainWindow *parent)
 	: QMainWindow(), parentMainWindow(parent), convsMenu(NULL)
 {
     qDebug() << "QQuailBListWindow::QQuailBListWindow";
 	buildInterface();
 }
 
-QQuailBListWindow::~QQuailBListWindow()
+quail_blist_window::~quail_blist_window()
 {
 	if (convsMenu != NULL)
 		delete convsMenu;
 }
 
 void
-QQuailBListWindow::buildInterface()
+quail_blist_window::buildInterface()
 {
     qDebug() << "QQuailBListWindow::buildInterface";
     setWindowIcon(QIcon(":/data/images/logo.png"));
@@ -112,7 +112,7 @@ QQuailBListWindow::buildInterface()
 }
 
 void
-QQuailBListWindow::buildToolBar()
+quail_blist_window::buildToolBar()
 {
     qDebug() << "QQuailBListWindow::buildToolBar";
 	QAction *a;
@@ -250,19 +250,19 @@ QQuailBListWindow::buildToolBar()
 }
 
 void
-QQuailBListWindow::setBlist(PurpleBuddyList *list)
+quail_blist_window::setBlist(PurpleBuddyList *list)
 {
     buddylist->setBlist(list);
 }
 
 PurpleBuddyList *
-QQuailBListWindow::getBlist() const
+quail_blist_window::getBlist() const
 {
     return buddylist->getBlist();
 }
 
 void
-QQuailBListWindow::accountSignedOn(PurpleAccount *account)
+quail_blist_window::accountSignedOn(PurpleAccount *account)
 {
     qDebug() << "QQuailBListWindow::accountSignedOn";
     PurpleBlistNode *gnode, *cnode;
@@ -299,7 +299,7 @@ QQuailBListWindow::accountSignedOn(PurpleAccount *account)
 }
 
 void
-QQuailBListWindow::accountSignedOff(PurpleAccount *)
+quail_blist_window::accountSignedOff(PurpleAccount *)
 {
     qDebug() << "QQuailBListWindow::accountSignedOff";
     if (purple_connections_get_all() == NULL)
@@ -312,14 +312,14 @@ QQuailBListWindow::accountSignedOff(PurpleAccount *)
 }
 
 void
-QQuailBListWindow::updateNode(PurpleBlistNode *node)
+quail_blist_window::updateNode(PurpleBlistNode *node)
 {
     qDebug() << "QQuailBListWindow::updateNode";
     buddylist->updateNode(node);
 }
 
 void
-QQuailBListWindow::reloadList()
+quail_blist_window::reloadList()
 {
     qDebug() << "QQuailBListWindow::reloadList";
     buddylist->reload(true);
@@ -329,14 +329,14 @@ QQuailBListWindow::reloadList()
  * Slots
  **************************************************************************/
 void
-QQuailBListWindow::currentNodeChanged(QTreeWidgetItem *item,
+quail_blist_window::currentNodeChanged(QTreeWidgetItem *item,
                                       QTreeWidgetItem *prevItem)
 {
     nodeChanged(item, prevItem);
 }
 
 void
-QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item, QTreeWidgetItem * /*prev*/)
+quail_blist_window::nodeChanged(QTreeWidgetItem *_item, QTreeWidgetItem * /*prev*/)
 {
     qDebug() << "QQuailBListWindow::nodeChanged";
     quail_blist_item *item;
@@ -377,7 +377,7 @@ QQuailBListWindow::nodeChanged(QTreeWidgetItem *_item, QTreeWidgetItem * /*prev*
 }
 
 void
-QQuailBListWindow::doubleClickList(QTreeWidgetItem *_item, int /*col*/)
+quail_blist_window::doubleClickList(QTreeWidgetItem *_item, int /*col*/)
 {
     qDebug() << "QQuailBListWindow::doubleClickList";
     quail_blist_item *item;
@@ -393,7 +393,7 @@ QQuailBListWindow::doubleClickList(QTreeWidgetItem *_item, int /*col*/)
 }
 
 void
-QQuailBListWindow::showAddBuddy(PurpleGroup *group)
+quail_blist_window::showAddBuddy(PurpleGroup *group)
 {
     qDebug() << "QQuailBListWindow::showAddBuddy";
     QQuailAddBuddyDialog *dialog;
@@ -429,13 +429,13 @@ QQuailBListWindow::showAddBuddy(PurpleGroup *group)
 }
 
 void
-QQuailBListWindow::showAddBuddy()
+quail_blist_window::showAddBuddy()
 {
 	showAddBuddy(NULL);
 }
 
 void
-QQuailBListWindow::showAddChat(PurpleGroup *group)
+quail_blist_window::showAddChat(PurpleGroup *group)
 {
     qDebug() << "QQuailBListWindow::showAddChat()";
 	QQuailAddChatDialog *dialog;
@@ -470,7 +470,7 @@ QQuailBListWindow::showAddChat(PurpleGroup *group)
 
 }
 void
-QQuailBListWindow::showAddChat()
+quail_blist_window::showAddChat()
 {
 	showAddChat(NULL);
 }
@@ -488,7 +488,7 @@ addGroupCb(void *, const char *groupName)
 }
 
 void
-QQuailBListWindow::showAddGroup()
+quail_blist_window::showAddGroup()
 {
     qDebug() << "QQuailBListWindow::showAddGroup()";
     purple_request_input(this, tr("Add Group").toStdString().c_str(),
@@ -606,7 +606,7 @@ removeGroupCb(PurpleGroup *group)
 }
 
 void
-QQuailBListWindow::showRemoveBuddy()
+quail_blist_window::showRemoveBuddy()
 {
     qDebug() << "QQuailBListWindow::showRemoveBuddy()";
     quail_blist_item *item;
@@ -634,7 +634,7 @@ QQuailBListWindow::showRemoveBuddy()
 }
 
 void
-QQuailBListWindow::showConfirmRemoveBuddy(PurpleBuddy *buddy)
+quail_blist_window::showConfirmRemoveBuddy(PurpleBuddy *buddy)
 {
     qDebug() << "QQuailBListWindow::showConfirmRemoveBuddy()";
 	QString name = buddy->name;
@@ -651,7 +651,7 @@ QQuailBListWindow::showConfirmRemoveBuddy(PurpleBuddy *buddy)
 }
 
 void
-QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
+quail_blist_window::showConfirmRemoveContact(PurpleContact *contact)
 {
     qDebug() << "QQuailBListWindow::showConfirmRemoveContact()";
 	PurpleBuddy *buddy = purple_contact_get_priority_buddy(contact);
@@ -681,7 +681,7 @@ QQuailBListWindow::showConfirmRemoveContact(PurpleContact *contact)
 }
 
 void
-QQuailBListWindow::showConfirmRemoveChat(PurpleChat *chat)
+quail_blist_window::showConfirmRemoveChat(PurpleChat *chat)
 {
     qDebug() << "QQuailBListWindow::showConfirmRemoveChat()";
     QString name = purple_chat_get_name(chat);
@@ -699,7 +699,7 @@ QQuailBListWindow::showConfirmRemoveChat(PurpleChat *chat)
 }
 
 void
-QQuailBListWindow::showConfirmRemoveGroup(PurpleGroup *group)
+quail_blist_window::showConfirmRemoveGroup(PurpleGroup *group)
 {
     qDebug() << "QQuailBListWindow::showConfirmRemoveGroup()";
 	QString name = group->name;
@@ -717,7 +717,7 @@ QQuailBListWindow::showConfirmRemoveGroup(PurpleGroup *group)
 }
 
 void
-QQuailBListWindow::showOfflineBuddies(bool on)
+quail_blist_window::showOfflineBuddies(bool on)
 {
     qDebug() << "QQuailBListWindow::showOfflineBuddies()";
     purple_prefs_set_bool("/quail/blist/show_offline_buddies", on);
@@ -726,7 +726,7 @@ QQuailBListWindow::showOfflineBuddies(bool on)
 }
 
 void
-QQuailBListWindow::blistToggled(bool )
+quail_blist_window::blistToggled(bool )
 {
     qDebug() << "QQuailBListWindow::blistToggled()";
     //TODO: Check to see if this should toggle
@@ -734,7 +734,7 @@ QQuailBListWindow::blistToggled(bool )
 }
 
 void
-QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
+quail_blist_window::openImSlot(PurpleBuddy *buddy)
 {
     qDebug() << "QQuailBListWindow::openImSlot()";
 	if (buddy == NULL)
@@ -770,13 +770,13 @@ QQuailBListWindow::openImSlot(PurpleBuddy *buddy)
 }
 
 void
-QQuailBListWindow::openImSlot()
+quail_blist_window::openImSlot()
 {
 	openImSlot(NULL);
 }
 
 void
-QQuailBListWindow::openChatSlot(PurpleChat *chat)
+quail_blist_window::openChatSlot(PurpleChat *chat)
 {
     qDebug() << "QQuailBListWindow::openChatSlot()";
     quail_blist_item *item;
@@ -816,7 +816,7 @@ QQuailBListWindow::openChatSlot(PurpleChat *chat)
 }
 
 void
-QQuailBListWindow::openChatSlot()
+quail_blist_window::openChatSlot()
 {
 	openChatSlot(NULL);
 }
@@ -828,7 +828,7 @@ static void
 signedOnCb(PurpleConnection *gc, PurpleBuddyList *blist)
 {
     qDebug() << "QQuailBListWindow::signedOnCb()";
-	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
+    quail_blist_window *qblist = (quail_blist_window *)blist->ui_data;
 
 	qblist->accountSignedOn(purple_connection_get_account(gc));
 }
@@ -837,7 +837,7 @@ static void
 signedOffCb(PurpleConnection *gc, PurpleBuddyList *blist)
 {
     qDebug() << "QQuailBListWindow::signedOffCb()";
-	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
+    quail_blist_window *qblist = (quail_blist_window *)blist->ui_data;
 
 	qblist->accountSignedOff(purple_connection_get_account(gc));
 }
@@ -849,7 +849,7 @@ static void
 qQuailBlistNewList(PurpleBuddyList *blist)
 {
     qDebug() << "QQuailBListWindow::qQuailBlistNewList()";
-	QQuailBListWindow *win = qQuailGetMainWindow()->getBlistWindow();
+    quail_blist_window *win = qQuailGetMainWindow()->getBlistWindow();
 	blist->ui_data = win;
     win->setBlist(blist);
 
@@ -871,7 +871,7 @@ static void
 qQuailBlistShow(PurpleBuddyList *blist)
 {
     qDebug() << "QQuailBListWindow::qQuailBlistShow()";
-	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
+    quail_blist_window *blist_win = (quail_blist_window *)blist->ui_data;
 
 	blist_win->show();
 }
@@ -880,7 +880,7 @@ static void
 qQuailBlistUpdate(PurpleBuddyList *blist, PurpleBlistNode *node)
 {
     qDebug() << "QQuailBListWindow::qQuailBlistUpdate()";
-	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
+    quail_blist_window *blist_win = (quail_blist_window *)blist->ui_data;
 	blist_win->updateNode(node);
 }
 
@@ -888,7 +888,7 @@ static void
 qQuailBlistRemove(PurpleBuddyList *blist, PurpleBlistNode *node)
 {
     //qDebug() << "QQuailBListWindow::qQuailBlistRemove()";
-	QQuailBListWindow *blist_win = (QQuailBListWindow *)blist->ui_data;
+    quail_blist_window *blist_win = (quail_blist_window *)blist->ui_data;
     quail_blist_item *item = (quail_blist_item *)node->ui_data;
     quail_blist_item *parent;
 
@@ -909,7 +909,7 @@ static void
 qQuailBlistDestroy(PurpleBuddyList *blist)
 {
     qDebug() << "QQuailBListWindow::qQuailBlistDestroy()";
-	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
+    quail_blist_window *qblist = (quail_blist_window *)blist->ui_data;
 
 	delete qblist;
 
@@ -920,7 +920,7 @@ static void
 qQuailBlistSetVisible(PurpleBuddyList *blist, gboolean show)
 {
     qDebug() << "QQuailBListWindow::qQuailBlistSetVisible()";
-	QQuailBListWindow *qblist = (QQuailBListWindow *)blist->ui_data;
+    quail_blist_window *qblist = (quail_blist_window *)blist->ui_data;
 
 	if (show)
 		qblist->show();

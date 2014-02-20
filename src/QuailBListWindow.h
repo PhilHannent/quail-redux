@@ -38,13 +38,13 @@ class QTreeWidgetItem;
 class quail_accounts_window;
 class quail_buddy_list;
 
-class QQuailBListWindow : public QMainWindow
+class quail_blist_window : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-		QQuailBListWindow(QMainWindow *parent);
-		~QQuailBListWindow();
+		quail_blist_window(QMainWindow *parent);
+		~quail_blist_window();
 
 		/* Functions our blist UI must access. */
         void setBlist(PurpleBuddyList *list);
