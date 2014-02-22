@@ -8,14 +8,12 @@
 quail_blist_item::quail_blist_item(QTreeWidget *parent, PurpleBlistNode *node)
     : QTreeWidgetItem(parent), node(node), dirty(true)
 {
-    qDebug() << "QQuailBListItem::QQuailBListItem::Added to TreeWidget";
     init();
 }
 
 quail_blist_item::quail_blist_item(QTreeWidgetItem *parent, PurpleBlistNode *node)
     : QTreeWidgetItem(parent), node(node), dirty(true)
 {
-    qDebug() << "QQuailBListItem::QQuailBListItem::Added to TreeWidgetItem";
     init();
 }
 
@@ -49,7 +47,6 @@ quail_blist_item::updateInfo()
 
         if (buddy == NULL)
             return;
-
 
         qDebug() << "QQuailBListItem::updateInfo.Contact.1";
 
@@ -123,9 +120,7 @@ quail_blist_item::updateInfo()
                 qDebug() << "QQuailBListItem::updateInfo.Contact.4== No buddy icon";
             }
         }
-        //qDebug() << "QQuailBListItem::updateInfo.Contact.1:" << buddy->server_alias;
         setText(1, getAlias(buddy));
-        //setText(1, purple_get_buddy_alias(buddy));
     }
     else if (PURPLE_BLIST_NODE_IS_BUDDY(node))
     {
@@ -172,7 +167,6 @@ quail_blist_item::updateInfo()
                 }
             }
         }
-        qDebug() << "QQuailBListItem::updateInfo.Buddy.1" << buddy->server_alias;
         setIcon(1, QIcon(quail_blist_item::getBuddyStatusIcon(node)));
         setText(1, getAlias(buddy));
     }
@@ -189,7 +183,6 @@ quail_blist_item::updateInfo()
     }
     else if (PURPLE_BLIST_NODE_IS_GROUP(node))
     {
-        qDebug() << "QQuailBListItem::updateInfo.Group";
         PurpleGroup *group = (PurpleGroup *)node;
         setText(1, group->name);
     }
@@ -198,10 +191,6 @@ quail_blist_item::updateInfo()
 QString
 quail_blist_item::getAlias(PurpleBuddy *buddy)
 {
-//    qDebug() << "quail_blist_item::getAlias" << buddy->alias;
-//    qDebug() << "quail_blist_item::getAlias" << buddy->server_alias;
-//    qDebug() << "quail_blist_item::getAlias" << buddy->name;
-
     if(!QString(buddy->alias).isEmpty())
         return QString(buddy->alias);
     else if(!QString(buddy->server_alias).isEmpty())
@@ -218,7 +207,6 @@ quail_blist_item::init()
 QSize
 quail_blist_item::sizeHint ( int column ) const
 {
-    qDebug() << "QQuailBListItem::sizeHint";
     if (column == 0 || column == 2)
         return QSize(50, 50);
     else
@@ -411,7 +399,6 @@ quail_blist_item::sizeHint ( int column ) const
 QPixmap
 quail_blist_item::getBuddyStatusIcon(PurpleBlistNode *node)
 {
-    qDebug() << "QQuailBListItem::getBuddyStatusIcon";
     QPixmap returnImage;
     quail_blist_item *qnode = (quail_blist_item*)node->ui_data;
     quail_blist_item *qbuddynode = NULL;
@@ -430,7 +417,6 @@ quail_blist_item::getBuddyStatusIcon(PurpleBlistNode *node)
     } else if(PURPLE_BLIST_NODE_IS_CHAT(node)) {
         chat = (PurpleChat*)node;
     } else {
-        qDebug() << "QQuailBListItem::getBuddyStatusIcon.1";
         return QPixmap();
     }
 
@@ -445,7 +431,6 @@ quail_blist_item::getBuddyStatusIcon(PurpleBlistNode *node)
 
         prpl = purple_find_prpl(purple_account_get_protocol_id(account));
         if(!prpl) {
-            qDebug() << "QQuailBListItem::getBuddyStatusIcon.2";
             return QPixmap();
         }
     }

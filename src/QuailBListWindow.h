@@ -50,8 +50,8 @@ class quail_blist_window : public QMainWindow
         void setBlist(PurpleBuddyList *list);
         PurpleBuddyList *getBlist() const;
 
-		void accountSignedOn(PurpleAccount *acocunt);
-		void accountSignedOff(PurpleAccount *acocunt);
+		void account_signed_on(PurpleAccount *acocunt);
+        void account_signed_off(PurpleAccount *acocunt);
 
 		void updateNode(PurpleBlistNode *node);
 
@@ -120,6 +120,6 @@ class quail_blist_window : public QMainWindow
         QToolBar *toolbar;
 };
 
-PurpleBlistUiOps *qQuailGetBlistUiOps();
+PurpleBlistUiOps *quail_get_blist_ui_ops();
 
 #endif /* _QUAIL_BLIST_WIN_H_ */

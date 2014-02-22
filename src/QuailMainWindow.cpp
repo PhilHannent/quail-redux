@@ -96,7 +96,7 @@ qQuailCoreDebugInit(void)
 static void
 qQuailCoreUiInit(void)
 {
-	purple_blist_set_ui_ops(qQuailGetBlistUiOps());
+    purple_blist_set_ui_ops(quail_get_blist_ui_ops());
 	purple_connections_set_ui_ops(qQuailGetConnectionUiOps());
     purple_conversations_set_ui_ops(qQuailGetConvWindowUiOps());
 	purple_notify_set_ui_ops(qQuailGetNotifyUiOps());
