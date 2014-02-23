@@ -28,6 +28,7 @@
 
 #include <QDialog>
 #include <QList>
+#include <QMap>
 #include <QVariant>
 #include <QWidget>
 
@@ -48,7 +49,7 @@ class quail_account_editor : public QDialog
 	Q_OBJECT
 
 	public:
-		quail_account_editor(PurpleAccount *account = NULL,
+        quail_account_editor(PurpleAccount *m_account = NULL,
                             QWidget *parent = NULL,
                             QString name = "");
 		~quail_account_editor();
@@ -77,14 +78,14 @@ class quail_account_editor : public QDialog
         void signalAccountUpdated();
 
 	private:
-		PurpleAccount *account;
+        PurpleAccount *m_account;
 		PurplePlugin *m_plugin;
 		PurplePluginProtocolInfo *m_prpl_info;
 
 		QString m_protocol_id;
 
 		GList *userSplitEntries;
-		GList *protocolOptEntries;
+        QMap<QString, QWidget*> m_protocol_option_entries;
 
         PurpleProxyType newProxyType;
 
