@@ -204,7 +204,7 @@ quail_buddy_list::updateNode(PurpleBlistNode *node)
 {
     switch (node->type)
 	{
-        case PURPLE_BLIST_GROUP_NODE:   updateGroup(node);   break;
+        case PURPLE_BLIST_GROUP_NODE:   update_group(node);  break;
         case PURPLE_BLIST_CONTACT_NODE: updateContact(node); break;
         case PURPLE_BLIST_BUDDY_NODE:   updateBuddy(node);   break;
         case PURPLE_BLIST_CHAT_NODE:    updateChat(node);    break;
@@ -216,6 +216,7 @@ quail_buddy_list::updateNode(PurpleBlistNode *node)
 void
 quail_buddy_list::reload(bool remove)
 {
+    qDebug() << "quail_buddy_list::reload" << remove;
 	PurpleBlistNode *group, *cnode, *child;
 
 	if (remove)
@@ -929,21 +930,20 @@ quail_buddy_list::aliasChatSlot()
 }
 
 void
-quail_buddy_list::addGroup(PurpleBlistNode *node)
+quail_buddy_list::add_group(PurpleBlistNode *node)
 {
     quail_blist_item *item = new quail_blist_item(this, node);
-	node->ui_data = item;
-
+    node->ui_data = item;
 }
 
 void
-quail_buddy_list::updateGroup(PurpleBlistNode *node)
+quail_buddy_list::update_group(PurpleBlistNode *node)
 {
     PurpleGroup *group;
     quail_blist_item *item;
-
+    qDebug() << "quail_buddy_list::update_group";
     g_return_if_fail(PURPLE_BLIST_NODE_IS_GROUP(node));
-
+    qDebug() << "quail_buddy_list::update_group.1";
     item = (quail_blist_item *)node->ui_data;
 	group = (PurpleGroup *)node;
 
@@ -953,10 +953,10 @@ quail_buddy_list::updateGroup(PurpleBlistNode *node)
 	{
 		if (item == NULL)
 		{
-			addGroup(node);
+            add_group(node);
             item = (quail_blist_item *)node->ui_data;
 		}
-        if (!purple_blist_node_get_bool(node, "collapsed"))
+        //if (!purple_blist_node_get_bool(node, "collapsed"))
         {
             item->setExpanded(true);
         }
@@ -977,18 +977,18 @@ quail_buddy_list::updateContact(PurpleBlistNode *node)
 
     g_return_if_fail(PURPLE_BLIST_NODE_IS_CONTACT(node));
 
-	updateGroup(node->parent);
+    update_group(node->parent);
 
 	contact = (PurpleContact *)node;
 	buddy   = purple_contact_get_priority_buddy(contact);
-    item = static_cast<quail_blist_item *>(node->ui_data);
+    item = (quail_blist_item *)node->ui_data;
     qDebug() << "QQuailBuddyList::updateContact:2:";
     qDebug() << "QQuailBuddyList::updateContact:3:" << PURPLE_BUDDY_IS_ONLINE(buddy);
 //    qDebug() << "QQuailBuddyList::updateContact:4:" << purple_account_is_connected(buddy->account);
 //    qDebug() << "QQuailBuddyList::updateContact:4:" << purple_prefs_get_bool("/quail/blist/show_offline_buddies");
     if ((buddy != NULL) &&
          (PURPLE_BUDDY_IS_ONLINE(buddy) ||
-          (purple_prefs_get_bool("/quail/blist/show_offline_buddies") || true)))
+          purple_prefs_get_bool("/quail/blist/show_offline_buddies")))
     {
         if (item == NULL)
         {
@@ -1015,7 +1015,7 @@ quail_buddy_list::updateContact(PurpleBlistNode *node)
 void
 quail_buddy_list::updateBuddy(PurpleBlistNode *node)
 {
-//    qDebug() << "QQuailBuddyList::updateBuddy";
+    qDebug() << "QQuailBuddyList::updateBuddy";
     //PurpleContact *contact;
 	PurpleBuddy *buddy;
     quail_blist_item *item;
@@ -1024,13 +1024,14 @@ quail_buddy_list::updateBuddy(PurpleBlistNode *node)
 
 	updateContact(node->parent);
 
-	if (node->parent->ui_data == NULL ||
-		(node->parent->ui_data != NULL &&
+
+    if (node->parent->ui_data == NULL ||
+        (node->parent->ui_data != NULL &&
          !(static_cast<quail_blist_item *>(node->parent->ui_data))->isExpanded()))
-	{
-//        qDebug() << "QQuailBuddyList::updateBuddy.no ui_data";
-		return;
-	}
+    {
+        qWarning() << "quail_buddy_list::updateBuddy.no ui_data";
+        return;
+    }
 
     buddy = (PurpleBuddy *)node;
 //	contact = static_cast<PurpleContact *>(node->parent);
@@ -1062,7 +1063,7 @@ quail_buddy_list::updateChat(PurpleBlistNode *node)
 
     g_return_if_fail(PURPLE_BLIST_NODE_IS_CHAT(node));
 
-	updateGroup(node->parent);
+    update_group(node->parent);
 
 	chat = (PurpleChat *)node;
     item = static_cast<quail_blist_item *>(node->ui_data);

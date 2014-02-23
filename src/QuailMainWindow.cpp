@@ -354,7 +354,7 @@ quail_main_window::initCore()
         qDebug() << tr("Initialization of the Quail core failed.\n"
                   "Please report this!\n");
 	}
-    purple_debug_set_enabled(false);
+    purple_debug_set_enabled(FALSE);
     path = g_build_filename(purple_user_dir(), "plugins", NULL);
     purple_plugins_add_search_path(path);
     purple_plugins_probe(NULL);

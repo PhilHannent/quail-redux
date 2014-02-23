@@ -100,9 +100,9 @@ class quail_buddy_list : public QTreeWidget
 		void aliasChatSlot();
 
 	private:
-		void addGroup(PurpleBlistNode *node);
+		void add_group(PurpleBlistNode *node);
 
-		void updateGroup(PurpleBlistNode *node);
+		void update_group(PurpleBlistNode *node);
 		void updateContact(PurpleBlistNode *node);
 		void updateBuddy(PurpleBlistNode *node);
 		void updateChat(PurpleBlistNode *node);

@@ -89,7 +89,7 @@ class quail_blist_window : public QMainWindow
 	private:
 		QMainWindow *parentMainWindow;
 
-		quail_buddy_list *buddylist;
+        quail_buddy_list *m_buddy_tree;
 
 		QToolButton *addButton;
 
