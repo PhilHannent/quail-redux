@@ -38,7 +38,7 @@
 #include <QSettings>
 #include <QTimer>
 
-#define BUDDY_ICON_SIZE 20
+const int BUDDY_ICON_SIZE = 50;
 
 
 /**************************************************************************
@@ -160,6 +160,8 @@ quail_buddy_list::quail_buddy_list(QWidget *parent)
     setColumnWidth(0, BUDDY_ICON_SIZE);
     setColumnWidth(1, this->width() - (BUDDY_ICON_SIZE *2));
     setColumnWidth(2, BUDDY_ICON_SIZE);
+    setIconSize(QSize(BUDDY_ICON_SIZE, BUDDY_ICON_SIZE));
+
     setHeaderLabels( horzHeaders );
 
     setUniformRowHeights(false);

@@ -39,7 +39,6 @@ quail_blist_item::updateInfo()
 
     if (PURPLE_BLIST_NODE_IS_CONTACT(node))
     {
-        qDebug() << "QQuailBListItem::updateInfo.Contact";
         PurpleContact *contact = (PurpleContact *)node;
         PurpleBuddy *buddy = purple_contact_get_priority_buddy(contact);
         PurplePresence *presence = purple_buddy_get_presence(buddy);
@@ -48,7 +47,6 @@ quail_blist_item::updateInfo()
         if (buddy == NULL)
             return;
 
-        qDebug() << "QQuailBListItem::updateInfo.Contact.1";
 
         if (isExpanded())
         {
@@ -56,7 +54,6 @@ quail_blist_item::updateInfo()
         }
         else
         {
-            qDebug() << "QQuailBListItem::updateInfo.Contact.2";
             QString text("");
 
 //			if (buddy->evil > 0)
@@ -98,30 +95,29 @@ quail_blist_item::updateInfo()
                 }
 
             }
-            qDebug() << "QQuailBListItem::updateInfo.Contact.3";
             setIcon(1, quail_blist_item::getBuddyStatusIcon((PurpleBlistNode *)buddy));
             setToolTip(1, text);
-            qDebug() << "QQuailBListItem::updateInfo.Contact.3.1";
-            PurpleBuddyIcon *purpleIcon = purple_buddy_get_icon(buddy);
+            //PurpleBuddyIcon *purpleIcon = purple_buddy_get_icon(buddy);
+            PurpleBuddyIcon *purple_icon = purple_buddy_icons_find(buddy->account, buddy->name);
             qDebug() << "QQuailBListItem::updateInfo.Contact.3.2";
-            if (purpleIcon != NULL)
+            if (purple_icon != NULL)
             {
-                data = (guchar *)purple_buddy_icon_get_data(purpleIcon, &len);
+                data = (guchar *)purple_buddy_icon_get_data(purple_icon, &len);
                 qDebug() << "QQuailBListItem::updateInfo.Contact.3.3";
-                QImage buddyIcon = QImage::fromData(data, len);
-                purple_buddy_icon_unref(purpleIcon);
-                if (buddyIcon.size().width() > 0) {
-                    qDebug() << "QQuailBListItem::updateInfo.Contact.3a" << buddyIcon.size().width();
+                QImage buddy_icon = QImage::fromData(data, len);
+                purple_buddy_icon_unref(purple_icon);
+                if (buddy_icon.size().width() > 0) {
+                    qDebug() << "QQuailBListItem::updateInfo.Contact.3a" << buddy_icon.size().width();
                 } else {
                     qDebug() << "QQuailBListItem::updateInfo.Contact.3b";
                 }
-                setIcon(2, QPixmap::fromImage(buddyIcon));
+                setIcon(2, QPixmap::fromImage(buddy_icon));
+                purple_buddy_icon_unref(purple_icon);
             } else {
                 qDebug() << "QQuailBListItem::updateInfo.Contact.4== No buddy icon";
             }
         }
         QString buddy_alias = getAlias(buddy);
-        qDebug() << "QQuailBListItem::updateInfo.Contact.5" << buddy_alias;
         setText(1, buddy_alias);
     }
     else if (PURPLE_BLIST_NODE_IS_BUDDY(node))
