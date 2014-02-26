@@ -8,7 +8,7 @@
 #include <QDebug>
 #include <QFile>
 
-QuailConvDisplay::QuailConvDisplay(QWidget *parent) :
+quail_conv_display::quail_conv_display(QWidget *parent) :
     QWebView(parent)
 {
     qDebug() << "QuailConvDisplay::QuailConvDisplay";
@@ -17,13 +17,13 @@ QuailConvDisplay::QuailConvDisplay(QWidget *parent) :
     setHtml(res.readAll());
 }
 
-QuailConvDisplay::~QuailConvDisplay()
+quail_conv_display::~quail_conv_display()
 {
 
 }
 
 void
-QuailConvDisplay::slotAddMessage(bool bLeftAligned, QString sHtml)
+quail_conv_display::slotAddMessage(bool bLeftAligned, QString sHtml)
 {
     qDebug() << "QuailConvDisplay::slotAddMessage" << sHtml;
     QString newMessage("addRow(\'");

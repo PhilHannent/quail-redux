@@ -24,12 +24,12 @@
 
 #include <QTabWidget>
 
-class QQuailTabWidget : public QTabWidget
+class quail_tab_widget : public QTabWidget
 {
 	Q_OBJECT
 
 	public:
-        QQuailTabWidget(QWidget *parent = NULL);
+        quail_tab_widget(QWidget *parent = NULL);
 
 		void setCurrentIndex(int index);
 		int getCurrentIndex() const;

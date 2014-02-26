@@ -35,8 +35,8 @@
 
 class QAction;
 class QQuailMultiLineEdit;
-class QQuailTabWidget;
-class QuailConvDisplay;
+class quail_tab_widget;
+class quail_conv_display;
 class QListWidget;
 class QTabWidget;
 class QTextEdit;
@@ -54,14 +54,14 @@ typedef enum
 } QuailUnseenState;
 
 
-class QQuailConversation : public QWidget
+class quail_conversation : public QWidget
 {
 	Q_OBJECT
 
 	public:
-        QQuailConversation(PurpleConversation *conv,
-                           QQuailTabWidget *parent = NULL);
-		virtual ~QQuailConversation();
+        quail_conversation(PurpleConversation *conv,
+                           quail_tab_widget *parent = NULL);
+        virtual ~quail_conversation();
 
         void setConversation(PurpleConversation *conv);
         PurpleConversation *getConversation() const;
@@ -89,19 +89,19 @@ class QQuailConversation : public QWidget
 
 	protected:
         PurpleConversation *conv;
-        QuailConvDisplay *textDisplay;
+        quail_conv_display *textDisplay;
 		QQuailMultiLineEdit *entry;
 		int tabId;
 		bool notifying;
 };
 
-class QQuailConvChat : public QQuailConversation
+class quail_conv_chat : public quail_conversation
 {
 	Q_OBJECT
 
 	public:
-        QQuailConvChat(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
-		virtual ~QQuailConvChat();
+        quail_conv_chat(PurpleConversation *conv, quail_tab_widget *parent = NULL);
+        virtual ~quail_conv_chat();
 
 		void write(const char *who, const char *message,
                    PurpleMessageFlags flags, time_t mtime);
@@ -133,13 +133,13 @@ class QQuailConvChat : public QQuailConversation
         QListWidget *userList;
 };
 
-class QQuailConvIm : public QQuailConversation
+class quail_conv_im : public quail_conversation
 {
 	Q_OBJECT
 
 	public:
-        QQuailConvIm(PurpleConversation *conv, QQuailTabWidget *parent = NULL);
-		virtual ~QQuailConvIm();
+        quail_conv_im(PurpleConversation *conv, quail_tab_widget *parent = NULL);
+        virtual ~quail_conv_im();
 
 		void write(const char *who, const char *message,
                    PurpleMessageFlags flags, time_t mtime);
@@ -161,13 +161,13 @@ class QQuailConvIm : public QQuailConversation
         PurpleConvIm *im;
 };
 
-class QQuailConvWindow : public QMainWindow
+class quail_conv_window : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-        QQuailConvWindow(QMainWindow *parent);
-		~QQuailConvWindow();
+        quail_conv_window(QMainWindow *parent);
+        ~quail_conv_window();
 
 //        void setConvWindow(QQuailConversation *win);
 //        QQuailConversation *getConvWindow() const;
@@ -180,7 +180,7 @@ class QQuailConvWindow : public QMainWindow
 
 		void updateAddRemoveButton();
 
-		QQuailTabWidget *getTabs() const;
+        quail_tab_widget *getTabs() const;
 
     public slots:
         void slotSendEnabled(bool enabled);
@@ -214,7 +214,7 @@ class QQuailConvWindow : public QMainWindow
         //int convWinId;
 
 		QToolBar *toolbar;
-		QQuailTabWidget *tabs;
+        quail_tab_widget *tabs;
 
 		QToolButton *convsButton;
 

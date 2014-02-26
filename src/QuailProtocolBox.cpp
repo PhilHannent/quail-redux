@@ -22,11 +22,9 @@
 #include "QuailProtocolBox.h"
 #include "QuailProtocolUtils.h"
 
-#include <libpurple/debug.h>
+#include <libpurple/prpl.h>
 
-#include <QPixmap>
-
-QQuailProtocolBox::QQuailProtocolBox(QWidget *parent)
+quail_protocol_box::quail_protocol_box(QWidget *parent)
     : QComboBox(parent)
 {
 	GList *protocols;
@@ -42,52 +40,63 @@ QQuailProtocolBox::QQuailProtocolBox(QWidget *parent)
 	}
 }
 
-QQuailProtocolBox::QQuailProtocolBox(QString protocolId, QWidget *parent)
+quail_protocol_box::quail_protocol_box(QString protocolId, QWidget *parent)
     : QComboBox(parent)
 {
 	buildMenu(protocolId);
 }
 
 void
-QQuailProtocolBox::setCurrentProtocol(QString protocolId)
+quail_protocol_box::setCurrentProtocol(QString protocolId)
 {
-	PurplePlugin *plugin;
-	GList *p;
-	int i;
-
-	for (p = purple_plugins_get_protocols(), i = 0;
-		 p != NULL;
-		 p = p->next, i++)
-	{
-		plugin = (PurplePlugin *)p->data;
-
-		if (plugin->info->id == protocolId)
-		{
+    for (int i = 0; i < this->count(); ++i )
+    {
+        if (protocolId == this->itemData(i).toString())
+        {
             setCurrentIndex(i);
-			break;
-		}
-	}
+            return;
+        }
+    }
 }
 
 void
-QQuailProtocolBox::buildMenu(QString protocolId)
+quail_protocol_box::buildMenu(QString protocolId)
 {
-	GList *p;
-	int count;
+    bool prpl_jabber_found = false;
 
-	for (p = purple_plugins_get_protocols(), count = 0;
+    for (GList *p = purple_plugins_get_protocols();
 		 p != NULL;
-		 p = p->next, count++)
+         p = p->next)
 	{
 		PurplePlugin *plugin;
 
 		plugin = (PurplePlugin *)p->data;
+        QString plugin_name = plugin->info->name;
+        QString plugin_id = plugin->info->id;
+        if (!prpl_jabber_found && plugin_name == "XMPP")
+        {
+            prpl_jabber_found = true;
+        }
 
-        addItem(
-            QQuailProtocolUtils::getProtocolIcon(plugin),
-			plugin->info->name);
+        addItem(quail_protocol_utils::getProtocolIcon(plugin)
+                , plugin_name
+                , plugin_id);
 
-		if (protocolId != NULL && protocolId == plugin->info->id)
-            setCurrentIndex(count);
+        if (protocolId != NULL && protocolId == plugin_id)
+            setCurrentIndex(this->count()-1);
 	}
+    if (prpl_jabber_found)
+    {
+        addItem(quail_protocol_utils::getProtocolIcon("google-talk"), "Google Talk", "google-talk");
+        if (protocolId == "google-talk")
+        {
+            setCurrentIndex(this->count()-1);
+        }
+        addItem(quail_protocol_utils::getProtocolIcon("facebook"), "Facebook", "facebook");
+        if (protocolId == "facebook")
+        {
+            setCurrentIndex(this->count()-1);
+        }
+    }
+    this->model()->sort(0);
 }

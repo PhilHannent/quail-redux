@@ -36,22 +36,22 @@ class QToolButton;
 class QTreeWidgetItem;
 
 class quail_accounts_window;
-class QQuailBuddyList;
+class quail_buddy_list;
 
-class QQuailBListWindow : public QMainWindow
+class quail_blist_window : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-		QQuailBListWindow(QMainWindow *parent);
-		~QQuailBListWindow();
+		quail_blist_window(QMainWindow *parent);
+		~quail_blist_window();
 
 		/* Functions our blist UI must access. */
         void setBlist(PurpleBuddyList *list);
         PurpleBuddyList *getBlist() const;
 
-		void accountSignedOn(PurpleAccount *acocunt);
-		void accountSignedOff(PurpleAccount *acocunt);
+		void account_signed_on(PurpleAccount *acocunt);
+        void account_signed_off(PurpleAccount *acocunt);
 
 		void updateNode(PurpleBlistNode *node);
 
@@ -89,7 +89,7 @@ class QQuailBListWindow : public QMainWindow
 	private:
 		QMainWindow *parentMainWindow;
 
-		QQuailBuddyList *buddylist;
+        quail_buddy_list *m_buddy_tree;
 
 		QToolButton *addButton;
 
@@ -111,6 +111,7 @@ class QQuailBListWindow : public QMainWindow
 		QAction *showOfflineButton;
 
 		QAction *blistButton;
+        QAction *metersButton;
 
         QMenu *addMenu;
         QMenu *settingsMenu;
@@ -119,6 +120,6 @@ class QQuailBListWindow : public QMainWindow
         QToolBar *toolbar;
 };
 
-PurpleBlistUiOps *qQuailGetBlistUiOps();
+PurpleBlistUiOps *quail_get_blist_ui_ops();
 
 #endif /* _QUAIL_BLIST_WIN_H_ */

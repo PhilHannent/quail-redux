@@ -27,15 +27,15 @@
 
 #include <QTreeWidget>
 
-class QQuailBListItem;
+class quail_blist_item;
 
-class QQuailBuddyList : public QTreeWidget
+class quail_buddy_list : public QTreeWidget
 {
 	Q_OBJECT
 
 	public:
-        QQuailBuddyList(QWidget *parent = NULL);
-		virtual ~QQuailBuddyList();
+        quail_buddy_list(QWidget *parent = NULL);
+        virtual ~quail_buddy_list();
 
         void setBlist(PurpleBuddyList *list);
         PurpleBuddyList *getBlist() const;
@@ -69,12 +69,12 @@ class QQuailBuddyList : public QTreeWidget
         void nodeExpandedSlot(QTreeWidgetItem *item);
         void nodeCollapsedSlot(QTreeWidgetItem *item);
 		void collapseContactSlot();
-		void collapseContactSlot(QQuailBListItem *item);
+        void collapseContactSlot(quail_blist_item *item);
 		void expandContactSlot();
-		void expandContactSlot(QQuailBListItem *item);
+        void expandContactSlot(quail_blist_item *item);
 		void saveBlistSlot();
 
-        void showContextMenuSlot(QTreeWidgetItem *item, const QPoint &point,
+        void slot_show_context_menu(QTreeWidgetItem *item, const QPoint &point,
 								 int col);
 
 		/* Group menu slots */
@@ -100,13 +100,13 @@ class QQuailBuddyList : public QTreeWidget
 		void aliasChatSlot();
 
 	private:
-		void addGroup(PurpleBlistNode *node);
+		void add_group(PurpleBlistNode *node);
 
-		void updateGroup(PurpleBlistNode *node);
+		void update_group(PurpleBlistNode *node);
 		void updateContact(PurpleBlistNode *node);
 		void updateBuddy(PurpleBlistNode *node);
 		void updateChat(PurpleBlistNode *node);
-        PurpleBuddyList *quailBlist;
+        PurpleBuddyList *m_blist;
 
 		QTimer *saveTimer;
 };

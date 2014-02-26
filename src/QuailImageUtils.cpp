@@ -27,7 +27,7 @@
 //TODO: Re-implement using Nokia's method https://www.developer.nokia.com/Community/Wiki/Image_editing_techniques_and_algorithms_using_Qt
 
 QImage &
-QQuailImageUtils::greyImage(QImage &image)
+quail_image_utils::greyImage(QImage &image)
 {
 	int pixels = (image.depth() > 8
 				  ? image.width() * image.height()
@@ -48,7 +48,7 @@ QQuailImageUtils::greyImage(QImage &image)
 }
 
 QImage &
-QQuailImageUtils::desaturate(QImage &image, float value)
+quail_image_utils::desaturate(QImage &image, float value)
 {
 	if (image.width() == 0 || image.height() == 0)
 		return image;
@@ -80,7 +80,7 @@ QQuailImageUtils::desaturate(QImage &image, float value)
 }
 
 QImage &
-QQuailImageUtils::saturate(QImage &image, float value)
+quail_image_utils::saturate(QImage &image, float value)
 {
 	if (image.width() == 0 || image.height() == 0)
 		return image;
@@ -112,7 +112,7 @@ QQuailImageUtils::saturate(QImage &image, float value)
 }
 
 QPixmap
-QQuailImageUtils::greyPixmap(QPixmap pixmap, QString name)
+quail_image_utils::greyPixmap(QPixmap pixmap, QString name)
 {
     qDebug() << "QQuailImageUtils::greyPixmap:" << name;
     QPixmap newPixmap = pixmap.copy();
@@ -128,7 +128,7 @@ QQuailImageUtils::greyPixmap(QPixmap pixmap, QString name)
 }
 
 QPixmap
-QQuailImageUtils::saturate(QPixmap pixmap, float value, QString name)
+quail_image_utils::saturate(QPixmap pixmap, float value, QString name)
 {
     qDebug() << "QQuailImageUtils::saturate:" << name;
     QPixmap newPixmap = pixmap;
@@ -144,7 +144,7 @@ QQuailImageUtils::saturate(QPixmap pixmap, float value, QString name)
 }
 
 void
-QQuailImageUtils::blendOnLower(int xOffset, int yOffset,
+quail_image_utils::blendOnLower(int xOffset, int yOffset,
                                QImage &upper,
 							  QImage &lower)
 {

@@ -28,13 +28,14 @@
 
 #include <QDialog>
 #include <QList>
+#include <QMap>
 #include <QVariant>
 #include <QWidget>
 
 class QCheckBox;
 class QComboBox;
-class QQuailProtocolBox;
-class QQuailTabWidget;
+class quail_protocol_box;
+class quail_tab_widget;
 class QGridLayout;
 class QLabel;
 class QLineEdit;
@@ -43,15 +44,15 @@ class QPushButton;
 class QTabWidget;
 class QVBoxLayout;
 
-class QQuailAccountEditor : public QDialog
+class quail_account_editor : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		QQuailAccountEditor(PurpleAccount *account = NULL,
+        quail_account_editor(PurpleAccount *m_account = NULL,
                             QWidget *parent = NULL,
                             QString name = "");
-		~QQuailAccountEditor();
+		~quail_account_editor();
 
 	protected:
 		virtual void buildInterface();
@@ -77,25 +78,25 @@ class QQuailAccountEditor : public QDialog
         void signalAccountUpdated();
 
 	private:
-		PurpleAccount *account;
-		PurplePlugin *plugin;
-		PurplePluginProtocolInfo *prplInfo;
+        PurpleAccount *m_account;
+		PurplePlugin *m_plugin;
+		PurplePluginProtocolInfo *m_prpl_info;
 
-		QString protocolId;
+		QString m_protocol_id;
 
 		GList *userSplitEntries;
-		GList *protocolOptEntries;
+        QMap<QString, QWidget*> m_protocol_option_entries;
 
         PurpleProxyType newProxyType;
 
-		QQuailTabWidget *tabs;
+		quail_tab_widget *tabs;
 
         QList<QWidget*> tabList;
 
 		/* Account tab */
         QWidget *accountWidget;
         QVBoxLayout *accountBox;
-		QQuailProtocolBox *protocolList;
+		quail_protocol_box *protocolList;
 		QLineEdit *screenNameEntry;
 		QLabel *passwordLabel;
 		QLineEdit *passwordEntry;

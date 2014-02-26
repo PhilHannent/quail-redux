@@ -11,6 +11,9 @@ class QComboBox;
 class QLabel;
 class QLineEdit;
 
+const int QUAIL_ACTION_STATUS_NEW = 30000;
+const int QUAIL_ACTION_STATUS_SAVED  = 30001;
+
 class quail_status_selector : public QWidget
 {
     Q_OBJECT

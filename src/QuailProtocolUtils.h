@@ -32,16 +32,16 @@
 
 class QPixmap;
 
-class QQuailProtocolUtils
+class quail_protocol_utils
 {
 	public:
 		static QString getProtocolName(QString protocolId);
         static QPixmap getProtocolIcon(PurpleAccount *account);
         static QString getProtocolIconName(PurpleAccount *account);
         static QPixmap getProtocolIcon(const PurplePlugin *plugin);
+        static QPixmap getProtocolIcon(const QString &protoName);
 
 	protected:
-        static QPixmap getProtocolIcon(const QString &protoName);
         static QString getProtocolIconName(const QString &protoName);
 };
 

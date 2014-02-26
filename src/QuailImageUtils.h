@@ -27,7 +27,7 @@
 #include <QPixmap>
 #include <QImage>
 
-class QQuailImageUtils
+class quail_image_utils
 {
 	public:
 		static QImage &greyImage(QImage &image);

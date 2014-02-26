@@ -1,7 +1,5 @@
 ﻿#ifndef GLOBAL_H
 #define GLOBAL_H
 
-#define QUAIL_ACTION_STATUS_NEW 30000
-#define QUAIL_ACTION_STATUS_SAVED 30001
 
 #endif // GLOBAL_H

@@ -26,7 +26,7 @@
 #include <QPixmap>
 
 QString
-QQuailProtocolUtils::getProtocolName(QString protocolId)
+quail_protocol_utils::getProtocolName(QString protocolId)
 {
     PurplePlugin *p = purple_plugins_find_with_id(protocolId.toStdString().c_str());
 
@@ -36,7 +36,7 @@ QQuailProtocolUtils::getProtocolName(QString protocolId)
 }
 
 QPixmap
-QQuailProtocolUtils::getProtocolIcon(const PurplePlugin *prpl)
+quail_protocol_utils::getProtocolIcon(const PurplePlugin *prpl)
 {
 	PurplePluginProtocolInfo *prplInfo = NULL;
 
@@ -52,7 +52,7 @@ QQuailProtocolUtils::getProtocolIcon(const PurplePlugin *prpl)
 }
 
 QPixmap
-QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account)
+quail_protocol_utils::getProtocolIcon(PurpleAccount *account)
 {
 	PurplePluginProtocolInfo *prplInfo = NULL;
 	PurplePlugin *prpl;
@@ -74,7 +74,7 @@ QQuailProtocolUtils::getProtocolIcon(PurpleAccount *account)
 }
 
 QString
-QQuailProtocolUtils::getProtocolIconName(PurpleAccount *account)
+quail_protocol_utils::getProtocolIconName(PurpleAccount *account)
 {
     PurplePluginProtocolInfo *prplInfo = NULL;
     PurplePlugin *prpl;
@@ -97,13 +97,13 @@ QQuailProtocolUtils::getProtocolIconName(PurpleAccount *account)
 
 
 QPixmap
-QQuailProtocolUtils::getProtocolIcon(const QString &protoName)
+quail_protocol_utils::getProtocolIcon(const QString &protoName)
 {
     return QPixmap(getProtocolIconName(protoName));
 }
 
 QString
-QQuailProtocolUtils::getProtocolIconName(const QString &protoName)
+quail_protocol_utils::getProtocolIconName(const QString &protoName)
 {
     return QString(":/data/images/protocols/" + protoName + ".svg");
 }

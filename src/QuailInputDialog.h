@@ -28,12 +28,12 @@ class QHBoxLayout;
 class QLabel;
 class QSignalMapper;
 
-class QQuailInputDialog : public QDialog
+class quail_input_dialog : public QDialog
 {
 	Q_OBJECT
 
 	public:
-        QQuailInputDialog(bool multiline = false, QWidget *parent = NULL);
+        quail_input_dialog(bool multiline = false, QWidget *parent = NULL);
 
 		void setInfoText(const QString &text);
 

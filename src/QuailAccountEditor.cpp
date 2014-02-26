@@ -30,7 +30,6 @@
 #include <QDialogButtonBox>
 #include <QCheckBox>
 #include <QComboBox>
-#include <QDebug>
 #include <QGroupBox>
 #include <QLabel>
 #include <QLayout>
@@ -40,60 +39,57 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-QQuailAccountEditor::QQuailAccountEditor(PurpleAccount *account,
+quail_account_editor::quail_account_editor(PurpleAccount *account,
                                          QWidget *parent,
                                          QString name)
-    : QDialog(parent), account(account), plugin(NULL),
-      prplInfo(NULL), userSplitEntries(NULL),
-      protocolOptEntries(NULL), newProxyType(PURPLE_PROXY_USE_GLOBAL)
+    : QDialog(parent)
+    , m_account(account)
+    , m_plugin(NULL)
+    , m_prpl_info(NULL)
+    , userSplitEntries(NULL)
+    , newProxyType(PURPLE_PROXY_USE_GLOBAL)
 {
-    qDebug() << "QQuailAccountEditor::QQuailAccountEditor";
     setWindowTitle(name);
-	if (account == NULL)
+    if (m_account == NULL)
 	{
-        qDebug() << "QQuailAccountEditor::QQuailAccountEditor.1";
 		if (purple_plugins_get_protocols() != NULL)
 		{
-            qDebug() << "QQuailAccountEditor::QQuailAccountEditor.1a";
-			plugin = (PurplePlugin *)purple_plugins_get_protocols()->data;
+            m_plugin = (PurplePlugin *)purple_plugins_get_protocols()->data;
 
-            prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
+            m_prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(m_plugin);
 
-			protocolId = plugin->info->id;
+            m_protocol_id = m_plugin->info->id;
 		}
 	}
 	else
 	{
-        qDebug() << "QQuailAccountEditor::QQuailAccountEditor.2";
-		protocolId = purple_account_get_protocol_id(account);
+        m_protocol_id = purple_account_get_protocol_id(m_account);
 
-        if ((plugin = purple_plugins_find_with_id(protocolId.toLatin1())) != NULL)
-            prplInfo = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
+        if ((m_plugin = purple_plugins_find_with_id(m_protocol_id.toLatin1())) != NULL)
+            m_prpl_info = PURPLE_PLUGIN_PROTOCOL_INFO(m_plugin);
 	}
 
 	buildInterface();
 }
 
-QQuailAccountEditor::~QQuailAccountEditor()
+quail_account_editor::~quail_account_editor()
 {
 	if (userSplitEntries != NULL)
 		g_list_free(userSplitEntries);
 
-	if (protocolOptEntries != NULL)
-		g_list_free(protocolOptEntries);
+    m_protocol_option_entries.clear();
 }
 
 void
-QQuailAccountEditor::buildInterface()
+quail_account_editor::buildInterface()
 {
-    qDebug() << "QQuailAccountEditor::buildInterface";
-	if (account == NULL)
+    if (m_account == NULL)
         setWindowTitle(tr("Add Account"));
 	else
         setWindowTitle(tr("Edit Account"));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-	tabs = new QQuailTabWidget(this);
+    tabs = new quail_tab_widget(this);
     layout->addWidget(tabs);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
                                      | QDialogButtonBox::Cancel,
@@ -107,9 +103,8 @@ QQuailAccountEditor::buildInterface()
 }
 
 void
-QQuailAccountEditor::buildTabs()
+quail_account_editor::buildTabs()
 {
-    qDebug() << "QQuailAccountEditor::buildTabs";
 	QWidget *widget;
 
 	tabList.clear();
@@ -118,13 +113,13 @@ QQuailAccountEditor::buildTabs()
 	tabs->addTab(widget, tr("Account"));
     tabList.append(widget);
 
-	if (plugin != NULL)
+    if (m_plugin != NULL)
 	{
 		widget = buildProtocolTab();
 
 		tabs->addTab(widget,
-            QQuailProtocolUtils::getProtocolIcon(plugin),
-			plugin->info->name);
+            quail_protocol_utils::getProtocolIcon(m_plugin),
+            m_plugin->info->name);
 
 		tabList.append(widget);
 	}
@@ -134,15 +129,14 @@ QQuailAccountEditor::buildTabs()
 	tabList.append(widget);
 
 	/* Ensure that the Protocol tab is only enabled if it contains stuff. */
-    tabs->setTabEnabled(tabs->indexOf(protocolWidget), (protocolOptEntries != NULL));
+    tabs->setTabEnabled(tabs->indexOf(protocolWidget), (m_protocol_option_entries.count() > 0));
 
     tabs->setCurrentWidget(accountWidget);
 }
 
 QWidget *
-QQuailAccountEditor::buildAccountTab()
+quail_account_editor::buildAccountTab()
 {
-    qDebug() << "QQuailAccountEditor::buildAccountTab";
 	/* QFrame *sep; */
     QVBoxLayout *vbox;
     QHBoxLayout *hbox;
@@ -188,16 +182,16 @@ QQuailAccountEditor::buildAccountTab()
 	 * We want to hide a couple of things if the protocol doesn't want
 	 * a password.
 	 */
-	if (prplInfo != NULL)
+    if (m_prpl_info != NULL)
 	{
-		if (prplInfo->options & OPT_PROTO_NO_PASSWORD)
+        if (m_prpl_info->options & OPT_PROTO_NO_PASSWORD)
 		{
 			passwordLabel->hide();
 			passwordEntry->hide();
 			rememberPassCheck->hide();
 		}
 
-		if (prplInfo->register_user == NULL)
+        if (m_prpl_info->register_user == NULL)
 			registerButton->hide();
 	}
 
@@ -205,9 +199,8 @@ QQuailAccountEditor::buildAccountTab()
 }
 
 QWidget *
-QQuailAccountEditor::buildProtocolTab()
+quail_account_editor::buildProtocolTab()
 {
-    qDebug() << "QQuailAccountEditor::buildProtocolTab";
     QVBoxLayout *vbox;
 	QFrame *frame;
 	QGridLayout *grid;
@@ -230,28 +223,24 @@ QQuailAccountEditor::buildProtocolTab()
     grid = new QGridLayout(frame);
 	grid->setSpacing(5);
 
-	if (protocolOptEntries != NULL)
-	{
-		g_list_free(protocolOptEntries);
-		protocolOptEntries = NULL;
-	}
+    m_protocol_option_entries.clear();
 
-	if (prplInfo != NULL)
+    if (m_prpl_info != NULL)
 	{
-		for (l = prplInfo->protocol_options; l != NULL; l = l->next)
+        for (l = m_prpl_info->protocol_options; l != NULL; l = l->next)
 		{
 			PurpleAccountOption *option = (PurpleAccountOption *)l->data;
 
 			switch (purple_account_option_get_type(option))
 			{
                 case PURPLE_PREF_BOOLEAN:
-					if (account == NULL ||
-						protocolId != purple_account_get_protocol_id(account))
+                    if (m_account == NULL ||
+                        m_protocol_id != purple_account_get_protocol_id(m_account))
 					{
                         purple_account_option_get_default_bool(option);
 					}
 					else
-                        purple_account_get_bool(account,
+                        purple_account_get_bool(m_account,
 								purple_account_option_get_setting(option),
 								purple_account_option_get_default_bool(option));
 
@@ -260,20 +249,19 @@ QQuailAccountEditor::buildProtocolTab()
                     grid->addWidget(check, row, 0, 1, 2);
 					row++;
 
-					protocolOptEntries =
-						g_list_append(protocolOptEntries, check);
+                    m_protocol_option_entries.insert(option->pref_name, check);
 
 					break;
 
                 case PURPLE_PREF_INT:
-					if (account == NULL ||
-						protocolId != purple_account_get_protocol_id(account))
+                    if (m_account == NULL ||
+                        m_protocol_id != purple_account_get_protocol_id(m_account))
 					{
 						intValue = purple_account_option_get_default_int(option);
 					}
 					else
 					{
-						intValue = purple_account_get_int(account,
+                        intValue = purple_account_get_int(m_account,
 								purple_account_option_get_setting(option),
 								purple_account_option_get_default_int(option));
 					}
@@ -286,21 +274,20 @@ QQuailAccountEditor::buildProtocolTab()
 					entry = new QLineEdit(QString::number(intValue), frame);
 					grid->addWidget(entry, row++, 1);
 
-					protocolOptEntries =
-						g_list_append(protocolOptEntries, entry);
+                    m_protocol_option_entries.insert(option->pref_name, entry);
 
 					break;
 
                 case PURPLE_PREF_STRING:
-					if (account == NULL ||
-						protocolId != purple_account_get_protocol_id(account))
+                    if (m_account == NULL ||
+                        m_protocol_id != purple_account_get_protocol_id(m_account))
 					{
 						strValue =
 							purple_account_option_get_default_string(option);
 					}
 					else
 					{
-						strValue = purple_account_get_string(account,
+                        strValue = purple_account_get_string(m_account,
 								purple_account_option_get_setting(option),
 								purple_account_option_get_default_string(option));
 					}
@@ -313,8 +300,7 @@ QQuailAccountEditor::buildProtocolTab()
 					entry = new QLineEdit(strValue, frame);
 					grid->addWidget(entry, row++, 1);
 
-					protocolOptEntries =
-						g_list_append(protocolOptEntries, entry);
+                    m_protocol_option_entries.insert(option->pref_name, entry);
 
 					break;
 
@@ -328,9 +314,8 @@ QQuailAccountEditor::buildProtocolTab()
 }
 
 QWidget *
-QQuailAccountEditor::buildProxyTab()
+quail_account_editor::buildProxyTab()
 {
-    qDebug() << "QQuailAccountEditor::buildProxyTab";
     QVBoxLayout *vbox;
 	QGridLayout *grid;
 	QWidget *frame;
@@ -345,14 +330,12 @@ QQuailAccountEditor::buildProxyTab()
     vbox->addWidget(frame);
     grid = new QGridLayout(frame);
 	grid->setSpacing(5);
-    qDebug() << "QQuailAccountEditor::buildProxyTab.2";
 
 	/* Proxy Type */
 	grid->addWidget(new QLabel(tr("Proxy Type:"), frame), row, 0);
     proxyDropDown = new QComboBox(frame);
 	grid->addWidget(proxyDropDown, row++, 1);
 	row++;
-    qDebug() << "QQuailAccountEditor::buildProxyTab.3";
 	/* Connect the signal */
 	connect(proxyDropDown, SIGNAL(activated(int)),
 			this, SLOT(proxyTypeChanged(int)));
@@ -363,30 +346,26 @@ QQuailAccountEditor::buildProxyTab()
     proxyDropDown->addItem(tr("HTTP"));
     proxyDropDown->addItem(tr("SOCKS 4"));
     proxyDropDown->addItem(tr("SOCKS 5"));
-    qDebug() << "QQuailAccountEditor::buildProxyTab.4";
+
 	/* Host */
 	grid->addWidget(new QLabel(tr("Host:"), frame), row, 0);
 	proxyHost = new QLineEdit(frame);
 	grid->addWidget(proxyHost, row++, 1);
-    qDebug() << "QQuailAccountEditor::buildProxyTab.5";
 	/* Port */
 	grid->addWidget(new QLabel(tr("Port:"), frame), row, 0);
 	proxyPort = new QLineEdit(frame);
 	grid->addWidget(proxyPort, row++, 1);
-    qDebug() << "QQuailAccountEditor::buildProxyTab.6";
 	/* Username */
 	grid->addWidget(new QLabel(tr("Username:"), frame), row, 0);
 	proxyUsername = new QLineEdit(frame);
 	grid->addWidget(proxyUsername, row++, 1);
-    qDebug() << "QQuailAccountEditor::buildProxyTab.7";
 	/* Password */
 	grid->addWidget(new QLabel(tr("Password:"), frame), row, 0);
 	proxyPassword = new QLineEdit(frame);
 	grid->addWidget(proxyPassword, row++, 1);
-    qDebug() << "QQuailAccountEditor::buildProxyTab.8";
 	/* Set the values for everything. */
-	if (account != NULL &&
-		(proxyInfo = purple_account_get_proxy_info(account)) != NULL)
+    if (m_account != NULL &&
+        (proxyInfo = purple_account_get_proxy_info(m_account)) != NULL)
 	{
         PurpleProxyType type = purple_proxy_info_get_type(proxyInfo);
 
@@ -410,28 +389,27 @@ QQuailAccountEditor::buildProxyTab()
 	}
 	else
 	{
+        proxyDropDown->setCurrentIndex((int)newProxyType + 1);
 		proxyHost->setReadOnly(true);
 		proxyPort->setReadOnly(true);
 		proxyUsername->setReadOnly(true);
 		proxyPassword->setReadOnly(true);
 	}
-    qDebug() << "QQuailAccountEditor::buildProxyTab.end";
     return proxyWidget;
 }
 
 void
-QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
+quail_account_editor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 								   int &row)
 {
-    qDebug() << "QQuailAccountEditor::buildLoginOpts";
 	QLineEdit *entry;
 	QString username;
 	GList *userSplits = NULL, *l, *l2;
 
 	/* Protocol */
 	grid->addWidget(new QLabel(tr("Protocol:"), parent), row, 0);
-    protocolList = new QQuailProtocolBox(parent);
-	protocolList->setCurrentProtocol(protocolId);
+    protocolList = new quail_protocol_box(parent);
+    protocolList->setCurrentProtocol(m_protocol_id);
 
 	grid->addWidget(protocolList, row++, 1);
 
@@ -445,11 +423,11 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	grid->addWidget(screenNameEntry, row++, 1);
 
 	/* User split stuff. */
-	if (prplInfo != NULL)
-		userSplits = prplInfo->user_splits;
+    if (m_prpl_info != NULL)
+        userSplits = m_prpl_info->user_splits;
 
-	if (account != NULL)
-		username = purple_account_get_username(account);
+    if (m_account != NULL)
+        username = purple_account_get_username(m_account);
 
 	if (userSplitEntries != NULL)
 	{
@@ -483,7 +461,7 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 		entry = (QLineEdit *)l->data;
 		split = (PurpleAccountUserSplit *)l2->data;
 
-		if (account != NULL)
+        if (m_account != NULL)
 		{
 			int i;
 
@@ -514,25 +492,25 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 	passwordEntry->setEchoMode(QLineEdit::Password);
 	grid->addWidget(passwordEntry, row++, 1);
 
-	if (account != NULL)
-		passwordEntry->setText(purple_account_get_password(account));
+    if (m_account != NULL)
+        passwordEntry->setText(purple_account_get_password(m_account));
 
 	/* Alias */
 	grid->addWidget(new QLabel(tr("Alias:"), parent), row, 0);
 	aliasEntry = new QLineEdit(parent);
 	grid->addWidget(aliasEntry, row++, 1);
 
-	if (account != NULL)
-		aliasEntry->setText(purple_account_get_alias(account));
+    if (m_account != NULL)
+        aliasEntry->setText(purple_account_get_alias(m_account));
 
 	/* Remember Password */
 	rememberPassCheck = new QCheckBox(tr("Remember Password"), parent);
     grid->addWidget(rememberPassCheck, row, 0, 1, 2);
 	row++;
 
-	if (account != NULL)
+    if (m_account != NULL)
 		rememberPassCheck->setChecked(
-				purple_account_get_remember_password(account));
+                purple_account_get_remember_password(m_account));
 	else
 		rememberPassCheck->setChecked(true);
 
@@ -541,16 +519,16 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
     grid->addWidget(autoLoginCheck, row, 0, 1, 2);
 	row++;
 
-	if (account != NULL)
+    if (m_account != NULL)
 		autoLoginCheck->setChecked(
-                purple_account_get_enabled(account, UI_ID));
+                purple_account_get_enabled(m_account, UI_ID));
 
 	/*
 	 * We want to hide a couple of things if the protocol doesn't want
 	 * a password.
 	 */
-	if (prplInfo != NULL &&
-		(prplInfo->options & OPT_PROTO_NO_PASSWORD))
+    if (m_prpl_info != NULL &&
+        (m_prpl_info->options & OPT_PROTO_NO_PASSWORD))
 	{
 		passwordLabel->hide();
 		passwordEntry->hide();
@@ -559,32 +537,26 @@ QQuailAccountEditor::buildLoginOpts(QGridLayout *grid, QWidget *parent,
 }
 
 void
-QQuailAccountEditor::buildUserOpts(QGridLayout *grid, QWidget *parent,
+quail_account_editor::buildUserOpts(QGridLayout *grid, QWidget *parent,
 								  int &row)
 {
-    qDebug() << "QQuailAccountEditor::buildUserOpts";
 	/* New mail notifications */
 	mailNotificationCheck = new QCheckBox(tr("New Mail Notifications"), parent);
-    qDebug() << "QQuailAccountEditor::buildUserOpts.1";
     grid->addWidget(mailNotificationCheck, row, 0, 1, 2);
-    qDebug() << "QQuailAccountEditor::buildUserOpts.2";
 	row++;
 
 	/* TODO: Buddy Icon support */
 
-	if (account != NULL)
+    if (m_account != NULL)
 		mailNotificationCheck->setChecked(
-				purple_account_get_check_mail(account));
-    qDebug() << "QQuailAccountEditor::buildUserOpts.3";
-	if (prplInfo != NULL && !(prplInfo->options & OPT_PROTO_MAIL_CHECK))
+                purple_account_get_check_mail(m_account));
+    if (m_prpl_info != NULL && !(m_prpl_info->options & OPT_PROTO_MAIL_CHECK))
 		mailNotificationCheck->hide();
-    qDebug() << "QQuailAccountEditor::buildUserOpts.end";
 }
 
 void
-QQuailAccountEditor::proxyTypeChanged(int index)
+quail_account_editor::proxyTypeChanged(int index)
 {
-    qDebug() << "QQuailAccountEditor::proxyTypeChanged";
     newProxyType = (PurpleProxyType)(index - 1);
 
     if (newProxyType == PURPLE_PROXY_USE_GLOBAL ||
@@ -605,24 +577,37 @@ QQuailAccountEditor::proxyTypeChanged(int index)
 }
 
 void
-QQuailAccountEditor::protocolChanged(int index)
+quail_account_editor::protocolChanged(int index)
 {
-    qDebug() << "QQuailAccountEditor::protocolChanged";
-	GList *l;
 
-	l = g_list_nth(purple_plugins_get_protocols(), index);
+//	GList *l;
+    QString protocolId = protocolList->itemData(index).toString();
+    purple_debug(PURPLE_DEBUG_MISC, "QQuailAccountEditor::protocolChanged", protocolId.toLatin1());
+//    l = g_list_nth(purple_plugins_get_protocols(), protocolCount.toInt());
 
-	if (l == NULL)
-	{
+//	if (l == NULL)
+//	{
+//        purple_debug(PURPLE_DEBUG_FATAL, "QQuailAccountEditor",
+//				   "Protocol switched to is not in list!\n");
+//		abort();
+//	}
+
+    //plugin = (PurplePlugin *)l->data;
+    if (protocolId == "google-talk"
+            || protocolId == "facebook")
+        m_plugin = purple_plugins_find_with_id("prpl-jabber");
+    else
+        m_plugin = purple_plugins_find_with_id(protocolId.toLatin1());
+
+    if (m_plugin == NULL)
+    {
         purple_debug(PURPLE_DEBUG_FATAL, "QQuailAccountEditor",
-				   "Protocol switched to is not in list!\n");
-		abort();
-	}
+                   "Protocol switched to is not in list!\n");
+        abort();
+    }
 
-	plugin = (PurplePlugin *)l->data;
-
-    prplInfo   = PURPLE_PLUGIN_PROTOCOL_INFO(plugin);
-	protocolId = plugin->info->id;
+    m_prpl_info   = PURPLE_PLUGIN_PROTOCOL_INFO(m_plugin);
+    m_protocol_id = protocolId;
 
     tabs->removeTab(tabs->indexOf(accountWidget));
     tabs->removeTab(tabs->indexOf(protocolWidget));
@@ -638,75 +623,79 @@ QQuailAccountEditor::protocolChanged(int index)
 }
 
 void
-QQuailAccountEditor::registerClicked()
+quail_account_editor::registerClicked()
 {
-    qDebug() << "QQuailAccountEditor::registerClicked";
-	purple_account_register(account);
+    purple_account_register(m_account);
 
 	registerButton->setEnabled(false);
 }
 
 
 void
-QQuailAccountEditor::slotRejected()
+quail_account_editor::slotRejected()
 {
     close();
 }
 
 void
-QQuailAccountEditor::slotAccept()
+quail_account_editor::slotAccept()
 {
-    qDebug() << "QQuailAccountEditor::slotAccept";
-	QString str, username;
+    QString str, username, protocolId;
 	GList *l, *l2;
-	bool newAccount = (account == NULL);
+    bool newAccount = (m_account == NULL);
 
-	if (account == NULL)
+    if (m_protocol_id == "google-talk"
+            || m_protocol_id == "facebook")
+        protocolId = "prpl-jabber";
+    else
+        protocolId = m_protocol_id;
+
+    if (m_account == NULL)
 	{
 		/* New Account */
 		username = screenNameEntry->text();
 
-        account = purple_account_new(username.toStdString().c_str(),
+        m_account = purple_account_new(username.toStdString().c_str(),
                                      protocolId.toStdString().c_str());
 	}
 	else
 	{
 		/* Protocol */
-        purple_account_set_protocol_id(account, protocolId.toStdString().c_str());
+        purple_account_set_protocol_id(m_account, protocolId.toStdString().c_str());
 	}
 	/* Clear the existing settings. */
-	purple_account_clear_settings(account);
+    purple_account_clear_settings(m_account);
 	/* Alias */
 	str = aliasEntry->text();
 
 	if (!str.isEmpty())
-        purple_account_set_alias(account, str.toStdString().c_str());
+        purple_account_set_alias(m_account, str.toStdString().c_str());
 	else
-		purple_account_set_alias(account, NULL);
+        purple_account_set_alias(m_account, NULL);
 	/* Buddy Icon */
 	/* TODO */
 
 	/* Remember Password */
-	purple_account_set_remember_password(account,
+    purple_account_set_remember_password(m_account,
 									   rememberPassCheck->isChecked());
 	/* Check Mail */
-	if (prplInfo->options & OPT_PROTO_MAIL_CHECK)
-		purple_account_set_check_mail(account,
+    if (m_prpl_info->options & OPT_PROTO_MAIL_CHECK)
+        purple_account_set_check_mail(m_account,
 									mailNotificationCheck->isChecked());
 	/* Auto-Login */
-    purple_account_set_enabled(account, UI_ID,
+    purple_account_set_enabled(m_account, UI_ID,
 								autoLoginCheck->isChecked());
 	/* Password */
 	str = passwordEntry->text();
 
 	if (!str.isEmpty())
-        purple_account_set_password(account, str.toStdString().c_str());
+        purple_account_set_password(m_account, str.toStdString().c_str());
 	else
-		purple_account_set_password(account, NULL);
+        purple_account_set_password(m_account, NULL);
 
 	/* Build the username string. */
 	username = screenNameEntry->text();
-	for (l = prplInfo->user_splits, l2 = userSplitEntries;
+    for (l = m_prpl_info->user_splits, l2 = userSplitEntries;
 		 l != NULL && l2 != NULL;
 		 l = l->next, l2 = l2->next)
 	{
@@ -728,15 +717,15 @@ QQuailAccountEditor::slotAccept()
 
 		g_free(tmp);
 	}
-    purple_account_set_username(account, username.toStdString().c_str());
+    purple_account_set_username(m_account, username.toStdString().c_str());
 	/* Add the protocol settings */
-	for (l = prplInfo->protocol_options, l2 = protocolOptEntries;
-		 l != NULL && l2 != NULL;
-		 l = l->next, l2 = l2->next)
+    for (l = m_prpl_info->protocol_options;
+         l != NULL;
+         l = l->next)
 	{
         PurplePrefType type;
 		PurpleAccountOption *option = (PurpleAccountOption *)l->data;
-		QWidget *widget = (QWidget *)l2->data;
+        QWidget *widget = m_protocol_option_entries.value(option->pref_name);
 		QLineEdit *entry;
 		QCheckBox *checkbox;
 		const char *setting;
@@ -750,10 +739,12 @@ QQuailAccountEditor::slotAccept()
             case PURPLE_PREF_STRING:
                 entry = dynamic_cast<QLineEdit *>(widget);
                 if (!entry || entry == NULL) {
-                    qWarning() << "QQuailAccountEditor::slotAccept.MISSING Widget";
+                    purple_debug(PURPLE_DEBUG_WARNING
+                                 , "quail_account_editor::slotAccept"
+                                 , "MISSING WIDGET");
                 } else {
                     value = entry->text();
-                    purple_account_set_string(account,
+                    purple_account_set_string(m_account,
                                               setting,
                                               value.toStdString().c_str());
                 }
@@ -766,15 +757,15 @@ QQuailAccountEditor::slotAccept()
 				intValue = entry->text().toInt(&ok);
 
 				if (ok)
-					purple_account_set_int(account, setting, intValue);
+                    purple_account_set_int(m_account, setting, intValue);
 				else
-					purple_account_set_int(account, setting, 0);
+                    purple_account_set_int(m_account, setting, 0);
 
 				break;
 
             case PURPLE_PREF_BOOLEAN:
 				checkbox = (QCheckBox *)widget;
-				purple_account_set_bool(account, setting,
+                purple_account_set_bool(m_account, setting,
 									  checkbox->isChecked());
 				break;
 
@@ -784,16 +775,16 @@ QQuailAccountEditor::slotAccept()
 	}
 	/* Set the proxy information */
     if (newProxyType == PURPLE_PROXY_NONE)
-		purple_account_set_proxy_info(account, NULL);
+        purple_account_set_proxy_info(m_account, NULL);
 	else
 	{
-        PurpleProxyInfo *proxyInfo = purple_account_get_proxy_info(account);
+        PurpleProxyInfo *proxyInfo = purple_account_get_proxy_info(m_account);
 
 		/* Create the proxy info if it doesn't exist. */
 		if (proxyInfo == NULL)
 		{
 			proxyInfo = purple_proxy_info_new();
-			purple_account_set_proxy_info(account, proxyInfo);
+            purple_account_set_proxy_info(m_account, proxyInfo);
 		}
 
 		/* Type */
@@ -812,16 +803,15 @@ QQuailAccountEditor::slotAccept()
 
 		if (!str.isEmpty())
 		{
-            bool ok = false;
+            bool ok;
             int intVal = str.toInt(&ok);
-
 			if (ok)
 				purple_proxy_info_set_port(proxyInfo, intVal);
 			else
 				purple_proxy_info_set_port(proxyInfo, 0);
 		}
 		else
-			purple_proxy_info_set_port(proxyInfo, 0);
+            purple_proxy_info_set_port(proxyInfo, 0);
 
 		/* Username */
 		str = proxyUsername->text();
@@ -840,7 +830,7 @@ QQuailAccountEditor::slotAccept()
 			purple_proxy_info_set_password(proxyInfo, NULL);
 	}
 	if (newAccount)
-		purple_accounts_add(account);
+        purple_accounts_add(m_account);
 	QDialog::accept();
 
     emit signalAccountUpdated();

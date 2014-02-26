@@ -29,17 +29,17 @@
 
 class QComboBox;
 class QFrame;
-class QQuailAccountBox;
+class quail_account_box;
 class QGridLayout;
 class QLabel;
 class QLineEdit;
 
-class QuailDialog : public QDialog
+class quail_dialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    QuailDialog(QWidget *parent = 0);
+    quail_dialog(QWidget *parent = 0);
 
 protected:
     virtual void buildInterface() = 0;
@@ -51,12 +51,12 @@ protected slots:
 
 };
 
-class QQuailAddBuddyDialog : public QuailDialog
+class quail_add_buddy_dialog : public quail_dialog
 {
 	Q_OBJECT
 
 	public:
-        QQuailAddBuddyDialog(QWidget *parent = 0);
+        quail_add_buddy_dialog(QWidget *parent = 0);
 
 		void setScreenName(const QString &screenName);
 		void setAlias(const QString &alias);
@@ -74,15 +74,15 @@ class QQuailAddBuddyDialog : public QuailDialog
 		QLineEdit *screenNameEntry;
 		QLineEdit *aliasEntry;
 		QComboBox *groupCombo;
-		QQuailAccountBox *accountCombo;
+		quail_account_box *accountCombo;
 };
 
-class QQuailAddChatDialog : public QuailDialog
+class quail_add_chat_dialog : public quail_dialog
 {
 	Q_OBJECT
 
 	public:
-        QQuailAddChatDialog(QWidget *parent = 0);
+        quail_add_chat_dialog(QWidget *parent = 0);
 
 		void setAlias(const QString &alias);
 		void setGroup(const QString &group);
@@ -102,19 +102,19 @@ class QQuailAddChatDialog : public QuailDialog
 		QLabel *groupLabel;
 		QLineEdit *aliasEntry;
 		QComboBox *groupCombo;
-		QQuailAccountBox *accountCombo;
+		quail_account_box *accountCombo;
 		QGridLayout *grid;
 		QFrame *widgetsFrame;
         QList<QWidget*> labels;
         QList<QWidget*> widgets;
 };
 
-class QQuailNewImDialog : public QuailDialog
+class quail_new_im_dialog : public quail_dialog
 {
 	Q_OBJECT
 
 	public:
-        QQuailNewImDialog(QWidget *parent = 0);
+        quail_new_im_dialog(QWidget *parent = 0);
 
 		void setScreenName(const QString &screenName);
 		void setAccount(PurpleAccount *account);
@@ -127,15 +127,15 @@ class QQuailNewImDialog : public QuailDialog
 
 	private:
 		QLineEdit *screenNameEntry;
-		QQuailAccountBox *accountCombo;
+		quail_account_box *accountCombo;
 };
 
-class QQuailJoinChatDialog : public QuailDialog
+class quail_join_chat_dialog : public quail_dialog
 {
 	Q_OBJECT
 
 	public:
-        QQuailJoinChatDialog(QWidget *parent = 0);
+        quail_join_chat_dialog(QWidget *parent = 0);
 
 		void setAccount(PurpleAccount *account);
 
@@ -148,7 +148,7 @@ class QQuailJoinChatDialog : public QuailDialog
 		void accept();
 
 	private:
-		QQuailAccountBox *accountCombo;
+		quail_account_box *accountCombo;
 		QGridLayout *grid;
 		QFrame *widgetsFrame;
         QList<QWidget*> labels;

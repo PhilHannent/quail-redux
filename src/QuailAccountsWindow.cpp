@@ -32,7 +32,7 @@
 
 #include <QAction>
 #include <QCheckBox>
-#include <QDebug>
+//#include <QDebug>
 #include <QHeaderView>
 #include <QLabel>
 #include <QLayout>
@@ -58,7 +58,6 @@ quail_account_item::~quail_account_item()
 void
 quail_account_item::start_pulse(QPixmap onlinePixmap, QString pixmapName)
 {
-    qDebug() << "QQuailAccountItem::startPulse";
     stop_pulse();
 
     m_pulse_grey = true;
@@ -79,7 +78,6 @@ quail_account_item::start_pulse(QPixmap onlinePixmap, QString pixmapName)
 void
 quail_account_item::stop_pulse()
 {
-    qDebug() << "QQuailAccountItem::stopPulse";
     if (m_pulse_timer == 0)
         return;
     m_pulse_timer->stop();
@@ -102,7 +100,6 @@ quail_account_item::get_account() const
 void
 quail_account_item::update_pulse()
 {
-    qDebug() << "QQuailAccountItem::updatePulse()";
     QPixmap tempPixmap = m_pulse_orig_pixmap->copy();
 
     if (m_pulse_grey)
@@ -115,24 +112,21 @@ quail_account_item::update_pulse()
     QString pixmapName = m_pulse_orig_pixmap_name;
     if (m_pulse_grey)
         pixmapName += "-grey";
-    qDebug() << "QQuailAccountItem::updatePulse().1" << pixmapName;
-    setIcon(QQuailImageUtils::saturate(tempPixmap, m_pulse_step, pixmapName));
+    setIcon(quail_image_utils::saturate(tempPixmap, m_pulse_step, pixmapName));
 }
 
 /**************************************************************************
  * QQuailAccountsWindow libpurple callbacks
  **************************************************************************/
 static void
-signedOnCb(PurpleConnection *gc, quail_accounts_window *win)
+signed_on_callback(PurpleConnection *gc, quail_accounts_window *win)
 {
-    qDebug() << "QQuailAccountsWindow::signedOnCb";
     win->account_signed_on(purple_connection_get_account(gc));
 }
 
 static void
-signedOffCb(PurpleConnection *gc, quail_accounts_window *win)
+signed_off_callback(PurpleConnection *gc, quail_accounts_window *win)
 {
-    qDebug() << "QQuailAccountsWindow::signedOffCb";
     win->account_signed_off(purple_connection_get_account(gc));
 }
 
@@ -154,13 +148,12 @@ signedOffCb(PurpleConnection *gc, quail_accounts_window *win)
 quail_accounts_window::quail_accounts_window(QMainWindow *parent)
     : QMainWindow(), m_parent(parent)
 {
-    qDebug() << "QQuailAccountsWindow::QQuailAccountsWindow";
     build_interface();
 
 	purple_signal_connect(purple_connections_get_handle(), "signed-on",
-                        this, PURPLE_CALLBACK(signedOnCb), this);
+                        this, PURPLE_CALLBACK(signed_on_callback), this);
 	purple_signal_connect(purple_connections_get_handle(), "signed-off",
-                        this, PURPLE_CALLBACK(signedOffCb), this);
+                        this, PURPLE_CALLBACK(signed_off_callback), this);
 
 //    purple_signal_connect(purple_accounts_get_handle(), "account-disabled",
 //                        this, PURPLE_CALLBACK(account_abled_cb), GINT_TO_POINTER(FALSE));
@@ -179,7 +172,6 @@ quail_accounts_window::~quail_accounts_window()
 void
 quail_accounts_window::account_signed_on(PurpleAccount *account)
 {
-    qDebug() << "QQuailAccountsWindow::accountSignedOn()";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
     if (item->get_account() == account)
@@ -193,15 +185,13 @@ quail_accounts_window::account_signed_on(PurpleAccount *account)
 	{
         item = (quail_account_item*)m_accounts_widget->item( item->row(), xProtocol);
         item->stop_pulse();
-        item->setIcon(QQuailProtocolUtils::getProtocolIcon(account));
+        item->setIcon(quail_protocol_utils::getProtocolIcon(account));
 	}
-    qDebug() << "QQuailAccountsWindow::accountSignedOn().end";
 }
 
 void
 quail_accounts_window::account_signed_off(PurpleAccount *account)
 {
-    qDebug() << "QQuailAccountsWindow::accountSignedOff()";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
     if (item->get_account() == account)
@@ -213,18 +203,16 @@ quail_accounts_window::account_signed_off(PurpleAccount *account)
 
 	if (item != NULL)
 	{
-        QPixmap protIcon = QQuailProtocolUtils::getProtocolIcon(account);
-        QString protIconName = QQuailProtocolUtils::getProtocolIconName(account);
+        QPixmap protIcon = quail_protocol_utils::getProtocolIcon(account);
+        QString protIconName = quail_protocol_utils::getProtocolIconName(account);
         item = (quail_account_item*)m_accounts_widget->item( item->row(), xProtocol);
-        item->setIcon(QQuailImageUtils::greyPixmap(protIcon, protIconName));
+        item->setIcon(quail_image_utils::greyPixmap(protIcon, protIconName));
 	}
-    qDebug() << "QQuailAccountsWindow::accountSignedOff().end";
 }
 
 void
 quail_accounts_window::build_interface()
 {
-    qDebug() << "QQuailAccountsWindow::buildInterface";
     setWindowIcon(QIcon(":/data/images/logo.png"));
     setup_toolbar();
 
@@ -252,7 +240,6 @@ quail_accounts_window::build_interface()
 void
 quail_accounts_window::setup_toolbar()
 {
-    qDebug() << "QQuailAccountsWindow::setupToolbar";
 	QAction *a;
 
     m_toolbar = new QToolBar(this);
@@ -321,7 +308,6 @@ quail_accounts_window::setup_toolbar()
 void
 quail_accounts_window::slot_update_accounts()
 {
-    qDebug() << "quail_accounts_window::slot_update_accounts";
     GList *l;
     int index = 0;
     m_accounts_widget->setUpdatesEnabled(false);
@@ -337,10 +323,6 @@ quail_accounts_window::slot_update_accounts()
         QString protocolIconName;
 		PurpleAccount *account = (PurpleAccount *)l->data;
 		QString protocolId = purple_account_get_protocol_id(account);
-        qDebug() << "quail_accounts_window::slot_update_accounts" << index;
-        qDebug() << "quail_accounts_window::slot_update_accounts" << protocolId;
-        qDebug() << "quail_accounts_window::slot_update_accounts" << account->alias;
-        qDebug() << "quail_accounts_window::slot_update_accounts" << purple_account_get_username(account);
 
         m_accounts_widget->insertRow(index);
 
@@ -349,14 +331,14 @@ quail_accounts_window::slot_update_accounts()
         itemUserName->set_account(account);
 
         quail_account_item *itemProtocol = new quail_account_item();
-        itemProtocol->setText(QQuailProtocolUtils::getProtocolName(protocolId));
+        itemProtocol->setText(quail_protocol_utils::getProtocolName(protocolId));
         itemProtocol->set_account(account);
-        protocolIcon = QQuailProtocolUtils::getProtocolIcon(account);
-        protocolIconName = QQuailProtocolUtils::getProtocolIconName(account);
+        protocolIcon = quail_protocol_utils::getProtocolIcon(account);
+        protocolIconName = quail_protocol_utils::getProtocolIconName(account);
         if (purple_account_is_connected(account))
             itemProtocol->setIcon(protocolIcon);
         else
-            itemProtocol->setIcon(QQuailImageUtils::greyPixmap(protocolIcon,
+            itemProtocol->setIcon(quail_image_utils::greyPixmap(protocolIcon,
                                                                protocolIconName));
 
         quail_account_item *itemEnabled = new quail_account_item();
@@ -382,10 +364,9 @@ quail_accounts_window::slot_update_accounts()
 void
 quail_accounts_window::new_account()
 {
-    qDebug() << "quail_accounts_window::new_account";
-	QQuailAccountEditor *editor;
+	quail_account_editor *editor;
 
-    editor = new QQuailAccountEditor(NULL, this, tr("New Account"));
+    editor = new quail_account_editor(NULL, this, tr("New Account"));
     connect(editor, SIGNAL(signalAccountUpdated()),
             this, SLOT(slot_update_accounts()));
 
@@ -395,11 +376,9 @@ quail_accounts_window::new_account()
 void
 quail_accounts_window::edit_account()
 {
-    qDebug() << "QQuailAccountsWindow::editAccount";
-
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
-    QQuailAccountEditor *editor = new QQuailAccountEditor(item->get_account(),
+    quail_account_editor *editor = new quail_account_editor(item->get_account(),
                                      this,
                                      tr("Edit Account"));
     editor->show();
@@ -408,7 +387,6 @@ quail_accounts_window::edit_account()
 void
 quail_accounts_window::delete_account()
 {
-    qDebug() << "QQuailAccountsWindow::deleteAccount";
     quail_account_item *item = (quail_account_item *)m_accounts_widget->currentItem();
 
     purple_accounts_remove(item->get_account());
@@ -422,7 +400,6 @@ quail_accounts_window::delete_account()
 void
 quail_accounts_window::slot_account_selected()
 {
-    qDebug() << "quail_accounts_window::slot_account_selected()";
     QTableWidgetItem *item = m_accounts_widget->currentItem();
     if (!item)
         return;
@@ -444,7 +421,6 @@ quail_accounts_window::resizeEvent(QResizeEvent *)
 quail_account_item *
 quail_accounts_window::get_item_from_account(PurpleAccount *account)
 {
-    qDebug() << "QQuailAccountsWindow::getItemFromAccount";
 
 	if (account == NULL)
 		return NULL;
@@ -463,7 +439,6 @@ quail_accounts_window::get_item_from_account(PurpleAccount *account)
 void
 quail_accounts_window::slot_table_item_pressed(QTableWidgetItem * item_selected)
 {
-    qDebug() << "quail_accounts_window::slot_table_item_pressed";
     quail_account_item* account_item = static_cast<quail_account_item*>(
                 m_accounts_widget->item(item_selected->row(), xEnabled));
 
@@ -471,22 +446,19 @@ quail_accounts_window::slot_table_item_pressed(QTableWidgetItem * item_selected)
     if (account_item->checkState() == Qt::Checked
         && !purple_account_get_enabled(account, UI_ID))
     {
-        qDebug() << "quail_accounts_window::slot_table_item_pressed.1";
         purple_account_set_enabled(account, UI_ID, true);
     }
     else if (account_item->checkState() == Qt::Unchecked
              && purple_account_get_enabled(account, UI_ID))
     {
-        qDebug() << "quail_accounts_window::slot_table_item_pressed.2";
         purple_account_set_enabled(account, UI_ID, false);
     }
 }
 
 static void
-qQuailConnConnectProgress(PurpleConnection *gc, const char *text,
+quail_connection_progress_callback(PurpleConnection *gc, const char *text,
 						 size_t step, size_t step_count)
 {
-    qDebug() << "QQuailAccountsWindow::qQuailConnConnectProgress" << gc->display_name;
 	QQuailConnectionMeters *meters;
 	QQuailConnectionMeter *meter;
 
@@ -500,9 +472,8 @@ qQuailConnConnectProgress(PurpleConnection *gc, const char *text,
 }
 
 static void
-qQuailConnConnected(PurpleConnection *gc)
+quail_conn_connected_callback(PurpleConnection *gc)
 {
-    qDebug() << "QQuailAccountsWindow::qQuailConnConnected" << gc->display_name;
 	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QQuailConnectionMeter *meter;
 
@@ -513,9 +484,8 @@ qQuailConnConnected(PurpleConnection *gc)
 }
 
 static void
-qQuailConnDisconnected(PurpleConnection *gc)
+quail_conn_disconnected_callback(PurpleConnection *gc)
 {
-    qDebug() << "QQuailAccountsWindow::qQuailConnDisconnected" << gc->display_name;
 	QQuailConnectionMeters *meters = qQuailGetMainWindow()->getMeters();
 	QQuailConnectionMeter *meter;
 
@@ -526,47 +496,43 @@ qQuailConnDisconnected(PurpleConnection *gc)
 }
 
 static void
-qQuailConnNotice(PurpleConnection *gc, const char *text)
+quail_conn_notice_callback(PurpleConnection *gc, const char *text)
 {
-    qDebug() << "QQuailAccountsWindow::qQuailConnNotice";
-    qDebug() << text;
+    Q_UNUSED(text);
     Q_UNUSED(gc)
 }
 
 static void
-qQuailConnectionReportDisconnectReason(PurpleConnection *gc,
+quail_report_disconnect_reason_callback(PurpleConnection *gc,
                                        PurpleConnectionError reason,
                                        const char *text)
 {
     Q_UNUSED(gc)
-    qDebug() << "QQuailAccountsWindow::qQuailConnectionReportDisconnectReason";
-    qDebug() << reason;
-    qDebug() << text;
+    Q_UNUSED(reason);
+    Q_UNUSED(text);
 }
 
 static void
-qQuail_connection_network_disconnected(void)
+quail_connection_network_disconnected(void)
 {
-    qDebug() << "QQuailAccountsWindow::qQuail_connection_network_disconnected";
 
 }
 
 static void
-qQuail_connection_network_connected(void)
+quail_connection_network_connected(void)
 {
-    qDebug() << "QQuailAccountsWindow::qQuail_connection_network_connected";
 }
 
 static PurpleConnectionUiOps connUiOps =
 {
-    qQuailConnConnectProgress, /*connect_progress*/
-    qQuailConnConnected, /* connected */
-    qQuailConnDisconnected, /* disconnected */
-    qQuailConnNotice, /* notice */
+    quail_connection_progress_callback, /*connect_progress*/
+    quail_conn_connected_callback, /* connected */
+    quail_conn_disconnected_callback, /* disconnected */
+    quail_conn_notice_callback, /* notice */
     NULL, /*report_disconnect */
-    qQuail_connection_network_connected, /* network_connected*/
-    qQuail_connection_network_disconnected, /* network_disconnected*/
-    qQuailConnectionReportDisconnectReason, /* report_disconnect_reason*/
+    quail_connection_network_connected, /* network_connected*/
+    quail_connection_network_disconnected, /* network_disconnected*/
+    quail_report_disconnect_reason_callback, /* report_disconnect_reason*/
     NULL,
     NULL,
     NULL
@@ -575,7 +541,6 @@ static PurpleConnectionUiOps connUiOps =
 PurpleConnectionUiOps *
 qQuailGetConnectionUiOps()
 {
-    qDebug() << "QQuailAccountsWindow::qQuailGetConnectionUiOps";
-	return &connUiOps;
+    return &connUiOps;
 }
 

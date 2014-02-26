@@ -27,12 +27,12 @@
 #include <QMap>
 #include <QTabBar>
 
-class QQuailTabBar : public QTabBar
+class quail_tabbar : public QTabBar
 {
 	Q_OBJECT
 
 	public:
-        QQuailTabBar(QWidget *parent = NULL);
+        quail_tabbar(QWidget *parent = NULL);
 
 		void setTabColor(int id, const QColor &color);
         const QColor getTabColor(int id) const;

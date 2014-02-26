@@ -35,17 +35,14 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-/**************************************************************************
- * QQuailBlistPrefPage
- **************************************************************************/
-QQuailBlistPrefPage::QQuailBlistPrefPage(QWidget *parent)
-    : QQuailPrefPage(parent)
+quail_blist_pref_page::quail_blist_pref_page(QWidget *parent)
+    : quail_pref_page(parent)
 {
 	buildInterface();
 }
 
 void
-QQuailBlistPrefPage::accept()
+quail_blist_pref_page::accept()
 {
     if (purple_prefs_get_bool("/quail/blist/show_idle_times") ==
 		idleTimes->isChecked() &&
@@ -76,7 +73,7 @@ QQuailBlistPrefPage::accept()
 }
 
 void
-QQuailBlistPrefPage::buildInterface()
+quail_blist_pref_page::buildInterface()
 {
     qDebug() << "QQuailBlistPrefPage::buildInterface()";
 	QVBoxLayout *layout = new QVBoxLayout(this);
@@ -118,18 +115,18 @@ QQuailBlistPrefPage::buildInterface()
 /**************************************************************************
  * QQuailConvPrefPage
  **************************************************************************/
-QQuailConvPrefPage::QQuailConvPrefPage(QWidget *parent)
-    : QQuailPrefPage(parent)
+quail_conv_pref_page::quail_conv_pref_page(QWidget *parent)
+    : quail_pref_page(parent)
 {
 }
 
 void
-QQuailConvPrefPage::accept()
+quail_conv_pref_page::accept()
 {
 }
 
 void
-QQuailConvPrefPage::buildInterface()
+quail_conv_pref_page::buildInterface()
 {
 }
 
@@ -137,14 +134,14 @@ QQuailConvPrefPage::buildInterface()
 /**************************************************************************
  * QQuailNotifyPrefPage
  **************************************************************************/
-QQuailNotifyPrefPage::QQuailNotifyPrefPage(QWidget *parent)
-    : QQuailPrefPage(parent)
+quail_notify_pref_page::quail_notify_pref_page(QWidget *parent)
+    : quail_pref_page(parent)
 {
 	buildInterface();
 }
 
 void
-QQuailNotifyPrefPage::accept()
+quail_notify_pref_page::accept()
 {
     qDebug() << "QQuailNotifyPrefPage::accept()";
     if (purple_prefs_get_bool("/quail/notify/incoming_im") ==
@@ -170,7 +167,7 @@ QQuailNotifyPrefPage::accept()
 }
 
 void
-QQuailNotifyPrefPage::buildInterface()
+quail_notify_pref_page::buildInterface()
 {
     qDebug() << "QQuailNotifyPrefPage::buildInterface()";
 
@@ -196,19 +193,19 @@ QQuailNotifyPrefPage::buildInterface()
 /**************************************************************************
  * QQuailAwayPrefPage
  **************************************************************************/
-QQuailAwayPrefPage::QQuailAwayPrefPage(QWidget *parent)
-    : QQuailPrefPage(parent)
+quail_away_pref_page::quail_away_pref_page(QWidget *parent)
+    : quail_pref_page(parent)
 {
     qDebug() << "QQuailAwayPrefPage::QQuailAwayPrefPage()";
 }
 
 void
-QQuailAwayPrefPage::accept()
+quail_away_pref_page::accept()
 {
 }
 
 void
-QQuailAwayPrefPage::buildInterface()
+quail_away_pref_page::buildInterface()
 {
 }
 
@@ -216,19 +213,19 @@ QQuailAwayPrefPage::buildInterface()
 /**************************************************************************
  * QQuailProxyPrefPage
  **************************************************************************/
-QQuailProxyPrefPage::QQuailProxyPrefPage(QWidget *parent)
-    : QQuailPrefPage(parent)
+quail_proxy_pref_page::quail_proxy_pref_page(QWidget *parent)
+    : quail_pref_page(parent)
 {
     qDebug() << "QQuailProxyPrefPage::QQuailProxyPrefPage()";
 }
 
 void
-QQuailProxyPrefPage::accept()
+quail_proxy_pref_page::accept()
 {
 }
 
 void
-QQuailProxyPrefPage::buildInterface()
+quail_proxy_pref_page::buildInterface()
 {
 }
 
@@ -236,19 +233,19 @@ QQuailProxyPrefPage::buildInterface()
 /**************************************************************************
  * QQuailPluginPrefPage
  **************************************************************************/
-QQuailPluginPrefPage::QQuailPluginPrefPage(QWidget *parent)
-    : QQuailPrefPage(parent)
+quail_plugin_pref_page::quail_plugin_pref_page(QWidget *parent)
+    : quail_pref_page(parent)
 {
     qDebug() << "QQuailPluginPrefPage::QQuailPluginPrefPage()";
 }
 
 void
-QQuailPluginPrefPage::accept()
+quail_plugin_pref_page::accept()
 {
 }
 
 void
-QQuailPluginPrefPage::buildInterface()
+quail_plugin_pref_page::buildInterface()
 {
     qDebug() << "QQuailPluginPrefPage::buildInterface()";
 }
@@ -257,19 +254,19 @@ QQuailPluginPrefPage::buildInterface()
 /**************************************************************************
  * QQuailPrefsDialog
  **************************************************************************/
-QQuailPrefsDialog::QQuailPrefsDialog(QWidget *parent)
+quail_prefs_dialog::quail_prefs_dialog(QWidget *parent)
     : QWidget(parent), m_parent(parent)
 {
     qDebug() << "QQuailPrefsDialog::QQuailPrefsDialog()";
 	buildInterface();
 }
 
-QQuailPrefsDialog::~QQuailPrefsDialog()
+quail_prefs_dialog::~quail_prefs_dialog()
 {
 }
 
 void
-QQuailPrefsDialog::buildInterface()
+quail_prefs_dialog::buildInterface()
 {
     qDebug() << "QQuailPrefsDialog::buildInterface()";
 	QVBoxLayout *layout;
@@ -280,8 +277,8 @@ QQuailPrefsDialog::buildInterface()
 
     tabs = new QTabWidget(this);
     layout->addWidget(tabs);
-    blistPage    = new QQuailBlistPrefPage(this);
-    notifyPage   = new QQuailNotifyPrefPage(this);
+    blistPage    = new quail_blist_pref_page(this);
+    notifyPage   = new quail_notify_pref_page(this);
 #if 0
     convPage     = new QQuailConvPrefPage(this);
     awayIdlePage = new QQuailAwayPrefPage(this);
@@ -312,7 +309,7 @@ QQuailPrefsDialog::buildInterface()
 }
 
 void
-QQuailPrefsDialog::slotAccept()
+quail_prefs_dialog::slotAccept()
 {
     qDebug() << "QQuailPrefsDialog::accept()";
 	blistPage->accept();
@@ -327,7 +324,7 @@ QQuailPrefsDialog::slotAccept()
 }
 
 void
-QQuailPrefsDialog::slotRejected()
+quail_prefs_dialog::slotRejected()
 {
     qDebug() << "QQuailPrefsDialog::done()";
 	close();

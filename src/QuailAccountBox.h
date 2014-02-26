@@ -26,13 +26,13 @@
 
 #include <libpurple/account.h>
 
-class QQuailAccountBox : public QComboBox
+class quail_account_box : public QComboBox
 {
 	Q_OBJECT
 
 	public:
-        QQuailAccountBox(bool showAll = false, QWidget *parent = NULL);
-		QQuailAccountBox(PurpleAccount *account, bool showAll = false,
+        quail_account_box(bool showAll = false, QWidget *parent = NULL);
+		quail_account_box(PurpleAccount *account, bool showAll = false,
                         QWidget *parent = NULL);
 
 		void setCurrentAccount(PurpleAccount *account);

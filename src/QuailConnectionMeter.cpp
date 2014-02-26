@@ -52,7 +52,7 @@ QQuailConnectionMeter::QQuailConnectionMeter(PurpleConnection *gc,
 	account = purple_connection_get_account(gc);
 
     icon = new QLabel();
-	icon->setPixmap(QQuailProtocolUtils::getProtocolIcon(account));
+    icon->setPixmap(quail_protocol_utils::getProtocolIcon(account));
     hbox->addWidget(icon);
 
     label = new QLabel(purple_account_get_username(account));

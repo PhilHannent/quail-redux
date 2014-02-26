@@ -22,23 +22,12 @@
 #include <QApplication>
 #include <QDebug>
 
-#if defined(Q_OS_WIN)
-#include "QuailWinGlibEventLoop.h"
-#endif
-#include "QuailEventLoop.h"
 #include "QuailMainWindow.h"
 
 int main(int argc, char *argv[])
 {
-#if defined(Q_OS_WIN)
-    qDebug() << "MAIN.1";
-    //QuailEventDispatcherWinGlib quailEventLoop;
-#endif
-    //QuailEventDispatcherMarkTwo mainEvent;
     QApplication a(argc, argv);
-    qDebug() << "q";
     quail_main_window w;
-    qDebug() << "q2";
     w.show();
 
     return a.exec();

@@ -23,7 +23,7 @@
 <?endif ?>
 
   <!-- With each new version bump the Product Version and the ProductGuid -->
-  <?define ProductVersion = "0.1.0" ?>
+  <!--<?define ProductVersion = "0.1.0" ?>-->
   <?define ProductGUID = "*" ?>
   <?define RTMProductVersion = "0.0.1" ?>
 

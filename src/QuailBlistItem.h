@@ -5,13 +5,13 @@
 
 #include <libpurple/blist.h>
 
-class QQuailBListItem : public QTreeWidgetItem
+class quail_blist_item : public QTreeWidgetItem
 {
 
     public:
-        QQuailBListItem(QTreeWidget *parent, PurpleBlistNode *node);
-        QQuailBListItem(QTreeWidgetItem *parent, PurpleBlistNode *node);
-        ~QQuailBListItem();
+        quail_blist_item(QTreeWidget *parent, PurpleBlistNode *node);
+        quail_blist_item(QTreeWidgetItem *parent, PurpleBlistNode *node);
+        ~quail_blist_item();
 
         static QPixmap getBuddyStatusIcon(PurpleBlistNode *node);
 //        static QPixmap getBuddyStatusIcon2(PurpleBlistNode *node);

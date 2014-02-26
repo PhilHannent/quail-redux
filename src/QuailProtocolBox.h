@@ -22,18 +22,15 @@
 #ifndef _QUAIL_PROTOCOL_BOX_H_
 #define _QUAIL_PROTOCOL_BOX_H_
 
-#include <QVariant>
 #include <QComboBox>
 
-#include <libpurple/prpl.h>
-
-class QQuailProtocolBox : public QComboBox
+class quail_protocol_box : public QComboBox
 {
 	Q_OBJECT
 
 	public:
-        QQuailProtocolBox(QWidget *parent = NULL);
-        QQuailProtocolBox(QString protocolId, QWidget *parent = NULL);
+        quail_protocol_box(QWidget *parent = NULL);
+        quail_protocol_box(QString protocolId, QWidget *parent = NULL);
 
 		void setCurrentProtocol(QString protocolId);
 

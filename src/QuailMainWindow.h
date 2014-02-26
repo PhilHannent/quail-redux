@@ -23,17 +23,18 @@
 #define _QUAIL_MAIN_WINDOW_H_
 
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 #include <QTranslator>
 #include <QTimer>
 
 #include <libpurple/conversation.h>
 
 class quail_accounts_window;
-class QQuailBListWindow;
+class quail_blist_window;
 class QQuailConnectionMeters;
-class QQuailConvWindow;
-class QQuailConversation;
-class QQuailPrefsDialog;
+class quail_conv_window;
+class quail_conversation;
+class quail_prefs_dialog;
 
 class QMenu;
 class QStackedWidget;
@@ -51,13 +52,13 @@ class quail_main_window : public QMainWindow
         ~quail_main_window();
 
         void addConversationWindow(PurpleConversation *win);
-        void removeConversationWindow(QQuailConversation *win);
+        void removeConversationWindow(quail_conversation *win);
 
-		QQuailBListWindow *getBlistWindow() const;
+		quail_blist_window *getBlistWindow() const;
 		quail_accounts_window *getAccountsWindow() const;
 
-        void setLastActiveConvWindow(QQuailConversation *win);
-        QQuailConversation *getLastActiveConvWindow() const;
+        void setLastActiveConvWindow(quail_conversation *win);
+        quail_conversation *getLastActiveConvWindow() const;
 
         QStackedWidget *getWidgetStack() const;
 		QQuailConnectionMeters *getMeters() const;
@@ -70,6 +71,7 @@ class quail_main_window : public QMainWindow
 		void showAccountsWindow();
         void showConvWindow();
         void showPrefWindow();
+        void slot_show_meters();
         void retranslateUi(QWidget * /*currentForm*/);
 
 	protected:
@@ -84,6 +86,7 @@ class quail_main_window : public QMainWindow
         void slotSaveSettings();
         void slotReadSettings();
         void slot_quit();
+        void slot_activate_tray(QSystemTrayIcon::ActivationReason reason);
 
 	private:
         void buildInterface();
@@ -95,23 +98,24 @@ class quail_main_window : public QMainWindow
         void switchLanguage();
 
         QStackedWidget *widgetStack;
-		quail_accounts_window *accountsWin;
-		QQuailBListWindow *blistWin;
+        quail_accounts_window *m_accounts_window;
+        quail_blist_window *m_blist_window;
 		QQuailConnectionMeters *meters;
-        QQuailConvWindow *convWin;
-        QQuailConversation *lastConvWin;
-        QQuailPrefsDialog *prefWin;
+        quail_conv_window *m_conv_window;
+        quail_conversation *lastConvWin;
+        quail_prefs_dialog *m_pref_window;
         QAction *actShowBuddyList;
         QAction *actShowAccounts;
+        QAction *actMetersAccounts;
         QAction *actMinimize;
         QAction *actQuit;
-        QMenu *trayIconMenu;
-        QSystemTrayIcon *trayIcon;
+        QMenu *m_tray_icon_menu;
+        QSystemTrayIcon *m_tray_icon;
         int nextConvWinId;
         QString m_language;
         QTranslator 	appTranslator;
         QTranslator 	qtTranslator;
-        QMenu* m_statusMenu;
+        QMenu* m_status_menu;
 
 };
 

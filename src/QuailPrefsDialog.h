@@ -27,12 +27,12 @@
 class QCheckBox;
 class QTabWidget;
 
-class QQuailPrefPage : public QWidget
+class quail_pref_page : public QWidget
 {
 	Q_OBJECT
 
 	public:
-        QQuailPrefPage(QWidget *parent = 0)
+        quail_pref_page(QWidget *parent = 0)
             : QWidget(parent), dirty(false) { }
 
 		void setDirty(bool dirty) { this->dirty = dirty; }
@@ -45,12 +45,12 @@ class QQuailPrefPage : public QWidget
 		bool dirty;
 };
 
-class QQuailBlistPrefPage : public QQuailPrefPage
+class quail_blist_pref_page : public quail_pref_page
 {
 	Q_OBJECT
 
 	public:
-        QQuailBlistPrefPage(QWidget *parent = 0);
+        quail_blist_pref_page(QWidget *parent = 0);
 
 		void accept();
 
@@ -65,12 +65,12 @@ class QQuailBlistPrefPage : public QQuailPrefPage
 		QCheckBox *largeIcons;
 };
 
-class QQuailConvPrefPage : public QQuailPrefPage
+class quail_conv_pref_page : public quail_pref_page
 {
 	Q_OBJECT
 
 	public:
-        QQuailConvPrefPage(QWidget *parent = 0);
+        quail_conv_pref_page(QWidget *parent = 0);
 
 		void accept();
 
@@ -78,12 +78,12 @@ class QQuailConvPrefPage : public QQuailPrefPage
 		void buildInterface();
 };
 
-class QQuailNotifyPrefPage : public QQuailPrefPage
+class quail_notify_pref_page : public quail_pref_page
 {
 	Q_OBJECT
 
 	public:
-        QQuailNotifyPrefPage(QWidget *parent = 0);
+        quail_notify_pref_page(QWidget *parent = 0);
 
 		void accept();
 
@@ -97,12 +97,12 @@ class QQuailNotifyPrefPage : public QQuailPrefPage
 		QCheckBox *useLed;
 };
 
-class QQuailAwayPrefPage : public QQuailPrefPage
+class quail_away_pref_page : public quail_pref_page
 {
 	Q_OBJECT
 
 	public:
-        QQuailAwayPrefPage(QWidget *parent = 0);
+        quail_away_pref_page(QWidget *parent = 0);
 
 		void accept();
 
@@ -110,12 +110,12 @@ class QQuailAwayPrefPage : public QQuailPrefPage
 		void buildInterface();
 };
 
-class QQuailProxyPrefPage : public QQuailPrefPage
+class quail_proxy_pref_page : public quail_pref_page
 {
 	Q_OBJECT
 
 	public:
-        QQuailProxyPrefPage(QWidget *parent = 0);
+        quail_proxy_pref_page(QWidget *parent = 0);
 
 		void accept();
 
@@ -123,12 +123,12 @@ class QQuailProxyPrefPage : public QQuailPrefPage
 		void buildInterface();
 };
 
-class QQuailPluginPrefPage : public QQuailPrefPage
+class quail_plugin_pref_page : public quail_pref_page
 {
 	Q_OBJECT
 
 	public:
-        QQuailPluginPrefPage(QWidget *parent = 0);
+        quail_plugin_pref_page(QWidget *parent = 0);
 
 		void accept();
 
@@ -136,13 +136,13 @@ class QQuailPluginPrefPage : public QQuailPrefPage
 		void buildInterface();
 };
 
-class QQuailPrefsDialog : public QWidget
+class quail_prefs_dialog : public QWidget
 {
 	Q_OBJECT
 
 	public:
-        QQuailPrefsDialog(QWidget *parent = 0);
-		~QQuailPrefsDialog();
+        quail_prefs_dialog(QWidget *parent = 0);
+        ~quail_prefs_dialog();
 
     protected slots:
         void slotAccept();
@@ -158,12 +158,12 @@ class QQuailPrefsDialog : public QWidget
         QWidget *m_parent;
         QTabWidget *tabs;
 
-		QQuailPrefPage *blistPage;
-		QQuailPrefPage *convPage;
-		QQuailPrefPage *notifyPage;
-		QQuailPrefPage *awayIdlePage;
-		QQuailPrefPage *proxyPage;
-		QQuailPrefPage *pluginPage;
+        quail_pref_page *blistPage;
+        quail_pref_page *convPage;
+        quail_pref_page *notifyPage;
+        quail_pref_page *awayIdlePage;
+        quail_pref_page *proxyPage;
+        quail_pref_page *pluginPage;
 };
 
 #endif /* _QUAIL_PREFS_DIALOG_H_ */

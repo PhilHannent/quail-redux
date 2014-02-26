@@ -48,6 +48,7 @@
 #include <libpurple/pounce.h>
 #include <libpurple/plugin.h>
 
+#include "version.h"
 #include "global.h"
 #include "QuailAccountsWindow.h"
 #include "QuailBListWindow.h"
@@ -58,6 +59,7 @@
 #include "QuailNotify.h"
 #include "QuailPrefsDialog.h"
 #include "QuailRequest.h"
+#include "QuailStatusSelector.h"
 
 static quail_main_window *main_win = 0;
 quail_event_loop *event_loop = 0;
@@ -94,7 +96,7 @@ qQuailCoreDebugInit(void)
 static void
 qQuailCoreUiInit(void)
 {
-	purple_blist_set_ui_ops(qQuailGetBlistUiOps());
+    purple_blist_set_ui_ops(quail_get_blist_ui_ops());
 	purple_connections_set_ui_ops(qQuailGetConnectionUiOps());
     purple_conversations_set_ui_ops(qQuailGetConvWindowUiOps());
 	purple_notify_set_ui_ops(qQuailGetNotifyUiOps());
@@ -131,15 +133,14 @@ qQuailGetCoreUiOps()
  **************************************************************************/
 quail_main_window::quail_main_window(QWidget *parent)
     : QMainWindow(parent),
-      accountsWin(NULL),
-      blistWin(NULL),
-      convWin(0),
+      m_accounts_window(0),
+      m_blist_window(0),
+      m_conv_window(0),
       lastConvWin(0),
-      prefWin(0),
+      m_pref_window(0),
       nextConvWinId(0),
       m_language("en")
 {
-    qDebug() << "QQuailMainWindow";
     main_win = this;
     event_loop = new quail_event_loop();
     setWindowIcon(QIcon(":/data/images/logo.png"));
@@ -148,11 +149,8 @@ quail_main_window::quail_main_window(QWidget *parent)
     createActions();
 	buildInterface();
     createTrayIcon();
-    qDebug() << "QQuailMainWindow::QQuailMainWindow:about to initCore";
 	initCore();
-    qDebug() << "QQuailMainWindow::QQuailMainWindow:initCore.complete";
 	showBlistWindow();
-    qDebug() << "QQuailMainWindow::QQuailMainWindow:showBlistWindow()";
 	purple_set_blist(purple_blist_new());
 	purple_blist_load();
 
@@ -191,6 +189,11 @@ quail_main_window::createActions()
     actShowAccounts->setIcon(QIcon(":/data/images/actions/accounts.png"));
     connect(actShowAccounts, SIGNAL(triggered()),
             this, SLOT(showAccountsWindow()));
+
+    actMetersAccounts = new QAction(this);
+    actMetersAccounts->setText("Show Meters");
+    connect(actMetersAccounts, SIGNAL(triggered()),
+            this, SLOT(slot_show_meters()));
 
     actMinimize = new QAction(this);
     connect(actMinimize, SIGNAL(triggered()),
@@ -310,20 +313,33 @@ quail_main_window::retranslateUi(QWidget * /*currentForm*/)
 void
 quail_main_window::createTrayIcon()
 {
-    trayIconMenu = new QMenu(this);
-    trayIconMenu->addAction(actShowBuddyList);
-    trayIconMenu->addAction(actShowAccounts);
-    trayIconMenu->addAction(actMinimize);
-    trayIconMenu->addSeparator();
-    m_statusMenu = createStatusMenu();
-    trayIconMenu->addMenu(m_statusMenu);
-    trayIconMenu->addSeparator();
-    trayIconMenu->addAction(actQuit);
+    m_tray_icon_menu = new QMenu(this);
+    m_tray_icon_menu->addAction(actShowBuddyList);
+    m_tray_icon_menu->addAction(actShowAccounts);
+    m_tray_icon_menu->addAction(actMinimize);
+    m_tray_icon_menu->addSeparator();
+    m_status_menu = createStatusMenu();
+    m_tray_icon_menu->addMenu(m_status_menu);
+    m_tray_icon_menu->addSeparator();
+    m_tray_icon_menu->addAction(actQuit);
 
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon(":/data/images/logo.png"));
-    trayIcon->show();
+    m_tray_icon = new QSystemTrayIcon(this);
+    m_tray_icon->setContextMenu(m_tray_icon_menu);
+    m_tray_icon->setIcon(QIcon(":/data/images/logo.png"));
+    m_tray_icon->show();
+    connect(m_tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(slot_activate_tray(QSystemTrayIcon::ActivationReason)));
+}
+
+void quail_main_window::slot_activate_tray(QSystemTrayIcon::ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::DoubleClick)
+    {
+        if (this->isVisible())
+            this->hide();
+        else
+            this->show();
+    }
 }
 
 void
@@ -333,26 +349,18 @@ quail_main_window::initCore()
     char *path;
 
 	purple_core_set_ui_ops(qQuailGetCoreUiOps());
-    qDebug() << "QQuailMainWindow::initCore().1";
 	purple_eventloop_set_ui_ops(qQuailGetEventLoopUiOps());
-    qDebug() << "QQuailMainWindow::initCore().2";
     if (!purple_core_init("quail")) {
         qDebug() << tr("Initialization of the Quail core failed.\n"
                   "Please report this!\n");
 	}
-    purple_debug_set_enabled(true);
-    qDebug() << "QQuailMainWindow::initCore().3";
+    purple_debug_set_enabled(FALSE);
     path = g_build_filename(purple_user_dir(), "plugins", NULL);
-    qDebug() << "QQuailMainWindow::initCore().4";
     purple_plugins_add_search_path(path);
-    qDebug() << "QQuailMainWindow::initCore().5";
     purple_plugins_probe(NULL);
-    qDebug() << "QQuailMainWindow::initCore().6";
 	purple_prefs_load();
-    qDebug() << "QQuailMainWindow::initCore().7";
     //purple_accounts_load();
 	purple_pounces_load();
-    qDebug() << "QQuailMainWindow::initCore().end";
 }
 
 void
@@ -361,7 +369,7 @@ quail_main_window::closeEvent(QCloseEvent *event)
     qDebug() << "QQuailMainWindow::closeEvent()";
     QWidget *visibleWidget = widgetStack->currentWidget();
 
-    if (visibleWidget == accountsWin || visibleWidget == blistWin)
+    if (visibleWidget == m_accounts_window || visibleWidget == m_blist_window)
     {
         slotSaveSettings();
         hide();
@@ -422,20 +430,20 @@ quail_main_window::addConversationWindow(PurpleConversation *conv)
 //    }
 
 //    conv->ui_data = win;
-    if (convWin == 0)
+    if (m_conv_window == 0)
     {
-        convWin = new QQuailConvWindow(this);
-        getWidgetStack()->addWidget(convWin);
+        m_conv_window = new quail_conv_window(this);
+        getWidgetStack()->addWidget(m_conv_window);
         //qwin = new QQuailConvWindow(win, this);
         //qwin->setId(nextConvWinId++);
     }
-    convWin->addConversation(conv);
-    getWidgetStack()->setCurrentWidget(convWin);
+    m_conv_window->addConversation(conv);
+    getWidgetStack()->setCurrentWidget(m_conv_window);
     qDebug() << "QQuailMainWindow::addConversationWindow().end";
 }
 
 void
-quail_main_window::removeConversationWindow(QQuailConversation */*win*/)
+quail_main_window::removeConversationWindow(quail_conversation */*win*/)
 {
     qDebug() << "QQuailMainWindow::removeConversationWindow()";
 //    GList *l;
@@ -484,26 +492,26 @@ quail_main_window::slotReadSettings()
     restoreState(appSettings.value("state", saveState()).toByteArray());
 }
 
-QQuailBListWindow *
+quail_blist_window *
 quail_main_window::getBlistWindow() const
 {
-    return blistWin;
+    return m_blist_window;
 }
 
 quail_accounts_window *
 quail_main_window::getAccountsWindow() const
 {
-    return accountsWin;
+    return m_accounts_window;
 }
 
 void
-quail_main_window::setLastActiveConvWindow(QQuailConversation *win)
+quail_main_window::setLastActiveConvWindow(quail_conversation *win)
 {
     qDebug() << "QQuailMainWindow::setLastActiveConvWindow()";
     lastConvWin = win;
 }
 
-QQuailConversation *
+quail_conversation *
 quail_main_window::getLastActiveConvWindow() const
 {
 	return lastConvWin;
@@ -524,14 +532,14 @@ quail_main_window::getMeters() const
 void
 quail_main_window::showBlistWindow()
 {
-    if (blistWin == NULL)
+    if (!m_blist_window)
 	{
-		blistWin = new QQuailBListWindow(this);
-        widgetStack->addWidget(blistWin);
+        m_blist_window = new quail_blist_window(this);
+        widgetStack->addWidget(m_blist_window);
 	}
 
     setWindowTitle(tr("Buddy List"));
-    widgetStack->setCurrentWidget(blistWin);
+    widgetStack->setCurrentWidget(m_blist_window);
     showNormal();
     raise();
 }
@@ -539,14 +547,14 @@ quail_main_window::showBlistWindow()
 void
 quail_main_window::showAccountsWindow()
 {
-    if (accountsWin == NULL)
+    if (!m_accounts_window)
 	{
-        accountsWin = new quail_accounts_window(this);
-        widgetStack->addWidget(accountsWin);
+        m_accounts_window = new quail_accounts_window(this);
+        widgetStack->addWidget(m_accounts_window);
 	}
 
     setWindowTitle(tr("Accounts"));
-    widgetStack->setCurrentWidget(accountsWin);
+    widgetStack->setCurrentWidget(m_accounts_window);
     showNormal();
     raise();
 }
@@ -554,25 +562,25 @@ quail_main_window::showAccountsWindow()
 void
 quail_main_window::showConvWindow()
 {
-    if (convWin == 0)
+    if (!m_conv_window)
         return;
 
     setWindowTitle(tr("Conversations"));
-    widgetStack->setCurrentWidget(convWin);
+    widgetStack->setCurrentWidget(m_conv_window);
 }
 
 void
 quail_main_window::showPrefWindow()
 {
     qDebug() << "QQuailMainWindow::showPrefWindow()";
-    if (prefWin == 0)
+    if (!m_pref_window)
     {
         qDebug() << "QQuailMainWindow::showPrefWindow().1";
-        prefWin = new QQuailPrefsDialog(this);
-        widgetStack->addWidget(prefWin);
+        m_pref_window = new quail_prefs_dialog(this);
+        widgetStack->addWidget(m_pref_window);
     }
     setWindowTitle(tr("Preferences"));
-    widgetStack->setCurrentWidget(prefWin);
+    widgetStack->setCurrentWidget(m_pref_window);
     qDebug() << "QQuailMainWindow::showPrefWindow().end";
 }
 
@@ -580,8 +588,16 @@ quail_main_window::showPrefWindow()
 void
 quail_main_window::slot_quit()
 {
+    m_tray_icon->deleteLater();
     slotSaveSettings();
     qApp->quit();
+}
+
+void
+quail_main_window::slot_show_meters()
+{
+    widgetStack->setCurrentWidget(meters);
+    setWindowTitle(tr("Connection meters"));
 }
 
 quail_main_window *

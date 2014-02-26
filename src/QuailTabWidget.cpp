@@ -28,61 +28,61 @@
 
 #include <QDebug>
 
-QQuailTabWidget::QQuailTabWidget(QWidget *parent)
+quail_tab_widget::quail_tab_widget(QWidget *parent)
     : QTabWidget(parent)
 {
-    setTabBar(new QQuailTabBar(this));
+    setTabBar(new quail_tabbar(this));
 }
 
 void
-QQuailTabWidget::setCurrentIndex(int index)
+quail_tab_widget::setCurrentIndex(int index)
 {
-	((QQuailTabBar *)tabBar())->setCurrentIndex(index);
+	((quail_tabbar *)tabBar())->setCurrentIndex(index);
 }
 
 int
-QQuailTabWidget::getCurrentIndex() const
+quail_tab_widget::getCurrentIndex() const
 {
-	return ((QQuailTabBar *)tabBar())->getCurrentIndex();
+	return ((quail_tabbar *)tabBar())->getCurrentIndex();
 }
 
 void
-QQuailTabWidget::setTabColor(int index, const QColor &color)
+quail_tab_widget::setTabColor(int index, const QColor &color)
 {
-	((QQuailTabBar *)tabBar())->setTabColor(index, color);
+	((quail_tabbar *)tabBar())->setTabColor(index, color);
 }
 
 int
-QQuailTabWidget::getLastId() const
+quail_tab_widget::getLastId() const
 {
-	return ((QQuailTabBar *)tabBar())->getLastId();
+	return ((quail_tabbar *)tabBar())->getLastId();
 }
 
 void
-QQuailTabWidget::slotSendEnabled(bool bEnabled)
+quail_tab_widget::slotSendEnabled(bool bEnabled)
 {
     qDebug() << "QQuailTabWidget::slotSendEnabled(bool bEnabled)";
     emit signalSendEnabled(bEnabled);
 }
 
 void
-QQuailTabWidget::slotSendMessage()
+quail_tab_widget::slotSendMessage()
 {
     qDebug() << "QQuailTabWidget::slotSendMessage()";
-    QQuailConversation* qconv = (QQuailConversation*)this->currentWidget();
+    quail_conversation* qconv = (quail_conversation*)this->currentWidget();
     qconv->send();
 }
 
 void
-QQuailTabWidget::slotToggleUserList()
+quail_tab_widget::slotToggleUserList()
 {
     qDebug() << "QQuailTabWidget::slotToggleUserList()";
-    QQuailConversation *qconv = (QQuailConversation*)this->currentWidget();
+    quail_conversation *qconv = (quail_conversation*)this->currentWidget();
     PurpleConversation *conv = qconv->getConversation();
     /* Toogle the user list */
     if (purple_conversation_get_type(conv) == PURPLE_CONV_TYPE_CHAT)
     {
-        QQuailConvChat *chat = (QQuailConvChat*)qconv;
+        quail_conv_chat *chat = (quail_conv_chat*)qconv;
         chat->setShowUserList(!chat->getShowUserList());
     }
 }

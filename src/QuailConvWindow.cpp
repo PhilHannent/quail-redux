@@ -55,8 +55,8 @@
 /**************************************************************************
  * QQuailConversation
  **************************************************************************/
-QQuailConversation::QQuailConversation(PurpleConversation *conv,
-                                     QQuailTabWidget *parent)
+quail_conversation::quail_conversation(PurpleConversation *conv,
+                                     quail_tab_widget *parent)
     : QWidget(parent), conv(conv), textDisplay(NULL), notifying(false)
 {
     qDebug() << "QQuailConversation::QQuailConversation()";
@@ -64,24 +64,24 @@ QQuailConversation::QQuailConversation(PurpleConversation *conv,
             parent, SIGNAL(signalSendEnabled(bool)));
 }
 
-QQuailConversation::~QQuailConversation()
+quail_conversation::~quail_conversation()
 {
 }
 
 void
-QQuailConversation::setConversation(PurpleConversation *conv)
+quail_conversation::setConversation(PurpleConversation *conv)
 {
 	this->conv = conv;
 }
 
 PurpleConversation *
-QQuailConversation::getConversation() const
+quail_conversation::getConversation() const
 {
 	return conv;
 }
 
 void
-QQuailConversation::write(const char *who, const char *message,
+quail_conversation::write(const char *who, const char *message,
                          PurpleMessageFlags flags, time_t)
 {
     qDebug() << "QQuailConversation::write()";
@@ -200,14 +200,14 @@ QQuailConversation::write(const char *who, const char *message,
 }
 
 void
-QQuailConversation::setTitle(const char */*newTitle*/)
+quail_conversation::setTitle(const char */*newTitle*/)
 {
     qDebug() << "QQuailConversation::setTitle()";
     //title = NULL;
 }
 
 void
-QQuailConversation::updated(PurpleConvUpdateType type)
+quail_conversation::updated(PurpleConvUpdateType type)
 {
     qDebug() << "QQuailConversation::updated()";
     if (type == PURPLE_CONV_UPDATE_ACCOUNT)
@@ -232,25 +232,25 @@ QQuailConversation::updated(PurpleConvUpdateType type)
     else if (type == PURPLE_CONV_UPDATE_ADD ||
              type == PURPLE_CONV_UPDATE_REMOVE)
 	{
-        QQuailConvWindow *qwin = (QQuailConvWindow *)conv->ui_data;
+        quail_conv_window *qwin = (quail_conv_window *)conv->ui_data;
         qwin->updateAddRemoveButton();
 	}
 }
 
 void
-QQuailConversation::setTabId(int id)
+quail_conversation::setTabId(int id)
 {
 	tabId = id;
 }
 
 int
-QQuailConversation::getTabId() const
+quail_conversation::getTabId() const
 {
 	return tabId;
 }
 
 bool
-QQuailConversation::meify(char *message, int len)
+quail_conversation::meify(char *message, int len)
 {
     qDebug() << "QQuailConversation::meify()";
 	char *c;
@@ -289,7 +289,7 @@ QQuailConversation::meify(char *message, int len)
 }
 
 QString
-QQuailConversation::stripFontFace(const QString &str)
+quail_conversation::stripFontFace(const QString &str)
 {
 	QString newStr = str;
 
@@ -299,14 +299,14 @@ QQuailConversation::stripFontFace(const QString &str)
 }
 
 void
-QQuailConversation::updateTabIcon()
+quail_conversation::updateTabIcon()
 {
     qDebug() << "QQuailConversation::updateTabIcon()";
-    QQuailConvWindow *qwin;
+    quail_conv_window *qwin;
 	PurpleAccount *account;
 	PurpleBuddy *b;
 
-    qwin = (QQuailConvWindow *)conv->ui_data;
+    qwin = (quail_conv_window *)conv->ui_data;
 	account = purple_conversation_get_account(conv);
 
 	b = purple_find_buddy(account, purple_conversation_get_name(conv));
@@ -314,12 +314,12 @@ QQuailConversation::updateTabIcon()
 	if (b == NULL)
 	{
         qwin->getTabs()->setTabIcon(this->getTabId(),
-                                    QQuailProtocolUtils::getProtocolIcon(account));
+                                    quail_protocol_utils::getProtocolIcon(account));
 	}
 	else
 	{
         qwin->getTabs()->setTabIcon(this->getTabId(),
-                                    QQuailBListItem::getBuddyStatusIcon((PurpleBlistNode *)b));
+                                    quail_blist_item::getBuddyStatusIcon((PurpleBlistNode *)b));
 	}
     qwin->getTabs()->setTabText(this->getTabId(),
                                 purple_conversation_get_title(conv));
@@ -329,19 +329,19 @@ QQuailConversation::updateTabIcon()
 /**************************************************************************
  * QQuailConvChat
  **************************************************************************/
-QQuailConvChat::QQuailConvChat(PurpleConversation *conv, QQuailTabWidget *parent)
-    : QQuailConversation(conv, parent), chat(PURPLE_CONV_CHAT(conv))
+quail_conv_chat::quail_conv_chat(PurpleConversation *conv, quail_tab_widget *parent)
+    : quail_conversation(conv, parent), chat(PURPLE_CONV_CHAT(conv))
 {
     qDebug() << "QQuailConvChat::QQuailConvChat()";
 	buildInterface();
 }
 
-QQuailConvChat::~QQuailConvChat()
+quail_conv_chat::~quail_conv_chat()
 {
 }
 
 void
-QQuailConvChat::write(const char *who, const char *message,
+quail_conv_chat::write(const char *who, const char *message,
                      PurpleMessageFlags flags, time_t mtime)
 {
     qDebug() << "QQuailConvChat::write()";
@@ -349,7 +349,7 @@ QQuailConvChat::write(const char *who, const char *message,
 }
 
 void
-QQuailConvChat::addUser(PurpleConvChatBuddy *user)
+quail_conv_chat::addUser(PurpleConvChatBuddy *user)
 {
     qDebug() << "QQuailConvChat::addUser()";
     QListWidgetItem *item = new QListWidgetItem();
@@ -369,7 +369,7 @@ QQuailConvChat::addUser(PurpleConvChatBuddy *user)
 }
 
 void
-QQuailConvChat::addUsers(GList *users)
+quail_conv_chat::addUsers(GList *users)
 {
     qDebug() << "QQuailConvChat::addUsers()";
 	for (GList *l = users; l != NULL; l = l->next)
@@ -377,7 +377,7 @@ QQuailConvChat::addUsers(GList *users)
 }
 
 void
-QQuailConvChat::renameUser(const char *oldName, const char *newName)
+quail_conv_chat::renameUser(const char *oldName, const char *newName)
 {
     qDebug() << "QQuailConvChat::renameUser()";
     foreach (QListWidgetItem *item , userList->findItems("*", Qt::MatchWildcard))
@@ -391,7 +391,7 @@ QQuailConvChat::renameUser(const char *oldName, const char *newName)
 }
 
 void
-QQuailConvChat::removeUser(const char *user)
+quail_conv_chat::removeUser(const char *user)
 {
     qDebug() << "QQuailConvChat::removeUser()";
     foreach (QListWidgetItem *item , userList->findItems("*", Qt::MatchWildcard))
@@ -405,7 +405,7 @@ QQuailConvChat::removeUser(const char *user)
 }
 
 void
-QQuailConvChat::removeUsers(GList *users)
+quail_conv_chat::removeUsers(GList *users)
 {
     qDebug() << "QQuailConvChat::removeUsers()";
 	for (GList *l = users; l != NULL; l = l->next)
@@ -413,13 +413,13 @@ QQuailConvChat::removeUsers(GList *users)
 }
 
 void
-QQuailConvChat::buildInterface()
+quail_conv_chat::buildInterface()
 {
     qDebug() << "QQuailConvChat::buildInterface()";
     QHBoxLayout *hbox = new QHBoxLayout(this);
     QVBoxLayout *vbox = new QVBoxLayout(this);
 
-    textDisplay  = new QuailConvDisplay(this);
+    textDisplay  = new quail_conv_display(this);
 
     entry = new QQuailMultiLineEdit(this);
     entry->setHistoryEnabled(true);
@@ -445,14 +445,14 @@ QQuailConvChat::buildInterface()
 }
 
 void
-QQuailConvChat::focusInEvent(QFocusEvent *)
+quail_conv_chat::focusInEvent(QFocusEvent *)
 {
 	entry->setFocus();
 //	text->verticalScrollBar()->setValue(text->verticalScrollBar()->maxValue());
 }
 
 void
-QQuailConvChat::setShowUserList(bool show)
+quail_conv_chat::setShowUserList(bool show)
 {
     qDebug() << "QQuailConvChat::setShowUserList()";
 	if (show)
@@ -464,13 +464,13 @@ QQuailConvChat::setShowUserList(bool show)
 }
 
 bool
-QQuailConvChat::getShowUserList() const
+quail_conv_chat::getShowUserList() const
 {
 	return userList->isVisible();
 }
 
 void
-QQuailConvChat::send()
+quail_conv_chat::send()
 {
     qDebug() << "QQuailConvChat::send()";
     QString text = entry->toPlainText();
@@ -485,14 +485,14 @@ QQuailConvChat::send()
 }
 
 void
-QQuailConvChat::returnPressed()
+quail_conv_chat::returnPressed()
 {
     qDebug() << "QQuailConvChat::returnPressed()";
 	send();
 }
 
 void
-QQuailConvChat::updateTyping()
+quail_conv_chat::updateTyping()
 {
     qDebug() << "QQuailConvChat::updateTyping()";
 //    QQuailConvWindow *win = purple_conversation_get_window(conv);
@@ -504,7 +504,7 @@ QQuailConvChat::updateTyping()
 }
 
 void
-QQuailConvChat::updated(PurpleConvUpdateType type)
+quail_conv_chat::updated(PurpleConvUpdateType type)
 {
     qDebug() << "QQuailConvChat::updated()";
     if (type == PURPLE_CONV_UPDATE_UNSEEN)
@@ -548,25 +548,25 @@ QQuailConvChat::updated(PurpleConvUpdateType type)
 //		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
 
-	QQuailConversation::updated(type);
+    quail_conversation::updated(type);
 }
 
 /**************************************************************************
  * QQuailConvIm
  **************************************************************************/
-QQuailConvIm::QQuailConvIm(PurpleConversation *conv, QQuailTabWidget *parent)
-    : QQuailConversation(conv, parent), im(PURPLE_CONV_IM(conv))
+quail_conv_im::quail_conv_im(PurpleConversation *conv, quail_tab_widget *parent)
+    : quail_conversation(conv, parent), im(PURPLE_CONV_IM(conv))
 {
     qDebug() << "QQuailConvIm::QQuailConvIm()";
 	buildInterface();
 }
 
-QQuailConvIm::~QQuailConvIm()
+quail_conv_im::~quail_conv_im()
 {
 }
 
 void
-QQuailConvIm::write(const char *who, const char *message,
+quail_conv_im::write(const char *who, const char *message,
                PurpleMessageFlags flags, time_t mtime)
 {
     qDebug() << "QQuailConvIm::write()";
@@ -574,7 +574,7 @@ QQuailConvIm::write(const char *who, const char *message,
 }
 
 void
-QQuailConvIm::updated(PurpleConvUpdateType type)
+quail_conv_im::updated(PurpleConvUpdateType type)
 {
     qDebug() << "QQuailConvIm::updated()";
     if (type == PURPLE_CONV_UPDATE_TYPING ||
@@ -623,17 +623,17 @@ QQuailConvIm::updated(PurpleConvUpdateType type)
 //		qwin->getTabs()->setTabColor(getTabId(), color);
 	}
 
-	QQuailConversation::updated(type);
+    quail_conversation::updated(type);
 }
 
 void
-QQuailConvIm::buildInterface()
+quail_conv_im::buildInterface()
 {
     qDebug() << "QQuailConvIm::buildInterface()";
     QVBoxLayout *l = new QVBoxLayout(this);
     setWindowIcon(QIcon(":/data/images/logo.png"));
 
-    textDisplay  = new QuailConvDisplay(this);
+    textDisplay  = new quail_conv_display(this);
     entry = new QQuailMultiLineEdit(this);
     QFontMetrics m (entry->font()) ;
     int RowHeight = m.lineSpacing() ;
@@ -652,7 +652,7 @@ QQuailConvIm::buildInterface()
 }
 
 void
-QQuailConvIm::focusInEvent(QFocusEvent *)
+quail_conv_im::focusInEvent(QFocusEvent *)
 {
     qDebug() << "QQuailConvIm::focusInEvent()";
 	entry->setFocus();
@@ -660,7 +660,7 @@ QQuailConvIm::focusInEvent(QFocusEvent *)
 }
 
 void
-QQuailConvIm::send()
+quail_conv_im::send()
 {
     qDebug() << "QQuailConvIm::send()";
     QString text = entry->toPlainText();
@@ -676,13 +676,13 @@ QQuailConvIm::send()
 }
 
 void
-QQuailConvIm::returnPressed()
+quail_conv_im::returnPressed()
 {
 	send();
 }
 
 void
-QQuailConvIm::updateTyping()
+quail_conv_im::updateTyping()
 {
     qDebug() << "QQuailConvIm::updateTyping()";
     //QQuailConvWindow *win = purple_conversation_get_window(conv);
@@ -728,14 +728,14 @@ QQuailConvIm::updateTyping()
 /**************************************************************************
  * QQuailConvWindow
  **************************************************************************/
-QQuailConvWindow::QQuailConvWindow(QMainWindow *parent)
+quail_conv_window::quail_conv_window(QMainWindow *parent)
     : QMainWindow(), parentMainWindow(parent)/*, convWinId(0)*/
 {
     qDebug() << "QQuailConvWindow::QQuailConvWindow()";
 	buildInterface();
 }
 
-QQuailConvWindow::~QQuailConvWindow()
+quail_conv_window::~quail_conv_window()
 {
 	delete userMenu;
 }
@@ -753,7 +753,7 @@ QQuailConvWindow::~QQuailConvWindow()
 //}
 
 void
-QQuailConvWindow::switchConversation(unsigned int index)
+quail_conv_window::switchConversation(unsigned int index)
 {
 	if (index == (unsigned int)tabs->getCurrentIndex())
 		return;
@@ -762,22 +762,22 @@ QQuailConvWindow::switchConversation(unsigned int index)
 }
 
 void
-QQuailConvWindow::addConversation(PurpleConversation *conv)
+quail_conv_window::addConversation(PurpleConversation *conv)
 {
     qDebug() << "QQuailConvWindow::addConversation()";
-    QQuailConversation *qconv = NULL;
+    quail_conversation *qconv = NULL;
     PurpleAccount *account;
 	PurpleBuddy *b;
     PurpleConversationType type = purple_conversation_get_type(conv);
     if (type == PURPLE_CONV_TYPE_IM)
     {
         qDebug() << "QQuailConvWindow::addConversation().1";
-		qconv = new QQuailConvIm(conv, tabs);
+        qconv = new quail_conv_im(conv, tabs);
     }
     else if (type == PURPLE_CONV_TYPE_CHAT)
     {
         qDebug() << "QQuailConvWindow::addConversation().2";
-        qconv = new QQuailConvChat(conv, tabs);
+        qconv = new quail_conv_chat(conv, tabs);
     }
 	else
     {
@@ -795,14 +795,14 @@ QQuailConvWindow::addConversation(PurpleConversation *conv)
 	{
         qDebug() << "QQuailConvWindow::addConversation().3";
         tabs->addTab(qconv,
-            QQuailProtocolUtils::getProtocolIcon(account),
+            quail_protocol_utils::getProtocolIcon(account),
 			purple_conversation_get_title(conv));
 	}
 	else
 	{
         qDebug() << "QQuailConvWindow::addConversation().4";
         tabs->addTab(qconv,
-            QQuailBListItem::getBuddyStatusIcon((PurpleBlistNode *)b),
+            quail_blist_item::getBuddyStatusIcon((PurpleBlistNode *)b),
 			purple_conversation_get_title(conv));
 	}
 
@@ -816,18 +816,18 @@ QQuailConvWindow::addConversation(PurpleConversation *conv)
 }
 
 void
-QQuailConvWindow::removeConversation(PurpleConversation *conv)
+quail_conv_window::removeConversation(PurpleConversation *conv)
 {
     qDebug() << "QQuailConvWindow::removeConversation()";
 	/* NOTE: This deletes conv->ui_data. Find out what to do here. */
-    QQuailConversation *win = (QQuailConversation *)conv->ui_data;
+    quail_conversation *win = (quail_conversation *)conv->ui_data;
     tabs->removeTab(win->getTabId());
     win->deleteLater();
     //conv->ui_data = NULL;
 }
 
 void
-QQuailConvWindow::moveConversation(PurpleConversation */*conv*/,
+quail_conv_window::moveConversation(PurpleConversation */*conv*/,
                                   unsigned int /*newIndex*/)
 {
     qDebug() << "QQuailConvWindow::moveConversation()";
@@ -836,7 +836,7 @@ QQuailConvWindow::moveConversation(PurpleConversation */*conv*/,
 }
 
 int
-QQuailConvWindow::getActiveIndex() const
+quail_conv_window::getActiveIndex() const
 {
     qDebug() << "QQuailConvWindow::getActiveIndex()";
 //    int currentId = tabs->currentIndex();
@@ -856,7 +856,7 @@ QQuailConvWindow::getActiveIndex() const
 }
 
 void
-QQuailConvWindow::updateAddRemoveButton()
+quail_conv_window::updateAddRemoveButton()
 {
     qDebug() << "QQuailConvWindow::updateAddRemoveButton()";
 //    PurpleConversation *conv = purple_conv_window_get_active_conversation(win);
@@ -877,23 +877,23 @@ QQuailConvWindow::updateAddRemoveButton()
 }
 
 void
-QQuailConvWindow::slotSendEnabled(bool enabled)
+quail_conv_window::slotSendEnabled(bool enabled)
 {
     qDebug() << "QQuailConvWindow::setSendEnabled()";
 	sendButton->setEnabled(enabled);
 }
 
-QQuailTabWidget *
-QQuailConvWindow::getTabs() const
+quail_tab_widget *
+quail_conv_window::getTabs() const
 {
 	return tabs;
 }
 
 void
-QQuailConvWindow::tabChanged(int widgetId)
+quail_conv_window::tabChanged(int widgetId)
 {
     qDebug() << "QQuailConvWindow::tabChanged";
-    QQuailConversation *qconv = (QQuailConversation *)this->getTabs()->widget(widgetId);
+    quail_conversation *qconv = (quail_conversation *)this->getTabs()->widget(widgetId);
     PurpleConversation *conv = qconv->getConversation();
 	PurpleAccount *account = purple_conversation_get_account(conv);
 	PurplePlugin *prpl;
@@ -911,7 +911,7 @@ QQuailConvWindow::tabChanged(int widgetId)
 
     if (purple_conversation_get_type(conv) == PURPLE_CONV_TYPE_CHAT)
 	{
-		QQuailConvChat *qchat = (QQuailConvChat *)qconv;
+        quail_conv_chat *qchat = (quail_conv_chat *)qconv;
 
 		userMenuButton->setEnabled(false);
 		userListToggle->setEnabled(true);
@@ -946,7 +946,7 @@ QQuailConvWindow::tabChanged(int widgetId)
 }
 
 void
-QQuailConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
+quail_conv_window::destroy(bool destroyWindow, bool destroySubWindows)
 {
     qDebug() << "QQuailConvWindow::destroy()";
 //	purple_conv_window_destroy(win);
@@ -958,14 +958,14 @@ QQuailConvWindow::destroy(bool destroyWindow, bool destroySubWindows)
 }
 
 void
-QQuailConvWindow::closeEvent(QCloseEvent *)
+quail_conv_window::closeEvent(QCloseEvent *)
 {
     qDebug() << "QQuailConvWindow::closeEvent()";
 //	purple_conv_window_destroy(win);
 }
 
 void
-QQuailConvWindow::closeConv()
+quail_conv_window::closeConv()
 {
     qDebug() << "QQuailConvWindow::closeConv()";
 //	purple_conversation_destroy(purple_conv_window_get_active_conversation(win));
@@ -996,7 +996,7 @@ QQuailConvWindow::closeConv()
 //}
 
 void
-QQuailConvWindow::addRemoveBuddySlot()
+quail_conv_window::addRemoveBuddySlot()
 {
     qDebug() << "QQuailConvWindow::addRemoveBuddySlot";
 //    PurpleConversation *conv = purple_conv_window_get_active_conversation(win);
@@ -1031,7 +1031,7 @@ QQuailConvWindow::addRemoveBuddySlot()
 }
 
 void
-QQuailConvWindow::userInfoSlot()
+quail_conv_window::userInfoSlot()
 {
     qDebug() << "QQuailConvWindow::userInfoSlot()";
 //    PurpleConversation *conv = purple_conv_window_get_active_conversation(win);
@@ -1042,7 +1042,7 @@ QQuailConvWindow::userInfoSlot()
 }
 
 void
-QQuailConvWindow::send()
+quail_conv_window::send()
 {
     qDebug() << "QQuailConvWindow::send()";
     emit signalSendMessage();
@@ -1057,12 +1057,12 @@ QQuailConvWindow::send()
 }
 
 void
-QQuailConvWindow::buildInterface()
+quail_conv_window::buildInterface()
 {
     qDebug() << "QQuailConvWindow::buildInterface()";
 	setupToolbar();
 
-    tabs = new QQuailTabWidget(this);
+    tabs = new quail_tab_widget(this);
     connect(tabs, SIGNAL(currentChanged(int)),
             this, SLOT(tabChanged(int)));
     connect(this, SIGNAL(signalSendMessage()),
@@ -1076,7 +1076,7 @@ QQuailConvWindow::buildInterface()
 }
 
 void
-QQuailConvWindow::setupToolbar()
+quail_conv_window::setupToolbar()
 {
     qDebug() << "QQuailConvWindow::setupToolbar()";
 	QToolButton *button;
@@ -1220,7 +1220,7 @@ static void
 qQuailConvDestroy(PurpleConversation *conv)
 {
     qDebug() << "QQuailConvWindow::qQuailConvDestroy()";
-	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
+    quail_conversation *qconv = (quail_conversation *)conv->ui_data;
 
 	if (qconv == NULL)
 		return;
@@ -1236,7 +1236,7 @@ qQuailConvWriteChat(PurpleConversation *conv, const char *who,
                     time_t mtime)
 {
     qDebug() << "QQuailConvWindow::qQuailConvWriteChat()";
-	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
+    quail_conv_chat *qchat = (quail_conv_chat *)conv->ui_data;
 
 	qchat->write(who, message, flags, mtime);
 }
@@ -1247,7 +1247,7 @@ qQuailConvWriteIm(PurpleConversation *conv, const char *who,
                   time_t mtime)
 {
     qDebug() << "QQuailConvWindow::qQuailConvWriteIm()";
-	QQuailConvIm *qim = (QQuailConvIm *)conv->ui_data;
+    quail_conv_im *qim = (quail_conv_im *)conv->ui_data;
 
 	qim->write(who, message, flags, mtime);
 }
@@ -1261,7 +1261,7 @@ qQuailConvWriteConv(PurpleConversation *conv,
                     time_t mtime)
 {
     qDebug() << "QQuailConvWindow::qQuailConvWriteConv()";
-	QQuailConversation *qconv = (QQuailConversation *)conv->ui_data;
+    quail_conversation *qconv = (quail_conversation *)conv->ui_data;
 
     qconv->write(name, message, flags, mtime);
 }
@@ -1272,7 +1272,7 @@ qQuailConvChatAddUsers(PurpleConversation *conv,
                        gboolean /*new_arrivals*/)
 {
     qDebug() << "QQuailConvWindow::qQuailConvChatAddUsers()";
-	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
+    quail_conv_chat *qchat = (quail_conv_chat *)conv->ui_data;
 
     qchat->addUsers(cbuddies);
 }
@@ -1282,7 +1282,7 @@ qQuailConvChatRenameUser(PurpleConversation *conv, const char *old_name,
                          const char *new_name, const char */*new_alias*/)
 {
     qDebug() << "QQuailConvWindow::qQuailConvChatRenameUser()";
-	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
+    quail_conv_chat *qchat = (quail_conv_chat *)conv->ui_data;
 
     qchat->renameUser(old_name, new_name);
 }
@@ -1291,7 +1291,7 @@ static void
 qQuailConvChatRemoveUsers(PurpleConversation *conv, GList *users)
 {
     qDebug() << "QQuailConvWindow::qQuailConvChatRemoveUsers()";
-	QQuailConvChat *qchat = (QQuailConvChat *)conv->ui_data;
+    quail_conv_chat *qchat = (quail_conv_chat *)conv->ui_data;
 
 	qchat->removeUsers(users);
 }

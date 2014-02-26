@@ -26,13 +26,13 @@
 /**************************************************************************
  * QQuailTabBar
  **************************************************************************/
-QQuailTabBar::QQuailTabBar(QWidget *parent)
+quail_tabbar::quail_tabbar(QWidget *parent)
     : QTabBar(parent), lastId(0)
 {
 }
 
 void
-QQuailTabBar::setTabColor(int /*id*/, const QColor &/*color*/)
+quail_tabbar::setTabColor(int /*id*/, const QColor &/*color*/)
 {
 //    QWidget *t = this->tabAt(id);
 
@@ -45,7 +45,7 @@ QQuailTabBar::setTabColor(int /*id*/, const QColor &/*color*/)
 }
 
 const QColor
-QQuailTabBar::getTabColor(int /*id*/) const
+quail_tabbar::getTabColor(int /*id*/) const
 {
     QColor color(Qt::black);
 //	if (colors.contains(id))
@@ -56,20 +56,20 @@ QQuailTabBar::getTabColor(int /*id*/) const
 }
 
 void
-QQuailTabBar::setCurrentIndex(int /*index*/)
+quail_tabbar::setCurrentIndex(int /*index*/)
 {
     //setCurrentIndex(tabList()->at(index));
 }
 
 int
-QQuailTabBar::getCurrentIndex()
+quail_tabbar::getCurrentIndex()
 {
     //return tabList()->find(tab(currentIndex()));
     return 0;
 }
 
 int
-QQuailTabBar::getLastId() const
+quail_tabbar::getLastId() const
 {
 	return lastId;
 }
@@ -105,7 +105,7 @@ QQuailTabBar::getLastId() const
 //}
 
 int
-QQuailTabBar::insertTab(QWidget */*tab*/, int /*index*/)
+quail_tabbar::insertTab(QWidget */*tab*/, int /*index*/)
 {
 //    int id = this->addTab(tab, index);
 
