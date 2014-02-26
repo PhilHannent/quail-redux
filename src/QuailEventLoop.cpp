@@ -21,6 +21,7 @@
  */
 #include "QuailEventLoop.h"
 #include <QApplication>
+#include <QAtomicInt>
 #include <QDebug>
 #include <QMap>
 #include <QMutexLocker>
@@ -131,16 +132,17 @@ quail_event_loop::quail_input_add(int fd,
 
     if (!bWrite && !bRead)
         qWarning() << "quail_event_loop::quail_input_add:Unknown QSocketNotifier type";
-    notifier->setProperty("sourceId", nextSourceId);
-    m_io.insert(nextSourceId, new QQuailInputNotifier(fd
-                                                      , cond
-                                                      , func
-                                                      , userData
-                                                      , notifier
-                                                      , nextSourceId
-                                                      ));
+    guint sourceId = (quint32)nextSourceId.fetchAndAddRelaxed(1);
+    notifier->setProperty("sourceId", sourceId);
+    m_io.insert(sourceId, new QQuailInputNotifier(fd
+                                                  , cond
+                                                  , func
+                                                  , userData
+                                                  , notifier
+                                                  , sourceId
+                                                  ));
     //qDebug() << "quail_application::quail_input_add.end::" << m_io.size();
-    return nextSourceId++;
+    return sourceId;
 }
 
 gboolean

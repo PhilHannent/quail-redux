@@ -24,6 +24,7 @@
 
 #include <libpurple/eventloop.h>
 
+#include <QAtomicInt>
 #include <QObject>
 #include <QMap>
 #include <QMutex>
@@ -92,7 +93,7 @@ private slots:
 private:
     QMap<int, QQuailTimer*> m_timers;
     QMap<guint, QQuailInputNotifier*> m_io;
-    guint nextSourceId;
+    QAtomicInt nextSourceId;
     QMutex m_timer_mutex;
 };
 
