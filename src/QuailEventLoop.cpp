@@ -32,7 +32,7 @@
 static quail_event_loop* quail_app = 0;
 
 quail_event_loop::quail_event_loop(QObject * parent)
-    : QObject(parent), nextSourceId(0)
+    : QObject(parent), m_next_socket_id(0)
 {
     quail_app = this;
 }
@@ -132,7 +132,7 @@ quail_event_loop::quail_input_add(int fd,
 
     if (!bWrite && !bRead)
         qWarning() << "quail_event_loop::quail_input_add:Unknown QSocketNotifier type";
-    guint sourceId = (quint32)nextSourceId.fetchAndAddRelaxed(1);
+    guint sourceId = (quint32)m_next_socket_id.fetchAndAddRelaxed(1);
     notifier->setProperty("sourceId", sourceId);
     m_io.insert(sourceId, new QQuailInputNotifier(fd
                                                   , cond

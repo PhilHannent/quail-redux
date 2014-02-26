@@ -93,7 +93,7 @@ private slots:
 private:
     QMap<int, QQuailTimer*> m_timers;
     QMap<guint, QQuailInputNotifier*> m_io;
-    QAtomicInt nextSourceId;
+    QAtomicInt m_next_socket_id;
     QMutex m_timer_mutex;
 };
 
