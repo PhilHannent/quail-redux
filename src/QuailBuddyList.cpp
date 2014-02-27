@@ -958,7 +958,7 @@ quail_buddy_list::update_group(PurpleBlistNode *node)
             add_group(node);
             item = (quail_blist_item *)node->ui_data;
 		}
-        //if (!purple_blist_node_get_bool(node, "collapsed"))
+        if (!purple_blist_node_get_bool(node, "collapsed"))
         {
             item->setExpanded(true);
         }
