@@ -46,9 +46,9 @@ class quail_event_loop : public QObject
         gpointer data;
     };
 
-    struct QQuailInputNotifier
+    struct quail_input_notifier
     {
-        QQuailInputNotifier(int fd
+        quail_input_notifier(int fd
                             , PurpleInputCondition cond
                             , PurpleInputFunction func
                             , gpointer userData
@@ -88,11 +88,11 @@ protected:
     virtual void timerEvent(QTimerEvent *event);
 
 private slots:
-    void ioInvoke(int fd);
+    void socket_invoke(int fd);
 
 private:
     QMap<int, QQuailTimer*> m_timers;
-    QMap<guint, QQuailInputNotifier*> m_io;
+    QMap<guint, quail_input_notifier*> m_io;
     QAtomicInt m_next_socket_id;
     QMutex m_timer_mutex;
 };
