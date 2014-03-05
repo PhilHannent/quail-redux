@@ -245,7 +245,6 @@ quail_blist_window::buildToolBar()
             parentMainWindow, SLOT(showPrefWindow()));
 
     this->addToolBar(toolbar);
-    qDebug() << "QQuailBListWindow::buildToolBar.end";
 }
 
 void
@@ -333,7 +332,7 @@ quail_blist_window::currentNodeChanged(QTreeWidgetItem *item,
 void
 quail_blist_window::nodeChanged(QTreeWidgetItem *_item, QTreeWidgetItem * /*prev*/)
 {
-    qDebug() << "QQuailBListWindow::nodeChanged";
+    qDebug() << __func__;
     quail_blist_item *item;
 	PurpleBlistNode *node;
 

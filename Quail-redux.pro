@@ -97,7 +97,8 @@ HEADERS += \
     src/QuailConvDisplay.h \
     src/QuailStatusSelector.h \
     src/QuailBlistItem.h \
-    version.h
+    version.h \
+    src/quail_sliding_stack.h
 
 SOURCES += \
     src/QuailAccountBox.cpp \
@@ -125,7 +126,8 @@ SOURCES += \
     src/main.cpp \
     src/QuailConvDisplay.cpp \
     src/QuailStatusSelector.cpp \
-    src/QuailBlistItem.cpp
+    src/QuailBlistItem.cpp \
+    src/quail_sliding_stack.cpp
 
 QMAKE_CFLAGS += -fstack-protector -fstack-protector-all
 

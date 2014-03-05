@@ -37,7 +37,7 @@ class quail_conversation;
 class quail_prefs_dialog;
 
 class QMenu;
-class QStackedWidget;
+class quail_sliding_stack;
 class QSystemTrayIcon;
 
 class quail_main_window : public QMainWindow
@@ -60,7 +60,7 @@ class quail_main_window : public QMainWindow
         void setLastActiveConvWindow(quail_conversation *win);
         quail_conversation *getLastActiveConvWindow() const;
 
-        QStackedWidget *getWidgetStack() const;
+        quail_sliding_stack *getWidgetStack() const;
 		QQuailConnectionMeters *getMeters() const;
 
         QTimer *getNewTimer()
@@ -97,7 +97,7 @@ class quail_main_window : public QMainWindow
 
         void switchLanguage();
 
-        QStackedWidget *widgetStack;
+        quail_sliding_stack *widgetStack;
         quail_accounts_window *m_accounts_window;
         quail_blist_window *m_blist_window;
 		QQuailConnectionMeters *meters;

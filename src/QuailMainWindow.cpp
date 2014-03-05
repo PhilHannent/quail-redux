@@ -32,7 +32,6 @@
 #include <QLabel>
 #include <QMenu>
 #include <QSettings>
-#include <QStackedWidget>
 #include <QSystemTrayIcon>
 #include <QTimer>
 #include <QThread>
@@ -60,6 +59,7 @@
 #include "QuailPrefsDialog.h"
 #include "QuailRequest.h"
 #include "QuailStatusSelector.h"
+#include "quail_sliding_stack.h"
 
 static quail_main_window *main_win = 0;
 quail_event_loop *event_loop = 0;
@@ -167,7 +167,7 @@ quail_main_window::~quail_main_window()
 void
 quail_main_window::buildInterface()
 {
-    widgetStack = new QStackedWidget(this);
+    widgetStack = new quail_sliding_stack(this);
 
 	/* Create the connection meters box. */
     meters = new QQuailConnectionMeters(this);
@@ -517,7 +517,7 @@ quail_main_window::getLastActiveConvWindow() const
 	return lastConvWin;
 }
 
-QStackedWidget *
+quail_sliding_stack *
 quail_main_window::getWidgetStack() const
 {
 	return widgetStack;
@@ -539,7 +539,8 @@ quail_main_window::showBlistWindow()
 	}
 
     setWindowTitle(tr("Buddy List"));
-    widgetStack->setCurrentWidget(m_blist_window);
+    //widgetStack->setCurrentWidget(m_blist_window);
+    widgetStack->slide_in_idx(1);
     showNormal();
     raise();
 }
@@ -554,7 +555,8 @@ quail_main_window::showAccountsWindow()
 	}
 
     setWindowTitle(tr("Accounts"));
-    widgetStack->setCurrentWidget(m_accounts_window);
+    //widgetStack->setCurrentWidget(m_accounts_window);
+    widgetStack->slide_in_idx(2);
     showNormal();
     raise();
 }
@@ -566,7 +568,8 @@ quail_main_window::showConvWindow()
         return;
 
     setWindowTitle(tr("Conversations"));
-    widgetStack->setCurrentWidget(m_conv_window);
+    //widgetStack->setCurrentWidget(m_conv_window);
+    widgetStack->slide_in_idx(4);
 }
 
 void
@@ -580,7 +583,8 @@ quail_main_window::showPrefWindow()
         widgetStack->addWidget(m_pref_window);
     }
     setWindowTitle(tr("Preferences"));
-    widgetStack->setCurrentWidget(m_pref_window);
+    //widgetStack->setCurrentWidget(m_pref_window);
+    widgetStack->slide_in_idx(3);
     qDebug() << "QQuailMainWindow::showPrefWindow().end";
 }
 
