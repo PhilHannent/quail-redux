@@ -8,14 +8,13 @@ DEFINES += UI_ID=\\\"quail\\\"
 exists(.hg):DEFINES += BUILDREVISION=\\\"$$system( hg parent --template \"{node}\")\\\"
 else:DEFINES += BUILDREVISION=\\\"NOTBUILTFROMSOURCEREPOSITORY\\\"
 
-#win32-g++ {
-#    DEFINES += BUILDTIME=\\\"$$system('time/T')\\\"
-#    DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
-#}
-#else {
-#    DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M.%s')\\\"
-#    DEFINES += BUILDDATE=\\\"$$system(date '+%d/%m/%y')\\\"
-#}
+win32-g++ {
+    DEFINES += BUILDTIME=\\\"$$system('time/T')\\\"
+    DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
+} else {
+    DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M.%s')\\\"
+    DEFINES += BUILDDATE=\\\"$$system(date '+%d/%m/%y')\\\"
+}
 android-g++ {
     QT += widgets
     INCLUDEPATH += $(LIBPURPLE_ROOT)/../glib/glib
